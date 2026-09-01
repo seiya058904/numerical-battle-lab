@@ -1,0 +1,40 @@
+{
+  "engine_selftest": {
+    "same": true,
+    "battles": 10,
+    "log": 58,
+    "formula": {
+      "id": "acorn-restricted-expression",
+      "name": "Acorn",
+      "version": "8.15.0",
+      "offline": true,
+      "restricted": true,
+      "syntax": "math-style normalized expression subset",
+      "maxLength": 500,
+      "maxNodes": 160,
+      "maxDepth": 28
+    }
+  },
+  "formula_header": "ACORN 8.15.0 / OFFLINE",
+  "cards": 8,
+  "logs_before": 0,
+  "queued": 4,
+  "logs_after": 22,
+  "editor_skills": 3,
+  "formula_states": 3,
+  "invalid_formula_class": "formula-state bad",
+  "restored_formula_class": "formula-state ok",
+  "simulation_metrics": 4,
+  "sim_text": [
+    "TEAM A WIN\n60.0%",
+    "TEAM B WIN\n40.0%",
+    "AVG ROUNDS\n7.98",
+    "AVG HP DAMAGE\n976.92"
+  ],
+  "guide_definitions": 163,
+  "guide_has_acorn": true,
+  "mobile_cards": 8,
+  "mobile_body_width": 390,
+  "mobile_viewport_width": 390,
+  "page_errors": []
+}

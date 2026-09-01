@@ -1,0 +1,2029 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": "src/components.js",
+  "counts": {
+    "parameters": 91,
+    "effects": 18,
+    "conditions": 27,
+    "targets": 8,
+    "events": 28,
+    "damageTypes": 8,
+    "units": 20,
+    "skills": 63,
+    "statuses": 33
+  },
+  "parameters": [
+    {
+      "id": "MAX_HP",
+      "name": "最大生命",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "HP",
+      "defaultValue": 120,
+      "range": "20–10000",
+      "human": "决定实体可承受的总生命伤害。",
+      "ai": "提高生存时间并放大基于 MAX_HP 的治疗、护盾和伤害公式。",
+      "effect": "+10% 通常约等于 +10% 纯生命耐久，但会与护盾/回复产生乘法协同。",
+      "source": "通用 RPG / Pokémon HP",
+      "tier": "core"
+    },
+    {
+      "id": "ATK",
+      "name": "攻击强度",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 70,
+      "range": "0–1000",
+      "human": "多数伤害公式的主要进攻输入。",
+      "ai": "提高所有引用 ATK 的公式结果。",
+      "effect": "实际收益取决于技能系数、暴击、穿透和目标防御。",
+      "source": "Pokémon Attack/SpA",
+      "tier": "core"
+    },
+    {
+      "id": "DEF",
+      "name": "物理防御",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 50,
+      "range": "0–1000",
+      "human": "降低使用 DEF 防御轴的伤害。",
+      "ai": "提高对 physical/bleed 等物理轴伤害的有效减伤。",
+      "effect": "边际收益随当前 DEF 和穿透变化。",
+      "source": "Pokémon Defense / CDDA armor",
+      "tier": "core"
+    },
+    {
+      "id": "RES",
+      "name": "法术抗性",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 50,
+      "range": "0–1000",
+      "human": "降低使用 RES 防御轴的元素/奥术伤害。",
+      "ai": "提高对 arcane/fire/frost/lightning/toxic 的有效减伤。",
+      "effect": "边际收益随 RES 和穿透变化。",
+      "source": "Pokémon SpD / ToME saves-resists",
+      "tier": "core"
+    },
+    {
+      "id": "SPD",
+      "name": "速度",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 70,
+      "range": "0–1000",
+      "human": "同优先级下决定行动先后。",
+      "ai": "提高队列中的 speed 排序值。",
+      "effect": "只有在 priority 相同时影响先手。",
+      "source": "Pokémon Speed / Showdown queue",
+      "tier": "core"
+    },
+    {
+      "id": "ACC",
+      "name": "命中",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 100,
+      "range": "0–500",
+      "human": "提高技能命中概率。",
+      "ai": "进入 ACC 对 EVA 的命中公式。",
+      "effect": "对高闪避目标价值更高，受技能基础 accuracy 限制。",
+      "source": "Pokémon accuracy stages",
+      "tier": "core"
+    },
+    {
+      "id": "EVA",
+      "name": "闪避",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 5,
+      "range": "0–500",
+      "human": "降低敌方可被闪避技能的命中率。",
+      "ai": "作为命中公式的防守输入。",
+      "effect": "对 always-hit/canMiss=false 无效。",
+      "source": "Pokémon evasion stages",
+      "tier": "core"
+    },
+    {
+      "id": "CRIT",
+      "name": "暴击率",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 10,
+      "range": "0–80",
+      "human": "增加可暴击伤害段的暴击概率。",
+      "ai": "与技能 critBonus 和 ModifyCritChance 叠加。",
+      "effect": "提高期望伤害，收益由 CRIT_DMG 决定。",
+      "source": "Pokémon critRatio / RPG crit",
+      "tier": "core"
+    },
+    {
+      "id": "CRIT_DMG",
+      "name": "暴击倍率",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 160,
+      "range": "100–500",
+      "human": "决定暴击时伤害倍率。",
+      "ai": "CRIT 触发后将伤害公式结果乘以此倍率。",
+      "effect": "只在暴击发生时生效，与 CRIT 形成乘法协同。",
+      "source": "RPG crit damage",
+      "tier": "core"
+    },
+    {
+      "id": "PEN",
+      "name": "通用穿透",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 10,
+      "range": "0–95",
+      "human": "按比例忽略 DEF/RES。",
+      "ai": "与技能 penetrationBonus 合并后减少有效防御。",
+      "effect": "对高防目标收益更大。",
+      "source": "CDDA armor penetration / ToME penetration",
+      "tier": "core"
+    },
+    {
+      "id": "LIFESTEAL",
+      "name": "吸血",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 0,
+      "range": "0–100",
+      "human": "按造成的 HP 伤害回复施法者。",
+      "ai": "根据实际 HP_DAMAGE 回收生命。",
+      "effect": "被护盾完全吸收的部分通常不产生吸血。",
+      "source": "RPG life steal",
+      "tier": "core"
+    },
+    {
+      "id": "HEAL_POWER",
+      "name": "治疗强度",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 100,
+      "range": "0–500",
+      "human": "放大自身施放的治疗。",
+      "ai": "治疗公式结果乘以 HEAL_POWER/100。",
+      "effect": "与目标 HEAL_TAKEN 乘算。",
+      "source": "RPG healing power",
+      "tier": "core"
+    },
+    {
+      "id": "HEAL_TAKEN",
+      "name": "受疗倍率",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 100,
+      "range": "0–500",
+      "human": "控制收到治疗的倍率。",
+      "ai": "治疗结算乘以 HEAL_TAKEN/100。",
+      "effect": "可用于重伤、治疗增益、吸收类机制。",
+      "source": "RPG healing received",
+      "tier": "core"
+    },
+    {
+      "id": "ENERGY_MAX",
+      "name": "能量上限",
+      "category": "资源",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 5,
+      "range": "0–100",
+      "human": "标准技能资源池上限。",
+      "ai": "限制 ENERGY 可存储的最大值。",
+      "effect": "上限提高偏向爆发回合，回复提高偏向持续循环。",
+      "source": "ToME resource pools",
+      "tier": "advanced"
+    },
+    {
+      "id": "ENERGY_REGEN",
+      "name": "能量回复",
+      "category": "资源",
+      "kind": "number",
+      "unit": "point/round",
+      "defaultValue": 2,
+      "range": "0–100",
+      "human": "每回合恢复标准能量。",
+      "ai": "回合开始增加 ENERGY。",
+      "effect": "直接影响技能循环周期。",
+      "source": "ToME resource regeneration",
+      "tier": "advanced"
+    },
+    {
+      "id": "RESOURCE_MAX",
+      "name": "自定义资源上限",
+      "category": "资源",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 5,
+      "range": "0–1000",
+      "human": "任意资源 X 通过 X_MAX 定义上限。",
+      "ai": "允许 SOUL/RAGE/CHRONO 等无需改引擎。",
+      "effect": "决定资源构筑的蓄积空间。",
+      "source": "ToME multiple resources",
+      "tier": "advanced"
+    },
+    {
+      "id": "RESOURCE_REGEN",
+      "name": "自定义资源回复",
+      "category": "资源",
+      "kind": "number",
+      "unit": "point/round",
+      "defaultValue": 0,
+      "range": "0–100",
+      "human": "任意资源每回合的自然回复。",
+      "ai": "由 resourceRegens 数据驱动。",
+      "effect": "决定资源获取是否依赖事件还是稳定循环。",
+      "source": "ToME multiple resources",
+      "tier": "advanced"
+    },
+    {
+      "id": "BASE_FORMULA",
+      "name": "基础公式",
+      "category": "技能",
+      "kind": "formula",
+      "unit": "expression",
+      "defaultValue": "ATK * 1.0",
+      "range": "safe expression",
+      "human": "技能数值的主公式。",
+      "ai": "在只读 scope 中计算基础伤害/治疗/护盾值。",
+      "effect": "是最核心的可调参数，可组合任意开放 Stat/Resource/目标变量。",
+      "source": "math.js / formula-driven RPG",
+      "tier": "core"
+    },
+    {
+      "id": "FORMULA_MULTIPLIER",
+      "name": "公式倍率",
+      "category": "技能",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "0–20",
+      "human": "在单个 damage component 上额外乘算。",
+      "ai": "用于同一公式生成不同分量。",
+      "effect": "比复制整条公式更适合复合伤害包。",
+      "source": "CDDA damage_unit multiplier",
+      "tier": "core"
+    },
+    {
+      "id": "DAMAGE_TYPE",
+      "name": "伤害类型",
+      "category": "技能",
+      "kind": "enum",
+      "unit": "type",
+      "defaultValue": "physical",
+      "range": "registered type",
+      "human": "决定使用哪条防御轴、抗性、护符和亲和。",
+      "ai": "查 DAMAGE_TYPES 注册表。",
+      "effect": "改变类型会改变 DEF/RES、抗性、亲和、Ward 等整条结算。",
+      "source": "Pokémon type / CDDA damage_type",
+      "tier": "core"
+    },
+    {
+      "id": "SKILL_ACCURACY",
+      "name": "技能基础命中",
+      "category": "技能",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 1,
+      "range": "0.05–1.5",
+      "human": "技能自身命中系数。",
+      "ai": "与 ACC/EVA 和 ModifyAccuracy 共同决定最终命中率。",
+      "effect": "1.0 是标准；低命中可换取高强度。",
+      "source": "Pokémon move accuracy",
+      "tier": "core"
+    },
+    {
+      "id": "PRIORITY",
+      "name": "行动优先级",
+      "category": "技能",
+      "kind": "number",
+      "unit": "tier",
+      "defaultValue": 0,
+      "range": "-10–10",
+      "human": "高于速度的行动顺序层。",
+      "ai": "队列先按 priority 再按 SPD。",
+      "effect": "少量变化即可改变整场节奏，属于高价值参数。",
+      "source": "Pokémon priority / Showdown queue",
+      "tier": "core"
+    },
+    {
+      "id": "COOLDOWN",
+      "name": "冷却",
+      "category": "技能",
+      "kind": "number",
+      "unit": "round",
+      "defaultValue": 0,
+      "range": "0–20",
+      "human": "技能再次使用前等待回合数。",
+      "ai": "使用后写入 cooldown 状态。",
+      "effect": "是控制强技能频率的主要旋钮。",
+      "source": "RPG cooldowns",
+      "tier": "core"
+    },
+    {
+      "id": "RESOURCE_COST",
+      "name": "资源费用",
+      "category": "技能",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 1,
+      "range": "0–1000",
+      "human": "技能消耗任意资源。",
+      "ai": "所有成本先验证再原子支付。",
+      "effect": "直接限制频率，并与资源转换/回复联动。",
+      "source": "ToME talent costs",
+      "tier": "core"
+    },
+    {
+      "id": "HP_COST",
+      "name": "生命费用",
+      "category": "技能",
+      "kind": "number",
+      "unit": "HP",
+      "defaultValue": 0,
+      "range": "0–MAX_HP",
+      "human": "把生命作为施法成本。",
+      "ai": "默认不可支付致死成本，除非 allowLethal。",
+      "effect": "把输出/辅助强度转化为生存风险。",
+      "source": "blood magic archetypes",
+      "tier": "core"
+    },
+    {
+      "id": "HITS",
+      "name": "攻击段数",
+      "category": "技能",
+      "kind": "number",
+      "unit": "hit",
+      "defaultValue": 1,
+      "range": "1–32",
+      "human": "同一伤害效果重复结算的段数。",
+      "ai": "每段独立命中/暴击/伤害/触发。",
+      "effect": "增加触发次数和方差，不等价于简单伤害倍率。",
+      "source": "Pokémon multihit / Wesnoth attacks",
+      "tier": "core"
+    },
+    {
+      "id": "CRIT_BONUS",
+      "name": "技能暴击加成",
+      "category": "技能",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 0,
+      "range": "-100–100",
+      "human": "只影响当前技能的暴击概率。",
+      "ai": "叠加到角色 CRIT 再经过 ModifyCritChance。",
+      "effect": "适合高暴击技能而不污染角色基础属性。",
+      "source": "Pokémon critRatio",
+      "tier": "core"
+    },
+    {
+      "id": "PENETRATION_BONUS",
+      "name": "技能穿透加成",
+      "category": "技能",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 0,
+      "range": "-95–95",
+      "human": "只影响当前技能的防御穿透。",
+      "ai": "叠加到 PEN 再进入 ModifyPenetration。",
+      "effect": "适合破甲技能和高防目标特攻。",
+      "source": "CDDA technique armor penetration",
+      "tier": "core"
+    },
+    {
+      "id": "TYPE_PENETRATION",
+      "name": "类型穿透",
+      "category": "技能",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 0,
+      "range": "0–1",
+      "human": "忽略目标对应伤害类型的一部分抗性。",
+      "ai": "在类型抗性阶段扣减 resistance。",
+      "effect": "和 DEF/RES 穿透属于不同防御层。",
+      "source": "ToME resistance penetration",
+      "tier": "core"
+    },
+    {
+      "id": "CAN_CRIT",
+      "name": "允许暴击",
+      "category": "技能",
+      "kind": "boolean",
+      "unit": "bool",
+      "defaultValue": true,
+      "range": "true/false",
+      "human": "决定伤害段能否暴击。",
+      "ai": "false 时直接跳过暴击随机。",
+      "effect": "用于 DoT、固定伤害或规则特殊技能。",
+      "source": "generic battle rule",
+      "tier": "core"
+    },
+    {
+      "id": "CAN_MISS",
+      "name": "允许未命中",
+      "category": "技能",
+      "kind": "boolean",
+      "unit": "bool",
+      "defaultValue": true,
+      "range": "true/false",
+      "human": "决定是否执行命中判定。",
+      "ai": "false 时命中率强制为 100%。",
+      "effect": "适合必中特性和环境效果。",
+      "source": "Pokémon always hit / ignoreAccuracy",
+      "tier": "core"
+    },
+    {
+      "id": "CAN_REFLECT",
+      "name": "允许反射",
+      "category": "技能",
+      "kind": "boolean",
+      "unit": "bool",
+      "defaultValue": true,
+      "range": "true/false",
+      "human": "决定该伤害是否可触发反伤链。",
+      "ai": "防止反射伤害再次反射形成死循环。",
+      "effect": "是反应链安全的重要结构参数。",
+      "source": "Showdown recursion / RPG reflect",
+      "tier": "core"
+    },
+    {
+      "id": "SECONDARY_CHANCE",
+      "name": "附加效果概率",
+      "category": "技能",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 1,
+      "range": "0–1",
+      "human": "控制状态/次级效果触发概率。",
+      "ai": "PRNG 判定后决定是否执行子效果。",
+      "effect": "把主伤害与控制概率解耦。",
+      "source": "Pokémon secondary chance",
+      "tier": "core"
+    },
+    {
+      "id": "TARGET_MODE",
+      "name": "目标模式",
+      "category": "技能",
+      "kind": "enum",
+      "unit": "target",
+      "defaultValue": "enemy",
+      "range": "registered target",
+      "human": "决定技能可选目标集合。",
+      "ai": "由 Target 组件产生合法目标。",
+      "effect": "同一效果组件可因目标模式变成单体、群体、自身或随机。",
+      "source": "Pokémon MoveTarget",
+      "tier": "core"
+    },
+    {
+      "id": "TARGET_RELATION",
+      "name": "目标关系",
+      "category": "目标查询",
+      "kind": "enum",
+      "unit": "relation",
+      "defaultValue": "enemy",
+      "range": "self/ally/enemy/any",
+      "human": "定义候选目标与施法者的关系。",
+      "ai": "Query Target 的第一层候选集。",
+      "effect": "只改变候选关系，不改变效果本身。",
+      "source": "Pokémon MoveTarget / generic selector",
+      "tier": "advanced"
+    },
+    {
+      "id": "TARGET_FILTER",
+      "name": "目标过滤条件",
+      "category": "目标查询",
+      "kind": "condition",
+      "unit": "rule",
+      "defaultValue": null,
+      "range": "condition tree",
+      "human": "使用通用 Condition 树筛选候选目标。",
+      "ai": "与技能/AI 共用同一 predicate registry。",
+      "effect": "可以组合出低血、带状态、特定标签等任意合法目标。",
+      "source": "Freeciv Requirements / Unciv conditionals",
+      "tier": "advanced"
+    },
+    {
+      "id": "TARGET_SORT",
+      "name": "目标排序",
+      "category": "目标查询",
+      "kind": "enum",
+      "unit": "sort",
+      "defaultValue": "hpPct",
+      "range": "hpPct/hp/maxHp/shield/stat/resource",
+      "human": "决定自动目标的排序依据。",
+      "ai": "Query Target 对候选集做稳定排序。",
+      "effect": "配合 order 与 limit 可表达最低血、最高防、最高资源等。",
+      "source": "OpenSpiel legal-action filtering / generic query",
+      "tier": "advanced"
+    },
+    {
+      "id": "TARGET_ORDER",
+      "name": "目标排序方向",
+      "category": "目标查询",
+      "kind": "enum",
+      "unit": "order",
+      "defaultValue": "asc",
+      "range": "asc/desc",
+      "human": "控制目标排序升序或降序。",
+      "ai": "与 TARGET_SORT 一起决定自动优先目标。",
+      "effect": "asc 常用于最低血，desc 常用于最高属性。",
+      "source": "generic selector",
+      "tier": "advanced"
+    },
+    {
+      "id": "TARGET_LIMIT",
+      "name": "目标数量上限",
+      "category": "目标查询",
+      "kind": "number",
+      "unit": "entity",
+      "defaultValue": 1,
+      "range": "0–99",
+      "human": "限制查询结果最多保留多少目标。",
+      "ai": "排序/过滤后截取前 N 个。",
+      "effect": "把单体、双目标、前三目标等统一为一个参数。",
+      "source": "generic selector",
+      "tier": "advanced"
+    },
+    {
+      "id": "TARGET_SELECTION",
+      "name": "目标选择模式",
+      "category": "目标查询",
+      "kind": "enum",
+      "unit": "mode",
+      "defaultValue": "choose",
+      "range": "choose/first/all",
+      "human": "决定查询结果由玩家选一个、自动取第一或全部应用。",
+      "ai": "影响 LegalActions 与效果展开方式。",
+      "effect": "同一 Query 可在手动选择、自动锁定和群体执行之间切换。",
+      "source": "Pokémon target modes / generic selector",
+      "tier": "advanced"
+    },
+    {
+      "id": "TARGET_REQUIREMENT",
+      "name": "目标条件",
+      "category": "技能",
+      "kind": "condition",
+      "unit": "rule",
+      "defaultValue": null,
+      "range": "condition tree",
+      "human": "进一步过滤合法目标。",
+      "ai": "使用 Condition 插件树进行筛选。",
+      "effect": "让“只能打燃烧目标/机械目标/低血目标”等无需写技能特判。",
+      "source": "Freeciv Requirements / Unciv conditionals",
+      "tier": "core"
+    },
+    {
+      "id": "REQUIREMENT",
+      "name": "施放条件",
+      "category": "技能",
+      "kind": "condition",
+      "unit": "rule",
+      "defaultValue": null,
+      "range": "condition tree",
+      "human": "控制技能是否进入 LegalActions。",
+      "ai": "AI 与 UI 共用同一条件。",
+      "effect": "避免“先点击再失败”的规则分叉。",
+      "source": "Freeciv Requirements / OpenSpiel legal actions",
+      "tier": "core"
+    },
+    {
+      "id": "RECOIL_RATIO",
+      "name": "反噬倍率",
+      "category": "技能",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 0,
+      "range": "0–1",
+      "human": "按生命或伤害产生自伤成本。",
+      "ai": "可由通用 selfDamage/resource effect 组合。",
+      "effect": "用自伤换取更高输出。",
+      "source": "Pokémon recoil",
+      "tier": "core"
+    },
+    {
+      "id": "DRAIN_RATIO",
+      "name": "汲取倍率",
+      "category": "技能",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 0,
+      "range": "0–1",
+      "human": "把本技能实际造成的 HP 伤害按比例转为施法者治疗。",
+      "ai": "伤害效果结算后读取 committed HP damage，使用统一治疗管线。",
+      "effect": "只对真正写入 HP 的伤害生效，可与角色 LIFESTEAL 叠加。",
+      "source": "Pokémon drain / RPG vampirism",
+      "tier": "core"
+    },
+    {
+      "id": "DAMAGE_VARIANCE_MIN",
+      "name": "随机伤害下限",
+      "category": "技能",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "0–5",
+      "human": "每个伤害分量在暴击前乘上的确定性随机倍率下限。",
+      "ai": "与 DAMAGE_VARIANCE_MAX 之间使用 canonical PRNG 抽样。",
+      "effect": "0.85–1.00 可制造经典伤害浮动；1/1 表示完全固定。",
+      "source": "Pokémon random damage roll / RPG variance",
+      "tier": "core"
+    },
+    {
+      "id": "DAMAGE_VARIANCE_MAX",
+      "name": "随机伤害上限",
+      "category": "技能",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "0–5",
+      "human": "每个伤害分量的随机倍率上限。",
+      "ai": "与下限共同决定均匀随机区间，Replay 可精确复现。",
+      "effect": "区间越宽，输出方差越大；平均值约为上下限均值。",
+      "source": "Pokémon random damage roll / RPG variance",
+      "tier": "core"
+    },
+    {
+      "id": "IGNORE_DEFENSE",
+      "name": "忽略防御",
+      "category": "技能",
+      "kind": "boolean",
+      "unit": "bool",
+      "defaultValue": false,
+      "range": "true/false",
+      "human": "让对应 Damage Component 跳过 DEF/RES 等防御轴。",
+      "ai": "把 defenseStat 视为 none，但仍可经过类型抗性和承伤事件。",
+      "effect": "适合穿甲/纯技巧类技能；与 true damage 仍有语义区别。",
+      "source": "Pokémon ignoreDefensive / RPG armor bypass",
+      "tier": "core"
+    },
+    {
+      "id": "IGNORE_RESISTANCE",
+      "name": "忽略类型抗性",
+      "category": "技能",
+      "kind": "boolean",
+      "unit": "bool",
+      "defaultValue": false,
+      "range": "true/false",
+      "human": "让对应 Damage Component 跳过目标类型抗性。",
+      "ai": "resistance 阶段强制为 0，但仍可经过防御轴。",
+      "effect": "可单独绕过元素抗性，而不必改成 true damage。",
+      "source": "Pokémon ignoreImmunity concepts / ToME penetration",
+      "tier": "core"
+    },
+    {
+      "id": "IGNORE_EVASION",
+      "name": "忽略闪避",
+      "category": "技能",
+      "kind": "boolean",
+      "unit": "bool",
+      "defaultValue": false,
+      "range": "true/false",
+      "human": "命中公式忽略目标 EVA。",
+      "ai": "Accuracy 仍然生效，但 target EVA 当作 0。",
+      "effect": "适合精准/锁定技能，又不同于 canMiss=false 的绝对必中。",
+      "source": "Pokémon ignoreEvasion",
+      "tier": "core"
+    },
+    {
+      "id": "DEFENSE_STAT",
+      "name": "防御属性选择",
+      "category": "技能",
+      "kind": "enum",
+      "unit": "stat",
+      "defaultValue": "type default",
+      "range": "DEF/RES/none/custom",
+      "human": "指定该伤害分量使用哪个目标 Stat 作为防御轴。",
+      "ai": "Damage Component 可覆盖 Damage Type 的默认 defenseStat。",
+      "effect": "允许“物理伤害看 RES”“攻击意志/护甲等自定义 Stat”而无需新伤害类型。",
+      "source": "Pokémon overrideDefensiveStat",
+      "tier": "core"
+    },
+    {
+      "id": "MIN_DAMAGE",
+      "name": "最小伤害钳制",
+      "category": "技能",
+      "kind": "number",
+      "unit": "HP",
+      "defaultValue": null,
+      "range": ">=0 / none",
+      "human": "给单个伤害分量设置结算前的最低伤害。",
+      "ai": "防御/抗性后对 finalDamage 执行下限 clamp。",
+      "effect": "适合保底伤害和最低穿透效果。",
+      "source": "generic RPG damage floor",
+      "tier": "core"
+    },
+    {
+      "id": "MAX_DAMAGE",
+      "name": "最大伤害钳制",
+      "category": "技能",
+      "kind": "number",
+      "unit": "HP",
+      "defaultValue": null,
+      "range": ">=0 / none",
+      "human": "给单个伤害分量设置结算前的最高伤害。",
+      "ai": "防御/抗性后对 finalDamage 执行上限 clamp。",
+      "effect": "适合百分比伤害封顶、Boss 保护等。",
+      "source": "generic RPG damage cap",
+      "tier": "core"
+    },
+    {
+      "id": "SPREAD_MULTIPLIER",
+      "name": "群体伤害倍率",
+      "category": "技能",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "0–2",
+      "human": "群攻时统一调节每个目标伤害。",
+      "ai": "作用于每个 damage component 的基础结果。",
+      "effect": "控制 AoE 总价值避免人数越多无限超模。",
+      "source": "Pokémon spreadModifier",
+      "tier": "core"
+    },
+    {
+      "id": "SHIELD_AMOUNT",
+      "name": "通用屏障量",
+      "category": "防御",
+      "kind": "formula",
+      "unit": "HP",
+      "defaultValue": "MAX_HP * 0.1",
+      "range": ">=0",
+      "human": "所有类型伤害前的通用吸收层。",
+      "ai": "先消耗 shield 再写入 HP。",
+      "effect": "对所有伤害通用，但可能被多段快速消耗。",
+      "source": "RPG barriers",
+      "tier": "core"
+    },
+    {
+      "id": "WARD_AMOUNT",
+      "name": "类型护符量",
+      "category": "防御",
+      "kind": "formula",
+      "unit": "HP",
+      "defaultValue": "MAX_HP * 0.1",
+      "range": ">=0",
+      "human": "只吸收指定 damage type。",
+      "ai": "匹配类型时在通用 shield 前结算。",
+      "effect": "比通用盾更窄但可设计更高效率。",
+      "source": "ToME damage shields / wards",
+      "tier": "core"
+    },
+    {
+      "id": "RESISTANCE",
+      "name": "类型抗性",
+      "category": "防御",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 0,
+      "range": "-0.75–0.85",
+      "human": "按伤害类型降低或放大最终伤害。",
+      "ai": "类型阶段乘以 (1-resistance)。",
+      "effect": "负数代表弱点，正数代表抗性。",
+      "source": "Pokémon type effectiveness / ToME resists",
+      "tier": "core"
+    },
+    {
+      "id": "AFFINITY",
+      "name": "类型亲和",
+      "category": "防御",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 0,
+      "range": "0–1",
+      "human": "受到匹配类型 HP 伤害后恢复一部分生命。",
+      "ai": "基于实际 hpDamage 产生恢复。",
+      "effect": "可把某类型从威胁转成资源。",
+      "source": "ToME damage affinity",
+      "tier": "core"
+    },
+    {
+      "id": "IMMUNITY",
+      "name": "状态免疫",
+      "category": "防御",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 0,
+      "range": "0–1",
+      "human": "按状态标签抵抗施加。",
+      "ai": "状态应用前进行 deterministic PRNG 判定。",
+      "effect": "1 表示完全免疫，0.5 表示 50% 抵抗。",
+      "source": "RPG status immunity",
+      "tier": "core"
+    },
+    {
+      "id": "STATUS_CHANCE",
+      "name": "状态施加率",
+      "category": "状态",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 1,
+      "range": "0–1",
+      "human": "技能附加 Status 的成功概率。",
+      "ai": "先经过 chance，再经过目标 immunity。",
+      "effect": "把伤害与控制可靠性分离。",
+      "source": "Pokémon secondary status chance",
+      "tier": "core"
+    },
+    {
+      "id": "STATUS_DURATION",
+      "name": "持续时间",
+      "category": "状态",
+      "kind": "number",
+      "unit": "round",
+      "defaultValue": 2,
+      "range": "1–99 / ∞",
+      "human": "状态保留回合数。",
+      "ai": "每轮生命周期递减；null 表示 sustain/permanent。",
+      "effect": "持续时间影响总收益和净化价值。",
+      "source": "RPG timed effects",
+      "tier": "core"
+    },
+    {
+      "id": "STATUS_STACKS",
+      "name": "施加层数",
+      "category": "状态",
+      "kind": "number",
+      "unit": "stack",
+      "defaultValue": 1,
+      "range": "1–99",
+      "human": "一次施加增加/设置的层数。",
+      "ai": "由 stacking policy 与 maxStacks 解释。",
+      "effect": "层数可驱动线性、指数或条件公式。",
+      "source": "DoT/curse stack systems",
+      "tier": "core"
+    },
+    {
+      "id": "MAX_STACKS",
+      "name": "最大层数",
+      "category": "状态",
+      "kind": "number",
+      "unit": "stack",
+      "defaultValue": 1,
+      "range": "1–999",
+      "human": "状态最多可积累层数。",
+      "ai": "应用前 clamp。",
+      "effect": "决定叠层构筑的蓄力上限。",
+      "source": "RPG stack caps",
+      "tier": "core"
+    },
+    {
+      "id": "STACKING_POLICY",
+      "name": "叠层策略",
+      "category": "状态",
+      "kind": "enum",
+      "unit": "policy",
+      "defaultValue": "stack",
+      "range": "stack/refresh/replace",
+      "human": "决定重复施加如何处理。",
+      "ai": "stack 增层；refresh 刷新时间；replace 覆盖实例。",
+      "effect": "同一状态可通过策略获得完全不同玩法。",
+      "source": "mature status engines",
+      "tier": "core"
+    },
+    {
+      "id": "STAT_ADD",
+      "name": "属性加值",
+      "category": "状态",
+      "kind": "number",
+      "unit": "point",
+      "defaultValue": 0,
+      "range": "any",
+      "human": "对任意 Stat 添加固定值。",
+      "ai": "固定 aggregation band 的 Add 层。",
+      "effect": "对低基础值相对收益更高。",
+      "source": "GAS-style modifier band",
+      "tier": "core"
+    },
+    {
+      "id": "STAT_MULTIPLIER",
+      "name": "属性倍率",
+      "category": "状态",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "0–10",
+      "human": "对任意 Stat 乘算。",
+      "ai": "在 Add 层之后进入 Multiply 层。",
+      "effect": "与固定加值形成可预测组合。",
+      "source": "GAS / Showdown chainModify",
+      "tier": "core"
+    },
+    {
+      "id": "RESISTANCE_MOD",
+      "name": "抗性修正",
+      "category": "状态",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 0,
+      "range": "-1–1",
+      "human": "临时改变某类型或全部抗性。",
+      "ai": "进入 resistance modifier band。",
+      "effect": "实现元素易伤、护甲破坏、元素姿态。",
+      "source": "ToME resistance effects",
+      "tier": "core"
+    },
+    {
+      "id": "DAMAGE_DEALT_MULT",
+      "name": "输出倍率",
+      "category": "事件",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "0–10",
+      "human": "修改最终输出伤害。",
+      "ai": "ModifyDamageDealt relay-event。",
+      "effect": "位于公式与防御之外，适合全局增伤/减伤。",
+      "source": "Pokémon onModifyDamage",
+      "tier": "advanced"
+    },
+    {
+      "id": "DAMAGE_TAKEN_MULT",
+      "name": "承伤倍率",
+      "category": "事件",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "0–10",
+      "human": "修改目标最终收到的伤害。",
+      "ai": "ModifyDamageTaken relay-event。",
+      "effect": "实现易伤、守护、团队减伤。",
+      "source": "Pokémon onModifyDamage",
+      "tier": "advanced"
+    },
+    {
+      "id": "ACCURACY_MOD",
+      "name": "命中修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "add/mul/set",
+      "defaultValue": 0,
+      "range": "component op",
+      "human": "临时修改技能基础命中。",
+      "ai": "ModifyAccuracy event modifier。",
+      "effect": "不改角色 ACC，也能塑造“下一击必中/失准”。",
+      "source": "Pokémon onModifyAccuracy",
+      "tier": "advanced"
+    },
+    {
+      "id": "HITS_MOD",
+      "name": "段数修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "add/set",
+      "defaultValue": 0,
+      "range": "1–32",
+      "human": "临时改变技能攻击次数。",
+      "ai": "ModifyHits event modifier。",
+      "effect": "可把普通攻击变成连击，不需写新技能。",
+      "source": "Wesnoth attacks / Pokémon multihit",
+      "tier": "advanced"
+    },
+    {
+      "id": "CRIT_CHANCE_MOD",
+      "name": "暴击修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 0,
+      "range": "component op",
+      "human": "临时改变技能暴击率。",
+      "ai": "ModifyCritChance event modifier。",
+      "effect": "适合姿态、标记、爆发窗口。",
+      "source": "Pokémon onModifyCritRatio",
+      "tier": "advanced"
+    },
+    {
+      "id": "PENETRATION_MOD",
+      "name": "穿透修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 0,
+      "range": "component op",
+      "human": "临时改变技能穿透。",
+      "ai": "ModifyPenetration event modifier。",
+      "effect": "适合破防窗口和条件增益。",
+      "source": "CDDA armor penetration effects",
+      "tier": "advanced"
+    },
+    {
+      "id": "EVENT_PRIORITY",
+      "name": "事件优先级",
+      "category": "事件",
+      "kind": "number",
+      "unit": "tier",
+      "defaultValue": 0,
+      "range": "integer",
+      "human": "决定多个同类 Modifier 的结算顺序。",
+      "ai": "EventKernel 按 priority/order/id 稳定排序。",
+      "effect": "保证复杂组合可预测和可重放。",
+      "source": "Pokémon Showdown event priority",
+      "tier": "advanced"
+    },
+    {
+      "id": "HEAL_DEALT_MULT",
+      "name": "治疗输出事件倍率",
+      "category": "事件",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "0–10",
+      "human": "在治疗公式和治疗强度之后进一步修改施法者产生的治疗。",
+      "ai": "ModifyHealDealt relay-event，可按技能标签或状态条件生效。",
+      "effect": "适合治疗姿态、治疗类型专精和临时治疗衰减，不需要改 HEAL_POWER。",
+      "source": "Pokémon TryHeal / generic RPG healing modifiers",
+      "tier": "advanced"
+    },
+    {
+      "id": "HEAL_TAKEN_EVENT_MULT",
+      "name": "受疗事件倍率",
+      "category": "事件",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "0–10",
+      "human": "在目标受疗属性之外进一步修改本次收到的治疗。",
+      "ai": "ModifyHealTaken relay-event。",
+      "effect": "适合重伤、治疗屏障、特殊治疗易伤等条件化规则。",
+      "source": "Pokémon TryHeal / RPG grievous wounds",
+      "tier": "advanced"
+    },
+    {
+      "id": "RESOURCE_COST_MOD",
+      "name": "资源费用修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "add/mul/set",
+      "defaultValue": 1,
+      "range": "component op",
+      "human": "修改某类技能资源费用。",
+      "ai": "ModifyResourceCost relay-event，data.resource 提供资源类型。",
+      "effect": "可以制作火系减费、生命法术增费、临时免费施法等，而不认识具体技能。",
+      "source": "ToME talent costs / card cost modifiers",
+      "tier": "advanced"
+    },
+    {
+      "id": "RESOURCE_GAIN_MOD",
+      "name": "资源获得修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "add/mul/set",
+      "defaultValue": 1,
+      "range": "component op",
+      "human": "修改资源回复与效果产生的资源量。",
+      "ai": "ModifyResourceGain relay-event。",
+      "effect": "把资源回复、击杀收益、转换收益都纳入同一可调面。",
+      "source": "ToME resource modifiers",
+      "tier": "advanced"
+    },
+    {
+      "id": "COOLDOWN_MOD",
+      "name": "冷却修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "round",
+      "defaultValue": 0,
+      "range": "component op",
+      "human": "修改技能使用后写入的冷却。",
+      "ai": "ModifyCooldown relay-event。",
+      "effect": "实现加速、时间膨胀、某类技能冷却缩短等。",
+      "source": "ToME cooldown manipulation",
+      "tier": "advanced"
+    },
+    {
+      "id": "SHIELD_MOD",
+      "name": "屏障获得修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "component op",
+      "human": "修改本次获得的通用屏障量。",
+      "ai": "ModifyShield relay-event。",
+      "effect": "允许护盾专精和受盾削弱，不必改变公式。",
+      "source": "RPG barrier modifiers",
+      "tier": "advanced"
+    },
+    {
+      "id": "WARD_MOD",
+      "name": "类型护符获得修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "×",
+      "defaultValue": 1,
+      "range": "component op",
+      "human": "修改本次获得的类型护符量。",
+      "ai": "ModifyWard relay-event，data.damageType 提供类型。",
+      "effect": "允许只强化某一元素护符。",
+      "source": "ToME shields / wards",
+      "tier": "advanced"
+    },
+    {
+      "id": "RESISTANCE_EVENT_MOD",
+      "name": "抗性事件修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 0,
+      "range": "component op",
+      "human": "在基础抗性与状态抗性带之后修正最终类型抗性。",
+      "ai": "ModifyResistance relay-event。",
+      "effect": "适合条件化抗性，例如低血时火抗提高、对特定来源减抗。",
+      "source": "ToME resist modifiers",
+      "tier": "advanced"
+    },
+    {
+      "id": "PRIORITY_MOD",
+      "name": "行动优先级修正",
+      "category": "事件",
+      "kind": "number",
+      "unit": "tier",
+      "defaultValue": 0,
+      "range": "component op",
+      "human": "临时修改技能在队列中的优先级。",
+      "ai": "ModifyPriority relay-event。",
+      "effect": "比 SPD 更强地改变行动顺序，可做先制、迟缓和反应姿态。",
+      "source": "Pokémon onModifyPriority",
+      "tier": "advanced"
+    },
+    {
+      "id": "TRIGGER_CHANCE",
+      "name": "触发概率",
+      "category": "触发",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 1,
+      "range": "0–1",
+      "human": "控制被动反应发生概率。",
+      "ai": "触发事件命中后通过 deterministic PRNG。",
+      "effect": "适合 proc、被动反击和随机资源获取。",
+      "source": "RPG proc systems",
+      "tier": "advanced"
+    },
+    {
+      "id": "TRIGGER_LIMIT",
+      "name": "触发链上限",
+      "category": "触发",
+      "kind": "number",
+      "unit": "depth",
+      "defaultValue": 16,
+      "range": "1–128",
+      "human": "限制反射/反击等递归链深度。",
+      "ai": "超过上限后停止后续 proc。",
+      "effect": "防止无限反射和恶意内容冻结。",
+      "source": "Showdown recursion caps / mature trigger engines",
+      "tier": "advanced"
+    },
+    {
+      "id": "PERIOD",
+      "name": "周期间隔",
+      "category": "周期效果",
+      "kind": "number",
+      "unit": "round",
+      "defaultValue": 1,
+      "range": "1–99",
+      "human": "DoT/HoT 每隔多少回合触发。",
+      "ai": "周期调度器按 elapsed % period 执行。",
+      "effect": "同总持续时间下，频率决定触发次数与反应链数量。",
+      "source": "RPG periodic effects",
+      "tier": "advanced"
+    },
+    {
+      "id": "SNAPSHOT_MODE",
+      "name": "快照模式",
+      "category": "周期效果",
+      "kind": "enum",
+      "unit": "mode",
+      "defaultValue": "apply",
+      "range": "apply/dynamic",
+      "human": "决定周期效果使用施加时还是每跳实时属性。",
+      "ai": "apply 保存公式结果；dynamic 每跳重新计算。",
+      "effect": "快照更可预测，动态更能与后续 Buff 联动。",
+      "source": "MMO/RPG DoT snapshot semantics",
+      "tier": "advanced"
+    },
+    {
+      "id": "UPKEEP_AMOUNT",
+      "name": "维持费用",
+      "category": "持续技能",
+      "kind": "number",
+      "unit": "resource/round",
+      "defaultValue": 0,
+      "range": "0–1000",
+      "human": "Sustain 每回合支付的资源。",
+      "ai": "回合开始/结束检查；资源不足自动解除。",
+      "effect": "形成长期强度与资源经济之间的选择。",
+      "source": "ToME sustain talents",
+      "tier": "advanced"
+    },
+    {
+      "id": "CONVERT_RATIO",
+      "name": "资源转换率",
+      "category": "资源",
+      "kind": "number",
+      "unit": "ratio",
+      "defaultValue": 1,
+      "range": "0–100",
+      "human": "一种资源转为另一种资源的比例。",
+      "ai": "convertResource 先扣 from 再按 ratio 增加 to。",
+      "effect": "连接多个资源循环，是构筑经济的重要轴。",
+      "source": "multi-resource RPG systems",
+      "tier": "advanced"
+    },
+    {
+      "id": "CONSUME_STACKS",
+      "name": "状态消费量",
+      "category": "组合",
+      "kind": "number",
+      "unit": "stack",
+      "defaultValue": 1,
+      "range": "1–all",
+      "human": "从目标状态中消费层数。",
+      "ai": "写入 CONSUMED_STACKS 供后续公式读取。",
+      "effect": "支持“叠层→引爆/换资源/转控制”等组合。",
+      "source": "curse/poison detonation systems",
+      "tier": "advanced"
+    },
+    {
+      "id": "REPEAT_TIMES",
+      "name": "效果重复次数",
+      "category": "组合",
+      "kind": "number",
+      "unit": "times",
+      "defaultValue": 1,
+      "range": "0–32",
+      "human": "重复执行一个效果块。",
+      "ai": "repeat 组件逐次解析子效果。",
+      "effect": "适合多次抽样、连锁或程序化复合技能。",
+      "source": "task/effect composition engines",
+      "tier": "advanced"
+    },
+    {
+      "id": "CONDITION_BRANCH",
+      "name": "条件分支",
+      "category": "组合",
+      "kind": "condition",
+      "unit": "rule",
+      "defaultValue": null,
+      "range": "condition tree",
+      "human": "依据通用条件选择 then/else 效果块。",
+      "ai": "Condition 插件树决定分支。",
+      "effect": "是把复杂技能从代码迁移到数据的核心。",
+      "source": "Unciv uniques / Freeciv requirements",
+      "tier": "advanced"
+    }
+  ],
+  "effects": {
+    "damage": {
+      "id": "damage",
+      "name": "伤害",
+      "human": "执行命中→随机倍率→暴击→复合伤害包→防御/抗性→Ward/Shield/HP→汲取/反噬。",
+      "ai": "generic effect primitive damage",
+      "fields": [
+        "formula",
+        "components",
+        "hits",
+        "accuracy",
+        "varianceMin",
+        "varianceMax",
+        "canCrit",
+        "canMiss",
+        "canReflect",
+        "ignoreDefense",
+        "ignoreResistance",
+        "ignoreEvasion",
+        "defenseStat",
+        "minDamage",
+        "maxDamage",
+        "drainRatio",
+        "recoilRatio",
+        "tags"
+      ]
+    },
+    "heal": {
+      "id": "heal",
+      "name": "治疗",
+      "human": "根据公式产生治疗并应用治疗强度/受疗倍率。",
+      "ai": "generic effect primitive heal",
+      "fields": [
+        "formula"
+      ]
+    },
+    "shield": {
+      "id": "shield",
+      "name": "屏障",
+      "human": "增加通用伤害吸收层。",
+      "ai": "generic effect primitive shield",
+      "fields": [
+        "formula"
+      ]
+    },
+    "ward": {
+      "id": "ward",
+      "name": "类型护符",
+      "human": "增加指定伤害类型的专用吸收层。",
+      "ai": "generic effect primitive ward",
+      "fields": [
+        "damageType",
+        "formula",
+        "amount"
+      ]
+    },
+    "status": {
+      "id": "status",
+      "name": "状态",
+      "human": "按概率/免疫规则施加可叠层状态。",
+      "ai": "generic effect primitive status",
+      "fields": [
+        "status",
+        "chance",
+        "duration",
+        "stacks"
+      ]
+    },
+    "toggleStatus": {
+      "id": "toggleStatus",
+      "name": "持续状态开关",
+      "human": "在存在/不存在之间切换一个状态，用于 Sustain。",
+      "ai": "generic effect primitive toggleStatus",
+      "fields": [
+        "status",
+        "duration",
+        "stacks"
+      ]
+    },
+    "consumeStatus": {
+      "id": "consumeStatus",
+      "name": "消费状态",
+      "human": "消费指定状态层数并把数量写入后续公式上下文。",
+      "ai": "generic effect primitive consumeStatus",
+      "fields": [
+        "status",
+        "stacks"
+      ]
+    },
+    "cleanse": {
+      "id": "cleanse",
+      "name": "净化",
+      "human": "按标签移除负面状态。",
+      "ai": "generic effect primitive cleanse",
+      "fields": [
+        "tags",
+        "count"
+      ]
+    },
+    "dispel": {
+      "id": "dispel",
+      "name": "驱散/夺取",
+      "human": "按类型和标签移除状态，可转移给施法者。",
+      "ai": "generic effect primitive dispel",
+      "fields": [
+        "kind",
+        "tags",
+        "count",
+        "transfer"
+      ]
+    },
+    "resource": {
+      "id": "resource",
+      "name": "资源变化",
+      "human": "给目标增加或减少任意资源。",
+      "ai": "generic effect primitive resource",
+      "fields": [
+        "resource",
+        "amount",
+        "resourceTarget"
+      ]
+    },
+    "gain": {
+      "id": "gain",
+      "name": "施法者资源变化",
+      "human": "给施法者增加任意资源。",
+      "ai": "generic effect primitive gain",
+      "fields": [
+        "resource",
+        "amount"
+      ]
+    },
+    "energy": {
+      "id": "energy",
+      "name": "能量变化",
+      "human": "兼容旧内容的 ENERGY 资源变化组件。",
+      "ai": "generic effect primitive energy",
+      "fields": [
+        "amount"
+      ]
+    },
+    "convertResource": {
+      "id": "convertResource",
+      "name": "资源转换",
+      "human": "从一种资源扣除并按比例转化为另一资源。",
+      "ai": "generic effect primitive convertResource",
+      "fields": [
+        "from",
+        "to",
+        "amount",
+        "ratio",
+        "resourceTarget"
+      ]
+    },
+    "cooldownReduce": {
+      "id": "cooldownReduce",
+      "name": "冷却缩减",
+      "human": "减少目标全部已存在冷却。",
+      "ai": "generic effect primitive cooldownReduce",
+      "fields": [
+        "amount"
+      ]
+    },
+    "selfDamagePct": {
+      "id": "selfDamagePct",
+      "name": "百分比反噬",
+      "human": "按施法者最大生命造成不可反射的自伤。",
+      "ai": "generic effect primitive selfDamagePct",
+      "fields": [
+        "pct"
+      ]
+    },
+    "conditional": {
+      "id": "conditional",
+      "name": "条件分支",
+      "human": "根据通用 Condition 树执行 then 或 else。",
+      "ai": "generic effect primitive conditional",
+      "fields": [
+        "condition",
+        "then",
+        "else"
+      ]
+    },
+    "repeat": {
+      "id": "repeat",
+      "name": "重复块",
+      "human": "重复执行子效果块。",
+      "ai": "generic effect primitive repeat",
+      "fields": [
+        "times",
+        "effects"
+      ]
+    },
+    "emitEvent": {
+      "id": "emitEvent",
+      "name": "发射事件",
+      "human": "发射一个已注册 Trigger Event，让状态/被动通过统一事件链响应。",
+      "ai": "generic effect primitive emitEvent",
+      "fields": [
+        "event",
+        "eventSubject",
+        "tags",
+        "payload"
+      ]
+    }
+  },
+  "conditions": {
+    "hpPctAbove": {
+      "id": "hpPctAbove",
+      "name": "hpPctAbove",
+      "human": "通用条件 hpPctAbove。",
+      "ai": "predicate hpPctAbove",
+      "fields": []
+    },
+    "hpPctBelow": {
+      "id": "hpPctBelow",
+      "name": "hpPctBelow",
+      "human": "通用条件 hpPctBelow。",
+      "ai": "predicate hpPctBelow",
+      "fields": []
+    },
+    "targetHpPctAbove": {
+      "id": "targetHpPctAbove",
+      "name": "targetHpPctAbove",
+      "human": "通用条件 targetHpPctAbove。",
+      "ai": "predicate targetHpPctAbove",
+      "fields": []
+    },
+    "targetHpPctBelow": {
+      "id": "targetHpPctBelow",
+      "name": "targetHpPctBelow",
+      "human": "通用条件 targetHpPctBelow。",
+      "ai": "predicate targetHpPctBelow",
+      "fields": []
+    },
+    "hasStatus": {
+      "id": "hasStatus",
+      "name": "hasStatus",
+      "human": "通用条件 hasStatus。",
+      "ai": "predicate hasStatus",
+      "fields": []
+    },
+    "missingStatus": {
+      "id": "missingStatus",
+      "name": "missingStatus",
+      "human": "通用条件 missingStatus。",
+      "ai": "predicate missingStatus",
+      "fields": []
+    },
+    "targetHasStatus": {
+      "id": "targetHasStatus",
+      "name": "targetHasStatus",
+      "human": "通用条件 targetHasStatus。",
+      "ai": "predicate targetHasStatus",
+      "fields": []
+    },
+    "targetMissingStatus": {
+      "id": "targetMissingStatus",
+      "name": "targetMissingStatus",
+      "human": "通用条件 targetMissingStatus。",
+      "ai": "predicate targetMissingStatus",
+      "fields": []
+    },
+    "resourceAtLeast": {
+      "id": "resourceAtLeast",
+      "name": "resourceAtLeast",
+      "human": "通用条件 resourceAtLeast。",
+      "ai": "predicate resourceAtLeast",
+      "fields": []
+    },
+    "targetResourceAtLeast": {
+      "id": "targetResourceAtLeast",
+      "name": "targetResourceAtLeast",
+      "human": "通用条件 targetResourceAtLeast。",
+      "ai": "predicate targetResourceAtLeast",
+      "fields": []
+    },
+    "resourceIs": {
+      "id": "resourceIs",
+      "name": "resourceIs",
+      "human": "通用条件 resourceIs。",
+      "ai": "predicate resourceIs",
+      "fields": []
+    },
+    "statusStacksAtLeast": {
+      "id": "statusStacksAtLeast",
+      "name": "statusStacksAtLeast",
+      "human": "通用条件 statusStacksAtLeast。",
+      "ai": "predicate statusStacksAtLeast",
+      "fields": []
+    },
+    "targetStatusStacksAtLeast": {
+      "id": "targetStatusStacksAtLeast",
+      "name": "targetStatusStacksAtLeast",
+      "human": "通用条件 targetStatusStacksAtLeast。",
+      "ai": "predicate targetStatusStacksAtLeast",
+      "fields": []
+    },
+    "sourceTag": {
+      "id": "sourceTag",
+      "name": "sourceTag",
+      "human": "通用条件 sourceTag。",
+      "ai": "predicate sourceTag",
+      "fields": []
+    },
+    "targetTag": {
+      "id": "targetTag",
+      "name": "targetTag",
+      "human": "通用条件 targetTag。",
+      "ai": "predicate targetTag",
+      "fields": []
+    },
+    "statusTag": {
+      "id": "statusTag",
+      "name": "statusTag",
+      "human": "通用条件 statusTag。",
+      "ai": "predicate statusTag",
+      "fields": []
+    },
+    "targetStatusTag": {
+      "id": "targetStatusTag",
+      "name": "targetStatusTag",
+      "human": "通用条件 targetStatusTag。",
+      "ai": "predicate targetStatusTag",
+      "fields": []
+    },
+    "consumedStacksAtLeast": {
+      "id": "consumedStacksAtLeast",
+      "name": "consumedStacksAtLeast",
+      "human": "通用条件 consumedStacksAtLeast。",
+      "ai": "predicate consumedStacksAtLeast",
+      "fields": []
+    },
+    "lastHit": {
+      "id": "lastHit",
+      "name": "lastHit",
+      "human": "通用条件 lastHit。",
+      "ai": "predicate lastHit",
+      "fields": []
+    },
+    "lastCrit": {
+      "id": "lastCrit",
+      "name": "lastCrit",
+      "human": "通用条件 lastCrit。",
+      "ai": "predicate lastCrit",
+      "fields": []
+    },
+    "lastKill": {
+      "id": "lastKill",
+      "name": "lastKill",
+      "human": "通用条件 lastKill。",
+      "ai": "predicate lastKill",
+      "fields": []
+    },
+    "dealtDamageAtLeast": {
+      "id": "dealtDamageAtLeast",
+      "name": "dealtDamageAtLeast",
+      "human": "通用条件 dealtDamageAtLeast。",
+      "ai": "predicate dealtDamageAtLeast",
+      "fields": []
+    },
+    "dealtHpDamageAtLeast": {
+      "id": "dealtHpDamageAtLeast",
+      "name": "dealtHpDamageAtLeast",
+      "human": "通用条件 dealtHpDamageAtLeast。",
+      "ai": "predicate dealtHpDamageAtLeast",
+      "fields": []
+    },
+    "tag": {
+      "id": "tag",
+      "name": "tag",
+      "human": "通用条件 tag。",
+      "ai": "predicate tag",
+      "fields": []
+    },
+    "damageType": {
+      "id": "damageType",
+      "name": "damageType",
+      "human": "通用条件 damageType。",
+      "ai": "predicate damageType",
+      "fields": []
+    },
+    "livingAlliesAtMost": {
+      "id": "livingAlliesAtMost",
+      "name": "livingAlliesAtMost",
+      "human": "通用条件 livingAlliesAtMost。",
+      "ai": "predicate livingAlliesAtMost",
+      "fields": []
+    },
+    "livingEnemiesAtMost": {
+      "id": "livingEnemiesAtMost",
+      "name": "livingEnemiesAtMost",
+      "human": "通用条件 livingEnemiesAtMost。",
+      "ai": "predicate livingEnemiesAtMost",
+      "fields": []
+    }
+  },
+  "targets": {
+    "self": {
+      "id": "self",
+      "name": "自己",
+      "human": "选择自己作为效果目标。",
+      "ai": "legal-target selector: self",
+      "fields": []
+    },
+    "ally": {
+      "id": "ally",
+      "name": "单个友方",
+      "human": "选择单个友方作为效果目标。",
+      "ai": "legal-target selector: ally",
+      "fields": []
+    },
+    "enemy": {
+      "id": "enemy",
+      "name": "单个敌方",
+      "human": "选择单个敌方作为效果目标。",
+      "ai": "legal-target selector: enemy",
+      "fields": [],
+      "enemy": true
+    },
+    "all-allies": {
+      "id": "all-allies",
+      "name": "全体友方",
+      "human": "选择全体友方作为效果目标。",
+      "ai": "legal-target selector: all-allies",
+      "fields": [],
+      "multi": true
+    },
+    "all-enemies": {
+      "id": "all-enemies",
+      "name": "全体敌方",
+      "human": "选择全体敌方作为效果目标。",
+      "ai": "legal-target selector: all-enemies",
+      "fields": [],
+      "enemy": true,
+      "multi": true
+    },
+    "random-ally": {
+      "id": "random-ally",
+      "name": "随机友方",
+      "human": "选择随机友方作为效果目标。",
+      "ai": "legal-target selector: random-ally",
+      "fields": [],
+      "random": true
+    },
+    "random-enemy": {
+      "id": "random-enemy",
+      "name": "随机敌方",
+      "human": "选择随机敌方作为效果目标。",
+      "ai": "legal-target selector: random-enemy",
+      "fields": [],
+      "enemy": true,
+      "random": true
+    },
+    "query": {
+      "id": "query",
+      "name": "目标查询",
+      "human": "选择目标查询作为效果目标。",
+      "ai": "legal-target selector: query",
+      "fields": [
+        "targetQuery.relation",
+        "targetQuery.where",
+        "targetQuery.sortBy",
+        "targetQuery.order",
+        "targetQuery.limit",
+        "targetQuery.mode"
+      ]
+    }
+  },
+  "events": {
+    "ModifyStat": {
+      "id": "ModifyStat",
+      "name": "属性修正",
+      "human": "统一事件插入点：属性修正。",
+      "ai": "relay-event ModifyStat",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyAccuracy": {
+      "id": "ModifyAccuracy",
+      "name": "技能命中修正",
+      "human": "统一事件插入点：技能命中修正。",
+      "ai": "relay-event ModifyAccuracy",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyHits": {
+      "id": "ModifyHits",
+      "name": "攻击段数修正",
+      "human": "统一事件插入点：攻击段数修正。",
+      "ai": "relay-event ModifyHits",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyCritChance": {
+      "id": "ModifyCritChance",
+      "name": "暴击概率修正",
+      "human": "统一事件插入点：暴击概率修正。",
+      "ai": "relay-event ModifyCritChance",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyPenetration": {
+      "id": "ModifyPenetration",
+      "name": "防御穿透修正",
+      "human": "统一事件插入点：防御穿透修正。",
+      "ai": "relay-event ModifyPenetration",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyDamageDealt": {
+      "id": "ModifyDamageDealt",
+      "name": "输出伤害修正",
+      "human": "统一事件插入点：输出伤害修正。",
+      "ai": "relay-event ModifyDamageDealt",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyDamageTaken": {
+      "id": "ModifyDamageTaken",
+      "name": "承受伤害修正",
+      "human": "统一事件插入点：承受伤害修正。",
+      "ai": "relay-event ModifyDamageTaken",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyHealDealt": {
+      "id": "ModifyHealDealt",
+      "name": "治疗输出修正",
+      "human": "统一事件插入点：治疗输出修正。",
+      "ai": "relay-event ModifyHealDealt",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyHealTaken": {
+      "id": "ModifyHealTaken",
+      "name": "治疗承受修正",
+      "human": "统一事件插入点：治疗承受修正。",
+      "ai": "relay-event ModifyHealTaken",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyResourceCost": {
+      "id": "ModifyResourceCost",
+      "name": "资源费用修正",
+      "human": "统一事件插入点：资源费用修正。",
+      "ai": "relay-event ModifyResourceCost",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyResourceGain": {
+      "id": "ModifyResourceGain",
+      "name": "资源获得修正",
+      "human": "统一事件插入点：资源获得修正。",
+      "ai": "relay-event ModifyResourceGain",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyCooldown": {
+      "id": "ModifyCooldown",
+      "name": "冷却修正",
+      "human": "统一事件插入点：冷却修正。",
+      "ai": "relay-event ModifyCooldown",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyShield": {
+      "id": "ModifyShield",
+      "name": "屏障获得修正",
+      "human": "统一事件插入点：屏障获得修正。",
+      "ai": "relay-event ModifyShield",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyWard": {
+      "id": "ModifyWard",
+      "name": "类型护符获得修正",
+      "human": "统一事件插入点：类型护符获得修正。",
+      "ai": "relay-event ModifyWard",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyResistance": {
+      "id": "ModifyResistance",
+      "name": "最终抗性修正",
+      "human": "统一事件插入点：最终抗性修正。",
+      "ai": "relay-event ModifyResistance",
+      "fields": [],
+      "kind": "relay"
+    },
+    "ModifyPriority": {
+      "id": "ModifyPriority",
+      "name": "行动优先级修正",
+      "human": "统一事件插入点：行动优先级修正。",
+      "ai": "relay-event ModifyPriority",
+      "fields": [],
+      "kind": "relay"
+    },
+    "EntityDefeated": {
+      "id": "EntityDefeated",
+      "name": "实体击倒",
+      "human": "统一事件插入点：实体击倒。",
+      "ai": "relay-event EntityDefeated",
+      "fields": [],
+      "kind": "relay"
+    },
+    "afterDamageTaken": {
+      "id": "afterDamageTaken",
+      "name": "受伤后",
+      "human": "标准 Trigger Event：受伤后。",
+      "ai": "trigger-event afterDamageTaken",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "afterDamageDealt": {
+      "id": "afterDamageDealt",
+      "name": "造成伤害后",
+      "human": "标准 Trigger Event：造成伤害后。",
+      "ai": "trigger-event afterDamageDealt",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "afterHealTaken": {
+      "id": "afterHealTaken",
+      "name": "受到治疗后",
+      "human": "标准 Trigger Event：受到治疗后。",
+      "ai": "trigger-event afterHealTaken",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "afterHealDealt": {
+      "id": "afterHealDealt",
+      "name": "造成治疗后",
+      "human": "标准 Trigger Event：造成治疗后。",
+      "ai": "trigger-event afterHealDealt",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "afterDefeated": {
+      "id": "afterDefeated",
+      "name": "被击倒后",
+      "human": "标准 Trigger Event：被击倒后。",
+      "ai": "trigger-event afterDefeated",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "afterKill": {
+      "id": "afterKill",
+      "name": "击杀后",
+      "human": "标准 Trigger Event：击杀后。",
+      "ai": "trigger-event afterKill",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "afterStatusApplied": {
+      "id": "afterStatusApplied",
+      "name": "获得状态后",
+      "human": "标准 Trigger Event：获得状态后。",
+      "ai": "trigger-event afterStatusApplied",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "afterStatusInflicted": {
+      "id": "afterStatusInflicted",
+      "name": "施加状态后",
+      "human": "标准 Trigger Event：施加状态后。",
+      "ai": "trigger-event afterStatusInflicted",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "afterStatusRemoved": {
+      "id": "afterStatusRemoved",
+      "name": "状态移除后",
+      "human": "标准 Trigger Event：状态移除后。",
+      "ai": "trigger-event afterStatusRemoved",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "roundStart": {
+      "id": "roundStart",
+      "name": "回合开始",
+      "human": "标准 Trigger Event：回合开始。",
+      "ai": "trigger-event roundStart",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "roundEnd": {
+      "id": "roundEnd",
+      "name": "回合结束",
+      "human": "标准 Trigger Event：回合结束。",
+      "ai": "trigger-event roundEnd",
+      "fields": [],
+      "kind": "trigger"
+    }
+  },
+  "damageTypes": {
+    "physical": {
+      "id": "physical",
+      "name": "物理",
+      "defenseStat": "DEF"
+    },
+    "arcane": {
+      "id": "arcane",
+      "name": "奥术",
+      "defenseStat": "RES"
+    },
+    "fire": {
+      "id": "fire",
+      "name": "火焰",
+      "defenseStat": "RES"
+    },
+    "frost": {
+      "id": "frost",
+      "name": "寒霜",
+      "defenseStat": "RES"
+    },
+    "lightning": {
+      "id": "lightning",
+      "name": "雷电",
+      "defenseStat": "RES"
+    },
+    "toxic": {
+      "id": "toxic",
+      "name": "毒素",
+      "defenseStat": "RES"
+    },
+    "bleed": {
+      "id": "bleed",
+      "name": "流血",
+      "defenseStat": "DEF"
+    },
+    "true": {
+      "id": "true",
+      "name": "真实",
+      "defenseStat": null,
+      "ignoresResistance": true
+    }
+  }
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>NUMERICAL // 数值对战实验室</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="brand">NUMERICAL //</div>
+        <h1>数值对战实验室</h1>
+      </div>
+      <div class="top-meta">
+        <span id="engine-state">ENGINE READY</span>
+        <span id="formula-state">FORMULA CHECK</span>
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="主导航">
+      <button data-tab="battle" class="tab is-active">对战</button>
+      <button data-tab="editor" class="tab">数值编辑</button>
+      <button data-tab="simulation" class="tab">批量模拟</button>
+      <button data-tab="guide" class="tab">规则 / 架构</button>
+    </nav>
+
+    <main>
+      <section id="view-battle" class="view is-active"></section>
+      <section id="view-editor" class="view"></section>
+      <section id="view-simulation" class="view"></section>
+      <section id="view-guide" class="view"></section>
+    </main>
+
+    <footer>
+      <span>Generic CombatEntity Engine · Card is presentation only</span>
+      <span>Deterministic / Headless-compatible / Single-player</span>
+    </footer>
+  </div>
+
+  <!-- Fully offline runtime. Vendored Acorn parses the restricted formula AST before src/formula.js applies the whitelist evaluator. -->
+  <script src="src/kernel.js"></script>
+  <script src="src/components.js"></script>
+  <script src="src/rules.js"></script>
+  <script src="src/content.js"></script>
+  <script src="src/status-runtime.js"></script>
+  <script src="vendor/acorn-8.15.0.js"></script>
+  <script src="src/formula.js"></script>
+  <script src="src/validator.js"></script>
+  <script src="src/effects.js"></script>
+  <script src="src/engine.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "numerical-card-battle",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "verify": "node scripts/generate-catalog.js && node --test tests/*.test.js && node scripts/static-check.js",
+    "catalog": "node scripts/generate-catalog.js"
+  }
+}
