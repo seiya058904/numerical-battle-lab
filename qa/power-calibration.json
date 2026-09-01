@@ -1,0 +1,6028 @@
+{
+  "sample": 600,
+  "battles": 14,
+  "referencePower": 9115,
+  "spearmanCalibration": 0.741,
+  "spearmanValidation": 0.776,
+  "rarityMonotonic": true,
+  "rarityMean": {
+    "C": 0.119,
+    "C_PLUS": 0.203,
+    "B": 0.239,
+    "B_PLUS": 0.246,
+    "A": 0.384,
+    "A_PLUS": 0.423,
+    "S": 0.442,
+    "SS": 0.584,
+    "SSS": 0.572,
+    "SSS_COLLECTOR": 0.72,
+    "XS": 0.698,
+    "XS_COLLECTOR": 0.752
+  },
+  "band": {
+    "count": 165,
+    "within40to60": 0.10909090909090909
+  },
+  "cards": [
+    {
+      "cardId": "gen_91c09797",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 6398,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_7a322b",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8447,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c8b8346b",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8442,
+      "observedRating": 0.25,
+      "winRate": 0.25,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_43d2ceb3",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 7141,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_1b995ab9",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 7939,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a2712dec",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 6773,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_998e428c",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 7999,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b6750268",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 9426,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_fa43b6ba",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 7846,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_96095808",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 9300,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_cef6f1e3",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 6346,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_d7e05cf",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 9095,
+      "observedRating": 0.119,
+      "winRate": 0.119,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ba84cd77",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 9680,
+      "observedRating": 0.595,
+      "winRate": 0.595,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ce7b0c6f",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 7971,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4fdd02e5",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 8760,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ff1552a8",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 7285,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_8e85c8c0",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 7683,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_e0ecaa2c",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 8530,
+      "observedRating": 0.036,
+      "winRate": 0.036,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_17645230",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7833,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b575aa3a",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8943,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_3a9b5e93",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 6794,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f8764565",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 7907,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5ccdde47",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 7928,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_12867691",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 8260,
+      "observedRating": 0.012,
+      "winRate": 0.012,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_1737f20b",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 8420,
+      "observedRating": 0.083,
+      "winRate": 0.083,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_13cbcbc6",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 7755,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a0277214",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 8186,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c1178512",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 10277,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_d500d47e",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 8435,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f314b41c",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 9254,
+      "observedRating": 0.321,
+      "winRate": 0.321,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_500eab45",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 7370,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_cd459893",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 7443,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_bce824b9",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 9027,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6c400a9f",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 8323,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4691fbad",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 9293,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f55bbb64",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7860,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ea8cd8f6",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8254,
+      "observedRating": 0.095,
+      "winRate": 0.095,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c45ad708",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8840,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_687ad246",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 8534,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_8df019f8",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 8231,
+      "observedRating": 0.048,
+      "winRate": 0.048,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a4ad82b1",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 7573,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_494fe653",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 8395,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_2e20f63d",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 9916,
+      "observedRating": 0.369,
+      "winRate": 0.369,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c177bf7f",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 8148,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f08ccc91",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 8817,
+      "observedRating": 0.071,
+      "winRate": 0.071,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_68e94c2a",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 7375,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f5210738",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 8012,
+      "observedRating": 0.381,
+      "winRate": 0.381,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_e87d7e0e",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 8351,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4b46b16",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 7986,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_65e8cdd4",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 8830,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_149222de",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 7238,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a48b4b0c",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 9096,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_bb48dcda",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 8914,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_69c5319e",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7354,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_417617d4",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10460,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_922cf1d5",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 6894,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_cad4a455",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 8734,
+      "observedRating": 0.321,
+      "winRate": 0.321,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6840a801",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 9117,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_835589c7",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 7882,
+      "observedRating": 0.012,
+      "winRate": 0.012,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_59d71109",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 9130,
+      "observedRating": 0.417,
+      "winRate": 0.417,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_efed252",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 7677,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ca63a6",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 8558,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_51aef89e",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 9615,
+      "observedRating": 0.429,
+      "winRate": 0.429,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_44bae61c",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 8558,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_562b39a6",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 8690,
+      "observedRating": 0.048,
+      "winRate": 0.048,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_fd691df5",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 6783,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_102f7e5d",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 8274,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_334618b1",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 8348,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4d4dce8f",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 8649,
+      "observedRating": 0.119,
+      "winRate": 0.119,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_238684b5",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 8758,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4b15905e",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7706,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f33736a6",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8552,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_22d642ba",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8957,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_188fbc2a",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 8668,
+      "observedRating": 0.214,
+      "winRate": 0.214,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_1bb099f8",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 9312,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_17c71c63",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 8122,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c8282c4f",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 8791,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6bb544c7",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 9639,
+      "observedRating": 0.56,
+      "winRate": 0.56,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_9b066fc1",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 8272,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5b2a8fbb",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 9568,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c55cf060",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 8043,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_cd875774",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 8517,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_54bfbe4",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 10745,
+      "observedRating": 0.643,
+      "winRate": 0.643,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_85523d30",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 7293,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_e5af9b82",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 9488,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_8ed4e5fb",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 7501,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c7a26427",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 8679,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_1ec6145f",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 10349,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ebfc70af",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7836,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_394b37d",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9402,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_65022e18",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 7440,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_df83ccb2",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 8900,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b395e904",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 10347,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_23cc6e7a",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 8788,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ab9cfc20",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 10101,
+      "observedRating": 0.833,
+      "winRate": 0.833,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_63d5f319",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 7573,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_8b03049f",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 9696,
+      "observedRating": 0.286,
+      "winRate": 0.286,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b4b9599d",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 10520,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b295cf89",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 9255,
+      "observedRating": 0.071,
+      "winRate": 0.071,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_dc7195ab",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 9276,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_76809ca7",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 8035,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_918bd9d",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 9470,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_8ca222e3",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 10204,
+      "observedRating": 0.214,
+      "winRate": 0.214,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6bc82485",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 8129,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ba28489f",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 9524,
+      "observedRating": 0.012,
+      "winRate": 0.012,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_12f700ee",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8007,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_33a704a6",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9594,
+      "observedRating": 0.452,
+      "winRate": 0.452,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_3170a60a",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10253,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f4f8dd56",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 8074,
+      "observedRating": 0.179,
+      "winRate": 0.179,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f19d5b84",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 9578,
+      "observedRating": 0.548,
+      "winRate": 0.548,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_43772895",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 8423,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_914c4d09",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 8870,
+      "observedRating": 0.298,
+      "winRate": 0.298,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_1f3d9e59",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 10127,
+      "observedRating": 0.75,
+      "winRate": 0.75,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ba8d14bf",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 9487,
+      "observedRating": 0.048,
+      "winRate": 0.048,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_fa6e4b85",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 9781,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b9b966ac",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 7868,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_fd84f408",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 8217,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_7f296b10",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 11128,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_afd10d68",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 9895,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_aac63182",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 10429,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_bb45f291",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 8415,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_100759f5",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 10272,
+      "observedRating": 0.774,
+      "winRate": 0.774,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_834c4efd",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 10580,
+      "observedRating": 0.119,
+      "winRate": 0.119,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a3391bf1",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8605,
+      "observedRating": 0.119,
+      "winRate": 0.119,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c9d2bdab",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9787,
+      "observedRating": 0.619,
+      "winRate": 0.619,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_8fab7eb0",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 8477,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_84f7cf86",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 8938,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a43186dc",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 11312,
+      "observedRating": 0.821,
+      "winRate": 0.821,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4dd42b26",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 9044,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_8b842324",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 10463,
+      "observedRating": 0.44,
+      "winRate": 0.44,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_7ee0c93f",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 8867,
+      "observedRating": 0.012,
+      "winRate": 0.012,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_cffd4d65",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 10590,
+      "observedRating": 0.44,
+      "winRate": 0.44,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_932e85e3",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 12322,
+      "observedRating": 0.75,
+      "winRate": 0.75,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a06094ab",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 10159,
+      "observedRating": 0.619,
+      "winRate": 0.619,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_64ef0869",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 11255,
+      "observedRating": 0.702,
+      "winRate": 0.702,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_54872302",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 7240,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_79ccee8",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 9732,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_cb41c7f6",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 10824,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_12140840",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 9333,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_2ca32b02",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 10890,
+      "observedRating": 0.774,
+      "winRate": 0.774,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_12474e51",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8906,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_7c43e305",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10005,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_85209d25",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10407,
+      "observedRating": 0.536,
+      "winRate": 0.536,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_608289a5",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 8764,
+      "observedRating": 0.321,
+      "winRate": 0.321,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_d0ff640f",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 8978,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5548d180",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 8516,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_1b388be4",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 9787,
+      "observedRating": 0.429,
+      "winRate": 0.429,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_3851219c",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 11425,
+      "observedRating": 0.821,
+      "winRate": 0.821,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_fec508fe",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 9258,
+      "observedRating": 0.036,
+      "winRate": 0.036,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5f1943a4",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 10340,
+      "observedRating": 0.607,
+      "winRate": 0.607,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5bdc8b60",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 8155,
+      "observedRating": 0.048,
+      "winRate": 0.048,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_199b64c8",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 10416,
+      "observedRating": 0.655,
+      "winRate": 0.655,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_188b2d74",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 10718,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ef6c0450",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 10163,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a487b5ea",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 10559,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_85dcef67",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 9198,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6447deb3",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 10405,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5c64f92b",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 12106,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_eca0934b",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8848,
+      "observedRating": 0.143,
+      "winRate": 0.143,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_490cca81",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10534,
+      "observedRating": 0.524,
+      "winRate": 0.524,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_2e036dde",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 8160,
+      "observedRating": 0.107,
+      "winRate": 0.107,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_508abd76",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 9358,
+      "observedRating": 0.679,
+      "winRate": 0.679,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_18c99efa",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 10945,
+      "observedRating": 0.929,
+      "winRate": 0.929,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_8e50a224",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 9061,
+      "observedRating": 0.095,
+      "winRate": 0.095,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_dc071712",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 9477,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_7c55d98d",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 9236,
+      "observedRating": 0.012,
+      "winRate": 0.012,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ed6ad675",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 11049,
+      "observedRating": 0.607,
+      "winRate": 0.607,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_21795b01",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 12728,
+      "observedRating": 0.774,
+      "winRate": 0.774,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_508312b9",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 10667,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_67db913b",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 9924,
+      "observedRating": 0.643,
+      "winRate": 0.643,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_59c62204",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 8301,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_91166274",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 8909,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f28e0fd0",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 10152,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5e211308",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 10091,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_d322534a",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 10856,
+      "observedRating": 0.44,
+      "winRate": 0.44,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_3f1971b",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 9339,
+      "observedRating": 0.107,
+      "winRate": 0.107,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_74b6c977",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9443,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_e3bf1697",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 11631,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ebc030db",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 9153,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ac7dc3e9",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 10513,
+      "observedRating": 0.345,
+      "winRate": 0.345,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_11ce58dc",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 9106,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4e822f64",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 10803,
+      "observedRating": 0.893,
+      "winRate": 0.893,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_24f58cc0",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 10608,
+      "observedRating": 0.964,
+      "winRate": 0.964,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_83e7d49c",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 11456,
+      "observedRating": 0.429,
+      "winRate": 0.429,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6cd652ea",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 12277,
+      "observedRating": 0.607,
+      "winRate": 0.607,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_93c0cd61",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 8186,
+      "observedRating": 0.262,
+      "winRate": 0.262,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_e398a5e9",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 10484,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6338e90d",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 11242,
+      "observedRating": 0.75,
+      "winRate": 0.75,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_92799c43",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 9755,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_535b978d",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 12318,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_9c304664",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 9270,
+      "observedRating": 0.369,
+      "winRate": 0.369,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a6ced924",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 11114,
+      "observedRating": 0.083,
+      "winRate": 0.083,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_d9a2b4c8",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 12685,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_51921f60",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 9468,
+      "observedRating": 0.512,
+      "winRate": 0.512,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_43da5b5a",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 11542,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_17108697",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 8902,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_9c66f87f",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 9582,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_e5b485bb",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 11095,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5e880521",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 10656,
+      "observedRating": 0.405,
+      "winRate": 0.405,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4a9b018f",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 11997,
+      "observedRating": 0.893,
+      "winRate": 0.893,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a9fd4135",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 9279,
+      "observedRating": 0.036,
+      "winRate": 0.036,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_fea45935",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 10894,
+      "observedRating": 0.595,
+      "winRate": 0.595,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_169675a1",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 12220,
+      "observedRating": 0.81,
+      "winRate": 0.81,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_844c9faf",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 10774,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_53764e45",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 12414,
+      "observedRating": 0.714,
+      "winRate": 0.714,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_809d4dee",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 8470,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_e388fd2a",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 9349,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_bb002bda",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 12996,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_bbfadb5c",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 10507,
+      "observedRating": 0.19,
+      "winRate": 0.19,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_717b4bce",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 12128,
+      "observedRating": 0.726,
+      "winRate": 0.726,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_9bfc6854",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7208,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_12993d2d",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8339,
+      "observedRating": 0.107,
+      "winRate": 0.107,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c2a74746",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10075,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c6a09544",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8060,
+      "observedRating": 0.048,
+      "winRate": 0.048,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_2b125284",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9637,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b1c8573",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7802,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_d08f1b37",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 7793,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_94fe962e",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8291,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6ef110a3",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8490,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_44ee41fb",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8894,
+      "observedRating": 0.214,
+      "winRate": 0.214,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a84a70c6",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8586,
+      "observedRating": 0.048,
+      "winRate": 0.048,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_61d9e360",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8443,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_38a6050",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8571,
+      "observedRating": 0.44,
+      "winRate": 0.44,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a578a737",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 9049,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_7ff8e108",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8232,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_7e8217b5",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7599,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_dbbe7fbb",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10197,
+      "observedRating": 0.655,
+      "winRate": 0.655,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_9c2093f9",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 11340,
+      "observedRating": 0.798,
+      "winRate": 0.798,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_803334f7",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8019,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_691d4256",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9037,
+      "observedRating": 0.345,
+      "winRate": 0.345,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ea9a07e4",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7266,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a0acea90",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9043,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_54cbade0",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 11257,
+      "observedRating": 0.988,
+      "winRate": 0.988,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_aec3d19c",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 10204,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f1d861c8",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8716,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a118ccf6",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7365,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_da6135",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9128,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c4e17d87",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 9986,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_61b6ec1b",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 9325,
+      "observedRating": 0.286,
+      "winRate": 0.286,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_7071cd73",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9424,
+      "observedRating": 0.405,
+      "winRate": 0.405,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ff26d8e8",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 6834,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_18b807a1",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9554,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_65d58902",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10111,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_80352af8",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8320,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_611e6b48",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9663,
+      "observedRating": 0.286,
+      "winRate": 0.286,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a0d56991",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7772,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_72dc75b9",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8840,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_562847d0",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 9336,
+      "observedRating": 0.167,
+      "winRate": 0.167,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5c40cd85",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8666,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_722b9a65",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9462,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_12448bb0",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8582,
+      "observedRating": 0.119,
+      "winRate": 0.119,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_912383b6",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10537,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f63bbffa",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 7375,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_482ebaf5",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7475,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_42a1bafe",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9357,
+      "observedRating": 0.5,
+      "winRate": 0.5,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6fa0fbbf",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7592,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_57dfe935",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10350,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4f7ccab7",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 11296,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_49fda445",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8103,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_7838e9e8",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8910,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_d9b83e69",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7749,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a15e908f",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9017,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b7c89a9d",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 11387,
+      "observedRating": 0.976,
+      "winRate": 0.976,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_614ffa95",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 10276,
+      "observedRating": 0.036,
+      "winRate": 0.036,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f81da3e3",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 7600,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_46272113",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7100,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b251422e",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8568,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a7dbe09a",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10208,
+      "observedRating": 0.5,
+      "winRate": 0.5,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_26a65e8c",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 9776,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_378c7896",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 11377,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_449a4d5d",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 6910,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_e42942b2",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9054,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_fc51b15f",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 9522,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_cbc0804f",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8889,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c8b40043",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10530,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_c47b44da",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7829,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_3cc8a82a",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 7685,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5c0ea2a5",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8971,
+      "observedRating": 0.036,
+      "winRate": 0.036,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_119e236",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8047,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_e6361392",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10132,
+      "observedRating": 0.321,
+      "winRate": 0.321,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_bf7a0cd",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 9177,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f0b5be53",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9933,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_9d1f8dcf",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 9206,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_6ca156e6",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8748,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_b0f138d9",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8409,
+      "observedRating": 0.071,
+      "winRate": 0.071,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_67733c02",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7735,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_2db9249e",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9125,
+      "observedRating": 0.298,
+      "winRate": 0.298,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f2434688",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 12276,
+      "observedRating": 0.774,
+      "winRate": 0.774,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_9211856",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7482,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_d39d04eb",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8604,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_9cc76a67",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8057,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_ef4c1651",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9448,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_f51374e7",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 9411,
+      "observedRating": 0.512,
+      "winRate": 0.512,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_30b527cf",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 10152,
+      "observedRating": 0.071,
+      "winRate": 0.071,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5b5b426d",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8528,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_5df9ae95",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 6737,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_9ce1da34",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9834,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_47a27244",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10062,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_35597fe2",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 10155,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_4bdf7154",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10061,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "calibration"
+    },
+    {
+      "cardId": "gen_a2733d34",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8559,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_c812774a",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8684,
+      "observedRating": 0.095,
+      "winRate": 0.095,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_2d3027d6",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 7352,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3af5575a",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 8059,
+      "observedRating": 0.143,
+      "winRate": 0.143,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_37303dba",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 8464,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_438cc0d7",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 7816,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e39e6b7d",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 8851,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7599310b",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 7477,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_c2a6b0e3",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 8682,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3ecaf997",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 8529,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fc398fa0",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 7400,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_17bbb086",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 7699,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7dc27f4e",
+      "rarity": "C",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 6256,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_368c8156",
+      "rarity": "C",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 8347,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4faa8652",
+      "rarity": "C",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 7977,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e5f62197",
+      "rarity": "C",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 7916,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_208622b9",
+      "rarity": "C",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 8072,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ff7864b3",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 6766,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a22d96cd",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8300,
+      "observedRating": 0.25,
+      "winRate": 0.25,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ec643dbf",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 9115,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_482651a2",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 7418,
+      "observedRating": 0.298,
+      "winRate": 0.298,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_576e097c",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 7863,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1e22f55e",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 7092,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d575dac0",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 8209,
+      "observedRating": 0.095,
+      "winRate": 0.095,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_489084d2",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 9056,
+      "observedRating": 0.452,
+      "winRate": 0.452,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9a2e6a6f",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 8009,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_21ac7e65",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 9562,
+      "observedRating": 0.06,
+      "winRate": 0.06,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_b0d174e5",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 7797,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6a00e643",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 7975,
+      "observedRating": 0.393,
+      "winRate": 0.393,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3696d611",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 9387,
+      "observedRating": 0.619,
+      "winRate": 0.619,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ef8fac3c",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 6698,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4c22ccf2",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 8556,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_54987f44",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 7114,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9ad4cd7a",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 8238,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d78bc918",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 9869,
+      "observedRating": 0.583,
+      "winRate": 0.583,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9c569a49",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7340,
+      "observedRating": 0.071,
+      "winRate": 0.071,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9ee9d84b",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8669,
+      "observedRating": 0.048,
+      "winRate": 0.048,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_b5e0f189",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 7014,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_bf428f6b",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 7890,
+      "observedRating": 0.107,
+      "winRate": 0.107,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_810e75ed",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 8912,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_2cb10410",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 7965,
+      "observedRating": 0.226,
+      "winRate": 0.226,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_185f35fa",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 8852,
+      "observedRating": 0.405,
+      "winRate": 0.405,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_30a672c0",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 7339,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6864188a",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 7957,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7ebf4d2c",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 10650,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_c4a08d97",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 7449,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_23dded5",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 8538,
+      "observedRating": 0.131,
+      "winRate": 0.131,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_11410051",
+      "rarity": "B",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 7196,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_911d260f",
+      "rarity": "B",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 8060,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_80ec1865",
+      "rarity": "B",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 9419,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_38c6c403",
+      "rarity": "B",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 8798,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_5a63df31",
+      "rarity": "B",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 9173,
+      "observedRating": 0.321,
+      "winRate": 0.321,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_84286223",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 6637,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_5454aa53",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8756,
+      "observedRating": 0.226,
+      "winRate": 0.226,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f4fc8697",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8998,
+      "observedRating": 0.25,
+      "winRate": 0.25,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_c50f1ed2",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 7626,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1776a0dc",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 8496,
+      "observedRating": 0.214,
+      "winRate": 0.214,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_356081fa",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 7038,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_aa6685fa",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 8572,
+      "observedRating": 0.202,
+      "winRate": 0.202,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f57028d6",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 10875,
+      "observedRating": 0.762,
+      "winRate": 0.762,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e1a8a7a5",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 8786,
+      "observedRating": 0.036,
+      "winRate": 0.036,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e2b6795f",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 10311,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6191e91d",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 7521,
+      "observedRating": 0.012,
+      "winRate": 0.012,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f6cffb41",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 7878,
+      "observedRating": 0.06,
+      "winRate": 0.06,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7ee39859",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 9545,
+      "observedRating": 0.643,
+      "winRate": 0.643,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_b471162",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 7451,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f4183350",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 9148,
+      "observedRating": 0.06,
+      "winRate": 0.06,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_af5fd212",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 7332,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3dd451c2",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 9214,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4627f3be",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 10086,
+      "observedRating": 0.321,
+      "winRate": 0.321,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e6a48885",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7641,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e5c3f51b",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9186,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_5ae8442b",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 7741,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_bf668c7",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 8211,
+      "observedRating": 0.048,
+      "winRate": 0.048,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_c0544767",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 9406,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7845470c",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 8271,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_80fb2a0e",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 9545,
+      "observedRating": 0.262,
+      "winRate": 0.262,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_762e8580",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 8241,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d92da104",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 9646,
+      "observedRating": 0.095,
+      "winRate": 0.095,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9b1b4d34",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 10777,
+      "observedRating": 0.262,
+      "winRate": 0.262,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_da88af2f",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 9252,
+      "observedRating": 0.095,
+      "winRate": 0.095,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_35a624c1",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 9129,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a5ce07d9",
+      "rarity": "A",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 7530,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1e67cc91",
+      "rarity": "A",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 9447,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_aed950ad",
+      "rarity": "A",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 9502,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1a9d451c",
+      "rarity": "A",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 9076,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3f6658aa",
+      "rarity": "A",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 9001,
+      "observedRating": 0.524,
+      "winRate": 0.524,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_8adf7da4",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7430,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_5b470ce6",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9024,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a8a0e50",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10519,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4f83dc01",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 9269,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_937cefdf",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 9528,
+      "observedRating": 0.5,
+      "winRate": 0.5,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_80b5538d",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 8055,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ae177fbb",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 9453,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_747e3b09",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 9985,
+      "observedRating": 0.405,
+      "winRate": 0.405,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_48d20cb0",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 8885,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1b6d5252",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 10394,
+      "observedRating": 0.393,
+      "winRate": 0.393,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6a441122",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 7449,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d04ff028",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 9786,
+      "observedRating": 0.607,
+      "winRate": 0.607,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fba71256",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 10726,
+      "observedRating": 0.619,
+      "winRate": 0.619,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_b3205146",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 8484,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fb65b38",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 10080,
+      "observedRating": 0.262,
+      "winRate": 0.262,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_de4ce7ea",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 8116,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_efb96460",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 8543,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_70095016",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 9319,
+      "observedRating": 0.571,
+      "winRate": 0.571,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fb82ada1",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 9819,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_73efddc7",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9534,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_c0b95167",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 7391,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_decb374f",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 8815,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_bad05fa3",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 9707,
+      "observedRating": 0.726,
+      "winRate": 0.726,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_89727e4a",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 9357,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_da763fe8",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 9881,
+      "observedRating": 0.321,
+      "winRate": 0.321,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1483426a",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 7722,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fac78af6",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 10102,
+      "observedRating": 0.44,
+      "winRate": 0.44,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_87e857e",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 11906,
+      "observedRating": 0.69,
+      "winRate": 0.69,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_b2f43177",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 9956,
+      "observedRating": 0.56,
+      "winRate": 0.56,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_83473d51",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 10981,
+      "observedRating": 0.655,
+      "winRate": 0.655,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_39c54a61",
+      "rarity": "S",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 8378,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e6578069",
+      "rarity": "S",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 9777,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_918b27b5",
+      "rarity": "S",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 10864,
+      "observedRating": 0.595,
+      "winRate": 0.595,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_84445afa",
+      "rarity": "S",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 9231,
+      "observedRating": 0.107,
+      "winRate": 0.107,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d792e69c",
+      "rarity": "S",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 10591,
+      "observedRating": 0.631,
+      "winRate": 0.631,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fd005882",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8333,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f7f66f5c",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9610,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fac77836",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10915,
+      "observedRating": 0.869,
+      "winRate": 0.869,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_225b4d49",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 9307,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3fbaf8af",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 10347,
+      "observedRating": 0.381,
+      "winRate": 0.381,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6a863b31",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 8119,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e9a28ab3",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 10119,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7ba7144d",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 10576,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_35ca902e",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 9488,
+      "observedRating": 0.595,
+      "winRate": 0.595,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_467ff804",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 11518,
+      "observedRating": 0.548,
+      "winRate": 0.548,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e93bf138",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 7977,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a3c6a826",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 9071,
+      "observedRating": 0.595,
+      "winRate": 0.595,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fcb1171c",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 9785,
+      "observedRating": 0.655,
+      "winRate": 0.655,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f37f8e33",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 8750,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6cf022dd",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 9014,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4e7fdbf7",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 7936,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_40406fa5",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 9163,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_721f1e1b",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 11978,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fd46e6f6",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8602,
+      "observedRating": 0.095,
+      "winRate": 0.095,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f2968390",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 11269,
+      "observedRating": 0.69,
+      "winRate": 0.69,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_11414c34",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 8243,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_2a411240",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 9302,
+      "observedRating": 0.595,
+      "winRate": 0.595,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_c3434488",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 11498,
+      "observedRating": 0.524,
+      "winRate": 0.524,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9edcb6cb",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 9337,
+      "observedRating": 0.345,
+      "winRate": 0.345,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_dd21da49",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 11707,
+      "observedRating": 0.845,
+      "winRate": 0.845,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_5f8b80f",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 8198,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d62d1d6b",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 9683,
+      "observedRating": 0.69,
+      "winRate": 0.69,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_336ec38b",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 12729,
+      "observedRating": 0.94,
+      "winRate": 0.94,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f78c70eb",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 10561,
+      "observedRating": 0.655,
+      "winRate": 0.655,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_356154fd",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 11567,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6d808e31",
+      "rarity": "SSS",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 9109,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_dc89fe15",
+      "rarity": "SSS",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 10560,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d74b9405",
+      "rarity": "SSS",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 12471,
+      "observedRating": 0.679,
+      "winRate": 0.679,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_566210c8",
+      "rarity": "SSS",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 10365,
+      "observedRating": 0.393,
+      "winRate": 0.393,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_69ef6afe",
+      "rarity": "SSS",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 10534,
+      "observedRating": 0.595,
+      "winRate": 0.595,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_c451ce9a",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7803,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_fbc20286",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10316,
+      "observedRating": 0.238,
+      "winRate": 0.238,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1e35774e",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10968,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_55bf50dd",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 8720,
+      "observedRating": 0.345,
+      "winRate": 0.345,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a03cf09b",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 9325,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_5b2d7719",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 8027,
+      "observedRating": 0.083,
+      "winRate": 0.083,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_be639b81",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 10156,
+      "observedRating": 0.607,
+      "winRate": 0.607,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_b3507605",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 12779,
+      "observedRating": 0.976,
+      "winRate": 0.976,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_878c2de6",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 9541,
+      "observedRating": 0.202,
+      "winRate": 0.202,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9ad1ba00",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 10731,
+      "observedRating": 0.536,
+      "winRate": 0.536,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d6f88acc",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 9584,
+      "observedRating": 0.262,
+      "winRate": 0.262,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_366f10f4",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 9577,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f357f760",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 12622,
+      "observedRating": 0.833,
+      "winRate": 0.833,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a4f6c2b7",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 10016,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_45e09b89",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 11975,
+      "observedRating": 0.357,
+      "winRate": 0.357,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_590f727d",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 8360,
+      "observedRating": 0.155,
+      "winRate": 0.155,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d3ff85",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 10207,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e7cb0c29",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 12810,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f6eba8f0",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 9211,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3c1a67c6",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10929,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_b0324876",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Tank",
+      "battlePower": 8384,
+      "observedRating": 0.298,
+      "winRate": 0.298,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d74d0ad2",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Tank",
+      "battlePower": 9591,
+      "observedRating": 0.952,
+      "winRate": 0.952,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_10ddef12",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Tank",
+      "battlePower": 10845,
+      "observedRating": 0.821,
+      "winRate": 0.821,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1aaf2a4f",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Bruiser",
+      "battlePower": 9339,
+      "observedRating": 0.286,
+      "winRate": 0.286,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_bb920bad",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Bruiser",
+      "battlePower": 11996,
+      "observedRating": 0.988,
+      "winRate": 0.988,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_40727f5d",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Assassin",
+      "battlePower": 9319,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d87494d5",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Assassin",
+      "battlePower": 11147,
+      "observedRating": 0.726,
+      "winRate": 0.726,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_69045071",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Assassin",
+      "battlePower": 12907,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1d94e92e",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Mage",
+      "battlePower": 8805,
+      "observedRating": 0.44,
+      "winRate": 0.44,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6bfc8748",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Mage",
+      "battlePower": 11214,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_228d84fa",
+      "rarity": "XS",
+      "level": 1,
+      "archetype": "Support",
+      "battlePower": 8734,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_51ed4de6",
+      "rarity": "XS",
+      "level": 50,
+      "archetype": "Support",
+      "battlePower": 10603,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_56c06b26",
+      "rarity": "XS",
+      "level": 100,
+      "archetype": "Support",
+      "battlePower": 11642,
+      "observedRating": 0.083,
+      "winRate": 0.083,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_78a3120b",
+      "rarity": "XS",
+      "level": 30,
+      "archetype": "Controller",
+      "battlePower": 9889,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_32fb2f5",
+      "rarity": "XS",
+      "level": 70,
+      "archetype": "Controller",
+      "battlePower": 11689,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_80e825e9",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8227,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a581fe51",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10815,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_61d7868d",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 12594,
+      "observedRating": 0.643,
+      "winRate": 0.643,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6ab1ca1c",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Tank",
+      "battlePower": 9494,
+      "observedRating": 0.155,
+      "winRate": 0.155,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_78f19262",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Tank",
+      "battlePower": 11228,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3df13e98",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Bruiser",
+      "battlePower": 9290,
+      "observedRating": 0.25,
+      "winRate": 0.25,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_b7f11cf0",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Bruiser",
+      "battlePower": 9343,
+      "observedRating": 0.583,
+      "winRate": 0.583,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_bf0fe8dc",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Bruiser",
+      "battlePower": 12048,
+      "observedRating": 0.976,
+      "winRate": 0.976,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_cfaffc86",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Assassin",
+      "battlePower": 9856,
+      "observedRating": 0.25,
+      "winRate": 0.25,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ac89c4b4",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Assassin",
+      "battlePower": 11809,
+      "observedRating": 0.786,
+      "winRate": 0.786,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3b2bbd12",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Mage",
+      "battlePower": 9659,
+      "observedRating": 0.5,
+      "winRate": 0.5,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ca2004ea",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Mage",
+      "battlePower": 11050,
+      "observedRating": 0.69,
+      "winRate": 0.69,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3fc963be",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Mage",
+      "battlePower": 12810,
+      "observedRating": 0.786,
+      "winRate": 0.786,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_887396ad",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Support",
+      "battlePower": 10163,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_15efe25f",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Support",
+      "battlePower": 11243,
+      "observedRating": 0.619,
+      "winRate": 0.619,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_6e17fc7d",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Controller",
+      "battlePower": 9637,
+      "observedRating": 0.179,
+      "winRate": 0.179,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4684b849",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Controller",
+      "battlePower": 11797,
+      "observedRating": 0.75,
+      "winRate": 0.75,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_2785c099",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Controller",
+      "battlePower": 10770,
+      "observedRating": 0.56,
+      "winRate": 0.56,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4a3f9d88",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7347,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7c36b35f",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9034,
+      "observedRating": 0.107,
+      "winRate": 0.107,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_62056c40",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8355,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_359fdb50",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9009,
+      "observedRating": 0.524,
+      "winRate": 0.524,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_8ee274f9",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 9654,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_27fdc24",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8753,
+      "observedRating": 0.262,
+      "winRate": 0.262,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_54a34085",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 7469,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ac526438",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 6909,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_359287f5",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9725,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9b5cc54b",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10511,
+      "observedRating": 0.738,
+      "winRate": 0.738,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_2a79daf1",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8911,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_cbb1db5",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 11494,
+      "observedRating": 0.607,
+      "winRate": 0.607,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_34580402",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 6768,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3efbfd89",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 7714,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e2a2c7dc",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10419,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7d2c6761",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8791,
+      "observedRating": 0.274,
+      "winRate": 0.274,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7f2a4ea8",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9156,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_2a5cce0",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7978,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a5eea47d",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 7592,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_aa85a7ae",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10587,
+      "observedRating": 0.321,
+      "winRate": 0.321,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e394397c",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8515,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_40728384",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9108,
+      "observedRating": 0.464,
+      "winRate": 0.464,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ff61cd5b",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8297,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_b6994655",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10543,
+      "observedRating": 0.464,
+      "winRate": 0.464,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_181ae778",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8358,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_57ef70f2",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7653,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_235ef91f",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9220,
+      "observedRating": 0.286,
+      "winRate": 0.286,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_cf4ac343",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7876,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_612344f0",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9611,
+      "observedRating": 0.476,
+      "winRate": 0.476,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e52e1756",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 12398,
+      "observedRating": 0.726,
+      "winRate": 0.726,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d9489dd4",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7676,
+      "observedRating": 0.155,
+      "winRate": 0.155,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7e4bd783",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 7950,
+      "observedRating": 0.071,
+      "winRate": 0.071,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_5e2bf8fc",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7031,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_afd2fff4",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10484,
+      "observedRating": 0.536,
+      "winRate": 0.536,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1518ac75",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10489,
+      "observedRating": 0.655,
+      "winRate": 0.655,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9cf7e032",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 10024,
+      "observedRating": 0.548,
+      "winRate": 0.548,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_63fd116f",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 8166,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_7fdcd356",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7890,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f93a50b7",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9134,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ce6d2f55",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10316,
+      "observedRating": 0.345,
+      "winRate": 0.345,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_32f4429b",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8837,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a66358b7",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10372,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_8d16d2c0",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 6925,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9e4a1f07",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 7985,
+      "observedRating": 0.155,
+      "winRate": 0.155,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_13c68c7e",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 9325,
+      "observedRating": 0.643,
+      "winRate": 0.643,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4793ecd3",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8383,
+      "observedRating": 0.107,
+      "winRate": 0.107,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_818a8c7e",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10799,
+      "observedRating": 0.643,
+      "winRate": 0.643,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_62d4d6ae",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7799,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_cc59c79b",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9545,
+      "observedRating": 0.226,
+      "winRate": 0.226,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_8e60487c",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 9386,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d547ef35",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 9109,
+      "observedRating": 0.19,
+      "winRate": 0.19,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a95e0389",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9421,
+      "observedRating": 0.321,
+      "winRate": 0.321,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_40a13b2",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8013,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_33e15bc",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9082,
+      "observedRating": 0.417,
+      "winRate": 0.417,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f7516a43",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8111,
+      "observedRating": 0.06,
+      "winRate": 0.06,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_965e40b3",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8130,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_2dbeb7a2",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9514,
+      "observedRating": 0.238,
+      "winRate": 0.238,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_154615b0",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 8103,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_15107c13",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10117,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_ca79d4d1",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10580,
+      "observedRating": 0.667,
+      "winRate": 0.667,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_804d8a3d",
+      "rarity": "C_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7830,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_92d09b76",
+      "rarity": "B_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 9225,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_e27b065f",
+      "rarity": "A_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7627,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9bed70d5",
+      "rarity": "SS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9856,
+      "observedRating": 0.429,
+      "winRate": 0.429,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_8750f884",
+      "rarity": "SSS_COLLECTOR",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 11144,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_9af24823",
+      "rarity": "XS_COLLECTOR",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8919,
+      "observedRating": 0.333,
+      "winRate": 0.333,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_2fd57d5a",
+      "rarity": "C_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 7964,
+      "observedRating": 0.119,
+      "winRate": 0.119,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_731afc19",
+      "rarity": "B_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7476,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4d384e3e",
+      "rarity": "A_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 9485,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_512a4eaa",
+      "rarity": "SS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 11641,
+      "observedRating": 0.917,
+      "winRate": 0.917,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_72a53b44",
+      "rarity": "SSS_COLLECTOR",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 9911,
+      "observedRating": 0.381,
+      "winRate": 0.381,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_13c19202",
+      "rarity": "XS_COLLECTOR",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 11804,
+      "observedRating": 1,
+      "winRate": 1,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_1fc7876b",
+      "rarity": "C_PLUS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7130,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_31e5a776",
+      "rarity": "B_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 8694,
+      "observedRating": 0.06,
+      "winRate": 0.06,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_90fbf6e9",
+      "rarity": "A_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10220,
+      "observedRating": 0.31,
+      "winRate": 0.31,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_856611da",
+      "rarity": "SS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8634,
+      "observedRating": 0.107,
+      "winRate": 0.107,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_f60ceb89",
+      "rarity": "SSS_COLLECTOR",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10804,
+      "observedRating": 0.226,
+      "winRate": 0.226,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d5bcc289",
+      "rarity": "XS_COLLECTOR",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 9305,
+      "observedRating": 0.107,
+      "winRate": 0.107,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_3844f52",
+      "rarity": "C_PLUS",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 7399,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_75870257",
+      "rarity": "B_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 10133,
+      "observedRating": 0.095,
+      "winRate": 0.095,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_4f7c47c7",
+      "rarity": "A_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 8381,
+      "observedRating": 0.214,
+      "winRate": 0.214,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_98e12467",
+      "rarity": "SS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10986,
+      "observedRating": 0.631,
+      "winRate": 0.631,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a12c692c",
+      "rarity": "SSS_COLLECTOR",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 9724,
+      "observedRating": 0.25,
+      "winRate": 0.25,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_20dbce7a",
+      "rarity": "XS_COLLECTOR",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10900,
+      "observedRating": 0.524,
+      "winRate": 0.524,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_c4a47171",
+      "rarity": "C_PLUS",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 8845,
+      "observedRating": 0.024,
+      "winRate": 0.024,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d329269",
+      "rarity": "B_PLUS",
+      "level": 30,
+      "archetype": "Balanced",
+      "battlePower": 7466,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_312f0718",
+      "rarity": "A_PLUS",
+      "level": 70,
+      "archetype": "Balanced",
+      "battlePower": 10009,
+      "observedRating": 0,
+      "winRate": 0,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_bad835ea",
+      "rarity": "SS",
+      "level": 1,
+      "archetype": "Balanced",
+      "battlePower": 7678,
+      "observedRating": 0.119,
+      "winRate": 0.119,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_a95790c5",
+      "rarity": "SSS_COLLECTOR",
+      "level": 50,
+      "archetype": "Balanced",
+      "battlePower": 10438,
+      "observedRating": 0.06,
+      "winRate": 0.06,
+      "split": "validation"
+    },
+    {
+      "cardId": "gen_d1dfef7",
+      "rarity": "XS_COLLECTOR",
+      "level": 100,
+      "archetype": "Balanced",
+      "battlePower": 12117,
+      "observedRating": 0.583,
+      "winRate": 0.583,
+      "split": "validation"
+    }
+  ]
+}

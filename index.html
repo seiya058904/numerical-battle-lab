@@ -4,43 +4,61 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>NUMERICAL // 数值对战实验室</title>
+  <title>数值对战实验室</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="app" class="app-shell">
     <header class="topbar">
-      <div>
-        <div class="brand">NUMERICAL //</div>
+      <div class="brand-block">
+        <div class="brand">数值对战</div>
         <h1>数值对战实验室</h1>
       </div>
       <div class="top-meta">
-        <span id="engine-state">ENGINE READY</span>
-        <span id="formula-state">FORMULA CHECK</span>
+        <span id="engine-state">引擎就绪</span>
+        <span id="formula-state">公式检查</span>
+        <details class="lab-menu" id="lab-menu">
+          <summary>高级实验室</summary>
+          <div class="lab-menu-panel">
+            <button data-tab="editor">数值编辑</button>
+            <button data-tab="simulation">批量模拟</button>
+            <button data-tab="guide">规则 / 架构</button>
+            <button data-tab="replay">对局重放</button>
+            <button data-tab="trace">计算详情</button>
+            <button data-tab="json">JSON 导入导出</button>
+          </div>
+        </details>
       </div>
     </header>
 
     <nav class="tabs" aria-label="主导航">
       <button data-tab="battle" class="tab is-active">对战</button>
-      <button data-tab="editor" class="tab">数值编辑</button>
-      <button data-tab="simulation" class="tab">批量模拟</button>
-      <button data-tab="guide" class="tab">规则 / 架构</button>
+      <button data-tab="cards" class="tab">卡牌</button>
+      <button data-tab="generate" class="tab">生成卡牌</button>
+      <button data-tab="help" class="tab">玩法说明</button>
     </nav>
 
     <main>
       <section id="view-battle" class="view is-active"></section>
+      <section id="view-cards" class="view"></section>
+      <section id="view-generate" class="view"></section>
+      <section id="view-help" class="view"></section>
+      <!-- advanced lab views (hidden behind 高级实验室, never deleted) -->
       <section id="view-editor" class="view"></section>
       <section id="view-simulation" class="view"></section>
       <section id="view-guide" class="view"></section>
+      <section id="view-replay" class="view"></section>
+      <section id="view-trace" class="view"></section>
+      <section id="view-json" class="view"></section>
     </main>
 
     <footer>
-      <span>Generic CombatEntity Engine · Card is presentation only</span>
-      <span>Deterministic / Headless-compatible / Single-player</span>
+      <span>数值战斗引擎 · 卡牌只是展示层</span>
+      <span>确定性 / 可离线 / 单机</span>
     </footer>
   </div>
 
-  <!-- Fully offline runtime. Vendored Acorn parses the restricted formula AST before src/formula.js applies the whitelist evaluator. -->
+  <!-- 完全离线运行时。随包固定的 Acorn 解析受限公式 AST，再由 src/formula.js 白名单解释器执行。 -->
   <script src="src/kernel.js"></script>
   <script src="src/components.js"></script>
   <script src="src/rules.js"></script>
@@ -55,7 +73,10 @@
   <script src="src/gen-stats.js"></script>
   <script src="src/gen-skills.js"></script>
   <script src="src/generator.js"></script>
-  <script src="src/gen-balance.js"></script>
+  <script src="src/gen-names.js"></script>
+  <script src="src/gen-v2.js"></script>
+  <script src="src/battlepower.js"></script>
+  <script src="src/card-ui.js"></script>
   <script src="src/app.js"></script>
 </body>
 </html>

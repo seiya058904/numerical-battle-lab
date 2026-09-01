@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname,'..');
-const required=['index.html','styles.css','src/kernel.js','src/components.js','src/rules.js','src/content.js','src/status-runtime.js','src/formula.js','src/validator.js','src/effects.js','src/engine.js','src/app.js','README.md','THIRD_PARTY_NOTICES.md','docs/NUMERIC-COMPONENT-CATALOG.md','docs/numeric-component-catalog.json','docs/PLUGIN-API.md','docs/ARCHITECTURE.md','docs/CONTENT-AUTHORING.md','vendor/acorn-8.15.0.js','third_party/acorn/LICENSE','third_party/acorn/UPSTREAM.md'];
+const required=['index.html','styles.css','src/kernel.js','src/components.js','src/rules.js','src/content.js','src/status-runtime.js','src/formula.js','src/validator.js','src/effects.js','src/engine.js','src/power.js','src/gen-stats.js','src/gen-skills.js','src/generator.js','src/gen-names.js','src/gen-v2.js','src/battlepower.js','src/card-ui.js','src/app.js','README.md','THIRD_PARTY_NOTICES.md','docs/NUMERIC-COMPONENT-CATALOG.md','docs/numeric-component-catalog.json','docs/PLUGIN-API.md','docs/ARCHITECTURE.md','docs/CONTENT-AUTHORING.md','docs/GENERATOR-BALANCE-v1.2.md','docs/BALANCE-AUDIT-v1.2.md','vendor/acorn-8.15.0.js','third_party/acorn/LICENSE','third_party/acorn/UPSTREAM.md'];
 for(const file of required)if(!fs.existsSync(path.join(root,file)))throw new Error(`missing ${file}`);
 
 const sourceFiles=fs.readdirSync(path.join(root,'src')).filter(x=>x.endsWith('.js')).map(x=>path.join(root,'src',x));
@@ -14,7 +14,7 @@ const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 if(/<script[^>]+src=["']https?:\/\//i.test(html))throw new Error('external runtime script dependency found');
 if(!html.includes('vendor/acorn-8.15.0.js'))throw new Error('vendored Acorn parser missing from index');
 if(html.indexOf('<script src="vendor/acorn-8.15.0.js"')>html.indexOf('<script src="src/formula.js"'))throw new Error('Acorn parser must load before formula adapter');
-for(const runtime of ['src/kernel.js','src/components.js','src/rules.js','src/content.js','src/status-runtime.js','src/formula.js','src/validator.js','src/effects.js','src/engine.js','src/app.js'])if(!html.includes(runtime))throw new Error(`runtime script missing from index: ${runtime}`);
+for(const runtime of ['src/kernel.js','src/components.js','src/rules.js','src/content.js','src/status-runtime.js','src/formula.js','src/validator.js','src/effects.js','src/engine.js','src/power.js','src/gen-stats.js','src/gen-skills.js','src/generator.js','src/gen-names.js','src/gen-v2.js','src/battlepower.js','src/card-ui.js','src/app.js'])if(!html.includes(runtime))throw new Error(`runtime script missing from index: ${runtime}`);
 
 // Architecture guard: canonical engine/effect runtime must not know concrete content IDs.
 global.NCB={};
@@ -39,7 +39,7 @@ for(const marker of ['data-tab="battle"','data-tab="editor"','data-tab="simulati
 
 // ---- Release metadata / manifest audit (review fix 6) ----
 // package.json.version === RELEASE-MANIFEST.json.version === current release version.
-const RELEASE_VERSION='1.1.0';
+const RELEASE_VERSION='1.2.0';
 const pkgMeta=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const manifestMeta=JSON.parse(fs.readFileSync(path.join(root,'RELEASE-MANIFEST.json'),'utf8'));
 if(pkgMeta.version!==RELEASE_VERSION)throw new Error(`package.json version ${pkgMeta.version} != release ${RELEASE_VERSION}`);

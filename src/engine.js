@@ -403,5 +403,12 @@
 
 
   NCB.BattleEngine=BattleEngine;NCB.createBattle=createBattle;NCB.planAI=planAI;NCB.estimateSkillUtility=skillScore;NCB.replayBattle=replayBattle;NCB.runSimulation=runSimulation;NCB.deriveSeed=deriveSeed;
+  // Single Source of Truth for preview math (v1.2): expose the pure expected-value
+  // calculators so BattlePower / UI previews reuse EXACTLY the engine's own formulas
+  // (accuracy/crit/penetration/defense mitigation/resistance/multi-hit) and cannot drift.
+  NCB.expectedDamageUtility=expectedDamageUtility;
+  NCB.effectUtility=effectUtility;
+  NCB.statusUtility=statusUtility;
+  NCB.expectedHitChance=expectedHitChance;
   if(typeof module!=='undefined')module.exports=NCB;
 })(typeof globalThis!=='undefined'?globalThis:window);

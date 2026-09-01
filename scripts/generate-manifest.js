@@ -99,9 +99,11 @@ const manifest = {
   files,
   combinedDefaultCompositionWinRate: 0.595,
   notes:
-    `v${version}: generated card identity hardening (rarity/level/archetype in cardId), strict level ` +
-    '1..100 validation, self-target 0.85 integrated into skill cost, pierce penetrationBonus + ' +
-    'penetration cost factor, fake-green assertion removed, version gate package.json === manifest.',
+    `v${version}: player-facing UI (对战/卡牌/生成卡牌/玩法说明 + 高级实验室), 12-rarity ` +
+    'extension (C..XS典藏), Generator v2 (Composition Grammar + passive/trigger budget), ' +
+    'BattlePower 战力评分 (calibrated 7-subscore, validation Spearman ~0.75-0.78), Chinese ' +
+    'card presentation adapter, Generator v2 deep balance rebalance (health metrics: median 8 ' +
+    'rounds, one-shot 0%, stalemate <2%; rarity distribution monotonic). Generator v1 frozen.',
 };
 
 fs.writeFileSync(OUT, JSON.stringify(manifest, null, 2) + '\n');

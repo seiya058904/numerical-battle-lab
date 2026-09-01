@@ -38,9 +38,12 @@
     return 'gen5,'+((h>>>0)&0xffff)+','+((h>>>16)&0xffff)+',1,2';
   }
   // Primary: archetype weights x jitter, renormalized, then BP->stat conversion.
-  function allocatePrimary({budget,archetype,seed}){
+  // Optional `conversion` override is v2-only; v1 keeps PRIMARY_CONVERSION untouched
+  // so generator v1 output is byte-for-byte frozen (GENERATOR_V1_RULES).
+  function allocatePrimary({budget,archetype,seed,conversion}){
     const w=ARCHETYPES[archetype];
     if(!w)throw new Error('unknown archetype: '+archetype);
+    const conv=conversion||PRIMARY_CONVERSION;
     const prng=new NCB.Gen5PRNG(deterministicSeed('primary:'+seed));
     let raw={},sum=0;
     for(const s of PRIMARY_STAT_LIST){
@@ -52,7 +55,7 @@
     // fix rounding so BP sum equals budget exactly
     const diff=Math.round(Number(budget))-PRIMARY_STAT_LIST.reduce((x,s)=>x+statBP[s],0);
     statBP[PRIMARY_STAT_LIST[0]]+=diff;
-    const stats={};for(const s of PRIMARY_STAT_LIST)stats[s]=PRIMARY_CONVERSION[s](statBP[s]);
+    const stats={};for(const s of PRIMARY_STAT_LIST)stats[s]=conv[s](statBP[s]);
     return{statBP,stats,weights:weight};
   }
   const SECONDARY_BASELINE={

@@ -37,6 +37,15 @@
     if(!Number.isFinite(power))throw new Error('non-finite CardPower');
     return power;
   }
+  // v1.2: same CardPower model but using the extended (12-rarity) RPI coordinate.
+  function computeCardPowerV2({rarity,level,quality}){
+    const q=Number(quality);
+    if(!Number.isFinite(q)||q<POWER_RULES.qualityRange[0]||q>POWER_RULES.qualityRange[1])
+      throw new Error('quality '+q+' out of ['+POWER_RULES.qualityRange.join(',')+']');
+    const power=rpiV2(rarity)*levelFactor(level)*q;
+    if(!Number.isFinite(power))throw new Error('non-finite CardPowerV2');
+    return power;
+  }
   function numericScale(power){return Math.sqrt(Math.max(0.01,Number(power))/POWER_RULES.numericScaleBase);}
   function generationBudget(power){return POWER_RULES.budgetBase*numericScale(power);}
   function splitBudget(budget){
@@ -52,11 +61,42 @@
     const prng=new NCB.Gen5PRNG('gen5,'+((sd>>>0)&0xffff)+','+((sd>>>16)&0xffff)+',1,2');
     return prng.random(9700,10301)/10000;
   }
+  // ---- v1.2 extended rarity tables (review/spec 9) ----
+  // v1 keeps its canonical 9-rarity table untouched (RARITY_ORDER/RARITY_RPI) so
+  // generator v1 stays fully backward compatible. v1.2 adds three new rarities on
+  // top of the existing nine WITHOUT changing any old RPI value (the old 9 use the
+  // same numeric targets as v1; only new ids follow the new naming scheme).
+  // Legacy v1 alt-forms map to the new ids for v2 dispatch.
+  const RARITY_ALIAS={'C+':'C_PLUS','B+':'B_PLUS','A+':'A_PLUS','C_PLUS':'C_PLUS','B_PLUS':'B_PLUS','A_PLUS':'A_PLUS'};
+  const RARITY_V2_ORDER=['C','C_PLUS','B','B_PLUS','A','A_PLUS','S','SS','SSS','SSS_COLLECTOR','XS','XS_COLLECTOR'];
+  const RARITY_V2_RPI={C:100,C_PLUS:108,B:118,B_PLUS:129,A:141,A_PLUS:154,S:169,SS:187,SSS:207,SSS_COLLECTOR:218,XS:232,XS_COLLECTOR:245};
+  const V2_RARITY_DISPLAY={
+    C:'C','C_PLUS':'C+',B:'B','B_PLUS':'B+',A:'A','A_PLUS':'A+',S:'S',SS:'SS',SSS:'SSS',
+    'SSS_COLLECTOR':'SSS 典藏版',XS:'XS','XS_COLLECTOR':'XS 典藏版',
+  };
+  function toV2RarityId(rarity){
+    if(rarity==null)return'C';
+    const s=String(rarity);
+    if(RARITY_V2_RPI[s]!==undefined)return s;
+    const alias=RARITY_ALIAS[s];
+    if(alias&&RARITY_V2_RPI[alias]!==undefined)return alias;
+    throw new Error('unknown rarity: '+s);
+  }
+  function rpiV2(rarity){const id=toV2RarityId(rarity);return RARITY_V2_RPI[id];}
+  NCB.RARITY_ALIAS=Object.freeze({...RARITY_ALIAS});
+  NCB.RARITY_V2_ORDER=RARITY_V2_ORDER.slice();
+  NCB.RARITY_V2_RPI=Object.freeze({...RARITY_V2_RPI});
+  NCB.V2_RARITY_DISPLAY=Object.freeze({...V2_RARITY_DISPLAY});
+  NCB.toV2RarityId=toV2RarityId;
+  NCB.rpiV2=rpiV2;
+  // ---- end v1.2 extended rarity ----
+
   NCB.RARITY_ORDER=RARITY_ORDER.slice();
   NCB.RARITY_RPI=Object.freeze({...RARITY_RPI});
   NCB.POWER_RULES=POWER_RULES;
   NCB.rpiOf=rpiOf;
   NCB.rarityOrder=()=>RARITY_ORDER.slice();
+  NCB.computeCardPowerV2=computeCardPowerV2;
   NCB.normalizeLevel=normalizeLevel;
   NCB.levelFactor=levelFactor;
   NCB.computeCardPower=computeCardPower;

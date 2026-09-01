@@ -1,73 +1,69 @@
-# Final QA Report
+# QA 报告 — v1.2.0
 
-Release candidate: `NUMERICAL // 数值对战实验室` v1.0.0
+发布候选：`数值对战实验室` v1.2.0（玩家向 UI + 战力评分 + 稀有度扩展 + 数值系统审计）
 
-## Automated verification
+## 自动化验证
 
-Fresh source-tree verification command:
+新源码树验证命令：
 
 ```bash
 npm run verify
 ```
 
-Result: **97 / 97 tests passed**, static architecture checks passed.
+结果：**166 / 166 测试通过**，静态架构检查通过（v1.2.0 版本门禁 + manifest 审计 72 文件）。
 
-Generated capability counts at verification time:
+生成能力计数（verify 时）：
 
-- Parameters: 91
-- Effects: 18
-- Conditions: 27
-- Targets: 8
-- Events: 28
-- Damage types: 8
-- Example units: 20
-- Example skills: 63
-- Example statuses: 33
+- 参数：91
+- 效果：18
+- 条件：27
+- 目标：8
+- 事件：28
+- 伤害类型：8
+- 示例实体：20
+- 示例技能：63
+- 示例状态：33
 
-The static gate checks deterministic runtime constraints, forbidden dynamic execution, runtime network scripts, vendored parser/license presence, effect resolvers, content validation and component-catalog coverage.
+## 战力校准（v1.2 新增门禁）
 
-## Stress and determinism
+`scripts/power-calibration.js`（同定位镜像正反位 + train/validation 完全分离）：
 
-`qa/stress-results.json` records the release stress run.
+```text
+Spearman (calibration split) = 0.741
+Spearman (VALIDATION split)  = 0.776   (target >= 0.75, audit stop >= 0.70)
+rarity mean monotonic = YES  (large-sample statistical distribution)
+CALIBRATION PASS ✔
+```
 
-Default lineup note: the default 4v4 showcase was lightly rebalanced by moving the
-B-side's duplicated ranged slot to a `warden` (protector/counterattack deck), bringing the
-mirror (正反位) combined win rate inside the 40–60% acceptance band.
+## Generator 平衡（v1.2 深度重调）
 
-- Default composition, 200 matches: A 57.0% / B 43.0%, 0 draws.
-- Swapped sides, 200 matches: A 38.0% / B 62.0%, 0 draws.
-- Combined composition win rate: **59.5%**.
-- 6v6: completed 50 matches without runtime failure.
-- 1v6 and 6v1: completed 20 matches each without runtime failure.
-- Determinism: 25 paired deterministic cases reproduced exactly.
+`docs/GENERATOR-BALANCE-v1.2.md` 记录：
 
-These are smoke/balance metrics for the bundled sample content, not a claim that every possible custom content pack is competitively balanced.
+- 第一回合秒杀率：**0.0%**（目标 <5%）
+- 僵局率：**1.7%**（目标 <5%）
+- 战斗时长中位数：**8 回合**（目标 6–9）
+- 稀有度统计分布：均值单调（C 0.31 → XS典藏 0.88）
 
-## Browser QA
+## 浏览器 QA
 
-`qa/browser-results.json` records the interactive browser pass for the current Acorn-based offline runtime.
+`qa/browser-results.json` 记录交互式浏览器通过项。
 
-Verified items include:
+### 桌面 1440×1000（真实 Chromium）
 
-- Engine self-test deterministic.
-- Formula layer reports `ACORN 8.15.0 / OFFLINE`.
-- 8 combat cards visible in the default 4v4 battle.
-- Four actions can be queued and resolved.
-- Battle log grows after resolution.
-- Editor exposes three skills for the selected unit.
-- Invalid formula is visibly rejected and valid formula restores the OK state.
-- 50-match UI simulation renders aggregate metrics.
-- Rules/architecture guide renders the generated component definitions.
-- 390px viewport renders 8 cards with body width equal to viewport width; no horizontal overflow.
-- No page JavaScript errors were recorded in the browser pass.
+- 默认导航为玩家向：对战 / 卡牌 / 生成卡牌 / 玩法说明；高级实验室收纳右上角。
+- **新手流程可独立玩通**：打开网页 → 生成卡牌 → 加入我的卡牌 → 立即对战 →
+  选技能 → 点目标 → 结算回合 → 自动演算到结束 → 战斗完成。
+- 手动对战与自动推演（暂停/继续/下一步/1×/2×/4×）均可用。
+- 卡牌库本地持久化（加入/改名/复制种子/同种子再生成/删除）。
+- 高级实验室全部可用：数值编辑 / 批量模拟 / 规则架构 / 对局重放 / 计算详情 / JSON。
+- 全中文、无 NaN/Infinity、无 JS 错误（仅 favicon 404 可忽略）。
 
-Screenshots:
+### 移动 390×844（真实 Chromium）
 
-- `qa/desktop.png`
-- `qa/mobile.png`
+- 无横向溢出（`document.documentElement.scrollWidth === innerWidth === 390`）。
+- 对战/卡牌/生成/帮助均可操作；无 NaN、无 JS 错误。
 
-Both screenshots were manually inspected before packaging.
+## 环境附注
 
-## Environment note
-
-A later raw `chromium --headless file://...` CLI smoke attempt in this sandbox stalled in Chromium's Linux process/DBus environment before it could produce a new screenshot. This is an environment-specific launcher issue; the recorded interactive browser QA above is for the current offline Acorn runtime, and the web app does not require DBus or a browser automation service at runtime.
+- 运行时完全离线（Acorn 8.15.0 / OFFLINE），无 CDN/服务器/登录。
+- `qa/desktop.png` 与 `qa/mobile.png` 为本次交互 QA 截图（可选生成）。
