@@ -9,13 +9,19 @@
     priority:p=>Math.pow(1.05,Math.max(-3,Math.min(3,p||0))),
     randomTargetDiscount:0.9,
     conditionalTargetDiscount:0.85,
+    // Penetration has combat value (ignores defense), so it must cost budget too.
+    // Minimal model: each +10% penetration adds ~5% reference cost (1 + p/100 * 0.5).
+    penetration:p=>1+Math.max(0,Number(p)||0)/100*0.5,
   };
-  function refSkillCost({rawPower,targetCount,accuracy,cooldown,priority}){
-    const t=SKILL_FACTORS.targetMulti(targetCount||1);
+  function refSkillCost({rawPower,targetCount,accuracy,cooldown,priority,penetration}){
+    // Nullish default keeps targetCount=0 as self (0.85 factor); `|| 1` used to
+    // coerce self into single-target and silently drop the self discount.
+    const t=SKILL_FACTORS.targetMulti(targetCount ?? 1);
     const r=SKILL_FACTORS.accuracy[accuracy]??accuracy??1;
     const c=SKILL_FACTORS.cooldown[cooldown]??1;
-    const p=SKILL_FACTORS.priority(priority||0);
-    const cost=Math.max(0,Number(rawPower))*t*r*c*p;
+    const p=SKILL_FACTORS.priority(priority??0);
+    const pn=SKILL_FACTORS.penetration(penetration??0);
+    const cost=Math.max(0,Number(rawPower))*t*r*c*p*pn;
     if(!Number.isFinite(cost))throw new Error('non-finite skill cost');
     return Math.round(cost*1000)/1000;
   }
@@ -27,7 +33,7 @@
     {id:'heavy',name:'重击',kind:'damage',target:'enemy',targetCount:1,accuracy:0.9,cooldown:2,priority:0,effectType:'damage',damageType:'physical',scaling:'atk',effects:[{type:'damage'}],tags:['heavy']},
     {id:'cleave',name:'横扫',kind:'damage',target:'all-enemies',targetCount:3,accuracy:0.9,cooldown:2,priority:0,effectType:'damage',damageType:'physical',scaling:'atk',effects:[{type:'damage'}],tags:['aoe']},
     {id:'flurry',name:'连击',kind:'damage',target:'enemy',targetCount:1,accuracy:0.95,cooldown:1,priority:0,effectType:'damage',damageType:'physical',scaling:'atk',hits:3,effects:[{type:'damage',hits:3}],tags:['multihit']},
-    {id:'pierce',name:'穿刺',kind:'damage',target:'enemy',targetCount:1,accuracy:1,cooldown:1,priority:0,effectType:'damage',damageType:'physical',scaling:'atk',effects:[{type:'damage'}],tags:['pierce'],penBonus:20},
+    {id:'pierce',name:'穿刺',kind:'damage',target:'enemy',targetCount:1,accuracy:1,cooldown:1,priority:0,effectType:'damage',damageType:'physical',scaling:'atk',effects:[{type:'damage'}],tags:['pierce'],penetrationBonus:20},
     {id:'fire-bolt',name:'火矢',kind:'damage',target:'enemy',targetCount:1,accuracy:0.95,cooldown:0,priority:0,effectType:'damage',damageType:'fire',scaling:'atk',effects:[{type:'damage'}],tags:['fire']},
     {id:'ember',name:'灼烧',kind:'damage',target:'enemy',targetCount:1,accuracy:0.9,cooldown:1,priority:0,effectType:'damage',damageType:'fire',scaling:'atk',effects:[{type:'damage'}],tags:['fire','dot-caster']},
     {id:'heal',name:'治疗',kind:'heal',target:'ally',targetCount:1,accuracy:1,cooldown:1,priority:0,effectType:'heal',scaling:'heal',effects:[{type:'heal'}],tags:['support']},
@@ -44,7 +50,7 @@
   }
   // Compute the reference power of a recipe before formula scaling (used to size formulas).
   function recipeBaseCost(recipe){
-    return refSkillCost({rawPower:1,targetCount:recipe.targetCount,accuracy:recipe.accuracy,cooldown:recipe.cooldown,priority:recipe.priority});
+    return refSkillCost({rawPower:1,targetCount:recipe.targetCount,accuracy:recipe.accuracy,cooldown:recipe.cooldown,priority:recipe.priority,penetration:recipe.penetrationBonus});
   }
   NCB.SKILL_FACTORS=SKILL_FACTORS;
   NCB.refSkillCost=refSkillCost;

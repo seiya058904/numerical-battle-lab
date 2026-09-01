@@ -36,6 +36,11 @@ skill + passives/statuses/triggers + PowerAudit）。
 
 Lv1=0.40, Lv50≈0.714, Lv100=1.00。禁止“C 只能升 50 / SSS 升 120”这类叠加稀有度优势的设计。
 
+**等级是校验，不是钳制**：`NCB.normalizeLevel(level)`（`power.js`）要求严格整数 1..100。
+只有 `opts.level === undefined` 才默认 100；`0 / -1 / 101 / 999 / 1.5 / NaN / Infinity /
+"abc"` 等一律抛错（`level must be an integer in 1..100`），绝不静默钳制——否则元数据等级与
+实际 `levelFactor` 数值会产生不一致的卡。
+
 ## 总实力
 
 - `QualityFactor`：`NCB.qualityFactor(seed)` 由 seed 确定性生成，范围 `0.97..1.03`（±3%）。
@@ -84,13 +89,19 @@ Balanced / Tank / Bruiser / Assassin / Mage / Support / Controller，权重和�
 - `NCB.SKILL_RECIPES`：有限可装配技能套件（单体/横扫/连击/穿刺/火矢/灼烧/治疗/屏障/
   虚弱/易伤/坚守/迅捷），每个 recipe 只是数据程序，指向既有 `EFFECT_COMPONENTS`。
 - 统一强度曲线：`RealSkillCost = RawEffectPower * TargetFactor * ReliabilityFactor *
-  FrequencyFactor * TempoFactor`（`NCB.refSkillCost`）。
+  FrequencyFactor * TempoFactor * PenetrationFactor`（`NCB.refSkillCost`）。
   - TargetFactor：self 0.85 / single 1 / 2-6 targets 1.55-3.05（`NCB.SKILL_FACTORS.targetMulti`）。
+    **self 0.85 真正进入成本**：`targetCount === 0`（self）按 nullish 默认处理为 1 再查表，
+    不会把 0 强转成 1 导致 self 折扣丢失。
   - ReliabilityFactor = accuracy（100%=1, 95%=0.95, 90%=0.90, 80%=0.80, 70%=0.70, 50%=0.50 下限）。
   - FrequencyFactor = cooldown（CD0=1, CD1=0.82, CD2=0.68, CD3=0.57, CD4=0.49）。
   - TempoFactor = 1.05^priority（priority 高有溢价，低有折扣）。
+  - PenetrationFactor = `1 + max(0,p)/100*0.5`（p = recipe 的 `penetrationBonus`）。
 - `NCB.skillCoefficient(budget, recipe)` 反解出公式系数（`ATK * c` / `MAX_HP * c`），
   使该技能的参考成本贴合分配给它的预算。
+- **穿透是显式成本**：recipe 统一用 `penetrationBonus` 字段（无 `penBonus` 别名）；生成卡
+  的 skill 定义会携带该字段，引擎 `skillPenetration` 才会真正生效。穿透越高 → 参考成本越
+  高 → 同预算下系数越低，预算不会被“免费”膨胀。
 
 ## 生成流程（spec 27-29）
 
@@ -104,6 +115,19 @@ budget scale -> compile -> PowerAudit`（Monte Carlo 校准在 `scripts/gen-mc.j
   相同 `seed+rarity+level+archetype+generatorVersion` 永远生成同一张卡。
 - **Generator Version**：`NCB.CARD_GENERATOR_VERSION = 1`；旧卡记录自己生成时的版本，
   未来改 Cost Table / 预算 / 曲线时升到 VERSION 2，旧 Seed 不会突然变成另一张卡。
+  传入不支持的版本（如 `999`）直接**抛错拒绝**，绝不静默产出 v1 卡却标注 v999。
+
+## 生成身份（Card Identity）
+
+卡 ID 与技能 ID 前缀**不是只 hash seed**——否则同一 seed 不同稀有度/等级/职业会撞 ID。
+
+- `NCB.canonicalGenerationIdentity(opts)` → 稳定字符串：
+  `v1|seed=..|rarity=..|level=..|archetype=..`（tags 存在时追加 `|tags=..`，tags 先排序）。
+  等级经 `normalizeLevel` 校验，版本必须为 1。
+- `NCB.cardId(identity)` = `'gen_' + hash8(identity)`。
+- 保证：相同完整元组 → 相同卡 + 相同 ID；稀有度/等级/职业/版本任一不同 → ID 不同。
+- 生成卡的 skill 定义也以同一身份派生，不同卡之间技能 ID 不会碰撞，`deployCard`
+  可同种子不同稀有度共存（先部署的卡不被覆盖）。
 
 ## Card Numeric Schema（spec 30）
 

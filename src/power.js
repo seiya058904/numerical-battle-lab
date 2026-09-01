@@ -13,9 +13,20 @@
     budgetPartitions:{primary:0.52,secondary:0.13,activeSkills:0.25,passiveTrigger:0.10},
   };
   // LevelFactor = 0.40 + 0.60*((L-1)/99)^0.92 ; LF(1)=0.4, LF(100)=1
+  // Level is strictly validated as an integer in 1..100 (only undefined defaults to 100);
+  // out-of-range/non-finite/non-integer values are rejected, never silently clamped.
+  function normalizeLevel(level){
+    if(level===undefined)return 100;
+    const n=Number(level);
+    if(!Number.isFinite(n))throw new Error('level must be a finite number, got '+String(level));
+    if(!Number.isInteger(n))throw new Error('level must be an integer 1..100, got '+String(level));
+    if(n<1||n>100)throw new Error('level must be 1..100, got '+String(level));
+    return n;
+  }
   function levelFactor(level){
     const L=POWER_RULES.levelFormula;
-    const t=Math.max(0,Math.min(99,(Number(level)||1)-1))/L.denominator;
+    const lv=normalizeLevel(level);
+    const t=(lv-1)/L.denominator;
     return L.base+L.scale*Math.pow(t,L.exponent);
   }
   function computeCardPower({rarity,level,quality}){
@@ -46,6 +57,7 @@
   NCB.POWER_RULES=POWER_RULES;
   NCB.rpiOf=rpiOf;
   NCB.rarityOrder=()=>RARITY_ORDER.slice();
+  NCB.normalizeLevel=normalizeLevel;
   NCB.levelFactor=levelFactor;
   NCB.computeCardPower=computeCardPower;
   NCB.numericScale=numericScale;

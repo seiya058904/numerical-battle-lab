@@ -1,20 +1,32 @@
 {
-  "name": "NUMERICAL // 数值对战实验室",
-  "version": "1.0.0",
+  "name": "numerical-card-battle",
+  "version": "1.1.0",
   "entry": "index.html",
   "runtime": "fully-offline-static-web",
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
-  "verifiedTests": 124,
+  "scope": "full-main-release",
+  "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). RELEASE-MANIFEST.json itself is excluded from its own listing (self-reference); scripts/static-check.js audits it against the working tree instead.",
+  "verifiedTests": 133,
   "files": [
+    {
+      "path": ".github/workflows/verify.yml",
+      "size": 332,
+      "sha256": "f1074646084fb91fcd7dbb4b3e2ae907f2e497150dcc984f39548757e71ab93d"
+    },
     {
       "path": ".gitignore",
       "size": 171,
       "sha256": "72a1510d6898b819ef3c1ce3828210870e3c0c84ac753407f1f596341bdda3ee"
     },
     {
+      "path": ".nojekyll",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
       "path": "FINAL-REPORT.md",
-      "size": 7932,
-      "sha256": "f1c64be7cb45460ae3206a5075aaf4dd477b46658b64390a73817981f0443c45"
+      "size": 16800,
+      "sha256": "2ce6caff980804455c90caa02b11bbfd6776ca6b9cedc13e33144525779161f8"
     },
     {
       "path": "QA-REPORT.md",
@@ -28,8 +40,8 @@
     },
     {
       "path": "RELEASE-NOTES.md",
-      "size": 2977,
-      "sha256": "f292c3b009578a0ba2ca5c4979c5c2eba45bfdd60726dbe194d11e86ef1034a1"
+      "size": 5899,
+      "sha256": "dc17c9041898f58be68c0769c567d834b3ba3efe5c5d95b6048f9c5376235aa8"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -48,8 +60,8 @@
     },
     {
       "path": "docs/GENERATOR.md",
-      "size": 6947,
-      "sha256": "2efb3e8a0b4fa56685e6dc87d61302257bffc28495a4febee3e74a11120d7535"
+      "size": 8745,
+      "sha256": "bae9ac966c7d62501f68ed678f537d6e33a64d30b4758ae62385f9bff13fe035"
     },
     {
       "path": "docs/NUMERIC-COMPONENT-CATALOG.md",
@@ -67,14 +79,39 @@
       "sha256": "0fa18836cb3c93557510da19516a379d7ae814224fa181c6ed83b52d356a2975"
     },
     {
+      "path": "docs/superpowers/plans/2026-01-power-rarity-model.md",
+      "size": 9583,
+      "sha256": "0101bed560789b0c69ae898e8ed01e9efafa750120086a7cf8d7474220ffd31a"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-02-archetype-stat-allocation.md",
+      "size": 9728,
+      "sha256": "94427579073e66a340f9737831cc720576161dfc81ec7ef6d2f55973a76eb8be"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-03-skill-cost-model.md",
+      "size": 4813,
+      "sha256": "63896a7e9b58996d35a49172d19301b44ac54496d129c108780deab2f7d90a71"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-04-generator-pipeline.md",
+      "size": 4057,
+      "sha256": "eef28fdb82aaa84787431c634dca4b9ccf35c954df4af7d5700c4dfe23d97e16"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-05-determinism-mc.md",
+      "size": 2552,
+      "sha256": "0e7296c27ff3a1f82a4e29860f15bfbd49f76bf75e7997872fcc16239ded6065"
+    },
+    {
       "path": "index.html",
       "size": 2243,
       "sha256": "1ca221bd160d7cba7168d7d26301bb469477a09a45b4e401582860979b6ac063"
     },
     {
       "path": "package.json",
-      "size": 367,
-      "sha256": "a820f6e398bef189937b93ac60f24a2ee108aee70439f1acfedaffe4603ee7e2"
+      "size": 420,
+      "sha256": "1be9593959efb22e1666973cf02ab04845b16fbc7d57c8905fa697b419bb31fb"
     },
     {
       "path": "qa/browser-results.json",
@@ -108,8 +145,8 @@
     },
     {
       "path": "scripts/static-check.js",
-      "size": 4221,
-      "sha256": "4ab9aeab3e1306ae2b63d84c4cd4d4162326f80a76cc9c1552d2638c23476517"
+      "size": 6181,
+      "sha256": "8ae014b8a8898b45e6d02526fa18892d16dcb36ee844d01fffefb92216bcf08c"
     },
     {
       "path": "scripts/stress-check.js",
@@ -153,8 +190,8 @@
     },
     {
       "path": "src/gen-skills.js",
-      "size": 5077,
-      "sha256": "25b05baabe52c27be576d74f1c36cc565dc0ac5cf74b549e9784f9eaa42a40cf"
+      "size": 5575,
+      "sha256": "6b331b9eba4032f0c6542be8dc4ea01b2ff1d28ba599fe4d97b7e56c5ccedd92"
     },
     {
       "path": "src/gen-stats.js",
@@ -163,8 +200,8 @@
     },
     {
       "path": "src/generator.js",
-      "size": 8084,
-      "sha256": "ab637cb5704e80256a4a62749e7d5964eabdc926c98b5b06ddc541ec3a95e4bb"
+      "size": 9611,
+      "sha256": "6b8e21ed616995ada953b3e0031eb476d36395bba2e7e619555c2af2ecb37934"
     },
     {
       "path": "src/kernel.js",
@@ -173,8 +210,8 @@
     },
     {
       "path": "src/power.js",
-      "size": 2863,
-      "sha256": "40e6a56204513c5307d0b17f0138223fe6d1991c821a046658e806fae4d4e9f5"
+      "size": 3466,
+      "sha256": "dcd53fe14966c6f1086cff918c1986c054f16e648006e86533d7fa1067884fca"
     },
     {
       "path": "src/rules.js",
@@ -213,8 +250,8 @@
     },
     {
       "path": "tests/gen-skills.test.js",
-      "size": 2632,
-      "sha256": "8b2e815a88865b448c4e127179ec6a87fdba09207e04fe9091b4e6722686134b"
+      "size": 4740,
+      "sha256": "7c1909c419d220e0b4c5504e5b8a9def64583f9577afeea6c4837e8b3718911d"
     },
     {
       "path": "tests/gen-stats.test.js",
@@ -223,13 +260,13 @@
     },
     {
       "path": "tests/generator.test.js",
-      "size": 4371,
-      "sha256": "715bb536ba276c80f2fb0d6580025ea03535a8f690c015717120b9b131bfa3b5"
+      "size": 10682,
+      "sha256": "289ea845560ed618c299cc3653cc09a1bbfc758be21eeb7f606abf44e73b4375"
     },
     {
       "path": "tests/power.test.js",
-      "size": 2792,
-      "sha256": "e0207d0924cf17ea22b1d5f2e3ffdb3f8b45ada38ad1e9eaf054d2b23b756ffb"
+      "size": 3692,
+      "sha256": "8b055addcb71922bbe7ece1c41408320e1e75664f254a67344751d61fb509e27"
     },
     {
       "path": "third_party/acorn/LICENSE",
@@ -268,5 +305,5 @@
     }
   ],
   "combinedDefaultCompositionWinRate": 0.595,
-  "notes": "v1.1.0: added card rarity/level/generator subsystem (power/gen-stats/gen-skills/generator/gen-balance + GENERATOR.md + gen-mc) and 26 new tests."
+  "notes": "v1.1.0: generated card identity hardening (rarity/level/archetype in cardId), strict level 1..100 validation, self-target 0.85 integrated into skill cost, pierce penetrationBonus + penetration cost factor, fake-green assertion removed, version gate package.json === manifest."
 }

@@ -55,3 +55,24 @@ test('qualityFactor is seeded-deterministic and in range',()=>{
   assert.notEqual(N.qualityFactor('X1'),N.qualityFactor('X2'),'different seeds differ');
   for(let i=0;i<200;i++){const q=N.qualityFactor('s'+i);assert.ok(q>=0.97&&q<=1.03,q);}
 });
+
+test('normalizeLevel validates strict integer 1..100 (undefined defaults 100)',()=>{
+  const N=load();
+  assert.equal(N.normalizeLevel(undefined),100,'only undefined defaults to 100');
+  assert.equal(N.normalizeLevel(1),1);
+  assert.equal(N.normalizeLevel(50),50);
+  assert.equal(N.normalizeLevel(100),100);
+  for(const bad of [0,-1,101,999,1.5,NaN,Infinity,-Infinity,'abc','']){
+    assert.throws(()=>N.normalizeLevel(bad),/level/i,'must reject level '+String(bad));
+  }
+  assert.throws(()=>N.normalizeLevel(null),/level/i,'null is not a valid level (only undefined defaults)');
+});
+
+test('levelFactor rejects invalid levels instead of silently clamping',()=>{
+  const N=load();
+  for(const bad of [0,-1,101,999,1.5,NaN,Infinity]){
+    assert.throws(()=>N.levelFactor(bad),/level/i,'LF must reject '+String(bad));
+  }
+  assert.equal(N.levelFactor(1),0.4);
+  assert.equal(N.levelFactor(100),1);
+});

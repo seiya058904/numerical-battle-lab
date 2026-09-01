@@ -18,7 +18,22 @@
     const base=NCB.seedHash(String(seed)+':'+salt);
     return new NCB.Gen5PRNG('gen5,'+((base>>>0)&0xffff)+','+((base>>>16)&0xffff)+',3,4');
   }
-  function cardId(seed){return 'gen_'+((NCB.seedHash(seed)>>>0).toString(16).slice(0,8));}
+  // GenerationIdentity (review fix): card ID and generated skill ID prefixes derive from
+  // the canonical full generation tuple, so different rarity/level/archetype/version with
+  // the same seed no longer collide. Unsupported generatorVersion is rejected, never faked.
+  function canonicalGenerationIdentity(opts={}){
+    const version=opts.generatorVersion===undefined?CARD_GENERATOR_VERSION:opts.generatorVersion;
+    if(version!==CARD_GENERATOR_VERSION)throw new Error('unsupported generatorVersion: '+version+' (only v'+CARD_GENERATOR_VERSION+' exists)');
+    const seed=opts.seed==null?'':String(opts.seed);
+    const rarity=opts.rarity||'C';
+    const level=NCB.normalizeLevel(opts.level);
+    const archetype=opts.archetype||'Balanced';
+    // tags/generationOptions that would affect generated content must enter the identity;
+    // normalize tags so equivalent orderings produce the same identity.
+    const tags=(opts.tags||[]).slice().map(String).sort().join(',');
+    return `v${version}|seed=${seed}|rarity=${rarity}|level=${level}|archetype=${archetype}${tags?'|tags='+tags:''}`;
+  }
+  function cardId(identity){return 'gen_'+((NCB.seedHash(identity)>>>0).toString(16).slice(0,8));}
   // Coefficient for a recipe so its reference cost fits the allocated skill budget.
   function skillCoefficient(budget,recipe){
     const base=NCB.recipeBaseCost(recipe);
@@ -52,6 +67,7 @@
   NCB.GEN_SKILL_POWER_SCALE=GEN_SKILL_POWER_SCALE;
   NCB.RECIPE_POOLS=RECIPE_POOLS;
   NCB.generatorSeedStream=generatorSeedStream;
+  NCB.canonicalGenerationIdentity=canonicalGenerationIdentity;
   NCB.cardId=cardId;
   NCB.skillCoefficient=skillCoefficient;
   NCB.statusValue=statusValue;
@@ -62,11 +78,13 @@
   // recipe pick->budget scale->compile->power estimate. MC is Sub-Plan 5.
   function generateCard(opts={}){
     const rarity=opts.rarity||'C';
-    const level=opts.level||100;
+    const level=NCB.normalizeLevel(opts.level);
     const archetype=opts.archetype||'Balanced';
     const seed=opts.seed==null?'':String(opts.seed);
     const tags=opts.tags||[];
-    const generatorVersion=opts.generatorVersion||CARD_GENERATOR_VERSION;
+    const generatorVersion=opts.generatorVersion===undefined?CARD_GENERATOR_VERSION:opts.generatorVersion;
+    if(generatorVersion!==CARD_GENERATOR_VERSION)throw new Error('unsupported generatorVersion: '+generatorVersion+' (only v'+CARD_GENERATOR_VERSION+' exists)');
+    const identity=canonicalGenerationIdentity(opts);
     // steps 1-4
     const rpi=NCB.rpiOf(rarity);
     const lf=NCB.levelFactor(level);
@@ -81,7 +99,7 @@
     // step 11: pick 3 recipes from the finite kit
     const recipeIds=NCB.pickRecipes(archetype,seed);
     const skillBudgets=SKILL_BUDGET_SPLIT.map(f=>Math.round(split.activeSkills*f));
-    const id=NCB.cardId(seed);
+    const id=cardId(identity);
     const skills=[];
     const unitSkills=[];
     recipeIds.forEach((recipe,i)=>{
@@ -91,6 +109,7 @@
       unitSkills.push(sid);
       const budget=skillBudgets[i];
       let def={id:sid,name:r.name+(i===2?'·终':''),kind:r.kind,target:r.target,cost:1,cooldown:r.cooldown,priority:r.priority,accuracy:r.accuracy,tags:r.tags,_budget:budget};
+      if(r.penetrationBonus!==undefined)def.penetrationBonus=r.penetrationBonus;
       if(r.scaling==='status'){
         const sv=NCB.statusValue(budget,r);
         def.effects=[{type:'status',status:r.status,duration:sv.duration,stacks:sv.stacks}];
@@ -107,7 +126,7 @@
     const stats={...primary.stats,...secondary.seconds,ENERGY_MAX:4,ENERGY_REGEN:2};
     const resources={ENERGY:{max:stats.ENERGY_MAX,regen:stats.ENERGY_REGEN}};
     const card={
-      id,seed,generatorVersion,rarity,level,quality,archetype,
+      id,identity,seed,generatorVersion,rarity,level,quality,archetype,
       powerIndex:Math.round(powerIndex*10)/10,
       generationBudget:Math.round(generationBudget*10)/10,
       stats,resources,resistances:{},tags:[...tags,'rarity:'+rarity,'archetype:'+archetype],

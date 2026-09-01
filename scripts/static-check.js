@@ -36,4 +36,33 @@ if(acornHash!=='fdb08546776ec6228b03e8d02b40d4ab3255bae5f401adba7ff5dad927ac5c9c
 
 const app=fs.readFileSync(path.join(root,'src/app.js'),'utf8');
 for(const marker of ['data-tab="battle"','data-tab="editor"','data-tab="simulation"','qaSelfTest'])if(!app.includes(marker)&&!html.includes(marker))throw new Error(`UI marker missing: ${marker}`);
-console.log(`static checks: PASS · ${Object.keys(NCB.PARAMETER_CATALOG).length} parameters · ${Object.keys(NCB.EFFECT_COMPONENTS).length} effects`);
+
+// ---- Release metadata / manifest audit (review fix 6) ----
+// package.json.version === RELEASE-MANIFEST.json.version === current release version.
+const RELEASE_VERSION='1.1.0';
+const pkgMeta=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
+const manifestMeta=JSON.parse(fs.readFileSync(path.join(root,'RELEASE-MANIFEST.json'),'utf8'));
+if(pkgMeta.version!==RELEASE_VERSION)throw new Error(`package.json version ${pkgMeta.version} != release ${RELEASE_VERSION}`);
+if(manifestMeta.version!==RELEASE_VERSION)throw new Error(`RELEASE-MANIFEST.json version ${manifestMeta.version} != release ${RELEASE_VERSION}`);
+
+// Manifest duty: complete auditable file set of the current official main release.
+// Every git-tracked file (except the manifest itself) must be listed, and every
+// listed entry must exist on disk with a matching size + sha256.
+const {execFileSync}=require('node:child_process');
+const SELF_MANIFEST='RELEASE-MANIFEST.json';
+let tracked;
+try{tracked=execFileSync('git',['ls-files'],{cwd:root,encoding:'utf8'}).split('\n').map(s=>s.trim()).filter(Boolean);}
+catch(e){throw new Error(`manifest audit requires git: ${e.message}`);}
+const manifestPaths=new Set(manifestMeta.files.map(f=>f.path));
+for(const t of tracked){if(t!==SELF_MANIFEST&&!manifestPaths.has(t))throw new Error(`RELEASE-MANIFEST missing tracked file: ${t}`);}
+if(manifestPaths.has(SELF_MANIFEST))throw new Error('RELEASE-MANIFEST must not list itself');
+for(const f of manifestMeta.files){
+  const abs=path.join(root,f.path);
+  if(!fs.existsSync(abs))throw new Error(`manifest lists missing file: ${f.path}`);
+  const buf=fs.readFileSync(abs);
+  if(buf.length!==f.size)throw new Error(`manifest size mismatch: ${f.path}`);
+  const h=require('node:crypto').createHash('sha256').update(buf).digest('hex');
+  if(h!==f.sha256)throw new Error(`manifest sha256 mismatch: ${f.path}`);
+}
+
+console.log(`static checks: PASS · ${Object.keys(NCB.PARAMETER_CATALOG).length} parameters · ${Object.keys(NCB.EFFECT_COMPONENTS).length} effects · v${RELEASE_VERSION} manifest audited (${manifestMeta.files.length} files)`);

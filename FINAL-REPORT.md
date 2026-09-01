@@ -52,22 +52,27 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 
 ## 2. 测试总数
 
-- **124** 个自动化测试，全部通过（`node --test`）。
+- **133** 个自动化测试，全部通过（`node --test`）。
 - 覆盖：确定性、modifier 顺序、公式验证/执行、目标查询、触发顺序、触发循环保护、
   资源原子支付、状态叠层、sustain、伤害分量、ward/shield、净化/驱散/夺取、多段、
   miss/crit 上下文、击杀事件、replay、AI RNG 分离、重放复现、内容校验、插件扩展、
   组件目录、普通镜像平衡等。
 - v1.0.1 新增 1 个测试：`default 4v4 mirror combined rate stays within the competitive band`。
-- **v1.1.0 新增 26 个测试**（卡牌生成子系统）：
-  - `power.test.js`（7）：RPI 顺序、LevelFactor 曲线采样、CardPower/GenerationBudget
-    与规范示例一致、预算分区求和为 1、Qual<arity>Factor 种子确定性。
+- **v1.1.0 新增 35 个测试**（卡牌生成子系统，含本次加固回归）：
+  - `power.test.js`（8）：RPI 顺序、LevelFactor 曲线采样、CardPower/GenerationBudget
+    与规范示例一致、预算分区求和为 1、Qual<arity>Factor 种子确定性；新增
+    `normalizeLevel` 严格 1..100 校验（拒绝 0/-1/101/999/1.5/NaN/Infinity/"abc"）、
+    `levelFactor` 对非法等级抛错而非静默钳制。
   - `gen-stats.test.js`（6）：原型匹配规范、注册表可扩展；主属性 base+BP*K 校准带；
     allocatePrimary 种子确定/保预算/保原型形态；二次属性费用表与上限。
-  - `gen-skills.test.js`（4）：refSkillCost 目标/命中/CD 因子；target 因子表匹配规范；
-    SKILL_RECIPES 为有限且经校验的配方库；recipeBaseCost 有限为正。
-  - `generator.test.js`（7）：同种子确定性、schema 字段与约束、SSS 输出 > C、A Lv50 ≈
+  - `gen-skills.test.js`（6）：refSkillCost 目标/命中/CD 因子；target 因子表匹配规范；
+    SKILL_RECIPES 为有限且经校验的配方库；recipeBaseCost 有限为正；新增 self
+    TargetFactor 0.85 真正进入 `refSkillCost`（`targetCount=0`）、穿透提升参考成本
+    （penetrationBonus 统一字段）。
+  - `generator.test.js`（12）：同种子确定性、schema 字段与约束、SSS 输出 > C、A Lv50 ≈
     C Lv100 关系、validateContentPack 编译通过、真实对战可 resolve、powerAudit 诚实、
-    原型形态差异。
+    原型形态差异；新增生成身份（同元组同 ID / 异稀有度/等级/职业异 ID / 版本拒绝 999、
+    同种子异稀有度部署共存）、`generateCard` 等级严格校验、穿透技能实际造成更高伤害。
   - `gen-balance.test.js`（3）：ExpectedWin 立方公式（canonical）、零/非有限防护、
     expectedRarityWin 使用 RPI。
 
@@ -102,6 +107,27 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 - **整包绩效门禁**：以上各层均有独立测试；`validateContentPack` 编译通过；generateCard
   同种子严格确定；生成卡可投入真实 BattleEngine 作战。作者文档见 `docs/GENERATOR.md`；
   蒙特卡洛冒烟见 `scripts/gen-mc.js`（`npm run gen-mc`，报告性质，非硬性门禁）。
+
+## 2.6 生成卡身份 / 预算不变式加固（review 修复）
+
+针对已确认的 6 个问题做了最小范围加固，未改稀有度 RPI / LevelFactor 曲线 / 平衡：
+
+1. **生成卡身份碰撞**：`cardId` 不再只 hash seed，改为对规范身份
+   `canonicalGenerationIdentity(opts)`（含 generatorVersion + seed + rarity + level +
+   archetype + 排序后 tags）hash。同种子不同稀有度/等级/职业 → 不同 ID 且技能 ID 不碰撞；
+   `deployCard` 可同种子不同稀有度并存（不覆盖）。`generatorVersion:999` 直接抛错拒绝，
+   绝不静默产出 v1 卡却标注 v999。
+2. **等级严格 1..100**：`normalizeLevel` 是校验（整数、1..100），仅 `undefined` 默认 100；
+   0/-1/101/999/1.5/NaN/Infinity/"abc" 一律抛错。杜绝元数据等级与 `levelFactor` 数值不一致。
+3. **Self TargetFactor 集成**：`refSkillCost` 用 `targetCount ?? 1`，self 0.85 真正进入成本。
+4. **穿透穿透食谱**：recipe 统一 `penetrationBonus`（去掉 `penBonus` 别名），生成卡 skill
+   定义携带该字段，成本模型新增 Penetration 因子（穿透高 → 参考成本高 → 同预算系数低）。
+5. **删除假绿色断言**：`generator.test.js` 的 `assert.ok(...#>#|| true)` 移除，改为结构断言
+   + 多种子均值。
+6. **v1.1.0 版本一致性**：`package.json.version === RELEASE-MANIFEST.json.version === 1.1.0`，
+   由 `scripts/static-check.js` 静态门禁强制；`RELEASE-MANIFEST.json` 由
+   `scripts/generate-manifest.js` 从 `git ls-files` 生成，涵盖全部 git 跟踪文件
+   （含部署文件 `.nojekyll` 与 `.github/workflows/verify.yml`），不存在“看着完整却漏文件”。
 
 ## 3–9. 能力面计数（`generate-catalog.js` 从注册表生成，单一数据源）
 
@@ -182,8 +208,8 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 ## 验证门禁（本环境重测）
 
 ```
-ALL TESTS PASS        ✔ 124/124
-STATIC CHECK PASS     ✔ 静态门禁通过（91 参数 / 18 Effect）
+ALL TESTS PASS        ✔ 133/133
+STATIC CHECK PASS     ✔ 静态门禁通过（91 参数 / 18 Effect）+ v1.1.0 version 门禁 + manifest 审计
 CONTENT COMPILE PASS  ✔ validateContentPack + verify 全部通过
 DETERMINISM PASS      ✔ replay 精确复现；25 个成对确定性案例一致；generateCard 同种子严格一致
 BROWSER QA PASS       ✔ Chromium 1440×1000：无 JS 错误、无横向溢出、对战/AI/编辑器/

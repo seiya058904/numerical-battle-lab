@@ -44,3 +44,37 @@ test('recipeBaseCost is finite and positive',()=>{
   const N=load();
   for(const r of N.SKILL_RECIPES){const c=N.recipeBaseCost(r);assert.ok(Number.isFinite(c)&&c>0,r.id+' base cost '+c);}
 });
+
+test('refSkillCost integrates the self-target 0.85 factor via real cost (targetCount=0)',()=>{
+  const N=load();
+  // Regression: `targetCount || 1` used to coerce 0 -> 1, so the self 0.85 never
+  // reached the real cost. Nullish default must keep 0 and apply the 0.85 factor.
+  const self=N.refSkillCost({rawPower:1,targetCount:0,accuracy:1,cooldown:0,priority:0});
+  assert.equal(self,0.85,'self target must cost 0.85x');
+  const single=N.refSkillCost({rawPower:1,targetCount:1,accuracy:1,cooldown:0,priority:0});
+  assert.equal(single,1,'single target costs 1x');
+  // shield/fortify recipes are self-targeting (targetCount 0) and must reflect 0.85
+  for(const r of N.SKILL_RECIPES)if(r.target==='self'){
+    assert.equal(r.targetCount,0,r.id+' self recipe targetCount must be 0');
+    const base=N.recipeBaseCost(r);
+    const asSingle=N.refSkillCost({rawPower:1,targetCount:1,accuracy:r.accuracy,cooldown:r.cooldown,priority:r.priority});
+    assert.ok(base<asSingle,r.id+' self base cost must be cheaper than the same skill counted as single-target');
+  }
+});
+
+test('penetration raises reference cost (more pen => higher cost => lower coefficient under same budget)',()=>{
+  const N=load();
+  const base={rawPower:1,targetCount:1,accuracy:1,cooldown:0,priority:0};
+  const zero=N.refSkillCost({...base,penetration:0});
+  const twenty=N.refSkillCost({...base,penetration:20});
+  assert.ok(twenty>zero,'20 pen must cost more than 0 pen: '+twenty+' vs '+zero);
+  assert.ok(N.refSkillCost({...base,penetration:40})>twenty,'40 pen costs more than 20');
+  // pierce recipe carries the unified penetrationBonus field (no penBonus alias)
+  const pierce=N.SKILL_RECIPES.find(r=>r.id==='pierce');
+  assert.ok(pierce,'pierce recipe exists');
+  assert.equal(pierce.penetrationBonus,20,'pierce uses penetrationBonus=20');
+  assert.equal(pierce.penBonus,undefined,'no penBonus alias remains');
+  // recipeBaseCost accounts for the recipe's penetrationBonus
+  const clone={...pierce,penetrationBonus:0};
+  assert.ok(N.recipeBaseCost(pierce)>N.recipeBaseCost(clone),'pierce base cost includes its penetration');
+});
