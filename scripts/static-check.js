@@ -59,7 +59,10 @@ if(manifestPaths.has(SELF_MANIFEST))throw new Error('RELEASE-MANIFEST must not l
 for(const f of manifestMeta.files){
   const abs=path.join(root,f.path);
   if(!fs.existsSync(abs))throw new Error(`manifest lists missing file: ${f.path}`);
-  const buf=fs.readFileSync(abs);
+  // Compare against the canonical git blob (LF in repo; working tree may be CRLF under autocrlf).
+  let buf;
+  try{buf=execFileSync('git',['show',`:${f.path}`],{cwd:root});}
+  catch(e){buf=fs.readFileSync(abs);}
   if(buf.length!==f.size)throw new Error(`manifest size mismatch: ${f.path}`);
   const h=require('node:crypto').createHash('sha256').update(buf).digest('hex');
   if(h!==f.sha256)throw new Error(`manifest sha256 mismatch: ${f.path}`);

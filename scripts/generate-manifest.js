@@ -38,12 +38,24 @@ try {
 if (!tracked.length) throw new Error('git ls-files returned no files');
 
 // 2. size + sha256 for every file.
+//
+// Hash the CANONICAL git blob content (`git show :<path>`), not the raw working-tree
+// file. The repo is authored with LF blobs but local clients commonly set
+// `core.autocrlf=true`, so the working-tree bytes can be CRLF while CI (Linux)
+// checks out LF. Hashing the staged blob makes the manifest platform-independent
+// and always match what a fresh `git ls-files` checkout in CI provides.
 const files = tracked
   .filter((p) => p !== SELF)
   .map((p) => {
-    const abs = path.join(root, p);
-    if (!fs.existsSync(abs)) throw new Error(`tracked file missing on disk: ${p}`);
-    const buf = fs.readFileSync(abs);
+    let buf;
+    try {
+      buf = execFileSync('git', ['show', `:${p}`], { cwd: root });
+    } catch (e) {
+      // Not staged/committed (added after last commit yet uncommitted): fall back to disk.
+      const abs = path.join(root, p);
+      if (!fs.existsSync(abs)) throw new Error(`tracked file missing on disk / index: ${p}`);
+      buf = fs.readFileSync(abs);
+    }
     return {
       path: p,
       size: buf.length,

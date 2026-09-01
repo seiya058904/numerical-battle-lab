@@ -85,23 +85,23 @@
     },
     {
       "path": "docs/superpowers/plans/2026-02-archetype-stat-allocation.md",
-      "size": 9728,
-      "sha256": "94427579073e66a340f9737831cc720576161dfc81ec7ef6d2f55973a76eb8be"
+      "size": 9721,
+      "sha256": "2e9d0a79d697e3a7ff63a125b4df6e6e59fa2b59a5413413a9059eacf90a82fc"
     },
     {
       "path": "docs/superpowers/plans/2026-03-skill-cost-model.md",
-      "size": 4813,
-      "sha256": "63896a7e9b58996d35a49172d19301b44ac54496d129c108780deab2f7d90a71"
+      "size": 4810,
+      "sha256": "5ade378a1845243039466e15d7d79ea8cdbcb2a6c31586093db080ff69d01868"
     },
     {
       "path": "docs/superpowers/plans/2026-04-generator-pipeline.md",
-      "size": 4057,
-      "sha256": "eef28fdb82aaa84787431c634dca4b9ccf35c954df4af7d5700c4dfe23d97e16"
+      "size": 4055,
+      "sha256": "94f58ec496ede00d004c14970f4db8fed7aac1f2dfb8e1593f3cb0563ab95d91"
     },
     {
       "path": "docs/superpowers/plans/2026-05-determinism-mc.md",
-      "size": 2552,
-      "sha256": "0e7296c27ff3a1f82a4e29860f15bfbd49f76bf75e7997872fcc16239ded6065"
+      "size": 2551,
+      "sha256": "0517cde7144bdcfdf3700c902e3ee26ddbc2ab78413c18592f5c956111b63ec8"
     },
     {
       "path": "index.html",
@@ -135,8 +135,8 @@
     },
     {
       "path": "scripts/gen-mc.js",
-      "size": 2177,
-      "sha256": "220fde58e7c5d369c63c8fab7ad2b9a2521417d9bcccb28904f67b6d8ea714b5"
+      "size": 2176,
+      "sha256": "c52c477a2b54d5d56b8ef3f33d6e056985539b22cc671226b2add716b9240120"
     },
     {
       "path": "scripts/generate-catalog.js",
