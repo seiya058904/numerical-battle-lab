@@ -50,8 +50,9 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 └── .gitignore
 ```
 
-工作区：`D:\xia zai\AI project\pk\2\NUMERICAL-BATTLE-LAB-v1.0.0`，云基线
-`19ca5a443fcccd418d421a648f29a900098f55f8`，主分支 `main`。
+工作区：`D:\xia zai\AI project\pk\2\NUMERICAL-BATTLE-LAB-v1.0.0`。
+**OLD HEAD** `19ca5a443fcccd418d421a648f29a900098f55f8` → **NEW HEAD** `427a7f7`
+（v1.2.0 提交，main 分支，Verify + Pages 工作流均 PASS）。
 
 ## 2. 测试总数
 
