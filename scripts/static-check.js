@@ -46,16 +46,18 @@ if(pkgMeta.version!==RELEASE_VERSION)throw new Error(`package.json version ${pkg
 if(manifestMeta.version!==RELEASE_VERSION)throw new Error(`RELEASE-MANIFEST.json version ${manifestMeta.version} != release ${RELEASE_VERSION}`);
 
 // Manifest duty: complete auditable file set of the current official main release.
-// Every git-tracked file (except the manifest itself) must be listed, and every
-// listed entry must exist on disk with a matching size + sha256.
+// Every git-tracked file (except self-auditing meta files) must be listed, and every
+// listed entry must match the canonical git blob's size + sha256.
 const {execFileSync}=require('node:child_process');
-const SELF_MANIFEST='RELEASE-MANIFEST.json';
+const META_SELF_MANIFEST=new Set(['RELEASE-MANIFEST.json','scripts/generate-manifest.js']);
 let tracked;
 try{tracked=execFileSync('git',['ls-files'],{cwd:root,encoding:'utf8'}).split('\n').map(s=>s.trim()).filter(Boolean);}
 catch(e){throw new Error(`manifest audit requires git: ${e.message}`);}
 const manifestPaths=new Set(manifestMeta.files.map(f=>f.path));
-for(const t of tracked){if(t!==SELF_MANIFEST&&!manifestPaths.has(t))throw new Error(`RELEASE-MANIFEST missing tracked file: ${t}`);}
-if(manifestPaths.has(SELF_MANIFEST))throw new Error('RELEASE-MANIFEST must not list itself');
+// Any tracked file that is NOT self-auditing meta must be listed.
+for(const t of tracked){if(!META_SELF_MANIFEST.has(t)&&!manifestPaths.has(t))throw new Error(`RELEASE-MANIFEST missing tracked file: ${t}`);}
+// No self-auditing meta file may appear inside the listing.
+for(const m of META_SELF_MANIFEST){if(manifestPaths.has(m))throw new Error(`RELEASE-MANIFEST must not list self-auditing meta file: ${m}`);}
 for(const f of manifestMeta.files){
   const abs=path.join(root,f.path);
   if(!fs.existsSync(abs))throw new Error(`manifest lists missing file: ${f.path}`);

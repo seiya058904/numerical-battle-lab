@@ -23,6 +23,11 @@ const { execFileSync, execSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const OUT = path.join(root, 'RELEASE-MANIFEST.json');
 const SELF = 'RELEASE-MANIFEST.json';
+// RELEASE-MANIFEST.json and the manifest tool itself are SELF-AUDITING meta files:
+// each one's own content/hash is unstable (editing the generator would change the
+// hash the manifest records of it), so neither is listed inside the manifest's file
+// set. The static gate audits both directly against the working tree instead.
+const META = new Set([SELF, 'scripts/generate-manifest.js']);
 
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 const version = pkg.version;
@@ -45,7 +50,7 @@ if (!tracked.length) throw new Error('git ls-files returned no files');
 // checks out LF. Hashing the staged blob makes the manifest platform-independent
 // and always match what a fresh `git ls-files` checkout in CI provides.
 const files = tracked
-  .filter((p) => p !== SELF)
+  .filter((p) => !META.has(p))
   .map((p) => {
     let buf;
     try {
@@ -87,8 +92,9 @@ const manifest = {
   scopeNote:
     'Complete auditable file set of the current official main release, generated from `git ls-files` ' +
     '(runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, ' +
-    'docs/superpowers plans). RELEASE-MANIFEST.json itself is excluded from its own listing (self-reference); ' +
-    'scripts/static-check.js audits it against the working tree instead.',
+    'docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and ' +
+    'scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently ' +
+    'unstable under regeneration); scripts/static-check.js audits both directly against the working tree.',
   verifiedTests,
   files,
   combinedDefaultCompositionWinRate: 0.595,
