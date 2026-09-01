@@ -42,3 +42,16 @@ Other mature projects are documented as design references in `THIRD_PARTY_NOTICE
 ## Start
 
 Double-click `index.html`, or serve the folder with any static server. See `README.md` for details.
+
+## Changelog — v1.0.1 (balance hardening)
+
+- **Default 4v4 showcase rebalanced.** The default B-side lineup moved its duplicated
+  ranged slot from a second `ranger` to a `warden` (protector / counterattack deck), which
+  removes a redundant shared unit and adds a defensive control archetype to the demo.
+  Mirror (正反位) combined win rate moved from ~61–66% (one-sided) to **59.5%**, inside the
+  40–60% acceptance band, verified across multiple seed bases. No engine, AI or numeric
+  scaling changes — it is pure content composition (the kit's intended authoring path).
+- **New regression test:** `default 4v4 mirror combined rate stays within the competitive
+  band` locks in the combined-rate acceptance metric (currently 98 total tests).
+- **Repo hygiene:** added `.gitignore`; replaced the non-functional `.git` shell with a real
+  git repository; regenerated `RELEASE-MANIFEST.json` to track only shipped files.

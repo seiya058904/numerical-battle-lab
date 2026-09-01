@@ -416,6 +416,17 @@ test('default 4v4 preset stays within a broad competitive balance band', () => {
   assert.ok(r.winRateA>=0.38&&r.winRateA<=0.62,`A win rate ${r.winRateA}`);
 });
 
+test('default 4v4 mirror combined rate stays within the competitive band', () => {
+  const NCB=load();
+  const A=NCB.DEFAULT_TEAM_A.slice(),B=NCB.DEFAULT_TEAM_B.slice();
+  // combined (正反位) rate: the same composition run on both sides should avoid a lopsided outcome,
+  // independent of which team happens to move first. Uses a fresh seed base distinct from the forward test.
+  const fwd=NCB.runSimulation({battles:250,seedBase:102030,teamA:A,teamB:B,maxRounds:50});
+  const swp=NCB.runSimulation({battles:250,seedBase:102030,teamA:B,teamB:A,maxRounds:50});
+  const combined=(fwd.winRateA+swp.winRateB)/2;
+  assert.ok(combined>=0.40&&combined<=0.60,`combined mirror win rate ${combined}`);
+});
+
 test('skills can require and atomically pay multiple named resources', () => {
   const NCB=load();
   NCB.SKILL_DEFS.__rageCost={id:'__rageCost',name:'Rage Cost',kind:'damage',target:'enemy',cost:1,costs:[{resource:'RAGE',amount:2}],accuracy:1,formula:'ATK * 0.82',effects:[{type:'damage',canMiss:false,canCrit:false}]};

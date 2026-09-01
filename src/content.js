@@ -154,7 +154,7 @@
   NCB.SKILL_DEFS = SKILLS;
   NCB.UNIT_DEFS = UNITS;
   NCB.DEFAULT_TEAM_A = ['vanguard','ranger','medic','duelist'];
-  NCB.DEFAULT_TEAM_B = ['runeknight','pyromancer','duelist','ranger'];
+  NCB.DEFAULT_TEAM_B = ['runeknight','pyromancer','duelist','warden'];
   NCB.deepClone = obj => JSON.parse(JSON.stringify(obj));
   if (typeof module !== 'undefined') module.exports = NCB;
 })(typeof globalThis !== 'undefined' ? globalThis : window);

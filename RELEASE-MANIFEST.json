@@ -4,102 +4,22 @@
   "entry": "index.html",
   "runtime": "fully-offline-static-web",
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
-  "verifiedTests": 97,
+  "verifiedTests": 98,
   "files": [
     {
-      "path": ".git/HEAD",
-      "size": 23,
-      "sha256": "f6f2b945f6c411b02ba3da9c7ace88dcf71b6af65ba2e0d89aa82900042b5a10"
+      "path": ".gitignore",
+      "size": 171,
+      "sha256": "72a1510d6898b819ef3c1ce3828210870e3c0c84ac753407f1f596341bdda3ee"
     },
     {
-      "path": ".git/config",
-      "size": 149,
-      "sha256": "6e8836fe75f4ae97cb71be315dd17ebb5d5992e25fedf37855d2538dbe344ca8"
-    },
-    {
-      "path": ".git/description",
-      "size": 73,
-      "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
-    },
-    {
-      "path": ".git/hooks/applypatch-msg.sample",
-      "size": 478,
-      "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
-    },
-    {
-      "path": ".git/hooks/commit-msg.sample",
-      "size": 896,
-      "sha256": "1f74d5e9292979b573ebd59741d46cb93ff391acdd083d340b94370753d92437"
-    },
-    {
-      "path": ".git/hooks/fsmonitor-watchman.sample",
-      "size": 4726,
-      "sha256": "e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0"
-    },
-    {
-      "path": ".git/hooks/post-update.sample",
-      "size": 189,
-      "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
-    },
-    {
-      "path": ".git/hooks/pre-applypatch.sample",
-      "size": 424,
-      "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
-    },
-    {
-      "path": ".git/hooks/pre-commit.sample",
-      "size": 1649,
-      "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
-    },
-    {
-      "path": ".git/hooks/pre-merge-commit.sample",
-      "size": 416,
-      "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
-    },
-    {
-      "path": ".git/hooks/pre-push.sample",
-      "size": 1374,
-      "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
-    },
-    {
-      "path": ".git/hooks/pre-rebase.sample",
-      "size": 4898,
-      "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
-    },
-    {
-      "path": ".git/hooks/pre-receive.sample",
-      "size": 544,
-      "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
-    },
-    {
-      "path": ".git/hooks/prepare-commit-msg.sample",
-      "size": 1492,
-      "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
-    },
-    {
-      "path": ".git/hooks/push-to-checkout.sample",
-      "size": 2783,
-      "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
-    },
-    {
-      "path": ".git/hooks/sendemail-validate.sample",
-      "size": 2308,
-      "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
-    },
-    {
-      "path": ".git/hooks/update.sample",
-      "size": 3650,
-      "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
-    },
-    {
-      "path": ".git/info/exclude",
-      "size": 240,
-      "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+      "path": "FINAL-REPORT.md",
+      "size": 7932,
+      "sha256": "f1c64be7cb45460ae3206a5075aaf4dd477b46658b64390a73817981f0443c45"
     },
     {
       "path": "QA-REPORT.md",
-      "size": 2558,
-      "sha256": "61dbc1b442f21929aee23a29c1ef8e5ece8ea6598c223f2a36334ea24297dd29"
+      "size": 2806,
+      "sha256": "37b12ed5a364cec001412ceebd3c04b7e3163c2d95afd28868603dae057a7999"
     },
     {
       "path": "README.md",
@@ -108,8 +28,8 @@
     },
     {
       "path": "RELEASE-NOTES.md",
-      "size": 2044,
-      "sha256": "66c3a00a6ba91266bc21a46e59552944ac38510384a4aea36f0045f1a4bcffe1"
+      "size": 2977,
+      "sha256": "f292c3b009578a0ba2ca5c4979c5c2eba45bfdd60726dbe194d11e86ef1034a1"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -168,8 +88,8 @@
     },
     {
       "path": "qa/stress-results.json",
-      "size": 7545,
-      "sha256": "667513b7642efad61a12751943c099bb969233a2056e6145dd47d7432dfa7d24"
+      "size": 7800,
+      "sha256": "3954ed204ba82e3ed0b4664057ac74bfd528f99867aa9dbc388517373902f6b9"
     },
     {
       "path": "scripts/generate-catalog.js",
@@ -199,7 +119,7 @@
     {
       "path": "src/content.js",
       "size": 28620,
-      "sha256": "ec89ffb6bcc88731de6eb3569f423e3b1e12c49defac7eac324293930cbf6231"
+      "sha256": "c1e2aef56662ddb6d727c9654c1a3b5d219793ec54c9fe07ee6b5544b8a130f4"
     },
     {
       "path": "src/effects.js",
@@ -243,8 +163,8 @@
     },
     {
       "path": "tests/engine.test.js",
-      "size": 66627,
-      "sha256": "84bb4238aa3fab3c2d81ff9cbdb1cfe92c2e5084378143cdd9ee698d03ad11e9"
+      "size": 67329,
+      "sha256": "d492c151cba6bc809c0d232d58de3c36b09cb596e42599931b013921ed267fdb"
     },
     {
       "path": "tests/formula.test.js",
@@ -286,5 +206,7 @@
       "size": 241575,
       "sha256": "fdb08546776ec6228b03e8d02b40d4ab3255bae5f401adba7ff5dad927ac5c9c"
     }
-  ]
+  ],
+  "combinedDefaultCompositionWinRate": 0.595,
+  "notes": "FINAL-REPORT.md added; default 4v4 B-side lightly rebalanced (ranger->warden); verifiedTests bumped to 98 (added mirror-combined balance test). .git/ is a real git repo and is no longer part of the shipped manifest."
 }

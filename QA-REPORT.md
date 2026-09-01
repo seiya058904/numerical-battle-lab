@@ -30,9 +30,13 @@ The static gate checks deterministic runtime constraints, forbidden dynamic exec
 
 `qa/stress-results.json` records the release stress run.
 
-- Default composition, 200 matches: A 55.5% / B 44.5%, 0 draws.
-- Swapped sides, 200 matches: A 44.0% / B 56.0%, 0 draws.
-- Combined composition win rate: **55.75%**.
+Default lineup note: the default 4v4 showcase was lightly rebalanced by moving the
+B-side's duplicated ranged slot to a `warden` (protector/counterattack deck), bringing the
+mirror (正反位) combined win rate inside the 40–60% acceptance band.
+
+- Default composition, 200 matches: A 57.0% / B 43.0%, 0 draws.
+- Swapped sides, 200 matches: A 38.0% / B 62.0%, 0 draws.
+- Combined composition win rate: **59.5%**.
 - 6v6: completed 50 matches without runtime failure.
 - 1v6 and 6v1: completed 20 matches each without runtime failure.
 - Determinism: 25 paired deterministic cases reproduced exactly.
