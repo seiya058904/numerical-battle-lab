@@ -23,7 +23,8 @@ test('card schema matches spec fields and constraints',()=>{
   assert.equal(c.rarity,'C');assert.equal(c.level,100);assert.equal(c.quality>=0.97&&c.quality<=1.03,true,c.quality);
   assert.equal(c.archetype,'Balanced');
   assert.ok(c.powerIndex>0&&c.generationBudget>0);
-  assert.ok(c.stats.MAX_HP>=600&&c.stats.ATK>=60&&c.stats.SPD>=85,'primary conversion floor');
+  assert.ok(c.stats.MAX_HP>=90&&c.stats.ATK>=40&&c.stats.SPD>=55,'primary conversion floor (calibrated band)');
+  assert.ok(c.stats.MAX_HP<3000&&c.stats.ATK<1000,'generated stats stay in a sane engine band');
   assert.equal(c.skills.length,3,'exactly 3 active skills');
   assert.ok(Array.isArray(c.passives)&&Array.isArray(c.statuses)&&Array.isArray(c.triggers));
   assert.ok(c.resources.ENERGY&&c.resources.ENERGY.max>0);

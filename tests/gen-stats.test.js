@@ -25,14 +25,19 @@ test('archetypes match spec, sum to 1; registerArchetype extends',()=>{
   N.registerArchetype('Zombie',{MAX_HP:.5,ATK:.1,DEF:.1,RES:.2,SPD:.1});
   assert.ok(N.ARCHETYPES.Zombie);
 });
-test('primary conversion matches spec',()=>{
+test('primary conversion is a base+BP*K registry (calibrated to engine band)',()=>{
   const N=load();
   const c=N.PRIMARY_CONVERSION;
-  assert.equal(c.MAX_HP(0),600);assert.equal(c.MAX_HP(10),900);
-  assert.equal(c.ATK(0),60);assert.equal(c.ATK(10),90);
-  assert.equal(c.DEF(0),40);assert.equal(c.DEF(10),60);
-  assert.equal(c.RES(0),40);assert.equal(c.RES(10),60);
-  assert.equal(c.SPD(0),85);assert.equal(c.SPD(50),100);
+  assert.equal(c.MAX_HP(0),90);
+  assert.ok(Math.abs(c.MAX_HP(100)-160)<1e-9);
+  assert.equal(c.ATK(0),40);
+  assert.ok(Math.abs(c.ATK(100)-72)<1e-9);
+  assert.equal(c.DEF(0),30);
+  assert.ok(Math.abs(c.DEF(100)-75)<1e-9);
+  assert.equal(c.RES(0),30);
+  assert.ok(Math.abs(c.RES(100)-75)<1e-9);
+  assert.equal(c.SPD(0),55);
+  assert.ok(Math.abs(c.SPD(100)-83)<1e-9);
 });
 test('allocatePrimary is seeded-deterministic, preserves total budget, honors archetype shape',()=>{
   const N=load();
@@ -42,7 +47,7 @@ test('allocatePrimary is seeded-deterministic, preserves total budget, honors ar
   const tot=N.PRIMARY_STAT_LIST.reduce((s,x)=>s+a.statBP[x],0);
   assert.ok(Math.abs(tot-520)<3,'primary BP ~ budget, got '+tot);
   assert.ok(a.statBP.ATK>a.statBP.DEF,'assassin ATK>DEF');
-  assert.ok(a.stats.ATK>=60&&a.stats.MAX_HP>=600);
+  assert.ok(a.stats.ATK>=40&&a.stats.MAX_HP>=90,'calibrated conversion floors');
   const c=N.allocatePrimary({budget:520,archetype:'Assassin',seed:'different'});
   const totC=N.PRIMARY_STAT_LIST.reduce((s,x)=>s+c.statBP[x],0);
   assert.ok(Math.abs(totC-520)<3);

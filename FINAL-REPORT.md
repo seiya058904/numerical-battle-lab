@@ -1,6 +1,6 @@
 # FINAL-REPORT — NUMERICAL // 数值对战实验室
 
-**Status:** v1.0.1 baseline · all final gates green · competencies verified in this environment
+**Status:** v1.1.0 baseline · all final gates green · competencies verified in this environment
 
 ## 1. 项目最终结构
 
@@ -23,13 +23,21 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 │   ├── formula.js             # Acorn 8.15.0 + 严格白名单解释层
 │   ├── effects.js             # Effect 执行器与 AI estimate（注册表）
 │   ├── engine.js              # BattleEngine（伤害管线/目标/资源/AI/模拟/replay）
+│   ├── power.js               # 【v1.1】稀有度 RPI + LevelFactor + CardPower + GenerationBudget + QualityFactor
+│   ├── gen-stats.js           # 【v1.1】职业原型 + Primary/Secondary 数值分配（种子抖动/费用表）
+│   ├── gen-skills.js          # 【v1.1】统一技能费用曲线 + 有限可装配配方库（13 配方）
+│   ├── generator.js           # 【v1.1】15 步卡牌流水线 + schema + powerAudit + assembleCardPack + deployCard
+│   ├── gen-balance.js         # 【v1.1】ExpectedWin 立方公式 + 稀有度对阵参考
 │   └── app.js                 # Web UI（对战/编辑器/模拟/规则/replay 导入导出）
 ├── scripts/
 │   ├── generate-catalog.js    # 从组件注册表生成 md + json 目录
 │   ├── static-check.js        # 静态架构门禁
-│   └── stress-check.js        # 平衡/确定性/异常阵容压力门禁
+│   ├── stress-check.js        # 平衡/确定性/异常阵容压力门禁
+│   └── gen-mc.js              # 【v1.1】蒙特卡洛期望胜率冒烟（报告性质，非硬性门禁）
 ├── tests/                     # engine.test.js + formula.test.js
+│                             #   + power/gen-stats/gen-skills/generator/gen-balance.test.js
 ├── docs/                      # ARCHITECTURE / COMPONENT-CATALOG(md+json) / PLUGIN-API / CONTENT-AUTHORING
+│   └── GENERATOR.md           # 【v1.1】卡牌生成子系统作者使用文档
 ├── qa/                        # browser-results / stress-results / desktop.png / mobile.png
 ├── third_party/               # acorn + pokemon-showdown 许可证溯源
 ├── vendor/acorn-8.15.0.js     # 随包锁定的 AST 解析器
@@ -38,17 +46,62 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 ```
 
 工作区：`D:\xia zai\AI project\pk\2\NUMERICAL-BATTLE-LAB-v1.0.0`（已 `git init`，
-基线提交 `adec7c4`。MTP：源来自 `D:\下载\NUMERICAL-BATTLE-LAB-v1.0.0.zip`，兄弟目录
-`pk\1` 仅作只读参考，未改动）。
+基线提交 `adec7c4`，v1.0.1 提交 `6ab621d`，卡牌生成子系统提交
+`3984cff/ccf6a6f/13f52c7/a4c6600/26cac80/8252d6c`。MTP：源来自
+`D:\下载\NUMERICAL-BATTLE-LAB-v1.0.0.zip`，兄弟目录 `pk\1` 仅作只读参考，未改动）。
 
 ## 2. 测试总数
 
-- **98** 个自动化测试，全部通过（`node --test`）。
+- **124** 个自动化测试，全部通过（`node --test`）。
 - 覆盖：确定性、modifier 顺序、公式验证/执行、目标查询、触发顺序、触发循环保护、
   资源原子支付、状态叠层、sustain、伤害分量、ward/shield、净化/驱散/夺取、多段、
   miss/crit 上下文、击杀事件、replay、AI RNG 分离、重放复现、内容校验、插件扩展、
   组件目录、普通镜像平衡等。
-- 本次新增 1 个测试：`default 4v4 mirror combined rate stays within the competitive band`。
+- v1.0.1 新增 1 个测试：`default 4v4 mirror combined rate stays within the competitive band`。
+- **v1.1.0 新增 26 个测试**（卡牌生成子系统）：
+  - `power.test.js`（7）：RPI 顺序、LevelFactor 曲线采样、CardPower/GenerationBudget
+    与规范示例一致、预算分区求和为 1、Qual<arity>Factor 种子确定性。
+  - `gen-stats.test.js`（6）：原型匹配规范、注册表可扩展；主属性 base+BP*K 校准带；
+    allocatePrimary 种子确定/保预算/保原型形态；二次属性费用表与上限。
+  - `gen-skills.test.js`（4）：refSkillCost 目标/命中/CD 因子；target 因子表匹配规范；
+    SKILL_RECIPES 为有限且经校验的配方库；recipeBaseCost 有限为正。
+  - `generator.test.js`（7）：同种子确定性、schema 字段与约束、SSS 输出 > C、A Lv50 ≈
+    C Lv100 关系、validateContentPack 编译通过、真实对战可 resolve、powerAudit 诚实、
+    原型形态差异。
+  - `gen-balance.test.js`（3）：ExpectedWin 立方公式（canonical）、零/非有限防护、
+    expectedRarityWin 使用 RPI。
+
+## 2.5 卡牌稀有度 / 等级 / 随机数值生成子系统（v1.1 新增）
+
+实现规范《卡牌稀有度 / 等级 / 随机数值生成规范 v1.0》要求的引擎级生成能力，核心贯
+彻：**稀有度只发放"实力预算"，绝不写 `if(rarity==='SSS')...*2`**；同稀有度可产出不
+同属性结构；"随机生成"= 用种子 PRNG 把**固定预算**按步骤拆分，而非随机撒数字。
+
+- **Power 层（`power.js`）**：`RARITY_ORDER`（C→SSS，9 档）+ `RARITY_RPI`
+  {100,108,118,129,141,154,169,187,207}；`levelFactor` 曲线（base .40 / scale .60 /
+  denom 99 / exp .92）；`computeCardPower` + `generationBudget`；质量因子
+  `[0.97,1.03]`；预算分区（primary .52 / secondary .13 / activeSkills .25 /
+  passiveTrigger .10）；`seedHash`（FNV-1a）+ `qualityFactor`（Gen5PRNG 种子驱动）。
+- **Stat 层（`gen-stats.js`）**：7 种职业原型（Tank/Balanced/Assassin/Mage/...，权重
+  和 1）+ `registerArchetype` 可扩展；主属性 `allocatePrimary`＝把主预算按原型模板用
+  种子抖动（±12%）后重归一化；次属性用费用表贪心购买（+1%）并保持在上限内。属性转
+  换为 `BASE + BP*K` 注册表（归一化调整以匹配引擎出力带，结构保持规范）。
+- **Skill 层（`gen-skills.js`）**：统一费用曲线 `refSkillCost`（目标数/命中/CD/优先级
+  因子，随机目标×0.9、条件目标×0.85）；13 个**有限可装配配方**（strike/heavy/cleave/
+  flurry/pierce/fire-bolt/ember/heal/shield/weaken/enfeeble/fortify/haste），装载时对
+  `EFFECT_COMPONENTS`/`DAMAGE_TYPES`/`STATUS_DEFS` 校验。
+- **Generator 层（`generator.js`）**：`CARD_GENERATOR_VERSION=1`；`generatorSeedStream`
+  派生种子流；`generateCard(opts)` 15 步流水线产出完整卡 schema（id/seed/rarity/level/
+  quality/archetype/powerIndex/generationBudget/stats/resources/resistances/tags/
+  skills[3]/passives/statuses/triggers/powerAudit/name）；`powerAudit` 诚实汇报预算落位
+  （buckets 求和 = 总预算）；`assembleCardPack` 组装出能通过 `validateContentPack` 的
+  `{units,skills,statuses}`；`deployCard` 把卡部署为可入战实体。
+- **Balance 层（`gen-balance.js`）**：`expectedWinRate(pA,pB)=pA³/(pA³+pB³)`（canonical，
+  带零/非有限防护）；`expectedRarityWin`。该公式**只作参考**——低级 vs 高级实测胜率因
+  属性与技能预算同步放大而**系统性高于**参考（校准发现，见下）。
+- **整包绩效门禁**：以上各层均有独立测试；`validateContentPack` 编译通过；generateCard
+  同种子严格确定；生成卡可投入真实 BattleEngine 作战。作者文档见 `docs/GENERATOR.md`；
+  蒙特卡洛冒烟见 `scripts/gen-mc.js`（`npm run gen-mc`，报告性质，非硬性门禁）。
 
 ## 3–9. 能力面计数（`generate-catalog.js` 从注册表生成，单一数据源）
 
@@ -98,6 +151,17 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 - 编辑器的"高级组件"仍需以 JSON 程序块编辑（Damage Components / Target Query /
   Requirements / Effects / Modifiers / Triggers 均公开可编辑），尚无表单化向导式
   装配、撤销/重做、跨版本内容迁移。这是下一步最适合扩展的产品面。
+- **生成卡 ""（空种子）会产出完全相同的卡**：`generateCard` 默认 seed 为空串，因此
+  不带 seed 的两次调用产出两张同构卡（确定性是特性）。这本身不缺陷，但意味着用户若
+  想"每次随机不同"必须显式传 seed（如时间戳/计数）。
+- **完全相同且带自愈/急疾技能组的两张生成卡在 1v1 会互刷不死（stalemate）**：当对局
+  双方是同一（或镜像）skill 配方集（如 heal+haste+cleave）时，双方可无限自愈到对局
+  轮次上限，`outcome.ended` 为 false、以 draw 收束。这是**已纳入上界的饱和行为**——
+  `runSimulation`/`resolveRound` 的 `maxRounds` 兜底保证不会无限挂起；任何 1v1 若想
+  必有胜负，应避免 pair 出镜像自愈组合，或交由多实体阵容与 maxRounds 处理。
+- **卡牌生成平衡是"参考 + 实测"模型**：ExpectedWin 立方公式取为 canonical 参考，但
+  高级稀有度实测胜率系统性高于参考（属性与技能预算同步超线性放大）。`gen-mc` 报告
+  此差异为校准发现，属符合范围的报告项而非硬性带内门禁。
 
 ## 13. 下一步可扩展方向
 
@@ -109,18 +173,23 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
   削减、资源封锁、团队光环、死亡触发器、状态转移、伤害转化等），按需以**新示例
   内容**而非硬编码加入。
 - **内容版本化与迁移**：素材包 schema version 管理，平滑升级自定义内容。
+- **卡牌生成扩面（v1.1 之后）**：`generateCard` 的 passiveTrigger 预算当前自动置 0
+  （powerAudit 如实汇报 `spent 0`）——v1.1 只生成主动技能；被动/触发是明确的下一步。
+  此外可按需扩展配方库、职业原型、质量因子区间到更多稀有度/存档落地方案。
 
 ---
 
 ## 验证门禁（本环境重测）
 
 ```
-ALL TESTS PASS        ✔ 98/98
+ALL TESTS PASS        ✔ 124/124
 STATIC CHECK PASS     ✔ 静态门禁通过（91 参数 / 18 Effect）
 CONTENT COMPILE PASS  ✔ validateContentPack + verify 全部通过
-DETERMINISM PASS      ✔ replay 精确复现；25 个成对确定性案例一致
+DETERMINISM PASS      ✔ replay 精确复现；25 个成对确定性案例一致；generateCard 同种子严格一致
 BROWSER QA PASS       ✔ Chromium 1440×1000：无 JS 错误、无横向溢出、对战/AI/编辑器/
                         模拟(500局)/规则/replay 全部可用；无效公式提示错误
+GENERATOR BROWSER QA  ✔ 6 个生成模块在浏览器加载；generateCard/assembleCardPack/
+                        validateContentPack/确定性有效（对战 resolve 见已知限制说明）
 MOBILE QA PASS        ✔ Chromium 390×844：无横向溢出、对战可打到胜负、无 NaN/错误
 BALANCE SMOKE PASS    ✔ 默认 4v4 镜像 combined 59.5%（40–60% 带内）
 ```

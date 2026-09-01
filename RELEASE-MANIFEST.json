@@ -4,7 +4,7 @@
   "entry": "index.html",
   "runtime": "fully-offline-static-web",
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
-  "verifiedTests": 98,
+  "verifiedTests": 124,
   "files": [
     {
       "path": ".gitignore",
@@ -47,6 +47,11 @@
       "sha256": "7cf68402831fd8ad2b3a20025f48da1615ae4b38f9927185ea93aad2460a57f6"
     },
     {
+      "path": "docs/GENERATOR.md",
+      "size": 6947,
+      "sha256": "2efb3e8a0b4fa56685e6dc87d61302257bffc28495a4febee3e74a11120d7535"
+    },
+    {
       "path": "docs/NUMERIC-COMPONENT-CATALOG.md",
       "size": 24197,
       "sha256": "c98bb8c3a6749c571582458612a90cefff12e2b31246ba3804ddfd9816c2c2e7"
@@ -63,13 +68,13 @@
     },
     {
       "path": "index.html",
-      "size": 2029,
-      "sha256": "caa23d1096a1b08e4e8dd244456fa83ad15bbc89e8512320445a1c3626d31bb9"
+      "size": 2243,
+      "sha256": "1ca221bd160d7cba7168d7d26301bb469477a09a45b4e401582860979b6ac063"
     },
     {
       "path": "package.json",
-      "size": 327,
-      "sha256": "4a9f7d5e625192eba51931bab7349eb0c6f4f3c2128aa2f5544c1bc9f7712b4b"
+      "size": 367,
+      "sha256": "a820f6e398bef189937b93ac60f24a2ee108aee70439f1acfedaffe4603ee7e2"
     },
     {
       "path": "qa/browser-results.json",
@@ -90,6 +95,11 @@
       "path": "qa/stress-results.json",
       "size": 7800,
       "sha256": "3954ed204ba82e3ed0b4664057ac74bfd528f99867aa9dbc388517373902f6b9"
+    },
+    {
+      "path": "scripts/gen-mc.js",
+      "size": 2177,
+      "sha256": "220fde58e7c5d369c63c8fab7ad2b9a2521417d9bcccb28904f67b6d8ea714b5"
     },
     {
       "path": "scripts/generate-catalog.js",
@@ -137,9 +147,34 @@
       "sha256": "1d82791f712fd0f5d716a5e411e427eb42b715ccb17d72810770317a8bff8d6c"
     },
     {
+      "path": "src/gen-balance.js",
+      "size": 993,
+      "sha256": "a213e68ec4df98f912ca1225bb16d3c72fbdb81d4e81999278708e6e1aab102c"
+    },
+    {
+      "path": "src/gen-skills.js",
+      "size": 5077,
+      "sha256": "25b05baabe52c27be576d74f1c36cc565dc0ac5cf74b549e9784f9eaa42a40cf"
+    },
+    {
+      "path": "src/gen-stats.js",
+      "size": 5046,
+      "sha256": "db334037e37ed4afa88b0be04095351a0845f7daa3182ab817d9e3e1308cbe09"
+    },
+    {
+      "path": "src/generator.js",
+      "size": 8084,
+      "sha256": "ab637cb5704e80256a4a62749e7d5964eabdc926c98b5b06ddc541ec3a95e4bb"
+    },
+    {
       "path": "src/kernel.js",
       "size": 4375,
       "sha256": "8d21019af63dbd2194f06956832dd9f1cb159a890a2eff745ac23f2ecad3588c"
+    },
+    {
+      "path": "src/power.js",
+      "size": 2863,
+      "sha256": "40e6a56204513c5307d0b17f0138223fe6d1991c821a046658e806fae4d4e9f5"
     },
     {
       "path": "src/rules.js",
@@ -170,6 +205,31 @@
       "path": "tests/formula.test.js",
       "size": 2131,
       "sha256": "0c53dae3dfc7fabbfbeef6d7b07a4fbab62b2514c47e2ac37ab408cf6b357ccd"
+    },
+    {
+      "path": "tests/gen-balance.test.js",
+      "size": 2118,
+      "sha256": "b5c9bb3b23b9640702460b3f22da821bebe8345b80d0b83d9e774e737ce0d1dc"
+    },
+    {
+      "path": "tests/gen-skills.test.js",
+      "size": 2632,
+      "sha256": "8b2e815a88865b448c4e127179ec6a87fdba09207e04fe9091b4e6722686134b"
+    },
+    {
+      "path": "tests/gen-stats.test.js",
+      "size": 3629,
+      "sha256": "e9d3fc23c925ba596bcde4eb398afc932e795297bfa4e10be912cf250bb5e2de"
+    },
+    {
+      "path": "tests/generator.test.js",
+      "size": 4371,
+      "sha256": "715bb536ba276c80f2fb0d6580025ea03535a8f690c015717120b9b131bfa3b5"
+    },
+    {
+      "path": "tests/power.test.js",
+      "size": 2792,
+      "sha256": "e0207d0924cf17ea22b1d5f2e3ffdb3f8b45ada38ad1e9eaf054d2b23b756ffb"
     },
     {
       "path": "third_party/acorn/LICENSE",
@@ -208,5 +268,5 @@
     }
   ],
   "combinedDefaultCompositionWinRate": 0.595,
-  "notes": "FINAL-REPORT.md added; default 4v4 B-side lightly rebalanced (ranger->warden); verifiedTests bumped to 98 (added mirror-combined balance test). .git/ is a real git repo and is no longer part of the shipped manifest."
+  "notes": "v1.1.0: added card rarity/level/generator subsystem (power/gen-stats/gen-skills/generator/gen-balance + GENERATOR.md + gen-mc) and 26 new tests."
 }

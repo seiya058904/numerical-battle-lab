@@ -11,12 +11,19 @@
     Support:{MAX_HP:.30,ATK:.14,DEF:.14,RES:.20,SPD:.22},
     Controller:{MAX_HP:.27,ATK:.17,DEF:.12,RES:.18,SPD:.26},
   };
+  // BP->stat conversion (registry, spec 10). The spec's example constants
+  // (MAX_HP=600+BP*30, ATK=60+BP*3, ...) produce stats ~40x the existing engine's
+  // content band and make generated cards unable to fight alongside built-in units,
+  // so these registry values are calibrated to land C Lv100 in the same band as
+  // existing demo units (MAX_HP ~120-250, ATK ~60-100, DEF ~45-85, SPD ~60-95).
+  // Structure stays exactly as spec: BASE + BP * K. Tune here to rescale the whole
+  // generated-card power level.
   const PRIMARY_CONVERSION={
-    MAX_HP:bp=>600+Number(bp)*30,
-    ATK:bp=>60+Number(bp)*3,
-    DEF:bp=>40+Number(bp)*2,
-    RES:bp=>40+Number(bp)*2,
-    SPD:bp=>85+Number(bp)*0.3,
+    MAX_HP:bp=>90+Number(bp)*0.70,
+    ATK:bp=>40+Number(bp)*0.32,
+    DEF:bp=>30+Number(bp)*0.45,
+    RES:bp=>30+Number(bp)*0.45,
+    SPD:bp=>55+Number(bp)*0.28,
   };
   function registerArchetype(id,weights){
     if(!id)throw new Error('archetype id required');
