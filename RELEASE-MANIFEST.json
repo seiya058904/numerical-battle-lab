@@ -144,6 +144,11 @@
       "sha256": "f51504415d6704459230d1d7cc4f7ca9156895642d96ff36bbfe8f2bb5c75f54"
     },
     {
+      "path": "scripts/generate-manifest.js",
+      "size": 3967,
+      "sha256": "e2bb2619cfcfc2ec5c095d4d6bcf676f71e623f5b341fe82a3e6d035ecf32aa6"
+    },
+    {
       "path": "scripts/static-check.js",
       "size": 6181,
       "sha256": "8ae014b8a8898b45e6d02526fa18892d16dcb36ee844d01fffefb92216bcf08c"
