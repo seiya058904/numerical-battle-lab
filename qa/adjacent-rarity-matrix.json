@@ -1,0 +1,427 @@
+{
+  "version": "1.2.1",
+  "battlesPerPair": 10,
+  "cardsPerTier": 6,
+  "archetypes": 7,
+  "allDirectionCorrect": true,
+  "rows": [
+    {
+      "lo": "C",
+      "hi": "C_PLUS",
+      "winRateHigherTier": 0.562,
+      "ciLow": 0.548,
+      "ciHigh": 0.575,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.475
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.501
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.886
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.825
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.704
+        },
+        {
+          "arch": "Support",
+          "hi": 0.268
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.272
+        }
+      ]
+    },
+    {
+      "lo": "C_PLUS",
+      "hi": "B",
+      "winRateHigherTier": 0.597,
+      "ciLow": 0.583,
+      "ciHigh": 0.611,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.799
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.525
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.663
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.31
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.789
+        },
+        {
+          "arch": "Support",
+          "hi": 0.547
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.547
+        }
+      ]
+    },
+    {
+      "lo": "B",
+      "hi": "B_PLUS",
+      "winRateHigherTier": 0.559,
+      "ciLow": 0.545,
+      "ciHigh": 0.573,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.499
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.528
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.664
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.496
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.621
+        },
+        {
+          "arch": "Support",
+          "hi": 0.374
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.733
+        }
+      ]
+    },
+    {
+      "lo": "B_PLUS",
+      "hi": "A",
+      "winRateHigherTier": 0.529,
+      "ciLow": 0.515,
+      "ciHigh": 0.542,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.561
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.133
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.596
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.696
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.489
+        },
+        {
+          "arch": "Support",
+          "hi": 0.483
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.742
+        }
+      ]
+    },
+    {
+      "lo": "A",
+      "hi": "A_PLUS",
+      "winRateHigherTier": 0.535,
+      "ciLow": 0.521,
+      "ciHigh": 0.548,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.431
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.347
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.683
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.756
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.603
+        },
+        {
+          "arch": "Support",
+          "hi": 0.303
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.619
+        }
+      ]
+    },
+    {
+      "lo": "A_PLUS",
+      "hi": "S",
+      "winRateHigherTier": 0.565,
+      "ciLow": 0.551,
+      "ciHigh": 0.578,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.586
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.61
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.7
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.461
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.685
+        },
+        {
+          "arch": "Support",
+          "hi": 0.115
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.796
+        }
+      ]
+    },
+    {
+      "lo": "S",
+      "hi": "SS",
+      "winRateHigherTier": 0.566,
+      "ciLow": 0.552,
+      "ciHigh": 0.58,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.401
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.265
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.806
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.763
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.607
+        },
+        {
+          "arch": "Support",
+          "hi": 0.392
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.729
+        }
+      ]
+    },
+    {
+      "lo": "SS",
+      "hi": "SSS",
+      "winRateHigherTier": 0.592,
+      "ciLow": 0.578,
+      "ciHigh": 0.605,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.785
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.167
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.883
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.781
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.753
+        },
+        {
+          "arch": "Support",
+          "hi": 0.468
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.306
+        }
+      ]
+    },
+    {
+      "lo": "SSS",
+      "hi": "SSS_COLLECTOR",
+      "winRateHigherTier": 0.587,
+      "ciLow": 0.573,
+      "ciHigh": 0.6,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.547
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.736
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.593
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.661
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.769
+        },
+        {
+          "arch": "Support",
+          "hi": 0.128
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.671
+        }
+      ]
+    },
+    {
+      "lo": "SSS_COLLECTOR",
+      "hi": "XS",
+      "winRateHigherTier": 0.538,
+      "ciLow": 0.524,
+      "ciHigh": 0.551,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.578
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.354
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.636
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.703
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.693
+        },
+        {
+          "arch": "Support",
+          "hi": 0.294
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.506
+        }
+      ]
+    },
+    {
+      "lo": "XS",
+      "hi": "XS_COLLECTOR",
+      "winRateHigherTier": 0.54,
+      "ciLow": 0.526,
+      "ciHigh": 0.554,
+      "sampleCount": 5040,
+      "archRows": [
+        {
+          "arch": "Balanced",
+          "hi": 0.317
+        },
+        {
+          "arch": "Tank",
+          "hi": 0.463
+        },
+        {
+          "arch": "Bruiser",
+          "hi": 0.732
+        },
+        {
+          "arch": "Assassin",
+          "hi": 0.713
+        },
+        {
+          "arch": "Mage",
+          "hi": 0.626
+        },
+        {
+          "arch": "Support",
+          "hi": 0.432
+        },
+        {
+          "arch": "Controller",
+          "hi": 0.497
+        }
+      ]
+    }
+  ]
+}

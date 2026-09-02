@@ -56,8 +56,13 @@ Lv1=0.40, Lv50≈0.714, Lv100=1.00。禁止“C 只能升 50 / SSS 升 120”这
 
 - `QualityFactor`：`NCB.qualityFactor(seed)` 由 seed 确定性生成，范围 `0.97..1.03`（±3%）。
 - `CardPower = RPI * LevelFactor * QualityFactor`（`NCB.computeCardPower` / v1.2 `computeCardPowerV2`）。
-- `NumericScale = sqrt(CardPower/100)`；`GenerationBudget = 1000 * NumericScale`（`NCB.generationBudget`）。
-- 例：C Lv100 => 预算 1000；XS 典藏 Lv100 => ~1565。高端核心数值约为 C 的 sqrt(2.45)≈1.57 倍，
+- `NumericScale = sqrt(CardPower/100)`；`GenerationBudget = 1000 * NumericScale`（`NCB.generationBudget`，v1 公式）。
+- **v1.2.1（v2-only）**：Generator v2 不再用解析式预算，而是
+  `NCB.v2GenerationBudget({rarity,level,quality}) = 1000 * V2_BUDGET_CURVE[rarity] * sqrt(levelFactor*quality)`。
+  `V2_BUDGET_CURVE` 是单调、确定性、数据驱动的 RPI→预算表（`src/gen-v2.js`），
+  使真实相邻稀有度镜像胜率落在审计目标（普通 54-60%、典藏 52-57%），
+  v1 的 `generationBudget` 公式未动。
+- 例：C Lv100 => 预算 1000；XS 典藏 Lv100 => ~1645。高端核心数值约为 C 的 ~1.65 倍，
   剩余差距来自技能倍率/防御/状态/资源/Trigger 等共同产生。
 
 ## 预算分区（`NCB.POWER_RULES.budgetPartitions`，可调）
@@ -167,19 +172,25 @@ Skills 只保存程序组件，不保存角色专属 JS。
 （primary / secondary / skills / passive）以及 `unspent`。让人类和 AI 都能回答
 “为什么这张卡这么强”，而不是只看到一堆最终数字。
 
-## 战力评分 BattlePower（v1.2，展示指标）
+## 战力评分 BattlePower（v1.2.1，1v1 通用强度排序指标）
 
-`NCB.battlePower(card)`（`src/battlepower.js`）用 7 维子评分做几何聚合：
+`NCB.battlePower(card)`（`src/battlepower.js`）用几何聚合计算：
 
 ```text
 PowerRatio = exp(Σ weight[i] * ln(SubScore[i] / Reference[i]))
 BattlePower = round(10000 * PowerRatio)
 ```
 
-- 子评分：进攻（engine 多回合有效伤害 + ATK 下限）、生存（有效生命 HP+DEF/RES）、
-  续航（治疗+护盾）、节奏（速度）、功能（状态效用）、经济（资源）、稳定（命中率）。
-- 权重由 Monte Carlo 在健康生态上拟合（train/validation 完全分离，
-  `scripts/power-calibration.js`；验证集 Spearman ~0.75-0.78）。
+- **口径（v1.2.1）**：BattlePower 是 **1v1 通用强度排序指标**，不是任意 matchup 的
+  精确胜率；普通 UI 不显示精确百分比，用 `战力较高 / 战力接近 / 战力较低`
+  （`card-ui.bpRelation`）或仅显示战力数字。
+- **3 主评分维度 + 4 诊断维度**：进攻（engine 多回合有效伤害 + ATK 下限）、
+  生存（有效生命 HP+DEF/RES）、节奏（速度）为**主评分**；续航（治疗+护盾）、
+  功能（状态效用）、经济（资源）、稳定（命中率）为**诊断维度**（仍计算并显示，
+  当前 ~0 权重）。
+- 权重来源：`scripts/power-calibration.js` 的 `fitBattlePowerWeights()` 在 **TRAIN**
+  上自动拟合；VALIDATION 按 Spearman + similar-BP fairness 选模型；FINAL_TEST 只跑一次。
+  发布权重 `{offense 0.22, durability 0.45, tempo 0.25, ...}`（shipped `src/battlepower.js`）。
 - **BattlePower 是展示指标**：只读最终卡数据，永不进入战斗结算，不把稀有度当伤害倍率；
   相同最终数据（即使稀有度/等级标签不同）→ 相同战力。
 

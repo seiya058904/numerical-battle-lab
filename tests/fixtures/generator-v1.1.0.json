@@ -1,0 +1,1521 @@
+{
+  "name": "generator-v1.1.0 historical fixture",
+  "version": 1,
+  "generatorVersion": 1,
+  "canonical": "sha256(recursive-sorted-json of generateCard output)",
+  "count": 189,
+  "entries": [
+    {
+      "rarity": "C",
+      "archetype": "Balanced",
+      "level": 1,
+      "seed": "V1FIX_0_C_Balanced_1",
+      "cardId": "gen_f4c628e5",
+      "sha256": "67878f27478d4aa45f56ddbfe109dad11a2f3fa90227432a02f7d0f876218093"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Support",
+      "level": 50,
+      "seed": "V1FIX_100_A_Support_50",
+      "cardId": "gen_bf07ee72",
+      "sha256": "9d9ed858ce88968617401f629e96461ed08e1f168005e54a47b226ce07a1d007"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Support",
+      "level": 100,
+      "seed": "V1FIX_101_A_Support_100",
+      "cardId": "gen_9b609fd",
+      "sha256": "f55b846d58641bb81db0bb03197c8d7f66f2333cf5e649263276b95f0961e4fe"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Controller",
+      "level": 1,
+      "seed": "V1FIX_102_A_Controller_1",
+      "cardId": "gen_f94ee546",
+      "sha256": "81caf6357cd987ec8b332443fe7fcbdec528983c331133d4e349c9d317751e83"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Controller",
+      "level": 50,
+      "seed": "V1FIX_103_A_Controller_50",
+      "cardId": "gen_e68c3e9",
+      "sha256": "8db20242f88350536259040679d732b933bc77c9a5a7e8192f0e9936e3efdfdc"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Controller",
+      "level": 100,
+      "seed": "V1FIX_104_A_Controller_100",
+      "cardId": "gen_40e8fc18",
+      "sha256": "e421a0681d99d64e79bb1507c033a73522c7c00c14a90c8e0a4d6a67957de57c"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Balanced",
+      "level": 1,
+      "seed": "V1FIX_105_A+_Balanced_1",
+      "cardId": "gen_30e71d1b",
+      "sha256": "e88f574246273d174e67345ef249c242a2f480cdd349888921b34a400885ec1e"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Balanced",
+      "level": 50,
+      "seed": "V1FIX_106_A+_Balanced_50",
+      "cardId": "gen_dc7d2f48",
+      "sha256": "fcfce78475e610539e0c8565b6335bd919319b79c9335d47425a565f7fe6a0e7"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Balanced",
+      "level": 100,
+      "seed": "V1FIX_107_A+_Balanced_100",
+      "cardId": "gen_bc984745",
+      "sha256": "bac5d11c7afafe26781ff8e9eed3e20c67a2c72671a2958a853f235daf4e4e74"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Tank",
+      "level": 1,
+      "seed": "V1FIX_108_A+_Tank_1",
+      "cardId": "gen_3a2889ae",
+      "sha256": "6e197c1ff0063a51511319f5463fae4e4146774765d11652e87c1f6d8c4318d5"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Tank",
+      "level": 50,
+      "seed": "V1FIX_109_A+_Tank_50",
+      "cardId": "gen_b01f00af",
+      "sha256": "72b723d48b0b919916bbf366d4f1e812ef942f464fcbc304e2fae131a144e40c"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Assassin",
+      "level": 50,
+      "seed": "V1FIX_10_C_Assassin_50",
+      "cardId": "gen_9ccd0992",
+      "sha256": "fbb97c53e0d974bad513e842ea3bf7d4131060495cae1a8a5fa3c0abbd588cc9"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Tank",
+      "level": 100,
+      "seed": "V1FIX_110_A+_Tank_100",
+      "cardId": "gen_17f1103d",
+      "sha256": "a09fb45af6d201fb792e4fff384ae222bc1df63a1abdcafa11fa01644dd64ad0"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Bruiser",
+      "level": 1,
+      "seed": "V1FIX_111_A+_Bruiser_1",
+      "cardId": "gen_b90d7a28",
+      "sha256": "bde8cfc3b56065ce40402d4ba863379745716e772ea56f1d33d5c5be0e8c39de"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Bruiser",
+      "level": 50,
+      "seed": "V1FIX_112_A+_Bruiser_50",
+      "cardId": "gen_10ccce7b",
+      "sha256": "ec02d49ec91f4633cc2f3117191b202de390a41312abc318b7527392fb9ef1a0"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Bruiser",
+      "level": 100,
+      "seed": "V1FIX_113_A+_Bruiser_100",
+      "cardId": "gen_f0d547fe",
+      "sha256": "fb235d10fff8f031f24e8833a6d0bb184e48a00036c750fe47051cada6781653"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Assassin",
+      "level": 1,
+      "seed": "V1FIX_114_A+_Assassin_1",
+      "cardId": "gen_447f9f2f",
+      "sha256": "0694874114a1237e6bc7f1c6b254b1f54f73d75b0a0e1344b79aeb3200385e14"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Assassin",
+      "level": 50,
+      "seed": "V1FIX_115_A+_Assassin_50",
+      "cardId": "gen_fcbe46fe",
+      "sha256": "77c0beb057c59981d3e261426449cdbb43ad11da3e0a02846ea2b3bba927e5f2"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Assassin",
+      "level": 100,
+      "seed": "V1FIX_116_A+_Assassin_100",
+      "cardId": "gen_84740685",
+      "sha256": "0efff0455f8467f50719f5c2227a831f4a8e048a5a943f00263f43c2d8d679cb"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Mage",
+      "level": 1,
+      "seed": "V1FIX_117_A+_Mage_1",
+      "cardId": "gen_154e68fa",
+      "sha256": "1994d822efbbb500753925e229aa81f49d52426b3a9a691408932cbeea4d38e6"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Mage",
+      "level": 50,
+      "seed": "V1FIX_118_A+_Mage_50",
+      "cardId": "gen_e936ec75",
+      "sha256": "b31d841368f5d23cb507384e918e62dec4aead99c68ddb0f9789500c217ad135"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Mage",
+      "level": 100,
+      "seed": "V1FIX_119_A+_Mage_100",
+      "cardId": "gen_62394588",
+      "sha256": "e945e636f9c628c3e7ddaa74bafbe09c02df020f672db76c2c61c12ca56d3a44"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Assassin",
+      "level": 100,
+      "seed": "V1FIX_11_C_Assassin_100",
+      "cardId": "gen_3a908561",
+      "sha256": "38f7d1e634a345ff3ec928a07f6a95eed0ebf006016a97f823fe39f6ced46822"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Support",
+      "level": 1,
+      "seed": "V1FIX_120_A+_Support_1",
+      "cardId": "gen_53f1e9e8",
+      "sha256": "de91052f8268d0e70fc80d660230d923f91b78294d10d77bd11ff545e472b1cf"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Support",
+      "level": 50,
+      "seed": "V1FIX_121_A+_Support_50",
+      "cardId": "gen_1375986d",
+      "sha256": "e44472a439fc089160430bc55f6c9eb9a0f3d4bccfbbe483decf697c587bec7a"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Support",
+      "level": 100,
+      "seed": "V1FIX_122_A+_Support_100",
+      "cardId": "gen_c6f4632e",
+      "sha256": "376e7ae3b011b0ac74e8d9229b79bdfe94278ba520e718f847f3dc060c8e5d11"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Controller",
+      "level": 1,
+      "seed": "V1FIX_123_A+_Controller_1",
+      "cardId": "gen_bfdf9e77",
+      "sha256": "9c9c938bdd356fef90cac015c84bf153546d14a4c3d1d944e3a6f4405cbe14e3"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Controller",
+      "level": 50,
+      "seed": "V1FIX_124_A+_Controller_50",
+      "cardId": "gen_9f9c6404",
+      "sha256": "846515082bd463a6e8be1b4524738bb184842ee8d36c331974bb417097cf397a"
+    },
+    {
+      "rarity": "A+",
+      "archetype": "Controller",
+      "level": 100,
+      "seed": "V1FIX_125_A+_Controller_100",
+      "cardId": "gen_4eaea1d5",
+      "sha256": "7d68b30758d9fba6f0e69a4cb91e1df1d77f2a3895605f425018ae4fd59bd194"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Balanced",
+      "level": 1,
+      "seed": "V1FIX_126_S_Balanced_1",
+      "cardId": "gen_ddf4a3e0",
+      "sha256": "e3013e922d34916af64a2fcfd02f971263359427d83a0e1e6b25cf6ea1ec44c8"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Balanced",
+      "level": 50,
+      "seed": "V1FIX_127_S_Balanced_50",
+      "cardId": "gen_3eb9d6b3",
+      "sha256": "30696a6b4d10d352f7398def3d6d51d28b799bf4a27d3c669ed0c1443b27c7aa"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Balanced",
+      "level": 100,
+      "seed": "V1FIX_128_S_Balanced_100",
+      "cardId": "gen_88ca53ae",
+      "sha256": "504e49a30f1a8e6ff067fea2bd2bb5b8a4794c067c9300d8797f8437880cfb96"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Tank",
+      "level": 1,
+      "seed": "V1FIX_129_S_Tank_1",
+      "cardId": "gen_78d1147b",
+      "sha256": "0bf83cb2013a0d723b792489722eff247274b6a08b8c26f31949681365b68b01"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Mage",
+      "level": 1,
+      "seed": "V1FIX_12_C_Mage_1",
+      "cardId": "gen_1f9a7d3e",
+      "sha256": "aeb4339b4a31dae7247b78e4fdece0d432209dd58f6f59684081750da6a8da8d"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Tank",
+      "level": 50,
+      "seed": "V1FIX_130_S_Tank_50",
+      "cardId": "gen_a3123f9f",
+      "sha256": "c6f9cb510e596a9df57eb6d1ff60752c78cbc9d243753b1730093720a7c571b5"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Tank",
+      "level": 100,
+      "seed": "V1FIX_131_S_Tank_100",
+      "cardId": "gen_6f3eb230",
+      "sha256": "aadf886908311de2d8bae7c6b2234b2ab2a46a458c8d59332396a6fb0d48c38d"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Bruiser",
+      "level": 1,
+      "seed": "V1FIX_132_S_Bruiser_1",
+      "cardId": "gen_6b01458d",
+      "sha256": "a462e0e048e806cca30eeea310ee19bebd83e334a1dbfda6513369f7bcf816c9"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Bruiser",
+      "level": 50,
+      "seed": "V1FIX_133_S_Bruiser_50",
+      "cardId": "gen_3229ba92",
+      "sha256": "b1b8e85721053761521aee48109f53fb89af5c863ec3c185f910dc707bffba42"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Bruiser",
+      "level": 100,
+      "seed": "V1FIX_134_S_Bruiser_100",
+      "cardId": "gen_6d8378d7",
+      "sha256": "4a75eb1b33488c7d1a2eaebf8061e06f294bbc8bbd0f7fb4352ffe2a9b9a7e4c"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Assassin",
+      "level": 1,
+      "seed": "V1FIX_135_S_Assassin_1",
+      "cardId": "gen_93330dc8",
+      "sha256": "3fc7cd31516375f103be8fff7f2c9924eff49f272de9213f5ba01da493f314cb"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Assassin",
+      "level": 50,
+      "seed": "V1FIX_136_S_Assassin_50",
+      "cardId": "gen_7a1f4059",
+      "sha256": "e3abeaeaae4e179fa97fe77addd6658ebf9b92fb06a15cd82cf1dd8a9877c7dc"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Assassin",
+      "level": 100,
+      "seed": "V1FIX_137_S_Assassin_100",
+      "cardId": "gen_b0f78a2a",
+      "sha256": "544e90980f49d3d499a7eda9d574fe52f5428fed1b645939194eb8999b60bd7c"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Mage",
+      "level": 1,
+      "seed": "V1FIX_138_S_Mage_1",
+      "cardId": "gen_c4033c21",
+      "sha256": "8bbdab0cca02de3dfc34ba0d1f08ebf2b0e84feab3fa319ef6343b891c0d7ed5"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Mage",
+      "level": 50,
+      "seed": "V1FIX_139_S_Mage_50",
+      "cardId": "gen_556e5d66",
+      "sha256": "e5ea2c533379e3bad9290cb1fb9f9798e8cee20fbe99f29f559a68d93db1a273"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Mage",
+      "level": 50,
+      "seed": "V1FIX_13_C_Mage_50",
+      "cardId": "gen_20d77661",
+      "sha256": "e1b5e9890549025a2c8a46582256e3191183ef4293533f1f774e983774c9637b"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Mage",
+      "level": 100,
+      "seed": "V1FIX_140_S_Mage_100",
+      "cardId": "gen_616c0558",
+      "sha256": "7045aa9acc854e72855683d01de3907493e7d6e15925f53a695ba62e58021b76"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Support",
+      "level": 1,
+      "seed": "V1FIX_141_S_Support_1",
+      "cardId": "gen_b215af69",
+      "sha256": "2a1faad118fd5b3878be75720e1097bcf39abdfb44ee8ee16abe9008e209252c"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Support",
+      "level": 50,
+      "seed": "V1FIX_142_S_Support_50",
+      "cardId": "gen_350c1030",
+      "sha256": "c333a8fdf3a06ec30628e6b97de707a03087f287d095c4b6a1d3cff44bfdb9cf"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Support",
+      "level": 100,
+      "seed": "V1FIX_143_S_Support_100",
+      "cardId": "gen_46a4079b",
+      "sha256": "24e718f704f4dbe8cc8a167afb305ff7411dc8315bb5b4b7ce3089d54b0b9479"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Controller",
+      "level": 1,
+      "seed": "V1FIX_144_S_Controller_1",
+      "cardId": "gen_9bda3148",
+      "sha256": "6bae793579cc650260da04457ea972232053dff7d53f3796934b3a3e32ab9401"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Controller",
+      "level": 50,
+      "seed": "V1FIX_145_S_Controller_50",
+      "cardId": "gen_7c407b37",
+      "sha256": "6143a880ea3e6fe03a8e211a7dd4865c7cac3580405c84ade851cb5d044179c4"
+    },
+    {
+      "rarity": "S",
+      "archetype": "Controller",
+      "level": 100,
+      "seed": "V1FIX_146_S_Controller_100",
+      "cardId": "gen_427ea8fa",
+      "sha256": "abef0c022d8642dd591c64a5c9c7f01b5458d7621cf2404226d518d764d155cf"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Balanced",
+      "level": 1,
+      "seed": "V1FIX_147_SS_Balanced_1",
+      "cardId": "gen_fd6efb01",
+      "sha256": "45234f26a3a95f8f51b39a4dc4dc1979c583d9e10949f146957414e2d1cbaecc"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Balanced",
+      "level": 50,
+      "seed": "V1FIX_148_SS_Balanced_50",
+      "cardId": "gen_4fdfae66",
+      "sha256": "02fdb55ee196245681cf753f98853aa119311a803b017b8ea462bed006c438f3"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Balanced",
+      "level": 100,
+      "seed": "V1FIX_149_SS_Balanced_100",
+      "cardId": "gen_d89d55b",
+      "sha256": "8ca7aed03965a4cee861ba363f8cdafabff1a9a5d8cbb6a9274e3b3e70f2660a"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Mage",
+      "level": 100,
+      "seed": "V1FIX_14_C_Mage_100",
+      "cardId": "gen_f298f048",
+      "sha256": "e29a767a0b02c2a2dbf6c7fb62c7e6860d8857a4b8879975bafbbe6ff1e5dfd3"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Tank",
+      "level": 1,
+      "seed": "V1FIX_150_SS_Tank_1",
+      "cardId": "gen_f767fefd",
+      "sha256": "37b5cf235b912ec836ac24e07891666a8be8fc80954e3d65962f145774822283"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Tank",
+      "level": 50,
+      "seed": "V1FIX_151_SS_Tank_50",
+      "cardId": "gen_24b7218c",
+      "sha256": "393ad3438bd87502bdebd5848fc1183acc13929e9d788ce50e5882c9b6c5be87"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Tank",
+      "level": 100,
+      "seed": "V1FIX_152_SS_Tank_100",
+      "cardId": "gen_61982263",
+      "sha256": "43e8af63975e2d641297c30aa7be039e983ea598bb6f5058d8547f24270fdc26"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Bruiser",
+      "level": 1,
+      "seed": "V1FIX_153_SS_Bruiser_1",
+      "cardId": "gen_79e022ae",
+      "sha256": "24b79f71230cc073a9805955e48de2b81342abb0375ae4f8ea27d20df794e4cf"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Bruiser",
+      "level": 50,
+      "seed": "V1FIX_154_SS_Bruiser_50",
+      "cardId": "gen_158c4a29",
+      "sha256": "6a988fb64928f78d389ccc8c608ae59ebf494033492d8cfb5e2a47ccf53a11d6"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Bruiser",
+      "level": 100,
+      "seed": "V1FIX_155_SS_Bruiser_100",
+      "cardId": "gen_12d7aff4",
+      "sha256": "0ea7fc8200cf671b1b5e42bd723d1a0965675d3561b9857caffb6c1f406ca8a9"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Assassin",
+      "level": 1,
+      "seed": "V1FIX_156_SS_Assassin_1",
+      "cardId": "gen_dda3ee39",
+      "sha256": "3eec7107ee6f8721eb1eab6248a620879af49597433d804568589f92a59d1a7a"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Assassin",
+      "level": 50,
+      "seed": "V1FIX_157_SS_Assassin_50",
+      "cardId": "gen_155649fc",
+      "sha256": "11574e6e3244d42961c75f6f4715795d6d1c664f2d1452ef4b7850d1c078e992"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Assassin",
+      "level": 100,
+      "seed": "V1FIX_158_SS_Assassin_100",
+      "cardId": "gen_964f4c97",
+      "sha256": "b37521a77f6a827bd1eaaa357143aee8cf245f5bd201c33278ab62c05166b310"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Mage",
+      "level": 1,
+      "seed": "V1FIX_159_SS_Mage_1",
+      "cardId": "gen_e08b5cbc",
+      "sha256": "da9eedeb6b5ca96c80488218d94ff95118686aa66e3bfcebe53624bdff826a00"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Support",
+      "level": 1,
+      "seed": "V1FIX_15_C_Support_1",
+      "cardId": "gen_506d7119",
+      "sha256": "013be03356c655c9c0c6884d5a53de203c29b1c95291bb00dc9dbb405c5789ae"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Mage",
+      "level": 50,
+      "seed": "V1FIX_160_SS_Mage_50",
+      "cardId": "gen_a8886e50",
+      "sha256": "c55c1c570451688388139c905068508ea597199b676150ff554b15a9c3d3eb4b"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Mage",
+      "level": 100,
+      "seed": "V1FIX_161_SS_Mage_100",
+      "cardId": "gen_eaa87ced",
+      "sha256": "001eae8bd7c340895983da25fade323616360982a19de7b03a5d4f8070eef0e4"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Support",
+      "level": 1,
+      "seed": "V1FIX_162_SS_Support_1",
+      "cardId": "gen_5bfff286",
+      "sha256": "6f94a8b503362134a3bcbf5cad24a544b64a1023e9448776254a4dfc706f08cb"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Support",
+      "level": 50,
+      "seed": "V1FIX_163_SS_Support_50",
+      "cardId": "gen_6ece87",
+      "sha256": "ca964dccb16c34048809b2611cda1c48396432394fac57b52398553581b0b98b"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Support",
+      "level": 100,
+      "seed": "V1FIX_164_SS_Support_100",
+      "cardId": "gen_feedb6c4",
+      "sha256": "b1a05880ca8359b05317638fb9a34000a8de0a9c455688c6980415db7fb5871a"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Controller",
+      "level": 1,
+      "seed": "V1FIX_165_SS_Controller_1",
+      "cardId": "gen_eb90b055",
+      "sha256": "113f3020f3b4bbaa51bd4797f1449bb8cbd77925b49f6230b54e0768eba289be"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Controller",
+      "level": 50,
+      "seed": "V1FIX_166_SS_Controller_50",
+      "cardId": "gen_ad884252",
+      "sha256": "bfee8f599e4f0d04d695a995ff4e756993d3511195c3e18081bf532a8cdc1b28"
+    },
+    {
+      "rarity": "SS",
+      "archetype": "Controller",
+      "level": 100,
+      "seed": "V1FIX_167_SS_Controller_100",
+      "cardId": "gen_4e5217c3",
+      "sha256": "b1467d857576d4d6c62c0d19acfbd64cb372e612d875f0d05990762ae69b9b9e"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Balanced",
+      "level": 1,
+      "seed": "V1FIX_168_SSS_Balanced_1",
+      "cardId": "gen_cb3dfb86",
+      "sha256": "5f20c39738fcd1f18d2f26e9e9468067af8abe5b5c79c57409be513572832b82"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Balanced",
+      "level": 50,
+      "seed": "V1FIX_169_SSS_Balanced_50",
+      "cardId": "gen_5210fc15",
+      "sha256": "2d2ea47ae624dba4b2b920d80657083b48faa2a337309a08d448c24d801f23e6"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Support",
+      "level": 50,
+      "seed": "V1FIX_16_C_Support_50",
+      "cardId": "gen_9f53d560",
+      "sha256": "35febfb85970cd6f2277022563c6873e1132d8d080f8eab4ff67ccf9b6b59d45"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Balanced",
+      "level": 100,
+      "seed": "V1FIX_170_SSS_Balanced_100",
+      "cardId": "gen_1542fae5",
+      "sha256": "7085510a430fb8dec6fa6f1cdbfb033ab0934697d54f8f44aa48c2026c332d1a"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Tank",
+      "level": 1,
+      "seed": "V1FIX_171_SSS_Tank_1",
+      "cardId": "gen_6fcb78f4",
+      "sha256": "8532594d89c3ae804cddb0eec57631bd3086fa1c1621d63915ffed16c6d10b30"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Tank",
+      "level": 50,
+      "seed": "V1FIX_172_SSS_Tank_50",
+      "cardId": "gen_3ebe9061",
+      "sha256": "2163d0e334648063c321096da259f8731fe4bd1cbb7d210a037abe6aebec9b9d"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Tank",
+      "level": 100,
+      "seed": "V1FIX_173_SSS_Tank_100",
+      "cardId": "gen_d6bcdc76",
+      "sha256": "3d9c3ba7ca43fd92a438cdd36d5f51997c9d735129ae9eeeef6c1b7820f5ac6d"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Bruiser",
+      "level": 1,
+      "seed": "V1FIX_174_SSS_Bruiser_1",
+      "cardId": "gen_2863e77",
+      "sha256": "98d61a9fedcadf60a8b8874f879027560099423b7558cc6f4451fe56ea5c4cd2"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Bruiser",
+      "level": 50,
+      "seed": "V1FIX_175_SSS_Bruiser_50",
+      "cardId": "gen_1bc49658",
+      "sha256": "8c1464690f5381a21bfea9cf1dbc2dad6a26b4e6448da30ec0f8d527fecba350"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Bruiser",
+      "level": 100,
+      "seed": "V1FIX_176_SSS_Bruiser_100",
+      "cardId": "gen_bebfa589",
+      "sha256": "fe26c616bc39d5f09f1cb0ff3d6f09491b777dfaf29f70d39dd2cbb1b0a38fc4"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Assassin",
+      "level": 1,
+      "seed": "V1FIX_177_SSS_Assassin_1",
+      "cardId": "gen_f1208c9a",
+      "sha256": "ea5476630711ccd2baafb8991b151f7a09155f2fa691e21a5bf039d76a533652"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Assassin",
+      "level": 50,
+      "seed": "V1FIX_178_SSS_Assassin_50",
+      "cardId": "gen_72ca830f",
+      "sha256": "f4b0087a4265afc166a6ea34ee9e54d07d370da3a5d485b68dfca16a889f1b9b"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Assassin",
+      "level": 100,
+      "seed": "V1FIX_179_SSS_Assassin_100",
+      "cardId": "gen_a3d9594",
+      "sha256": "2a008907d593b022829d7b9ea5e4f15e20da7d00aae7b2e1496131f69eca108a"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Support",
+      "level": 100,
+      "seed": "V1FIX_17_C_Support_100",
+      "cardId": "gen_268c942b",
+      "sha256": "40416f83cf842861a19bcaa3f87e21e9fa5f3ee36fe29f3db89be0073b7caa24"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Mage",
+      "level": 1,
+      "seed": "V1FIX_180_SSS_Mage_1",
+      "cardId": "gen_dd539d58",
+      "sha256": "0db26d8af8f3396a0e383aa1fa976fc29e66ad5f37dd803cf55a4db8ac53c336"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Mage",
+      "level": 50,
+      "seed": "V1FIX_181_SSS_Mage_50",
+      "cardId": "gen_45895497",
+      "sha256": "2fb402f4fba7f4d1539a09312bd862dd6cdec9fb4c566e1c620ce5c2818d828e"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Mage",
+      "level": 100,
+      "seed": "V1FIX_182_SSS_Mage_100",
+      "cardId": "gen_6a1eb7da",
+      "sha256": "9f1a04725defd4fbf12eb5fa8afa18e67b9253f5b0b4cda1ff3f547413d9aa9a"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Support",
+      "level": 1,
+      "seed": "V1FIX_183_SSS_Support_1",
+      "cardId": "gen_770ed02f",
+      "sha256": "1b94c31aa4390f43a6d0d715fe3b48f9ca79f276616a5715123dcc72acaf94a0"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Support",
+      "level": 50,
+      "seed": "V1FIX_184_SSS_Support_50",
+      "cardId": "gen_abb9760a",
+      "sha256": "c5423128f3df2ef2ea3d26c341cdb384acb4c8f32db64692e2f6a438586d544c"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Support",
+      "level": 100,
+      "seed": "V1FIX_185_SSS_Support_100",
+      "cardId": "gen_6c14bd01",
+      "sha256": "32913971e7b27fb196829229fbc7338cd2256c995320de38f21bca2162042e79"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Controller",
+      "level": 1,
+      "seed": "V1FIX_186_SSS_Controller_1",
+      "cardId": "gen_b4d8d536",
+      "sha256": "878d4e57f30129232b897c161f2f98eda97f55056c4e1e4f123ecfb196cf6d2f"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Controller",
+      "level": 50,
+      "seed": "V1FIX_187_SSS_Controller_50",
+      "cardId": "gen_b106e51",
+      "sha256": "5813f956daddad30229138cc1d3eeb92f5e581e97bd5c46eb41cd213ce2d2f8e"
+    },
+    {
+      "rarity": "SSS",
+      "archetype": "Controller",
+      "level": 100,
+      "seed": "V1FIX_188_SSS_Controller_100",
+      "cardId": "gen_a1de0fd8",
+      "sha256": "437ad217c33c443227c7806a97b7d006ba463aa8032ee301421db6c9c51bc184"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Controller",
+      "level": 1,
+      "seed": "V1FIX_18_C_Controller_1",
+      "cardId": "gen_6e7cab0",
+      "sha256": "78fdbee460149e8a15c1886d8dfe2c0eaa7614730dee2af442b9874a99bbcdb7"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Controller",
+      "level": 50,
+      "seed": "V1FIX_19_C_Controller_50",
+      "cardId": "gen_e6403c7f",
+      "sha256": "50fce7ffea9ce132104c41bac1b566732d51aabecd7cc72964464c5a28401c07"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Balanced",
+      "level": 50,
+      "seed": "V1FIX_1_C_Balanced_50",
+      "cardId": "gen_bfb76ef2",
+      "sha256": "209e81da3a91185cc1886923f3e742f78e817bf75820cb6e35b4c723c8568ef8"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Controller",
+      "level": 100,
+      "seed": "V1FIX_20_C_Controller_100",
+      "cardId": "gen_6bb19ed",
+      "sha256": "a85fd3cdc1b1216e7c9f80e6d5c7521583a972f8653b56cecdc6b5a1ae5b4d3e"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Balanced",
+      "level": 1,
+      "seed": "V1FIX_21_C+_Balanced_1",
+      "cardId": "gen_6d656312",
+      "sha256": "e3a6f2b90349bb104563ad2b3ea4d26e3e6fe78e2afae3b43bc7c7d40f329b1f"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Balanced",
+      "level": 50,
+      "seed": "V1FIX_22_C+_Balanced_50",
+      "cardId": "gen_37e278bd",
+      "sha256": "6014d42a11d28b1c82bc894bc6907eb1612326eeb5bedf5e7618f411238edd9e"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Balanced",
+      "level": 100,
+      "seed": "V1FIX_23_C+_Balanced_100",
+      "cardId": "gen_e69d5c0c",
+      "sha256": "1013032236df946b457856d4c6e6fae828948886dbc634b17e9b0442d89427d9"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Tank",
+      "level": 1,
+      "seed": "V1FIX_24_C+_Tank_1",
+      "cardId": "gen_e3fdbd5b",
+      "sha256": "0dc31ab7556a8f7a53b63fb50d5e22fa612316845513d9717994c3b86a9b3a42"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Tank",
+      "level": 50,
+      "seed": "V1FIX_25_C+_Tank_50",
+      "cardId": "gen_ee7fb2aa",
+      "sha256": "8db08723b9f3e6e6240919941d4245ba7e303f424de74d8f1f92eb06f08229f3"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Tank",
+      "level": 100,
+      "seed": "V1FIX_26_C+_Tank_100",
+      "cardId": "gen_5880d485",
+      "sha256": "b3710f6a6ca97d2ff232d716370cd1559ab0ce29ef3c81373a2167c4a51c924a"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Bruiser",
+      "level": 1,
+      "seed": "V1FIX_27_C+_Bruiser_1",
+      "cardId": "gen_a24dc568",
+      "sha256": "3326b35acc993f096c224ce5eaa1f28966a8fe4eb32f1b1f9e6bbed9e6252876"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Bruiser",
+      "level": 50,
+      "seed": "V1FIX_28_C+_Bruiser_50",
+      "cardId": "gen_4994be17",
+      "sha256": "d8e834f33b20e63fa843afd16767f1b2f9e596786d71be7e757a3d9a10e98228"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Bruiser",
+      "level": 100,
+      "seed": "V1FIX_29_C+_Bruiser_100",
+      "cardId": "gen_cd98d822",
+      "sha256": "2757476cb11114a509aa60b050c00c3aacbd546efdbcc1c254ed751c8e9135b4"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Balanced",
+      "level": 100,
+      "seed": "V1FIX_2_C_Balanced_100",
+      "cardId": "gen_6f989b4f",
+      "sha256": "a94bb9482a6cfccf577f0dc557218dd40d025ff826bf5499629e87c0e19b728b"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Assassin",
+      "level": 1,
+      "seed": "V1FIX_30_C+_Assassin_1",
+      "cardId": "gen_e27ec526",
+      "sha256": "a996008ac81d6e6559dace72c3a8231db8fcd6ce24447d1f214865c52a678ac8"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Assassin",
+      "level": 50,
+      "seed": "V1FIX_31_C+_Assassin_50",
+      "cardId": "gen_e27d4e1f",
+      "sha256": "afa543bc2e4cc8b7da06effa5ee9c35dacb879ac92ff79135972a560800fc00c"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Assassin",
+      "level": 100,
+      "seed": "V1FIX_32_C+_Assassin_100",
+      "cardId": "gen_f0bf3b24",
+      "sha256": "23651930255f0852a052ea480086c0ca701ef501ccff20142330e97665de938d"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Mage",
+      "level": 1,
+      "seed": "V1FIX_33_C+_Mage_1",
+      "cardId": "gen_a88150c7",
+      "sha256": "adc143cc5532d3f18ddfa11a048208ef8c99d1325b41e6dfe22b540462d93646"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Mage",
+      "level": 50,
+      "seed": "V1FIX_34_C+_Mage_50",
+      "cardId": "gen_6117f8a8",
+      "sha256": "d36f4a1b99866a7641ffa08525416c5b744c8b788fdff77db52cc90ccdfaad64"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Mage",
+      "level": 100,
+      "seed": "V1FIX_35_C+_Mage_100",
+      "cardId": "gen_d83b3075",
+      "sha256": "3a02733e6050ab1b8162ab2421bce578f7489c9149103ae87174291b21b2cb05"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Support",
+      "level": 1,
+      "seed": "V1FIX_36_C+_Support_1",
+      "cardId": "gen_89d8a61e",
+      "sha256": "9cfbf828f707e902b9e6de147aff16fc1e6cb439a7e02d684a0bcdba051fc47e"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Support",
+      "level": 50,
+      "seed": "V1FIX_37_C+_Support_50",
+      "cardId": "gen_3e65304f",
+      "sha256": "962f6d4b39faaa084e1a887d9d69fb1008dbbdacc281815d81ed5ddac8231329"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Support",
+      "level": 100,
+      "seed": "V1FIX_38_C+_Support_100",
+      "cardId": "gen_abd38444",
+      "sha256": "6e50489ed02d26df2bf967aea0bca4c382327358188949bba7d77992397398a5"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Controller",
+      "level": 1,
+      "seed": "V1FIX_39_C+_Controller_1",
+      "cardId": "gen_8f800c05",
+      "sha256": "a92136775d9a3e3f1073e7487e71fb3f2013e0d0497b7de1ea3524b35a05e3f2"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Tank",
+      "level": 1,
+      "seed": "V1FIX_3_C_Tank_1",
+      "cardId": "gen_c17d4fa",
+      "sha256": "63d2dbb7d6350d3700434014400dc9811a80f9fdbb073e059433714e13e2719d"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Controller",
+      "level": 50,
+      "seed": "V1FIX_40_C+_Controller_50",
+      "cardId": "gen_b81ec2c9",
+      "sha256": "1d58e546c25042a9e60ef0b6445b72063666eeaab02ee5bf5ab08242ba269c8e"
+    },
+    {
+      "rarity": "C+",
+      "archetype": "Controller",
+      "level": 100,
+      "seed": "V1FIX_41_C+_Controller_100",
+      "cardId": "gen_d87d79f4",
+      "sha256": "3cf691049a94d722c7ce6124ec2c0f96373ecb6e13889ffa9f1cac026e534904"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Balanced",
+      "level": 1,
+      "seed": "V1FIX_42_B_Balanced_1",
+      "cardId": "gen_3551551",
+      "sha256": "546340983dd1ca30cc82a60a621f59e5b9849a4f64122a1af5d449e0d8f4bfd0"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Balanced",
+      "level": 50,
+      "seed": "V1FIX_43_B_Balanced_50",
+      "cardId": "gen_b68b3e54",
+      "sha256": "0eb1d25eb8d602a14f2830e8d5872db3477964859c3d15467391cc2b76db2e87"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Balanced",
+      "level": 100,
+      "seed": "V1FIX_44_B_Balanced_100",
+      "cardId": "gen_560bca97",
+      "sha256": "6c9dfdfe26b1e2268ad8c5152ccede897971aabec0218340a8d5779b47df9c6a"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Tank",
+      "level": 1,
+      "seed": "V1FIX_45_B_Tank_1",
+      "cardId": "gen_bbcc727e",
+      "sha256": "98b62026a0d9728d9d7a56174e57ab7338c9f156512f5b58408e06b14bef2210"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Tank",
+      "level": 50,
+      "seed": "V1FIX_46_B_Tank_50",
+      "cardId": "gen_fedc9c39",
+      "sha256": "6e03346ce1cbf208bd63a10488b38469b26dd66e3ff7356b59e620ad39af945b"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Tank",
+      "level": 100,
+      "seed": "V1FIX_47_B_Tank_100",
+      "cardId": "gen_1676928c",
+      "sha256": "171de38305abd077240f154dff552b5f5882fbbef6919bf3f7e908bc2e67b631"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Bruiser",
+      "level": 1,
+      "seed": "V1FIX_48_B_Bruiser_1",
+      "cardId": "gen_8ee3954f",
+      "sha256": "f4428ee0f91f0dce2c888a4ed917845eef51fdc51c6a103c76cb7d04188787ce"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Bruiser",
+      "level": 50,
+      "seed": "V1FIX_49_B_Bruiser_50",
+      "cardId": "gen_f2e8dde",
+      "sha256": "7377e6aa87e4f525bcafc9d8d39f6ea16b3a1e824f1ebe6b0d044861eea714cc"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Tank",
+      "level": 50,
+      "seed": "V1FIX_4_C_Tank_50",
+      "cardId": "gen_5978aa3",
+      "sha256": "55f402ef1eea3a6d8cf6664724ac05a9b3ddc2ddd7deb14a3cd446fba4413a94"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Bruiser",
+      "level": 100,
+      "seed": "V1FIX_50_B_Bruiser_100",
+      "cardId": "gen_5f48ca1c",
+      "sha256": "49bfce3af6a0b30783e0f59118fd0f3b871b9c5ce68e0cc15efb8b94142749aa"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Assassin",
+      "level": 1,
+      "seed": "V1FIX_51_B_Assassin_1",
+      "cardId": "gen_2c5c6e65",
+      "sha256": "93ccba6bc75f2015b58f7a942319a444fff1b7a6405157161c628842522a0e86"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Assassin",
+      "level": 50,
+      "seed": "V1FIX_52_B_Assassin_50",
+      "cardId": "gen_a1d57022",
+      "sha256": "eebd7012f0f1bd884fc2c667007e91103cd7a6794cb700a254db1962b12891ec"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Assassin",
+      "level": 100,
+      "seed": "V1FIX_53_B_Assassin_100",
+      "cardId": "gen_12e6135f",
+      "sha256": "bf3f5aa02267f6b693ec4a9123caa141de3141d86cfcf37810535be327e14e44"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Mage",
+      "level": 1,
+      "seed": "V1FIX_54_B_Mage_1",
+      "cardId": "gen_5146c5a4",
+      "sha256": "0ea1ea2a4206831abe7b471bc90befb81d25db3f702801e38fc96d635e611d87"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Mage",
+      "level": 50,
+      "seed": "V1FIX_55_B_Mage_50",
+      "cardId": "gen_15c1d929",
+      "sha256": "1876420603c1640998784358be5f6f2af502922fc1a8bc244b9132cdd05a4f16"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Mage",
+      "level": 100,
+      "seed": "V1FIX_56_B_Mage_100",
+      "cardId": "gen_3918c336",
+      "sha256": "1596087e677df931ab94e5f5220b26daa9f5dd75801322fe5a18b3eced9d6731"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Support",
+      "level": 1,
+      "seed": "V1FIX_57_B_Support_1",
+      "cardId": "gen_250d6f19",
+      "sha256": "8d834c2457fa511fa1c0031b26195e1d29281846092900886a92851dc2284762"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Support",
+      "level": 50,
+      "seed": "V1FIX_58_B_Support_50",
+      "cardId": "gen_b8552e0a",
+      "sha256": "6b2308275349761d664fa2b9b374f94495ed9df45d607521d09b3a8886e1d288"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Support",
+      "level": 100,
+      "seed": "V1FIX_59_B_Support_100",
+      "cardId": "gen_bb478f8b",
+      "sha256": "934c4641dddbb8efda05958c04d905c9d9266062166cc588898df43c3918e411"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Tank",
+      "level": 100,
+      "seed": "V1FIX_5_C_Tank_100",
+      "cardId": "gen_3c44d984",
+      "sha256": "594fda0a342233c9900b2f8c9a282272dc04a84a12adc78da9fbe8b5fa90219d"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Controller",
+      "level": 1,
+      "seed": "V1FIX_60_B_Controller_1",
+      "cardId": "gen_5449624d",
+      "sha256": "28750f690ccbb5cddce0ede65f616f37437cee7f5cd1826e0e9e223219ac28da"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Controller",
+      "level": 50,
+      "seed": "V1FIX_61_B_Controller_50",
+      "cardId": "gen_9ea96300",
+      "sha256": "383f3cd84977a75fbc878badaae4964121e45e9e94d6df1b5b536e931e0bf48e"
+    },
+    {
+      "rarity": "B",
+      "archetype": "Controller",
+      "level": 100,
+      "seed": "V1FIX_62_B_Controller_100",
+      "cardId": "gen_d825daff",
+      "sha256": "c034a27b6ed52925fcc5f0634c2326c522263bd1a1e0d8b9fc2340c3050937f2"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Balanced",
+      "level": 1,
+      "seed": "V1FIX_63_B+_Balanced_1",
+      "cardId": "gen_81353c26",
+      "sha256": "492737ee1e7ae8c619d41bb010cfe74304c0e04e838197c4e1c0fdd2abcd02c8"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Balanced",
+      "level": 50,
+      "seed": "V1FIX_64_B+_Balanced_50",
+      "cardId": "gen_a843ff3b",
+      "sha256": "02a8e8a308e142d22ff457bcf706c5263a07c406ef25954e1b4fd4d75d0e5060"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Balanced",
+      "level": 100,
+      "seed": "V1FIX_65_B+_Balanced_100",
+      "cardId": "gen_24055d10",
+      "sha256": "0eecced0da9c037a3e04fba4f5d5e2281d6b61466dc92fac0f86b7e231ed16b5"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Tank",
+      "level": 1,
+      "seed": "V1FIX_66_B+_Tank_1",
+      "cardId": "gen_2e41637",
+      "sha256": "bfe297f08cb1834806d7c86dd5a674ab992b5e0e61b91cecc9a20e8f9afeee2d"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Tank",
+      "level": 50,
+      "seed": "V1FIX_67_B+_Tank_50",
+      "cardId": "gen_1e006fa0",
+      "sha256": "b505092808f039fddfceef8d1fcbfea20cbc24c1e64c55afced25a88561a743d"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Tank",
+      "level": 100,
+      "seed": "V1FIX_68_B+_Tank_100",
+      "cardId": "gen_fe8f8bd9",
+      "sha256": "2bebfe812ae01921473799c2500a0d2880c0a28609d6fda03ab62f76c14f26e9"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Bruiser",
+      "level": 1,
+      "seed": "V1FIX_69_B+_Bruiser_1",
+      "cardId": "gen_5c5a3422",
+      "sha256": "1178370ba14cb12743b0395e6a0f4875618eb7e70bae679c5c167106d4853078"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Bruiser",
+      "level": 1,
+      "seed": "V1FIX_6_C_Bruiser_1",
+      "cardId": "gen_4a70d141",
+      "sha256": "031df66d8e4d062519c24c888d862722971fb3f4b1e6a1b7b1d410eb3497995a"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Bruiser",
+      "level": 50,
+      "seed": "V1FIX_70_B+_Bruiser_50",
+      "cardId": "gen_e488342",
+      "sha256": "86fa55d566cb21ba9064263dd66b4cdcb34918834f70d4546b4152533d809a17"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Bruiser",
+      "level": 100,
+      "seed": "V1FIX_71_B+_Bruiser_100",
+      "cardId": "gen_93e0cb31",
+      "sha256": "7915a68d1de9a7065d5c57b20b36eaf0d19a61132bafa5b49cf6a4bedcc173ca"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Assassin",
+      "level": 1,
+      "seed": "V1FIX_72_B+_Assassin_1",
+      "cardId": "gen_142691e6",
+      "sha256": "4e24dcc2589f3747f1f891179905ed4d7ae530f022dd542f52afecd06205cbbd"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Assassin",
+      "level": 50,
+      "seed": "V1FIX_73_B+_Assassin_50",
+      "cardId": "gen_ccb32ea5",
+      "sha256": "6f00fa59931eb4081b0c5f7112cff0cbafeadd6727e73e4d2973b34b3f975167"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Assassin",
+      "level": 100,
+      "seed": "V1FIX_74_B+_Assassin_100",
+      "cardId": "gen_41a27074",
+      "sha256": "b98cd4f03d8e96f8517a346477e249509a3b6acb5f72af8c8ded4378ba50a158"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Mage",
+      "level": 1,
+      "seed": "V1FIX_75_B+_Mage_1",
+      "cardId": "gen_9e2c00eb",
+      "sha256": "f51f1b8de900ced8cfe0e8543fb5f63798b6950d13928621746ade710f1cfcc2"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Mage",
+      "level": 50,
+      "seed": "V1FIX_76_B+_Mage_50",
+      "cardId": "gen_ebb6965a",
+      "sha256": "5e35e4cb6f7a02303d1eecd193e93128e27240aca3b6a793ced55a895b125cc8"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Mage",
+      "level": 100,
+      "seed": "V1FIX_77_B+_Mage_100",
+      "cardId": "gen_90e3c319",
+      "sha256": "7b598aec8cc19766eba3a38f06272d97570021f491b566a1ec666eacb4278e95"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Support",
+      "level": 1,
+      "seed": "V1FIX_78_B+_Support_1",
+      "cardId": "gen_ca3c59c8",
+      "sha256": "dec4df6a9a68b810f057433fe7c836a0e80c18cd9cef30593be8ea9b738dc202"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Support",
+      "level": 50,
+      "seed": "V1FIX_79_B+_Support_50",
+      "cardId": "gen_2791a17f",
+      "sha256": "ed69103fec9b5784bdccf59374fae900c78ba7fb17f5a9024cd71f1998da326e"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Bruiser",
+      "level": 50,
+      "seed": "V1FIX_7_C_Bruiser_50",
+      "cardId": "gen_907f2436",
+      "sha256": "ae6d25c81fdc31987bdd21c5ea3805e831a5ffc71ba4d3bf614b1c89b2891cd4"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Support",
+      "level": 100,
+      "seed": "V1FIX_80_B+_Support_100",
+      "cardId": "gen_5dfdfc81",
+      "sha256": "27b69c51e55d83d4b32131fb55e1b5437d1d229db0d5de4a6ea55f3c6fdbd0ce"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Controller",
+      "level": 1,
+      "seed": "V1FIX_81_B+_Controller_1",
+      "cardId": "gen_7913e1a",
+      "sha256": "3b5e1863d7f8997574573c3a4958a52172c87ae16018e6401f37d5137da3be59"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Controller",
+      "level": 50,
+      "seed": "V1FIX_82_B+_Controller_50",
+      "cardId": "gen_7d61c0c3",
+      "sha256": "f792f1db597910298d86fc88ef60de5134f10b4512a76ff5f2c4c8f409816517"
+    },
+    {
+      "rarity": "B+",
+      "archetype": "Controller",
+      "level": 100,
+      "seed": "V1FIX_83_B+_Controller_100",
+      "cardId": "gen_90729200",
+      "sha256": "11b957e5de160a6c149e294d013159bb8d2f8954eb302e3dbc342316978b6542"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Balanced",
+      "level": 1,
+      "seed": "V1FIX_84_A_Balanced_1",
+      "cardId": "gen_c33e43bb",
+      "sha256": "ec3d4f9f61926b5e8b4d29a573e4179379ea910b785d19aa90377b4d2b2990a2"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Balanced",
+      "level": 50,
+      "seed": "V1FIX_85_A_Balanced_50",
+      "cardId": "gen_e29af118",
+      "sha256": "13907afb151e59f8331d05d7057191e2ce210905aa0ca021ae88078eab6f7066"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Balanced",
+      "level": 100,
+      "seed": "V1FIX_86_A_Balanced_100",
+      "cardId": "gen_a77456a1",
+      "sha256": "0905fdb2d0db867259bf56eb5f7c7cefd3d0e9bc586988a1bd4f93011177e653"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Tank",
+      "level": 1,
+      "seed": "V1FIX_87_A_Tank_1",
+      "cardId": "gen_d5cc00e8",
+      "sha256": "224842ed3bc93376a75503b32a950de1880d4de3087d2d734300585b8b1233d0"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Tank",
+      "level": 50,
+      "seed": "V1FIX_88_A_Tank_50",
+      "cardId": "gen_70854fd1",
+      "sha256": "98d61f6ab07b134820437d772ecb0d279801e63951f470cf037b724123d4e61f"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Tank",
+      "level": 100,
+      "seed": "V1FIX_89_A_Tank_100",
+      "cardId": "gen_126616ae",
+      "sha256": "78d3c90150b72c2dde095bf156c4d81aed82b9c4a29600e06cc3881da6bdce0c"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Bruiser",
+      "level": 100,
+      "seed": "V1FIX_8_C_Bruiser_100",
+      "cardId": "gen_b0e5148b",
+      "sha256": "682edc449c4df731e3fe34288999d63910dee970d5f801474f9279b48c2d062d"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Bruiser",
+      "level": 1,
+      "seed": "V1FIX_90_A_Bruiser_1",
+      "cardId": "gen_b6c5a8ca",
+      "sha256": "338e64a3120f1c9c1a02961667f34fa3e142c9427d4fd610e1dd71cbce90bbf7"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Bruiser",
+      "level": 50,
+      "seed": "V1FIX_91_A_Bruiser_50",
+      "cardId": "gen_845f4ff5",
+      "sha256": "1440f82298aa6b88b80bd327faa6d5998137312073d19be3b7aabbc643c5c0d6"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Bruiser",
+      "level": 100,
+      "seed": "V1FIX_92_A_Bruiser_100",
+      "cardId": "gen_f4933cdc",
+      "sha256": "6f2a3894861b69091bcd64cc83bae82d49ac5d3c319c5d309dc2b8e28d1f2b24"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Assassin",
+      "level": 1,
+      "seed": "V1FIX_93_A_Assassin_1",
+      "cardId": "gen_de4cfd4b",
+      "sha256": "9d4b72fbe79fcb653550923a92da97c43a82b0a08a854cd5a932054338eb7aa1"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Assassin",
+      "level": 50,
+      "seed": "V1FIX_94_A_Assassin_50",
+      "cardId": "gen_678d402a",
+      "sha256": "7674b65b96d23ea7044ce042e4b578dd6a85df6302252e64b4b12200eec2a103"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Assassin",
+      "level": 100,
+      "seed": "V1FIX_95_A_Assassin_100",
+      "cardId": "gen_7c7ee0b5",
+      "sha256": "5bdee3ca91b020a13f8212e2fe594ec4009d1076705af3817e1a8d1e814db5c5"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Mage",
+      "level": 1,
+      "seed": "V1FIX_96_A_Mage_1",
+      "cardId": "gen_ecc57fa6",
+      "sha256": "397edf3dfe0a048bef74deeb3e6bd31520836c57939c5fa17dda8e7e4677917d"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Mage",
+      "level": 50,
+      "seed": "V1FIX_97_A_Mage_50",
+      "cardId": "gen_dd99eb65",
+      "sha256": "bfbf4ea821dfd30d0f59cc0af2a8626177c1ce61089ec74ff1838ad5232c35de"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Mage",
+      "level": 100,
+      "seed": "V1FIX_98_A_Mage_100",
+      "cardId": "gen_48ef1b28",
+      "sha256": "3273c756109349ce6590c81e23332131b83ac65efddfb943cd9f9e8414180c33"
+    },
+    {
+      "rarity": "A",
+      "archetype": "Support",
+      "level": 1,
+      "seed": "V1FIX_99_A_Support_1",
+      "cardId": "gen_b93a865d",
+      "sha256": "b5cfd7c93aade3ab857b246db88a277aa7c8f5ac2e1352d6f57a0d8c186ab2b1"
+    },
+    {
+      "rarity": "C",
+      "archetype": "Assassin",
+      "level": 1,
+      "seed": "V1FIX_9_C_Assassin_1",
+      "cardId": "gen_2e70853c",
+      "sha256": "86aa6d0dcf24aea7b9ff711e4a606e2710be94dac18853067f92e42cc4407f5a"
+    }
+  ]
+}

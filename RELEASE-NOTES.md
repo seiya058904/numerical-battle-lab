@@ -1,4 +1,4 @@
-# Release Notes — v1.2.0
+# Release Notes — v1.2.1
 
 `数值对战实验室` is a fully offline, single-player, deterministic, multi-entity turn-based numerical combat system presented as a card-style web interface.
 
@@ -9,6 +9,44 @@ Cards are presentation only. The engine works with generic combat entities and a
 `Formula + Modifier + Effect + Condition + Target + Event + Status + Resource + Damage Component`.
 
 Ordinary content is composed from registered primitives and parameters instead of character-specific engine branches.
+
+---
+
+## v1.2.1 highlights — 战力可信度与相邻稀有度校准
+
+本轮不增加玩法、不重新设计 UI、不添加新稀有度、不修改 Generator v1；只修正
+v1.2.0 独立代码审计发现的统计口径和战力可信度问题。
+
+- **稀有度统计口径修正**：`rarityStrictMonotonic`（每个相邻档 mean[n+1] >= mean[n]
+  才为 true）与 `rarityTrendAcceptable`（允许采样波动）分离报告，禁止把
+  “trend acceptable” 写成 “strict monotonic YES”。
+- **`adjacent-rarity-matrix`**（`scripts/adjacent-rarity-matrix.js`）：11 组相邻档
+  C→C+ … XS→XS典藏，多 Archetype × 多 Seed × 正反位，每组数千局，输出
+  `winRateHigherTier / 95% CI / sampleCount`；普通升级目标 54–60%，典藏 52–57%。
+  v1.2.1 实测：**全部相邻档方向正确（higher tier 胜率 > 50%，CI 下界 > 0.5）**，
+  修复了 A→A+（0.501→0.535）与 XS→XS典藏（0.493→0.540，原为反转）。
+- **`V2_BUDGET_CURVE`（RPI 与 GenerationBudget 解耦）**：v2-only 单调预算曲线，
+  由每个 RPI 经确定性数据表映射；v1 的 `generationBudget` 公式未动。
+- **BattlePower 口径重定义**：明确为 **1v1 通用强度排序指标**，非任意 matchup 的
+  绝对战力；文档/代码/UI 改为 **3 主评分维度（进攻/生存/节奏）+ 4 诊断维度**
+  （续航/功能/经济/稳定，仍计算并显示）。
+- **普通 UI 不再显示精确预估胜率百分比**：改为 `战力较高 / 战力接近 / 战力较低`
+  或仅 `战力 NNNN`（`card-ui.bpRelation`）。
+- **相近 BP 公平性测试**（`scripts/similar-bp-test.js`）：随机 pair
+  `|ΔBP|/mean <= 5%` 直接正反位大量模拟，higher-BP 胜率理想 45–55%、放宽 40–60%，
+  并按 0-2/2-5/5-10/10-20/20+% 分桶验证 BP 数字距离。
+- **校准脚本可复现（§13A）**：实现 `fitBattlePowerWeights()` 在 TRAIN 上自动拟合；
+  固定 TRAIN / VALIDATION / FINAL_TEST 三套 seed，VALIDATION 选模型（Spearman +
+  similar-BP fairness 同时考虑），FINAL_TEST 发布前只跑一次（§14）。
+- **多指标报告**：Spearman（validation ≈ 0.78-0.81）、Pairwise ordering accuracy
+  （target ≥ 0.75）、Similar-BP fairness、Win-probability calibration
+  （logistic(ln BP 比)，Brier / LogLoss / calibration bins）。
+- **v1 历史 fixture**（`tests/fixtures/generator-v1.1.0.json`）：189 张代表旧卡
+  sha256(canonicalGeneratedCard) 锁定，v1 真正 byte-for-byte 防漂移（§15）。
+- **Health Metrics 保留**：one-shot 0%（<5%）、stalemate <5%、median 6–10 回合
+  （v1.2.1 实测 median 8）。
+
+---
 
 ## v1.2.0 highlights — 玩家化 UI + 战力评分 + 稀有度扩展 + 数值系统审计
 

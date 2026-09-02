@@ -92,6 +92,41 @@
   const V2_SKILL_POWER_SCALE=100;   // damage coefficient denominator (v2)
   const V2_SUSTAIN_POWER_SCALE=720; // heal/shield coefficient denominator (v2)
   const V2_TARGET_SKILLS=[0.30,0.30,0.40];
+
+  // ---------------------------------------------------------------------------
+  // V2_BUDGET_CURVE (v1.2.1, audit §5): decouples GenerationBudget from the
+  // analytic sqrt(CardPower/100) formula by mapping each RPI to a per-rarity
+  // budget multiplier through a deterministic, monotonic, data-driven table.
+  //
+  //   v2GenerationBudget(rarity, level, quality) = 1000 * curve[rarity] * sqrt(levelFactor * quality)
+  //
+  // curve[C] = 1 so a C Lv100 Balanced card keeps the ~1000 budget anchor
+  // (BattlePower reference ≈ 10,000 unchanged). The multipliers are calibrated so
+  // REAL adjacent-rarity mirror win rates land on the audit targets
+  // (normal 54-60%, collector 52-57%) — the sqrt analytic curve gives only ~4-5%
+  // budget deltas that composition luck swamps (A->A+ ≈ 0.50, XS->XS典藏 < 0.50).
+  // v1 (generator.js) keeps its own generationBudget untouched.
+  // ---------------------------------------------------------------------------
+  const V2_BUDGET_CURVE={
+    C:1.000,
+    C_PLUS:1.039,
+    B:1.086,
+    B_PLUS:1.136,
+    A:1.187,
+    A_PLUS:1.265,
+    S:1.320,
+    SS:1.385,
+    SSS:1.450,
+    SSS_COLLECTOR:1.490,
+    XS:1.565,
+    XS_COLLECTOR:1.645,
+  };
+  function v2GenerationBudget({rarity,level,quality}){
+    const id=NCB.toV2RarityId(rarity);
+    const table=NCB.V2_BUDGET_CURVE||V2_BUDGET_CURVE;
+    const mult=table[id]??1;
+    return 1000*mult*Math.sqrt(Number(NCB.levelFactor(level))*Number(quality));
+  }
   // Recurring trigger events repeat EVERY round (roundStart/roundEnd) or on every
   // hit (afterDamageTaken/afterDamageDealt): a one-time budget purchase buys
   // near-infinite value, so their sustain must be discounted far below a bounded
@@ -362,7 +397,8 @@
     const lf=NCB.levelFactor(level);
     const quality=NCB.qualityFactor(seed);
     const powerIndex=NCB.computeCardPowerV2({rarity,level,quality});
-    const generationBudget=NCB.generationBudget(powerIndex);
+    // v1.2.1: rarity-specific budget curve (RPI<->budget decoupled, v2 only).
+    const generationBudget=v2GenerationBudget({rarity,level,quality});
     const split=NCB.splitBudget(generationBudget);
 
     const primary=NCB.allocatePrimary({budget:split.primary,archetype,seed,conversion:V2_PRIMARY_CONVERSION});
@@ -446,6 +482,8 @@
   NCB.V2_PRIMARY_CONVERSION=V2_PRIMARY_CONVERSION;
   NCB.V2_SKILL_POWER_SCALE=V2_SKILL_POWER_SCALE;
   NCB.V2_SUSTAIN_POWER_SCALE=V2_SUSTAIN_POWER_SCALE;
+  NCB.V2_BUDGET_CURVE=V2_BUDGET_CURVE;
+  NCB.v2GenerationBudget=v2GenerationBudget;
   NCB.COMPOSITION_RULES=COMPOSITION_RULES;
   NCB.skillRole=skillRole;
   NCB.enforceComposition=enforceComposition;

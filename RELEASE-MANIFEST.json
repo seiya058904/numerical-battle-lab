@@ -1,12 +1,12 @@
 {
   "name": "numerical-card-battle",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "entry": "index.html",
   "runtime": "fully-offline-static-web",
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 166,
+  "verifiedTests": 176,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
@@ -25,23 +25,23 @@
     },
     {
       "path": "FINAL-REPORT.md",
-      "size": 8355,
-      "sha256": "87aeeb6c7613e8763b18d58bb857330caaac74c9b42ce4f91df97028bb1194f0"
+      "size": 10354,
+      "sha256": "1ce15c06de04da9d1033dec9a451080636051a02171d0d67000461a152b7972b"
     },
     {
       "path": "QA-REPORT.md",
-      "size": 2376,
-      "sha256": "7f04f99a3fa7bae81d6b80655fd9b1aaa6d564e8c9ff146774806d4e9eaa8911"
+      "size": 3948,
+      "sha256": "feb27b781115808aef155551cac8866cc3a18cb11b62161e41c28ecb62ae574f"
     },
     {
       "path": "README.md",
-      "size": 6092,
-      "sha256": "65bc8c57576fc536f924eea7c3825ebe9a6b92b6cdf1c51177b545ab4b0add9b"
+      "size": 6190,
+      "sha256": "2c6f92bac0f67f34550e50104947c024d4fe8a48c13c69723221712dc3c7cc4a"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "size": 5039,
-      "sha256": "6780c07c754832d0a93df3b269d7b1b9b7583d4cac39a44a236a6d7c58c5beec"
+      "size": 7700,
+      "sha256": "4eb0647320383c89b99eae785f94a9e3460a4dc0cc8d5e4944b848f2580bfd8e"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -55,8 +55,8 @@
     },
     {
       "path": "docs/BALANCE-AUDIT-v1.2.md",
-      "size": 6480,
-      "sha256": "e185e9ba4d55146a1b838ab12dfbea78f5c619b4f83f0403a110cad452182e02"
+      "size": 8560,
+      "sha256": "664381e7e1ebecc8ab26d598197b4e246a1210985b8394b11734ce8ef82b0f32"
     },
     {
       "path": "docs/CONTENT-AUTHORING.md",
@@ -65,13 +65,13 @@
     },
     {
       "path": "docs/GENERATOR-BALANCE-v1.2.md",
-      "size": 9628,
-      "sha256": "d8877315c0297a5e3143bdbd7e14439fad061506c97b7fe5aa524a7f29a932ea"
+      "size": 12415,
+      "sha256": "e94030c9b6a21b2b7e35c55b76534859005c4ede205ae6f993f0c817a4a05f39"
     },
     {
       "path": "docs/GENERATOR.md",
-      "size": 10822,
-      "sha256": "500bb76bfeafc6eafcc777238f45ee498030b274866b395d65e8abb4c4789e82"
+      "size": 11777,
+      "sha256": "8e2fe5973aac84c100dbdc9c2288e849ab72bc3752043bfad1d45d9e0e065b40"
     },
     {
       "path": "docs/NUMERIC-COMPONENT-CATALOG.md",
@@ -121,7 +121,12 @@
     {
       "path": "package.json",
       "size": 420,
-      "sha256": "1da37b653534c129169079c7219b69f4990e58d5301f78c441b97ba81691d31f"
+      "sha256": "0173ac77f15ca87ebd674d16101549b78b005941fea9873980eedb66c28a2f55"
+    },
+    {
+      "path": "qa/adjacent-rarity-matrix.json",
+      "size": 7713,
+      "sha256": "ff2eedff6ae81f4e1a72c98d16274c6b00ad1d2ecea83ce1203cb5c66c47276b"
     },
     {
       "path": "qa/browser-results.json",
@@ -140,13 +145,18 @@
     },
     {
       "path": "qa/power-calibration.json",
-      "size": 136207,
-      "sha256": "c087e7be927479e1cd20384474ace90a34772c6bc933de079829c8764f2d7443"
+      "size": 26564,
+      "sha256": "e07989d2d7f51efa26e690cd71d231951ecc712df2861c3d2437125e3b5bfa91"
     },
     {
       "path": "qa/stress-results.json",
       "size": 7800,
       "sha256": "3954ed204ba82e3ed0b4664057ac74bfd528f99867aa9dbc388517373902f6b9"
+    },
+    {
+      "path": "scripts/adjacent-rarity-matrix.js",
+      "size": 4009,
+      "sha256": "28e2bd0265573bb41638250f20fe7079fc754e1e1588418f48756d6423bf31f8"
     },
     {
       "path": "scripts/gen-mc.js",
@@ -159,14 +169,29 @@
       "sha256": "f51504415d6704459230d1d7cc4f7ca9156895642d96ff36bbfe8f2bb5c75f54"
     },
     {
+      "path": "scripts/generate-v1-fixture.js",
+      "size": 2656,
+      "sha256": "e5d96ebeb8f6825a1af93e894abdb3b7699b3fd2d15140fc09aca33d20e7e0cb"
+    },
+    {
+      "path": "scripts/health-metrics.js",
+      "size": 2828,
+      "sha256": "4a5453bf2a1417667aaf33e12e124929821492ba079b704b79753561716ca012"
+    },
+    {
       "path": "scripts/power-calibration.js",
-      "size": 9521,
-      "sha256": "c698ee636e7768451c3a4dd883910356dc22d8faa80c70a480a1190147f407de"
+      "size": 21057,
+      "sha256": "4c5d3e41e4257d53bd0b62734a9cfadefe1292fea0d781f1b5eb43381ba72d4f"
+    },
+    {
+      "path": "scripts/similar-bp-test.js",
+      "size": 3834,
+      "sha256": "9a24383b102b3dde6eb42f7f5c3370689eb0bde8bc526ebefb4b6d9a239ad421"
     },
     {
       "path": "scripts/static-check.js",
-      "size": 6951,
-      "sha256": "fd3951cacf86a63692738c8e08319ff0f1795cfa0e748eec9d1e7fea0e051ae6"
+      "size": 7119,
+      "sha256": "c41508ac5f66f2c87291cc30b4575126ec37d53c0d5bf44664a4c05c3b59a0b7"
     },
     {
       "path": "scripts/stress-check.js",
@@ -180,13 +205,13 @@
     },
     {
       "path": "src/battlepower.js",
-      "size": 14969,
-      "sha256": "78bb695b59615c53c8e69747d1853850df48605339ac6b07c2b1282c8fe53c06"
+      "size": 16035,
+      "sha256": "e02d6b260538ba56ad06c2c95e69b27c142eec9b97cfc30eed53133b82d41ca2"
     },
     {
       "path": "src/card-ui.js",
-      "size": 9566,
-      "sha256": "d5ee442f9319f42fe8ffa25eb5fd978c3d3ba82ea80e564c2540196d461647f7"
+      "size": 10602,
+      "sha256": "b8bf2688535b7737a7dbf5cddce776be2ac4f79e50b3da617ea27ecbd9784194"
     },
     {
       "path": "src/components.js",
@@ -235,8 +260,8 @@
     },
     {
       "path": "src/gen-v2.js",
-      "size": 27691,
-      "sha256": "bc33d99e74af0df2b3d5e6774b02860e3606789b6c1f08b506a075fa8eb2ed51"
+      "size": 29329,
+      "sha256": "7ca9e05f96b635c8998cec6864edc500c0661cdc23cca398fca4b2cfc82b7581"
     },
     {
       "path": "src/generator.js",
@@ -279,6 +304,16 @@
       "sha256": "1ba9867d361fc9cb8766ff18f5dcb6ea7dc47b7c0ade9bd9fd6f606812e1b52d"
     },
     {
+      "path": "tests/budget-curve.test.js",
+      "size": 2956,
+      "sha256": "a74e374651eb454be56fba1f655d38a7b9eed2a05ffa9084e892fc152ef6e5b8"
+    },
+    {
+      "path": "tests/calibration-semantics.test.js",
+      "size": 3434,
+      "sha256": "cfc94b712bb36943021a6b373e110bf6f5cf8ca490c39cb88800d927189a10bc"
+    },
+    {
       "path": "tests/card-library.test.js",
       "size": 3433,
       "sha256": "1fc05ec852e971691b46f84eb7c2fc31d25da37f26eae55c5acd9fa331aa21ce"
@@ -287,6 +322,11 @@
       "path": "tests/engine.test.js",
       "size": 67329,
       "sha256": "d492c151cba6bc809c0d232d58de3c36b09cb596e42599931b013921ed267fdb"
+    },
+    {
+      "path": "tests/fixtures/generator-v1.1.0.json",
+      "size": 45252,
+      "sha256": "8166083b351af5bda0b4078c31092866490f926d691ec4a40263f4651f86b40c"
     },
     {
       "path": "tests/formula.test.js",
@@ -334,6 +374,11 @@
       "sha256": "8b055addcb71922bbe7ece1c41408320e1e75664f254a67344751d61fb509e27"
     },
     {
+      "path": "tests/v1-fixture.test.js",
+      "size": 3267,
+      "sha256": "9b14bfc8c785efbaa8e5c5bef0519b18827364831eee15b6c6a609390799ea3b"
+    },
+    {
       "path": "third_party/acorn/LICENSE",
       "size": 1099,
       "sha256": "76a876cf886ff9be2a8b5e2e86514fed06223c8c9f0c1e9ee9606e93841e00b7"
@@ -370,5 +415,5 @@
     }
   ],
   "combinedDefaultCompositionWinRate": 0.595,
-  "notes": "v1.2.0: player-facing UI (对战/卡牌/生成卡牌/玩法说明 + 高级实验室), 12-rarity extension (C..XS典藏), Generator v2 (Composition Grammar + passive/trigger budget), BattlePower 战力评分 (calibrated 7-subscore, validation Spearman ~0.75-0.78), Chinese card presentation adapter, Generator v2 deep balance rebalance (health metrics: median 8 rounds, one-shot 0%, stalemate <2%; rarity distribution monotonic). Generator v1 frozen."
+  "notes": "v1.2.1: player-facing UI (对战/卡牌/生成卡牌/玩法说明 + 高级实验室), 12-rarity extension (C..XS典藏), Generator v2 (Composition Grammar + passive/trigger budget), BattlePower 战力评分 (calibrated 7-subscore, validation Spearman ~0.75-0.78), Chinese card presentation adapter, Generator v2 deep balance rebalance (health metrics: median 8 rounds, one-shot 0%, stalemate <2%; rarity distribution monotonic). Generator v1 frozen."
 }

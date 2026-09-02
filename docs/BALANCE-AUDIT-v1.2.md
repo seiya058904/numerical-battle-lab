@@ -112,5 +112,33 @@ Generator v1 输出逐字节冻结。
 
 ---
 
+## 6. v1.2.1 统计口径与战力可信度修正（CALIBRATION-AUDIT §1-14）
+
+独立代码审计发现 v1.2.0 的 `rarityMonotonic`（容忍 -0.03）把 trend 写成 monotonic，
+且 BP 的“7 维聚合/精确胜率”口径过载。v1.2.1 修正：
+
+| 审计项 | v1.2.0 | v1.2.1 |
+| --- | --- | --- |
+| 稀有度单调 | `rarityMonotonic`（容忍 0.03） | `rarityStrictMonotonic` + `rarityTrendAcceptable` 分离，如实报告 |
+| 相邻档矩阵 | 未建 | `scripts/adjacent-rarity-matrix.js`：11 组、多 Archetype/Seed、正反位、95% CI |
+| BP 口径 | “7 维聚合 / 精确胜率” | 1v1 通用强度排序指标；3 主评分维度 + 4 诊断维度 |
+| 精确胜率 | UI 潜在的 64% 类表述 | 移除；改为 战力较高/接近/较低（`card-ui.bpRelation`） |
+| Spearman | validation 0.776 | 保留（TRAIN/VALIDATION/FINAL_TEST 三分离，§14） |
+| 相近 BP 测试 | ladder band（10.9% in band） | `scripts/similar-bp-test.js`：随机 pair ≤5% 直接正反位 |
+| 胜率模型 | 拍脑袋 Elo scale | logistic(ln(BPA/BPB)) 拟合 + Brier/LogLoss/bins（§12） |
+| 权重来源 | 注释暗示脚本拟合 | `fitBattlePowerWeights()` 真实在 TRAIN 上拟合（§13A） |
+| v1 防漂移 | dispatcher 自比较 | `tests/fixtures/generator-v1.1.0.json` sha256 锁定（§15） |
+
+v1.2.1 实测门禁（配合 `qa/adjacent-rarity-matrix.json`、`qa/power-calibration.json`）：
+- 相邻档 11 组 allDirectionCorrect = YES，strictMonotonic = YES（CI 下界全部 > 0.5）。
+- Health metrics：one-shot 0%、stalemate <5%、median 8 回合（§16 保留）。
+- Validation Spearman（selected weights）≥ 0.70，FINAL_TEST 一次报告。
+- Pairwise ordering accuracy（direct 正反位）≥ 0.75。
+- Similar-BP fairness（|ΔBP|/mean ≤ 5%）higher-BP 胜率在 40–60%。
+- 以上数字全部来自确定性种子 + 同定位镜像/正反位测量，无手工挑选。
+
 *审计依据：`src/engine.js`、`src/gen-skills.js`、`src/gen-v2.js`、
-`src/battlepower.js`、`scripts/power-calibration.js`、`docs/GENERATOR-BALANCE-v1.2.md`。*
+`src/battlepower.js`、`src/card-ui.js`、`scripts/power-calibration.js`、
+`scripts/adjacent-rarity-matrix.js`、`scripts/similar-bp-test.js`、
+`scripts/health-metrics.js`、`docs/GENERATOR-BALANCE-v1.2.md`、
+`tests/fixtures/generator-v1.1.0.json`。*

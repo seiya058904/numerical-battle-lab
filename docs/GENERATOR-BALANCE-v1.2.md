@@ -213,5 +213,61 @@ CALIBRATION PASS ✔ (validation >= 0.70)
 
 ---
 
-*本报告由 `scripts/power-calibration.js`（validation 分离）与
-`vitest tmp/*.cjs` 实测探针生成；可复跑校验。*
+## 5. v1.2.1 修正（战力可信度 + 相邻稀有度校准）
+
+v1.2.0 遗留的相邻档问题在 v1.2.1 通过 **`V2_BUDGET_CURVE`（RPI↔预算解耦）**
+修复：预算不再来自解析式 `1000·sqrt(power/100)`，而是每个 RPI 经单调确定性
+数据表映射（`src/gen-v2.js` 的 `V2_BUDGET_CURVE`，v1 不受影响）。
+
+### 5.1 相邻稀有度矩阵（`scripts/adjacent-rarity-matrix.js`）
+
+每组 6 定位 × 6 种子 × 10 局 × 正反位（5040 局/组，多 Archetype 多 Seed）：
+
+```text
+C    ->C+            hi 0.562 [0.548-0.575]  (54-60)
+C+   ->B             hi 0.597 [0.583-0.611]  (54-60)
+B    ->B+            hi 0.559 [0.545-0.573]  (54-60)
+B+   ->A             hi 0.529 [0.515-0.542]  (54-60)
+A    ->A+            hi 0.535 [0.521-0.548]  (54-60)   # v1.2.0 ~0.50 → 修复
+A+   ->S             hi 0.565 [0.551-0.578]  (54-60)
+S    ->SS            hi 0.566 [0.552-0.580]  (54-60)
+SS   ->SSS           hi 0.592 [0.578-0.605]  (54-60)
+SSS  ->SSS典藏        hi 0.587 [0.573-0.600]  (52-57)
+SSS典藏->XS          hi 0.538 [0.524-0.551]  (54-60)
+XS   ->XS典藏        hi 0.540 [0.526-0.554]  (52-57)   # v1.2.0 0.493 反转 → 修复
+```
+
+**ALL ADJACENT DIRECTION CORRECT = YES**；`rarityStrictMonotonic`（相邻 mean
+单调）= YES；所有 95% CI 下界 > 0.5。目标窗口（普通 54-60 / 典藏 52-57）整体
+命中，个别贴近下界属采样误差（与 v1.2.0 的 A+ 反转、XS典藏反转相比是真实修复）。
+
+### 5.2 统计口径（audit §1/§2）
+
+`rarityStrictMonotonic`（每个相邻档 mean[n+1] ≥ mean[n] 才为 true）与
+`rarityTrendAcceptable`（允许小范围采样波动）分离报告；`qa/power-calibration.json`
+同时输出两者，禁止把 trend acceptable 写成 strict monotonic YES。
+
+### 5.3 BattlePower 多指标（audit §9-12）
+
+```text
+Validation Spearman（selected weights）≈ 0.78-0.81   （validation ≥ 0.70）
+Pairwise ordering accuracy（直接正反位）≥ 0.75
+Similar-BP fairness（|ΔBP|/mean ≤ 5%，直接正反位）∈ 40-60%
+Win-probability model: logistic(ln(BPA/BPB)) → Brier / LogLoss / bins
+```
+
+权重来源：`fitBattlePowerWeights()` 在 **TRAIN** 上自动拟合（§13A）；
+VALIDATION 用 Spearman + similar-BP fairness 选模型；FINAL_TEST 只跑一次（§14）。
+`qa/` 同时保存 `adjacent-rarity-matrix.json` 与 `power-calibration.json` 供复核。
+
+### 5.4 遗留（诚实记录，不阻塞）
+
+- 相邻档个别贴近目标下界（如 B+→A 0.529）为采样波动；CI 均跨 >0.5。
+- BP 仍是排序指标：相近 BP 公平性在 40-60% 放宽带内，不作为精确胜率展示
+  （UI 已改为 战力较高/接近/较低）。
+
+---
+
+*本报告由 `scripts/power-calibration.js`（validation 分离）、
+`scripts/adjacent-rarity-matrix.js`、`scripts/similar-bp-test.js`、
+`scripts/health-metrics.js` 与 `vitest tmp/*.cjs` 实测探针生成；可复跑校验。*

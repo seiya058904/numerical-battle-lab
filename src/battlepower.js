@@ -2,13 +2,20 @@
   'use strict';
   const NCB=root.NCB=root.NCB||{};
   // ---------------------------------------------------------------------------
-  // v1.2 Combat Power estimator (spec 12-18) + human Chinese skill descriptions.
+  // v1.2.1 BattlePower definition (audit §6-7): BattlePower is a 1v1 GENERIC
+  // STRENGTH RANKING indicator, NOT an absolute combat-power that precisely
+  // predicts any matchup's win probability. It is a DISPLAY metric ONLY: it never
+  // feeds the BattleEngine's damage/heal/accuracy/defense math, and it never
+  // modifies a card. Rarity and Level are NOT direct bonus terms: only the final
+  // actual stats / skills / effects are read, so two cards with identical final
+  // data score identically regardless of their rarity/level labels.
   //
-  // BattlePower is a DISPLAY metric ONLY. It never feeds the BattleEngine's
-  // damage/heal/accuracy/defense math, and it never modifies a card. Rarity and
-  // Level are NOT direct bonus terms: only the final actual stats / skills /
-  // effects are read, so two cards with identical final data score identically
-  // regardless of their rarity/level labels.
+  // The aggregation uses THREE PRIMARY scoring dimensions (offense / durability /
+  // tempo) plus FOUR DIAGNOSTIC dimensions (sustain / utility / economy /
+  // reliability) that are computed & reported but currently carry ~0 weight in the
+  // v1.2.1 healthy meta (their win-rate signal is anti-correlated or flat, so the
+  // calibration zeros them rather than let them dilute the ranking). All 7
+  // sub-scores are still displayed.
   //
   // Offense/Durability/Utility reuse the ENGINE's own expected-value calculators
   // (NCB.expectedDamageUtility / effectUtility / statusUtility), which are built on
@@ -19,17 +26,19 @@
 
   // ---------------------------------------------------------------------------
   // Calibrated sub-score weights (spec 17: "if below 0.75, fix the scoring
-  // model"). The nominal 7-dimension structure is kept and every sub-score is
-  // still computed & reported, but the aggregation weights are fitted on a held-
-  // out TRAIN split from Monte Carlo battles (power-calibration.js, seed-disjoint
-  // calibration/validation). In the v1.2 healthy meta the win rate is driven by
-  // offense (engine multi-round effective damage), durability (effective HP) and
-  // tempo (speed); sustain/utility/economy/reliability carry ~0 weight (their
-  // win-rate signal is anti-correlated in this meta, so the calibration zeros them
-  // rather than let them dilute the ranking). Honest split validation:
-  // Spearman(calibration) ~0.80, Spearman(validation) ~0.78.
+  // model"). v1.2.1: the aggregation uses THREE PRIMARY scoring dimensions
+  // (offense / durability / tempo) plus FOUR DIAGNOSTIC dimensions (sustain /
+  // utility / economy / reliability, computed & reported but ~0 weight). The
+  // values below are the SHIPPED product weights: they were re-fit by
+  // scripts/power-calibration.js on the TRAIN split (fitBattlePowerWeights) and
+  // SELECTED on the VALIDATION split by BOTH validation Spearman AND similar-BP
+  // fairness (|dBP|/mean <= 5% direct battles near 50%), then FINAL_TEST ran once.
+  // Spearman validation ~0.75-0.80; this set (offense 0.22 / durability 0.45 /
+  // tempo 0.25) balances ranking quality against close-BP fight fairness (a
+  // durability-heavy fit of 0.6 over-ranks defensive kits and makes close fights
+  // anti-correlated). All 7 sub-scores are still computed & displayed.
   // ---------------------------------------------------------------------------
-  const SUBSCORE_WEIGHTS={offense:0.20,durability:0.45,tempo:0.35,sustain:0.00,utility:0.00,economy:0.00,reliability:0.00};  // Standard benchmark defenders (spec 14): light / balanced / heavy armor.
+  const SUBSCORE_WEIGHTS={offense:0.22,durability:0.45,tempo:0.25,sustain:0.02,utility:0.02,economy:0.02,reliability:0.02};  // Standard benchmark defenders (spec 14): light / balanced / heavy armor.
   // They are pure measurement targets — never shipped as playable content.
   // HP is intentionally very high so expected-damage previews are NOT capped by
   // target HP (expectedDamageUtility clamps to hp+shield); a high ceiling keeps
@@ -169,8 +178,12 @@
     return {power,subScores:sub,reference:ref,weights:{...SUBSCORE_WEIGHTS}};
   }
 
-  // Estimated win rate (display-only, Elo-like). Not a deterministic result.
-  // Coefficients are calibrated from Monte Carlo data (spec 18).
+  // v1.2.1 (audit §8/§12): this is a COARSE ordering heuristic, NOT a calibrated
+  // win-probability. The v1.2 UI does NOT display "预计胜率 64%" from it — the
+  // WinProbabilityModel (logistic fit on ln(BPA/BPB), trained on the TRAIN split
+  // and validated by Brier/LogLoss/calibration bins in scripts/power-calibration.js
+  // §12) is the only basis ever allowed to show a percentage, and even then it must
+  // be labelled 粗略估计. This function remains as a rough Elo-like sanity check.
   function expectedWinRate(powerA,powerB){
     const a=Number(powerA),b=Number(powerB);
     if(!Number.isFinite(a)||!Number.isFinite(b)||a<=0||b<=0)return 0.5;

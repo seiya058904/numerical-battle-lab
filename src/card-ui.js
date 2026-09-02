@@ -85,6 +85,24 @@
     try{const bp=NCB.battlePower?.(card);return bp?Math.round(bp.power):null;}catch(_){return null;}
   }
 
+  // v1.2.1 (audit §8): BattlePower is a 1v1 ordering indicator, NOT a precise
+  // win-probability predictor. The UI therefore does NOT show a card-vs-card
+  // "预计胜率 64%" percentage. When a relative comparison is needed we show one of
+  // three qualitative labels (战力较高 / 战力接近 / 战力较低). A precise percentage
+  // would require a separately calibrated WinProbabilityModel (scripts/
+  // power-calibration.js §12) whose calibration-error gate is not yet met, so we
+  // deliberately avoid overclaiming.
+  function bpRelation(powerA,powerB){
+    if(powerA==null||powerB==null||powerA<=0||powerB<=0)return '';
+    const ratio=Math.max(powerA,powerB)/Math.min(powerA,powerB);
+    if(ratio<=1.03)return'战力接近';
+    return powerA>powerB?'战力较高':'战力较低';
+  }
+  // Coarse qualitative comparison of two cards (no precise percentage).
+  function compareCards(a,b){
+    return bpRelation(battlePowerOf(a),battlePowerOf(b));
+  }
+
   // Chinese skill description via describeSkill (unified, data-driven).
   function describe(skill){try{return NCB.describeSkill?.(skill)||'';}catch(_){return '';}}
 
@@ -194,6 +212,8 @@
   NCB.rarityUI=rarityUI;
   NCB.artPlaceholder=artPlaceholder;
   NCB.battlePowerOf=battlePowerOf;
+  NCB.bpRelation=bpRelation;
+  NCB.compareCards=compareCards;
   NCB.renderCard=renderCard;
   NCB.renderCompactCard=renderCompactCard;
   if(typeof module!=='undefined')module.exports=NCB;
