@@ -1,5 +1,5 @@
 {
-  "version": "1.2.1",
+  "version": "1.2.2",
   "sample": 600,
   "battles": 14,
   "rarityDistributionN": 48,
@@ -37,15 +37,19 @@
     "reliability": 0.02
   },
   "selectedWeights": {
-    "offense": 0.22,
-    "durability": 0.45,
-    "tempo": 0.25,
-    "sustain": 0.02,
-    "utility": 0.02,
-    "economy": 0.02,
-    "reliability": 0.02
+    "offense": 0.25,
+    "durability": 0.6,
+    "tempo": 0.05,
+    "sustain": 0.03,
+    "utility": 0.03,
+    "economy": 0.03,
+    "reliability": 0.03
   },
-  "selectedName": "committed",
+  "selectedName": "fitted",
+  "modelSelectionUsedSplits": [
+    "TRAIN",
+    "VALIDATION"
+  ],
   "spearman": {
     "train": 0.7248221284483658,
     "committedTrain": 0.668650707878268,
@@ -53,13 +57,13 @@
     "validationFitted": 0.8071354141952692,
     "validationCommitted": 0.7267786986690465,
     "validationBalanced": 0.6976472168696255,
-    "validationSelected": 0.7267786986690465,
-    "finalTestSelected": 0.7348021328977197
+    "validationSelected": 0.8071354141952692,
+    "finalTestSelected": 0.785228877261618
   },
   "similarBPFairnessByWeights": {
-    "fitted": 0.7363945578231291,
-    "committed": 0.6037414965986395,
-    "balanced": 0.6173469387755104
+    "fitted": 0.5663265306122448,
+    "committed": 0.5119047619047619,
+    "balanced": 0.6938775510204083
   },
   "rarityMeansLv100": {
     "C": 0.14597505668934246,
@@ -79,6 +83,7 @@
   "rarityLadderTrendAcceptable": true,
   "adjacentMatrixAllDirectionCorrect": true,
   "adjacentMatrixStrictMonotonic": true,
+  "adjacentMatrixHardInversions": [],
   "rarityAdjacentDiffs": [
     [
       "C",
@@ -137,42 +142,30 @@
     ]
   ],
   "pairwiseOrderingAccuracy": {
-    "train": 0.827,
-    "validation": 0.755
+    "train": 0.8,
+    "validation": 0.825,
+    "final": 0.761
   },
-  "similarBPFairnessHigherBPWinRate": 0.527,
+  "similarBPFairness": {
+    "train": 0.67,
+    "validation": 0.608,
+    "final": 0.543
+  },
   "winProbabilityModel": {
-    "b0": 0.041,
-    "b1": 1.283,
-    "brier": 0.217,
-    "logLoss": 0.626,
-    "pairs": 120,
-    "bins": {
-      "3": {
-        "n": 5,
-        "sum": 1.7727317260931525,
-        "win": 0
-      },
-      "4": {
-        "n": 43,
-        "sum": 19.99241994746784,
-        "win": 10
-      },
-      "5": {
-        "n": 60,
-        "sum": 32.389193439111985,
-        "win": 40
-      },
-      "6": {
-        "n": 11,
-        "sum": 6.8166139562818175,
-        "win": 11
-      },
-      "7": {
-        "n": 1,
-        "sum": 0.7205919859635115,
-        "win": 1
-      }
+    "fittedOn": "TRAIN",
+    "b0": 0.027,
+    "b1": 1.309,
+    "validation": {
+      "brier": 0.218,
+      "logLoss": 0.628,
+      "ece": 0.241,
+      "pairs": 75
+    },
+    "finalHoldout": {
+      "brier": 0.214,
+      "logLoss": 0.621,
+      "ece": 0.191,
+      "pairs": 75
     }
   },
   "cards": [

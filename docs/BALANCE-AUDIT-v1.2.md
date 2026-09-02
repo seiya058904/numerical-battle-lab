@@ -137,8 +137,36 @@ v1.2.1 实测门禁（配合 `qa/adjacent-rarity-matrix.json`、`qa/power-calibr
 - Similar-BP fairness（|ΔBP|/mean ≤ 5%）higher-BP 胜率在 40–60%。
 - 以上数字全部来自确定性种子 + 同定位镜像/正反位测量，无手工挑选。
 
+---
+
+## 7. v1.2.2 统计验收方法与数据泄漏修正
+
+独立审计发现 v1.2.1 存在两类统计问题，v1.2.2 修复（产品功能全冻结）：
+
+| 问题 | v1.2.1 | v1.2.2 |
+| --- | --- | --- |
+| FINAL_TEST 泄漏 | `fairnessFor(VALIDATION,FINAL,...)` 参与 `pick()` 选模型 | 模型选择只用 TRAIN+VALIDATION；FINAL 全程不参与拟合/选择/调阈值，FREEZE 后才评估 |
+| Pairwise/SimilarBP | `pairwise(VALIDATION,FINAL)`、`similarBP(VALIDATION,FINAL)` | 拆为 train/validation/final，各 split 内部 disjoint pairs，Release 主报 final |
+| WinProbabilityModel | fit+Brier/LogLoss 同批（in-sample） | logistic 只在 TRAIN 拟合；VALIDATION sanity；FINAL 只算 Brier/LogLoss/bins/ECE |
+| Archetype 覆盖 | SimilarBP 硬编码 6 个（漏 Support） | 全部 `Object.keys(N.ARCHETYPES)`（7 个，含 Support） |
+| Adjacent CI | 把 5040 battle 当独立样本（pseudo-replication） | **matched-card bootstrap**：统计单位 = 独立生成卡 pair；报告 battle/generatedCard/seed/pair 计数 |
+| Matched-seed | 无 | 新增 **Matched Rarity Ladder**（同 seed/arch/level 只变 rarity budget），区分 Causal vs Population |
+| 平局处理 | 平局计入高阶败（0/0 胜率拉低） | **conditional win rate（排除平局）+ drawRate 单独报告** |
+| v1 fixture | 从当前源码生成 | 必须从历史 commit 19ca5a4 worktree 生成（`--historical-ref` 保护），golden 不可自动再生成 |
+| Health n | 300（stalemate 4.7% 离阈值太近） | 2000-3000，point estimate + 95% CI + P50/P75/P90/P95（按 Archetype） |
+
+v1.2.2 关键测量结论（见 `qa/adjacent-rarity-matrix.json`、`qa/matched-rarity-test.json`）：
+- **matched-seed（causal）稀有度效应健康**：11 组相邻档 conditional win rate 全部
+  EXPECTED（0.68-0.81），无 <40% hard inversion → 高稀有度仅提升 rarity 确实变强。
+- **Support 的“反转”实为 stalemate 平局**：Support 自愈镜像常打满 maxRounds
+  （matched drawRate 可到 ~48%），v1.2.1 把平局记 0/0 胜率导致假反转；排除平局后
+  Support matched conditional ≈ 0.78（真正变强）。据此 **不需要 Generator 重调**。
+- **Population Strength** 独立报告：不同随机 seed 的高阶总体更强（整体 EXPECTED），
+  archetype 条件化逐项可见，不做 aggregate 掩盖。
+
 *审计依据：`src/engine.js`、`src/gen-skills.js`、`src/gen-v2.js`、
 `src/battlepower.js`、`src/card-ui.js`、`scripts/power-calibration.js`、
-`scripts/adjacent-rarity-matrix.js`、`scripts/similar-bp-test.js`、
-`scripts/health-metrics.js`、`docs/GENERATOR-BALANCE-v1.2.md`、
+`scripts/adjacent-rarity-matrix.js`、`scripts/matched-rarity-test.js`、
+`scripts/similar-bp-test.js`、`scripts/health-metrics.js`、
+`scripts/generate-v1-fixture.js`、`docs/GENERATOR-BALANCE-v1.2.md`、
 `tests/fixtures/generator-v1.1.0.json`。*

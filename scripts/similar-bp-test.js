@@ -1,8 +1,9 @@
-// v1.2.1 Similar-BP fairness test (audit §9).
+// v1.2.2 Similar-BP fairness test (audit §9/§7).
 //
 // Follows the audit text exactly: sample RANDOM card pairs across the full
-// generated-card population (all 12 rarities x all archetypes x multiple seeds,
-// Lv100), keep pairs with
+// generated-card population (all 12 rarities x ALL registered archetypes
+// (Object.keys(N.ARCHETYPES), incl. Support) x multiple seeds, Lv100), keep pairs
+// with
 //   abs(BPA - BPB) / mean(BPA, BPB) <= 5%
 // and battle them directly 正反位 (many battles). Report the higher-BP card's win
 // rate (ideal 45-55%, relaxed 40-60%). Then bucket ALL pairs by BP gap
@@ -19,7 +20,7 @@ const N=global.NCB;
 function parseArg(name,dflt){const i=process.argv.indexOf('--'+name);return i>=0&&process.argv[i+1]?Number(process.argv[i+1])||dflt:dflt;}
 const BATTLES=parseArg('battles',14);
 const PAIRS=parseArg('pairs',120);
-const ARCH=['Balanced','Tank','Bruiser','Assassin','Mage','Controller'];
+const ARCH=Object.keys(N.ARCHETYPES); // all registered archetypes (incl. Support)
 // Full mixed pool: every (archetype, rarity, seed), Lv100.
 function buildPool(){
   const pool=[];

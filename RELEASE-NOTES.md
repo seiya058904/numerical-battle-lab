@@ -1,4 +1,4 @@
-# Release Notes — v1.2.1
+# Release Notes — v1.2.2
 
 `数值对战实验室` is a fully offline, single-player, deterministic, multi-entity turn-based numerical combat system presented as a card-style web interface.
 
@@ -9,6 +9,50 @@ Cards are presentation only. The engine works with generic combat entities and a
 `Formula + Modifier + Effect + Condition + Target + Event + Status + Resource + Damage Component`.
 
 Ordinary content is composed from registered primitives and parameters instead of character-specific engine branches.
+
+---
+
+## v1.2.2 highlights — 统计验收方法与数据泄漏修正（validation correctness patch）
+
+本轮冻结产品功能（UI / 卡牌 / 卡牌库 / 新手流程 / 12 稀有度 / 战斗机制 /
+Generator v1 均未改），只修正独立审计发现的统计方法与数据泄漏问题。
+
+- **FINAL_TEST 泄漏修复**（§2）：v1.2.1 在模型选择阶段用了
+  `fairnessFor(VALIDATION, FINAL, ...)`，FINAL 卡参与选模型，导致后续
+  “FINAL_TEST Spearman” 不是真正 holdout。v1.2.2 改为
+  `TRAIN → fit weights → VALIDATION → choose model → FREEZE → FINAL_TEST → only eval`；
+  FINAL 全程不参与 fairness / Spearman / 候选选择 / 阈值 / logistic 拟合 / 权重选择。
+- **VALIDATION fairness 只用 VALIDATION**（§3）：直接对战 pair 从 VALIDATION 内部
+  确定性 disjoint pairs 构造，不再借 FINAL 卡；FINAL 只在模型固定后内部造 pair。
+- **Pairwise / Similar-BP 三分**（§4/§5）：`pairwiseTrain/Validation/Final` 与
+  `similarBPTrain/Validation/Final` 完全隔离；Release 主报 `pairwiseFinal` 与
+  `similarBPFinal`。
+- **WinProbabilityModel 正确 holdout**（§6）：logistic b0/b1 只在 TRAIN 拟合；
+  VALIDATION 只做 sanity；FINAL 只算 Brier / LogLoss / calibration bins / ECE。
+- **全部注册 Archetype**（§7）：所有脚本改用 `Object.keys(NCB.ARCHETYPES)`
+  （7 个，含 Support），Similar-BP / Adjacent / Health / Calibration 全覆盖。
+- **Adjacent Matrix pseudo-replication 修复**（§8/§9/§15）：CI 改用 **matched-card
+  bootstrap**（统计单位 = 独立生成卡 pair，不是单场 battle）；报告
+  battleCount / generatedCardCount / independentSeedCount / pairCount 分离。
+- **Matched-Seed Rarity Test 新增**（§10/§11）：同 seed/archetype/level 生成
+  C/C+/B/... 保持相同 skill grammar / passive/trigger blueprint / composition，
+  只让 rarity budget 变化；区分 **Causal Rarity Effect（matched）** 与
+  **Population Strength（独立随机 seed）**。
+- **Archetype 条件化正式报告**（§12）：Overall + 7 archetype × 11 pairs，
+  不用 aggregate average 隐藏反转；阈值 Hard<40% / Mild 40-48% / Neutral 48-52% /
+  Expected 52-62%。
+- **平局单独报告**（新发现，§14 诊断结论）：Support 高稀有度“反转”实为
+  **stalemate 平局**（Support 自愈镜像常打满 maxRounds，runSimulation 把平局记为
+  0/0 胜率，拖低高阶胜率）。v1.2.2 的矩阵/测试用 **conditional win rate
+  （wins/(wins+losses)，排除平局）** 并单独报告 drawRate；Support matched-seed
+  conditional ≈ 0.78（真正变强），no generator rebalance needed。
+- **v1 历史 fixture 真正锚定历史 commit**（§17/§18）：`generate-v1-fixture.js`
+  要求显式 `--historical-ref 19ca5a4...` + `--src-dir`（临时 worktree at
+  19ca5a4）否则拒绝运行；golden fixture 是 immutable evidence；正常 verify
+  只 current-v1 vs fixture 比对，永不自动再生成。
+- **Health Metrics 提高稳定性**（§20/§21）：n 提升到 2000-3000，报告 point
+  estimate + 95% CI（Wilson）与 P50/P75/P90/P95（按 Archetype）。
+- **删除 tautological assertion**（§19）：`fixture.count` 断言改为精确 `189`。
 
 ---
 

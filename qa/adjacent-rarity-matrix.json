@@ -1,427 +1,795 @@
 {
-  "version": "1.2.1",
-  "battlesPerPair": 10,
-  "cardsPerTier": 6,
+  "version": "1.2.2",
+  "seeds": 48,
+  "battlesPerDirection": 8,
+  "maxRounds": 30,
   "archetypes": 7,
+  "statisticalUnit": "independent matched card pair (bootstrap over pairs, not battles)",
+  "winRateNote": "CONDITIONAL higher-tier win rate (wins/(wins+losses), draws excluded); drawRate reported separately",
   "allDirectionCorrect": true,
+  "strictMonotonic": true,
+  "hardInversions": [],
   "rows": [
     {
-      "lo": "C",
-      "hi": "C_PLUS",
-      "winRateHigherTier": 0.562,
-      "ciLow": 0.548,
-      "ciHigh": 0.575,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.475
+      "pair": "C->C_PLUS",
+      "winRateHigherTier": 0.7905700821995465,
+      "ciLow": 0.7709927721088435,
+      "ciHigh": 0.8106381094104309,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.225,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.7513020833333334,
+          "ciLow": 0.69140625,
+          "ciHigh": 0.8125,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.367
         },
-        {
-          "arch": "Tank",
-          "hi": 0.501
+        "Tank": {
+          "winRateHigherTier": 0.8102430555555555,
+          "ciLow": 0.750347222222222,
+          "ciHigh": 0.8631944444444445,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.301
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.886
+        "Bruiser": {
+          "winRateHigherTier": 0.8357638888888889,
+          "ciLow": 0.8020833333333334,
+          "ciHigh": 0.8671875,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.042
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.825
+        "Assassin": {
+          "winRateHigherTier": 0.8253348214285715,
+          "ciLow": 0.7821800595238096,
+          "ciHigh": 0.8655133928571428,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.017
         },
-        {
-          "arch": "Mage",
-          "hi": 0.704
+        "Mage": {
+          "winRateHigherTier": 0.8190104166666666,
+          "ciLow": 0.7786458333333334,
+          "ciHigh": 0.8567708333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.039
         },
-        {
-          "arch": "Support",
-          "hi": 0.268
+        "Support": {
+          "winRateHigherTier": 0.6978794642857142,
+          "ciLow": 0.6350074404761905,
+          "ciHigh": 0.7624627976190478,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.568
         },
-        {
-          "arch": "Controller",
-          "hi": 0.272
+        "Controller": {
+          "winRateHigherTier": 0.7944568452380952,
+          "ciLow": 0.7410714285714285,
+          "ciHigh": 0.8450520833333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.241
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "C_PLUS",
-      "hi": "B",
-      "winRateHigherTier": 0.597,
-      "ciLow": 0.583,
-      "ciHigh": 0.611,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.799
+      "pair": "C_PLUS->B",
+      "winRateHigherTier": 0.8073873299319727,
+      "ciLow": 0.787326388888889,
+      "ciHigh": 0.8279974489795918,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.196,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.7911210317460317,
+          "ciLow": 0.7287946428571429,
+          "ciHigh": 0.8498883928571429,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.284
         },
-        {
-          "arch": "Tank",
-          "hi": 0.525
+        "Tank": {
+          "winRateHigherTier": 0.8151041666666666,
+          "ciLow": 0.7565104166666666,
+          "ciHigh": 0.8723958333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.333
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.663
+        "Bruiser": {
+          "winRateHigherTier": 0.8411458333333334,
+          "ciLow": 0.8111979166666666,
+          "ciHigh": 0.875,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.31
+        "Assassin": {
+          "winRateHigherTier": 0.83984375,
+          "ciLow": 0.7955729166666666,
+          "ciHigh": 0.8815104166666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.021
         },
-        {
-          "arch": "Mage",
-          "hi": 0.789
+        "Mage": {
+          "winRateHigherTier": 0.8619791666666666,
+          "ciLow": 0.8307291666666666,
+          "ciHigh": 0.8932291666666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.01
         },
-        {
-          "arch": "Support",
-          "hi": 0.547
+        "Support": {
+          "winRateHigherTier": 0.6822048611111112,
+          "ciLow": 0.6223958333333334,
+          "ciHigh": 0.7421875,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.516
         },
-        {
-          "arch": "Controller",
-          "hi": 0.547
+        "Controller": {
+          "winRateHigherTier": 0.8203125,
+          "ciLow": 0.765625,
+          "ciHigh": 0.8763020833333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.208
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "B",
-      "hi": "B_PLUS",
-      "winRateHigherTier": 0.559,
-      "ciLow": 0.545,
-      "ciHigh": 0.573,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.499
+      "pair": "B->B_PLUS",
+      "winRateHigherTier": 0.8122094671201816,
+      "ciLow": 0.7924479166666666,
+      "ciHigh": 0.8321428571428572,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.195,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.8266493055555556,
+          "ciLow": 0.7717881944444445,
+          "ciHigh": 0.8798611111111111,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.288
         },
-        {
-          "arch": "Tank",
-          "hi": 0.528
+        "Tank": {
+          "winRateHigherTier": 0.7985243055555555,
+          "ciLow": 0.7442708333333332,
+          "ciHigh": 0.853732638888889,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.277
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.664
+        "Bruiser": {
+          "winRateHigherTier": 0.8605902777777779,
+          "ciLow": 0.8255208333333334,
+          "ciHigh": 0.893142361111111,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.01
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.496
+        "Assassin": {
+          "winRateHigherTier": 0.828125,
+          "ciLow": 0.7786458333333334,
+          "ciHigh": 0.87109375,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.001
         },
-        {
-          "arch": "Mage",
-          "hi": 0.621
+        "Mage": {
+          "winRateHigherTier": 0.8537946428571428,
+          "ciLow": 0.8178943452380952,
+          "ciHigh": 0.8880208333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.009
         },
-        {
-          "arch": "Support",
-          "hi": 0.374
+        "Support": {
+          "winRateHigherTier": 0.68359375,
+          "ciLow": 0.6197916666666666,
+          "ciHigh": 0.7526041666666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.628
         },
-        {
-          "arch": "Controller",
-          "hi": 0.733
+        "Controller": {
+          "winRateHigherTier": 0.8341889880952381,
+          "ciLow": 0.7842633928571429,
+          "ciHigh": 0.8798363095238096,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.151
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "B_PLUS",
-      "hi": "A",
-      "winRateHigherTier": 0.529,
-      "ciLow": 0.515,
-      "ciHigh": 0.542,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.561
+      "pair": "B_PLUS->A",
+      "winRateHigherTier": 0.7971554900126328,
+      "ciLow": 0.7777765884908742,
+      "ciHigh": 0.8164903714010856,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.209,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.7816283831908831,
+          "ciLow": 0.7251157407407408,
+          "ciHigh": 0.8370949074074074,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.288
         },
-        {
-          "arch": "Tank",
-          "hi": 0.133
+        "Tank": {
+          "winRateHigherTier": 0.8092363365800866,
+          "ciLow": 0.7519277597402597,
+          "ciHigh": 0.8658854166666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.296
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.596
+        "Bruiser": {
+          "winRateHigherTier": 0.8710069444444445,
+          "ciLow": 0.8332465277777779,
+          "ciHigh": 0.9048611111111112,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.022
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.696
+        "Assassin": {
+          "winRateHigherTier": 0.8125,
+          "ciLow": 0.7721354166666666,
+          "ciHigh": 0.8489583333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.065
         },
-        {
-          "arch": "Mage",
-          "hi": 0.489
+        "Mage": {
+          "winRateHigherTier": 0.8307291666666666,
+          "ciLow": 0.7890625,
+          "ciHigh": 0.8697916666666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.029
         },
-        {
-          "arch": "Support",
-          "hi": 0.483
+        "Support": {
+          "winRateHigherTier": 0.6875,
+          "ciLow": 0.6276041666666666,
+          "ciHigh": 0.7473958333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.564
         },
-        {
-          "arch": "Controller",
-          "hi": 0.742
+        "Controller": {
+          "winRateHigherTier": 0.7874875992063494,
+          "ciLow": 0.7369791666666666,
+          "ciHigh": 0.8357638888888889,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.203
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "A",
-      "hi": "A_PLUS",
-      "winRateHigherTier": 0.535,
-      "ciLow": 0.521,
-      "ciHigh": 0.548,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.431
+      "pair": "A->A_PLUS",
+      "winRateHigherTier": 0.8660342261904762,
+      "ciLow": 0.8477926587301587,
+      "ciHigh": 0.8838789682539683,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.16,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.8489583333333334,
+          "ciLow": 0.796875,
+          "ciHigh": 0.89453125,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.21
         },
-        {
-          "arch": "Tank",
-          "hi": 0.347
+        "Tank": {
+          "winRateHigherTier": 0.8528645833333334,
+          "ciLow": 0.7955729166666666,
+          "ciHigh": 0.9036458333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.281
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.683
+        "Bruiser": {
+          "winRateHigherTier": 0.8984375,
+          "ciLow": 0.8580729166666666,
+          "ciHigh": 0.9361979166666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.756
+        "Assassin": {
+          "winRateHigherTier": 0.9203993055555556,
+          "ciLow": 0.8919270833333334,
+          "ciHigh": 0.9449652777777778,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.001
         },
-        {
-          "arch": "Mage",
-          "hi": 0.603
+        "Mage": {
+          "winRateHigherTier": 0.8762152777777777,
+          "ciLow": 0.8294270833333334,
+          "ciHigh": 0.9165798611111112,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.017
         },
-        {
-          "arch": "Support",
-          "hi": 0.303
+        "Support": {
+          "winRateHigherTier": 0.7630208333333334,
+          "ciLow": 0.6979166666666666,
+          "ciHigh": 0.8307291666666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.491
         },
-        {
-          "arch": "Controller",
-          "hi": 0.619
+        "Controller": {
+          "winRateHigherTier": 0.90234375,
+          "ciLow": 0.8606770833333334,
+          "ciHigh": 0.9375,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.121
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "A_PLUS",
-      "hi": "S",
-      "winRateHigherTier": 0.565,
-      "ciLow": 0.551,
-      "ciHigh": 0.578,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.586
+      "pair": "A_PLUS->S",
+      "winRateHigherTier": 0.8093377976190477,
+      "ciLow": 0.7899925595238095,
+      "ciHigh": 0.8284970238095238,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.166,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.8098958333333334,
+          "ciLow": 0.7565104166666666,
+          "ciHigh": 0.8606770833333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.259
         },
-        {
-          "arch": "Tank",
-          "hi": 0.61
+        "Tank": {
+          "winRateHigherTier": 0.8111979166666666,
+          "ciLow": 0.7565104166666666,
+          "ciHigh": 0.8658854166666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.193
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.7
+        "Bruiser": {
+          "winRateHigherTier": 0.828125,
+          "ciLow": 0.78515625,
+          "ciHigh": 0.8697916666666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.039
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.461
+        "Assassin": {
+          "winRateHigherTier": 0.8684895833333334,
+          "ciLow": 0.8411458333333334,
+          "ciHigh": 0.8958333333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
-        {
-          "arch": "Mage",
-          "hi": 0.685
+        "Mage": {
+          "winRateHigherTier": 0.8151041666666666,
+          "ciLow": 0.7708333333333334,
+          "ciHigh": 0.8580729166666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.003
         },
-        {
-          "arch": "Support",
-          "hi": 0.115
+        "Support": {
+          "winRateHigherTier": 0.6822916666666666,
+          "ciLow": 0.6223958333333334,
+          "ciHigh": 0.7447916666666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.59
         },
-        {
-          "arch": "Controller",
-          "hi": 0.796
+        "Controller": {
+          "winRateHigherTier": 0.8502604166666666,
+          "ciLow": 0.8098958333333334,
+          "ciHigh": 0.8880208333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.078
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "S",
-      "hi": "SS",
-      "winRateHigherTier": 0.566,
-      "ciLow": 0.552,
-      "ciHigh": 0.58,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.401
+      "pair": "S->SS",
+      "winRateHigherTier": 0.813145324417646,
+      "ciLow": 0.7938492063492064,
+      "ciHigh": 0.8316951401772831,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.179,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.796875,
+          "ciLow": 0.7395833333333334,
+          "ciHigh": 0.8528645833333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.374
         },
-        {
-          "arch": "Tank",
-          "hi": 0.265
+        "Tank": {
+          "winRateHigherTier": 0.8528645833333334,
+          "ciLow": 0.7994791666666666,
+          "ciHigh": 0.8984375,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.188
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.806
+        "Bruiser": {
+          "winRateHigherTier": 0.8370535714285715,
+          "ciLow": 0.7976190476190476,
+          "ciHigh": 0.875,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.038
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.763
+        "Assassin": {
+          "winRateHigherTier": 0.83203125,
+          "ciLow": 0.7955729166666666,
+          "ciHigh": 0.8671875,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
-        {
-          "arch": "Mage",
-          "hi": 0.607
+        "Mage": {
+          "winRateHigherTier": 0.828125,
+          "ciLow": 0.7903645833333334,
+          "ciHigh": 0.8658854166666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
-        {
-          "arch": "Support",
-          "hi": 0.392
+        "Support": {
+          "winRateHigherTier": 0.6988873106060606,
+          "ciLow": 0.6338304924242424,
+          "ciHigh": 0.7631392045454546,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.509
         },
-        {
-          "arch": "Controller",
-          "hi": 0.729
+        "Controller": {
+          "winRateHigherTier": 0.8461805555555556,
+          "ciLow": 0.8019097222222222,
+          "ciHigh": 0.8893229166666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.142
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "SS",
-      "hi": "SSS",
-      "winRateHigherTier": 0.592,
-      "ciLow": 0.578,
-      "ciHigh": 0.605,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.785
+      "pair": "SS->SSS",
+      "winRateHigherTier": 0.8214683175620675,
+      "ciLow": 0.8039583969271469,
+      "ciHigh": 0.8395528083028083,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.157,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.8404113247863249,
+          "ciLow": 0.7886284722222223,
+          "ciHigh": 0.8900240384615384,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.199
         },
-        {
-          "arch": "Tank",
-          "hi": 0.167
+        "Tank": {
+          "winRateHigherTier": 0.8371527777777779,
+          "ciLow": 0.7798611111111112,
+          "ciHigh": 0.8931423611111112,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.267
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.883
+        "Bruiser": {
+          "winRateHigherTier": 0.87890625,
+          "ciLow": 0.8424479166666666,
+          "ciHigh": 0.9127604166666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.017
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.781
+        "Assassin": {
+          "winRateHigherTier": 0.8359375,
+          "ciLow": 0.7994791666666666,
+          "ciHigh": 0.87109375,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
-        {
-          "arch": "Mage",
-          "hi": 0.753
+        "Mage": {
+          "winRateHigherTier": 0.8372395833333334,
+          "ciLow": 0.8020833333333334,
+          "ciHigh": 0.8723958333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
-        {
-          "arch": "Support",
-          "hi": 0.468
+        "Support": {
+          "winRateHigherTier": 0.6928530092592592,
+          "ciLow": 0.6328125,
+          "ciHigh": 0.7557870370370371,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.557
         },
-        {
-          "arch": "Controller",
-          "hi": 0.306
+        "Controller": {
+          "winRateHigherTier": 0.8277777777777778,
+          "ciLow": 0.7848090277777778,
+          "ciHigh": 0.8694444444444445,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.056
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "SSS",
-      "hi": "SSS_COLLECTOR",
-      "winRateHigherTier": 0.587,
-      "ciLow": 0.573,
-      "ciHigh": 0.6,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.547
+      "pair": "SSS->SSS_COLLECTOR",
+      "winRateHigherTier": 0.7496984290511077,
+      "ciLow": 0.7310543127507414,
+      "ciHigh": 0.7682814952904238,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.168,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.7407986111111112,
+          "ciLow": 0.6888020833333334,
+          "ciHigh": 0.79296875,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.253
         },
-        {
-          "arch": "Tank",
-          "hi": 0.736
+        "Tank": {
+          "winRateHigherTier": 0.7553943452380952,
+          "ciLow": 0.7014508928571429,
+          "ciHigh": 0.8087797619047619,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.284
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.593
+        "Bruiser": {
+          "winRateHigherTier": 0.7988715277777777,
+          "ciLow": 0.7611979166666667,
+          "ciHigh": 0.8358506944444445,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.016
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.661
+        "Assassin": {
+          "winRateHigherTier": 0.76953125,
+          "ciLow": 0.7278645833333334,
+          "ciHigh": 0.80859375,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
-        {
-          "arch": "Mage",
-          "hi": 0.769
+        "Mage": {
+          "winRateHigherTier": 0.7666266025641025,
+          "ciLow": 0.7262620192307692,
+          "ciHigh": 0.8098958333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.026
         },
-        {
-          "arch": "Support",
-          "hi": 0.128
+        "Support": {
+          "winRateHigherTier": 0.6614583333333334,
+          "ciLow": 0.609375,
+          "ciHigh": 0.71484375,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.473
         },
-        {
-          "arch": "Controller",
-          "hi": 0.671
+        "Controller": {
+          "winRateHigherTier": 0.7552083333333334,
+          "ciLow": 0.7083333333333334,
+          "ciHigh": 0.80078125,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.125
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "SSS_COLLECTOR",
-      "hi": "XS",
-      "winRateHigherTier": 0.538,
-      "ciLow": 0.524,
-      "ciHigh": 0.551,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.578
+      "pair": "SSS_COLLECTOR->XS",
+      "winRateHigherTier": 0.8329044839089482,
+      "ciLow": 0.8143990929705216,
+      "ciHigh": 0.8499652505232861,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.146,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.8156250000000002,
+          "ciLow": 0.7604166666666666,
+          "ciHigh": 0.8681423611111111,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.283
         },
-        {
-          "arch": "Tank",
-          "hi": 0.354
+        "Tank": {
+          "winRateHigherTier": 0.8459201388888888,
+          "ciLow": 0.7958333333333334,
+          "ciHigh": 0.8927083333333333,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.18
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.636
+        "Bruiser": {
+          "winRateHigherTier": 0.8467881944444443,
+          "ciLow": 0.8098958333333334,
+          "ciHigh": 0.8836805555555555,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.027
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.703
+        "Assassin": {
+          "winRateHigherTier": 0.8561698717948718,
+          "ciLow": 0.8184094551282052,
+          "ciHigh": 0.8913261217948718,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.004
         },
-        {
-          "arch": "Mage",
-          "hi": 0.693
+        "Mage": {
+          "winRateHigherTier": 0.8447916666666666,
+          "ciLow": 0.8182291666666667,
+          "ciHigh": 0.8723958333333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.001
         },
-        {
-          "arch": "Support",
-          "hi": 0.294
+        "Support": {
+          "winRateHigherTier": 0.7596153846153846,
+          "ciLow": 0.6971153846153846,
+          "ciHigh": 0.8247195512820512,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.452
         },
-        {
-          "arch": "Controller",
-          "hi": 0.506
+        "Controller": {
+          "winRateHigherTier": 0.8614211309523809,
+          "ciLow": 0.8182663690476191,
+          "ciHigh": 0.9047619047619048,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.077
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     },
     {
-      "lo": "XS",
-      "hi": "XS_COLLECTOR",
-      "winRateHigherTier": 0.54,
-      "ciLow": 0.526,
-      "ciHigh": 0.554,
-      "sampleCount": 5040,
-      "archRows": [
-        {
-          "arch": "Balanced",
-          "hi": 0.317
+      "pair": "XS->XS_COLLECTOR",
+      "winRateHigherTier": 0.8092551256613757,
+      "ciLow": 0.7903480489417989,
+      "ciHigh": 0.8271169926303856,
+      "sampleCount": 336,
+      "class": "EXPECTED",
+      "drawRate": 0.18,
+      "byArchetype": {
+        "Balanced": {
+          "winRateHigherTier": 0.7816757605820106,
+          "ciLow": 0.7284308862433863,
+          "ciHigh": 0.8310515873015872,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.303
         },
-        {
-          "arch": "Tank",
-          "hi": 0.463
+        "Tank": {
+          "winRateHigherTier": 0.8390128968253968,
+          "ciLow": 0.7829365079365079,
+          "ciHigh": 0.8918402777777779,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.284
         },
-        {
-          "arch": "Bruiser",
-          "hi": 0.732
+        "Bruiser": {
+          "winRateHigherTier": 0.8645833333333334,
+          "ciLow": 0.8268229166666666,
+          "ciHigh": 0.8984375,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.018
         },
-        {
-          "arch": "Assassin",
-          "hi": 0.713
+        "Assassin": {
+          "winRateHigherTier": 0.8266493055555556,
+          "ciLow": 0.7952256944444445,
+          "ciHigh": 0.8580729166666666,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.001
         },
-        {
-          "arch": "Mage",
-          "hi": 0.626
+        "Mage": {
+          "winRateHigherTier": 0.83984375,
+          "ciLow": 0.8033854166666666,
+          "ciHigh": 0.875,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
-        {
-          "arch": "Support",
-          "hi": 0.432
+        "Support": {
+          "winRateHigherTier": 0.6744791666666666,
+          "ciLow": 0.6171875,
+          "ciHigh": 0.73046875,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.523
         },
-        {
-          "arch": "Controller",
-          "hi": 0.497
+        "Controller": {
+          "winRateHigherTier": 0.8385416666666666,
+          "ciLow": 0.7890625,
+          "ciHigh": 0.8841145833333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.13
         }
-      ]
+      },
+      "battleCount": 5376,
+      "generatedCardCount": 672,
+      "independentSeedCount": 336,
+      "pairCount": 336
     }
   ]
 }

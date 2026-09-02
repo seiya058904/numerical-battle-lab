@@ -21,16 +21,18 @@ function canon(v){
 }
 function cardHash(card){return crypto.createHash('sha256').update(canon(card)).digest('hex');}
 
-// v1.2.1 historical fixture (audit §15): Generator v1 output is locked byte-for-byte
-// against the v1.1.0 release. If anyone touches the shared v1 pipeline (even to make
-// it "match" v2), this test fails. This is stronger than the dispatcher self-check:
-// both would have to change together to fake it.
+// v1.2.2 historical fixture (audit §15/§17): Generator v1 output is locked
+// byte-for-byte against the ACTUAL v1.1.0 historical commit
+// 19ca5a443fcccd418d421a648f29a900098f55f8 (fixture generated from a temp worktree
+// at that commit, via scripts/generate-v1-fixture.js --historical-ref).
+// Normal `npm run verify` NEVER regenerates this golden file — it only compares
+// current v1 output against the immutable hashes.
 test('Generator v1 matches the v1.1.0 historical fixture (byte-for-byte hashes)',()=>{
   const N=load();
   const fixture=JSON.parse(fs.readFileSync(path.join(__dirname,'fixtures','generator-v1.1.0.json'),'utf8'));
   assert.equal(fixture.generatorVersion,1);
-  assert.ok(fixture.count>=20,'fixture has at least 20 representative cards');
-  assert.ok(fixture.count<=50||fixture.count>50,'fixture size documented');
+  assert.equal(fixture.historicalCommit,'19ca5a443fcccd418d421a648f29a900098f55f8','fixture anchored to the v1.1.0 baseline commit');
+  assert.equal(fixture.count,189,'official fixture has exactly 189 representative cards');
   let checked=0;
   for(const entry of fixture.entries){
     const card=N.generateCard({rarity:entry.rarity,level:entry.level,archetype:entry.archetype,seed:entry.seed});
@@ -40,7 +42,7 @@ test('Generator v1 matches the v1.1.0 historical fixture (byte-for-byte hashes)'
     assert.equal(card.id,entry.cardId,'v1 card id drift');
     checked++;
   }
-  assert.ok(checked>=20,'verified at least 20 fixture cards');
+  assert.equal(checked,189,'verified all 189 fixture cards');
   // coverage sanity: fixture spans all 9 rarities, 7 archetypes, Lv1/50/100
   const r=new Set(fixture.entries.map(e=>e.rarity));
   const a=new Set(fixture.entries.map(e=>e.archetype));

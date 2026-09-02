@@ -268,6 +268,26 @@ VALIDATION 用 Spearman + similar-BP fairness 选模型；FINAL_TEST 只跑一�
 
 ---
 
+## 6. v1.2.2 统计加固后的平衡结论（validation correctness patch）
+
+v1.2.2 只修统计脚本、**冻结 Generator v2 数值**，用更严格的测量重新验证：
+
+- **Matched-Seed Rarity Test**（`scripts/matched-rarity-test.js`）：同 seed 只变
+  rarity budget → **Causal（matched）11 组 conditional 0.75-0.85 全部 EXPECTED**，
+  **Population 0.57-0.64 全部 EXPECTED**，两者 hard inversions(<40%) = **0**。
+- **Adjacent-Rarity Matrix**（matched-card bootstrap CI）：conditional 全部 EXPECTED
+  （0.66-0.86），hard inversions = **0**；v1.2.1 报告的 Support“反转”实为
+  **Support 镜像 stalemate 平局**（v1.2.2 将平局单独报告，不再误计为高阶败）。
+- **结论**：按审计 §22 Phase B —— matched-seed 总体健康 + population 无系统性
+  反转 → **不进行 Generator v2 数值重调**。
+- **Health 发现（诚实记录，非本版 blocker）**：n=2000 同稀有度镜像 stalemate
+  point **6.40% [5.41-7.56]**（超出 §20 point<5% 门禁），主因 Support（30.9%）
+  与 Tank（8.0%）镜像的 heal/shield sustain 循环；诊断（sustain-scale 扫描
+  720-1300）确认单一旋钮无法修复（结构性），按 §22 不重调，留给后续轮次最小
+  sustain/composition 调整。
+
+---
+
 *本报告由 `scripts/power-calibration.js`（validation 分离）、
 `scripts/adjacent-rarity-matrix.js`、`scripts/similar-bp-test.js`、
 `scripts/health-metrics.js` 与 `vitest tmp/*.cjs` 实测探针生成；可复跑校验。*

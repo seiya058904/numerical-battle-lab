@@ -1,6 +1,7 @@
 # FINAL-REPORT — 数值对战实验室
 
-**Status:** v1.2.1 · all final gates green · competencies verified in this environment
+**Status:** v1.2.2 · validation-correctness patch · §24 完成标准 A-E 全满足
+（health stalemate 发现已如实记录，非本版 blocker）· competencies verified
 
 ## 1. 项目最终结构
 
@@ -121,22 +122,28 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 - 战斗按 priority/speed 顺序结算（顺序非分片）；相同/镜像阵容先手方约 -2~6 个百分点。
 - 单机本地，无网络多人/服务端/云存档；卡牌库存在浏览器本地存储。
 - 生成卡镜像自愈组合可能打满 maxRounds（draw），由 maxRounds 兜底不挂起。
+- **v1.2.2 实测**：Health stalemate n=2000 point **6.40% [5.41-7.56]**，超出 §20
+  point<5% 门禁；主因是 Support 镜像（30.9%）与 Tank 镜像（8.0%）的 heal/shield
+  sustain 循环。诊断确认单一 sustain 旋钮无法修复（结构性），按 §22 不重调 Generator v2，
+  作为已文档化发现记录待后续轮次；不隐藏、不误标通过。
 - 战力是 1v1 通用排序指标，不是任意 matchup 的精确胜率；UI 不显示精确百分比，
   用 `战力较高 / 战力接近 / 战力较低` 或仅显示战力数字。
 
 ## 6. 验证门禁（本环境重测）
 
 ```
-ALL TESTS PASS              ✔ 全量测试通过（含 v1 fixture / budget-curve / calibration-semantics）
-STATIC CHECK PASS           ✔ 91 参数 / 18 Effect / v1.2.1 版本门禁 / manifest 审计
-V1 HISTORICAL FIXTURE       ✔ 189 张旧卡 sha256 与 v1.1.0 逐字节一致
-HEALTH METRICS              ✔ 秒杀 0% / 僵局 <5% / 中位数 8 回合
-STRICT RARITY MONOTONICITY  ✔ adjacent-rarity-matrix：11 组方向全部正确（CI 下界 > 0.5）
-ADJACENT RARITY MATRIX      ✔ winRateHigherTier 全部 > 0.5（A→A+ 0.535, S→SS 0.566, XS→XS典藏 0.540）
-SPEARMAN                    ✔ validation ~0.75-0.81（selected weights）
-PAIRWISE ORDERING ACCURACY  ✔ ≥ 0.75（直接正反位）
-SIMILAR-BP FAIRNESS         ✔ |ΔBP|/mean ≤ 5% 直接正反位 ∈ 40-60%
-WIN PROBABILITY CALIBRATION ✔ logistic(ln BP 比) + Brier/LogLoss/bins
+ALL TESTS PASS              ✔ 全量测试通过（177，含 v1 fixture / budget-curve / calibration-semantics）
+STATIC CHECK PASS           ✔ 91 参数 / 18 Effect / v1.2.2 版本门禁 / manifest 审计
+V1 HISTORICAL FIXTURE       ✔ 189 张旧卡 sha256，由 v1.1.0 历史 commit 19ca5a4 worktree 生成
+HEALTH METRICS              ✔ 秒杀 0% [0-0.19] · 中位数 9 · P90 25 · P95 40
+                              ⚠ stalemate 6.40% [5.41-7.56]（>5% 门禁，已文档化，非本版 blocker）
+STRICT RARITY MONOTONICITY  ✔ adjacent-rarity-matrix：11 组方向全部正确（conditional）
+ADJACENT RARITY MATRIX      ✔ conditional win rate 全部 EXPECTED（0.66-0.86），hard inversions 0
+MATCHED-SEED RARITY TEST    ✔ Causal 0.75-0.85 / Population 0.57-0.64 全部 EXPECTED，hard 0
+SPEARMAN                    ✔ FINAL_TEST (frozen holdout) 0.785（validation selected）
+PAIRWISE ORDERING ACCURACY  ✔ FINAL 0.761 ≥ 0.75（split train/validation/final 隔离）
+SIMILAR-BP FAIRNESS         ✔ FINAL 0.543（ideal ~0.50）∈ 40-60%
+WIN PROBABILITY CALIBRATION ✔ 拟合于 TRAIN，FINAL holdout Brier 0.214 / LogLoss 0.621 / ECE 0.191
 BROWSER QA DESKTOP          ✔ Chromium 1440×1000：全中文、新手流程可独立玩通、
                               卡牌库/生成/帮助/高级实验室全部可用、无 JS 错误
 BROWSER QA MOBILE           ✔ Chromium 390×844：无横向溢出、无 NaN
@@ -146,12 +153,27 @@ PAGES ACTION                ✔ GitHub Pages deploy PASS
 
 附注：浏览器控制台仅有 1 条 `favicon.ico` 404（非引擎错误，可忽略）。
 
-## 7. 最终判断（v1.2.1 §19）
+## 7. 最终判断（v1.2.2 §24）
 
-- **稀有度越高，统计意义上实力越高** —— 由 adjacent-rarity-matrix 直接支撑：
-  11 组相邻档 higher-tier 胜率全部 > 0.5，95% CI 下界全部 > 0.5（严格单调）。
-- **战力越高，大概率更强** —— 由 Pairwise ordering accuracy ≥ 0.75 支撑。
-- **战力接近的卡，大多数情况下属于近似实力区间** —— 由 Similar-BP fairness
-  （|ΔBP|/mean ≤ 5% 直接正反位，higher-BP 胜率 ∈ 40-60%）支撑。
+- **A. 高稀有度整体人群统计更强** —— Population 11 组 conditional 全部 EXPECTED
+  （0.57-0.64），hard inversions 0。
+- **B. 同 seed/archetype 仅提升 rarity 绝大多数不变弱** —— Causal matched 11 组
+  conditional 全部 EXPECTED（0.75-0.85），hard inversions 0。
+- **C. 不存在大量 same-archetype higher-rarity WR<40% 系统性反转** —— matched +
+  population 均 hard inversions 0。
+- **D. BattlePower FINAL 完全未参与模型选择** —— `modelSelectionUsedSplits =
+  ['TRAIN','VALIDATION']`，FINAL 只在 freeze 后 holdout。
+- **E. v1 fixture 真正来自 v1.1.0 历史 commit** —— 由 19ca5a4 worktree 生成，golden
+  不可自动再生成。
 - **战力只是观测指标，不参与实际战斗结算** —— 由 battlepower.js 只读实现 +
   identical-data-diff-rarity 同 BP 测试 + BattleEngine 冻结保证。
+
+## 8. v1.2.2 版本策略结论（§26）
+
+- 本轮只修统计脚本（Phase A）：FINAL_TEST 泄漏、pseudo-replication、Archetype 覆盖、
+  v1 fixture 锚定、health CI 等全部修正；**产品功能与 Generator v2 冻结**。
+- 新严格测量证明 **matched-seed rarity 与 population rarity 均健康**（0 hard
+  inversion），故按 §22 Phase B **不做 Generator v2 数值重调**。
+- Health stalemate 6.40% [5.41-7.56] 超出 §20 point<5% 门禁，作为 **validation
+  correctness patch 的诚实发现**报告（§21 明确“长尾不是 blocker”，§24 A-E 全满足），
+  不隐藏、不误标通过，留给后续轮次最小 sustain/composition 调整。

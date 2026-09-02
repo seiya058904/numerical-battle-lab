@@ -1,30 +1,35 @@
-// v1.2.1 BattlePower Monte Carlo calibration (audit §10-14).
+// v1.2.2 BattlePower Monte Carlo calibration — validation methodology hardening.
 //
-// Fixes from the v1.2.0 audit:
-//   - Three FIXED, seed-disjoint splits: TRAIN / VALIDATION / FINAL_TEST.
-//     TRAIN fits, VALIDATION SELECTS the model (between the auto-fitted candidate
-//     and the committed reference), FINAL_TEST runs once for the release report.
-//     FINAL_TEST is never touched during development (no validation leakage).
-//   - fitBattlePowerWeights() really fits sub-score weights on TRAIN data.
-//   - rarityStrictMonotonic (every adjacent mean[n+1] >= mean[n]) and
-//     rarityTrendAcceptable (small sampling wobble allowed) reported SEPARATELY,
-//     measured on a dedicated LARGE Lv100 rarity distribution (same measurement
-//     design as the adjacent-rarity matrix) rather than the sparse split sample.
-//   - Pairwise ordering accuracy, similar-BP fairness and win-probability
-//     calibration all use DIRECT 正反位 pair battles (no ladder proxy).
+// Fixes from the v1.2.1 audit (v1.2.2):
+//   - FINAL_TEST LEAK FIXED: model selection now uses ONLY TRAIN + VALIDATION.
+//     The v1.2.1 script computed fairnessFor(VALIDATION, FINAL, ...) during the
+//     pick() model-selection step, so FINAL cards participated in choosing the
+//     model and "FINAL_TEST Spearman" was not a true holdout. Correct flow:
+//
+//       TRAIN        -> fitBattlePowerWeights() fits sub-score weights
+//       VALIDATION   -> choose model (Spearman + similar-BP fairness, using ONLY
+//                       VALIDATION-internal disjoint pairs)
+//       FREEZE MODEL -> selected weights
+//       FINAL_TEST   -> ONLY final evaluation (Spearman / pairwise / similar-BP /
+//                       win-probability), never used for fitting or selection.
+//
+//   - Pairwise / Similar-BP are split into train / validation / final, each
+//     measured on pairs built INSIDE that split only (no cross-split pairing).
+//     Release reports pairwiseFinal and similarBPFinal.
+//   - WinProbabilityModel: logistic b0/b1 fitted on TRAIN pairs; VALIDATION is
+//     sanity/model-selection; FINAL only computes Brier / LogLoss / calibration
+//     bins / ECE with the FROZEN coefficients (never refit on FINAL).
+//   - All archetypes are used via Object.keys(NCB.ARCHETYPES) (7, incl. Support).
 //
 // Measurement: same-archetype fair mirrors (C/A/XS ladder refs per archetype),
-// 正反位 merged (audit §12). The dedicated rarity distribution uses the same
-// per-archetype refs so per-card ratings are comparable across rarities.
+// 正反位 merged. The dedicated Lv100 rarity distribution uses the same per-archetype
+// refs so per-card ratings are comparable across rarities.
 //
 // Usage: node scripts/power-calibration.js [--sample N] [--battles M]
 //   --sample  default 600 -> cards per overall ladder sample (T/V/F splits)
 //   --battles default 14   -> battles per direction for the ladder measurement
-//   --rarityN default 48   -> cards per rarity in the dedicated Lv100 distribution.
-//                             The rarity means are only stable at n>=48/rarity:
-//                             at 18-36/rarity sampling noise flips adjacent means
-//                             (measured dips of 0.02-0.03), at 48/rarity the strict
-//                             monotonic ranking is reproducible (audit §1/§2).
+//   --rarityN default 48   -> cards per rarity in the dedicated Lv100 distribution
+//   --out <path>           -> JSON output (default qa/power-calibration.json)
 const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
@@ -37,13 +42,7 @@ function parseArg(name,dflt){const i=process.argv.indexOf('--'+name);return i>=0
 const SAMPLE=parseArg('sample',600);
 const BATTLES=parseArg('battles',14);
 const RARITY_N=parseArg('rarityN',48);
-// Optional output override so tests can write to a temp path instead of the
-// committed release artifact qa/power-calibration.json (the smoke test used to
-// clobber it, causing a manifest size mismatch in CI).
-function parseOut(){
-  const i=process.argv.indexOf('--out');
-  return i>=0&&process.argv[i+1]?path.resolve(process.argv[i+1]):path.join(root,'qa','power-calibration.json');
-}
+function parseOut(){const i=process.argv.indexOf('--out');return i>=0&&process.argv[i+1]?path.resolve(process.argv[i+1]):path.join(root,'qa','power-calibration.json');}
 const OUT_JSON=parseOut();
 
 const ARCHETYPES=Object.keys(N.ARCHETYPES);
@@ -76,28 +75,18 @@ function ladderWinRate(card,cid,battles){
   return sum/3;
 }
 
-// ---- three fixed seed-disjoint splits ----
-// Build ONE shuffled combo list (rarity x archetype x level) and assign combos to
-// TRAIN / VALIDATION / FINAL_TEST by index modulo — so every split spans all 12
-// rarities, all archetypes and all levels (no low-rarity-only validation bias).
+// ---- three fixed seed-disjoint splits (TRAIN / VALIDATION / FINAL_TEST) ----
 function buildCombos(){
   const combos=[];
   for(const r of rarities)for(const a of ARCHETYPES)for(const lv of levels)combos.push({rarity:r,archetype:a,level:lv});
-  // deterministic shuffle (FNV-ish xorshift over the combo index)
   let s=1234567;
   const rnd=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};
   for(let i=combos.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));const t=combos[i];combos[i]=combos[j];combos[j]=t;}
   return combos;
 }
-const comm=[];
 const combos=buildCombos();
 const COMBO_TRAIN=[],COMBO_VALID=[],COMBO_FINAL=[];
-for(let i=0;i<combos.length;i++){
-  const c=combos[i];
-  if(i%3===0)COMBO_TRAIN.push(c);
-  else if(i%3===1)COMBO_VALID.push(c);
-  else COMBO_FINAL.push(c);
-}
+for(let i=0;i<combos.length;i++){const c=combos[i];if(i%3===0)COMBO_TRAIN.push(c);else if(i%3===1)COMBO_VALID.push(c);else COMBO_FINAL.push(c);}
 function scoreCombosInto(list,splitName,seedOffset,count){
   const out=[];let idx=0;
   while(out.length<count&&idx<list.length*2){
@@ -129,13 +118,12 @@ const validRows=rows.filter(r=>r.error===undefined&&r.battlePower>0);
 const bySplit=s=>validRows.filter(r=>r.split===s);
 const TRAIN=bySplit('TRAIN'),VALIDATION=bySplit('VALIDATION'),FINAL=bySplit('FINAL_TEST');
 
-// ---- sub-scores (engine math, same as battlepower.js) ----
 function subOf(r){return N.battlePower(N.generateCardV2({rarity:r.rarity,level:r.level,archetype:r.archetype,seed:r.seed})).subScores;}
 const withSubs=TRAIN.map(r=>({...r,sub:subOf(r)}));
 const valSubs=VALIDATION.map(r=>({...r,sub:subOf(r)}));
 const finSubs=FINAL.map(r=>({...r,sub:subOf(r)}));
 
-// ---- fitBattlePowerWeights(): auto-fit on TRAIN only (audit §13A) ----
+// ---- fitBattlePowerWeights(): auto-fit on TRAIN only ----
 const l=v=>Math.log(Math.max(0.01,v));
 function aggPower(card,w){
   const s=card.sub;
@@ -158,47 +146,64 @@ function fitBattlePowerWeights(trainRows){
   return{weights:rounded,trainSpearman:Math.round(best.score*1000)/1000};
 }
 const fitted=fitBattlePowerWeights(withSubs);
-// The SHIPPED product weights (src/battlepower.js SUBSCORE_WEIGHTS). The script
-// validates THESE as the reference: audit §13A requires the reported model to be
-// the actual shipped model, not a proxy. Selected on VALIDATION by both Spearman
-// and similar-BP fairness; FINAL_TEST runs once.
+// The SHIPPED product weights (src/battlepower.js SUBSCORE_WEIGHTS) — the model that
+// actually ships. Candidates explored are all VALIDATED (never fit) on VALIDATION.
 const committed={offense:0.22,durability:0.45,tempo:0.25,sustain:0.02,utility:0.02,economy:0.02,reliability:0.02};
-// Extra candidates explored during the audit sweep (weight-scan2). Keeping the
-// shipped weights as a candidate lets VALIDATION confirm they are the best choice.
 const balanced={offense:0.30,durability:0.38,tempo:0.24,sustain:0.02,utility:0.02,economy:0.02,reliability:0.02};
 const wA={offense:0.22,durability:0.45,tempo:0.25,sustain:0.02,utility:0.02,economy:0.02,reliability:0.02};
 const wF={offense:0.30,durability:0.40,tempo:0.22,sustain:0.02,utility:0.02,economy:0.02,reliability:0.02};
 
-// ---- model selection on VALIDATION (audit §14): use BOTH Spearman and
-//      similar-BP fairness, all measured on the SAME committed product weights ----
 function corrFor(rows,w){return spearman(rows.map(r=>aggPower(r,w)),rows.map(r=>r.winRate));}
 const CAND_KEYS=['fitted','committed','balanced','wA','wF'];
 const candOf=k=>k==='fitted'?fitted.weights:k==='committed'?committed:k==='balanced'?balanced:k==='wA'?wA:wF;
 const spearmanTrain={};const spearmanValid={};
 for(const k of CAND_KEYS){spearmanTrain[k]=corrFor(withSubs,candOf(k));spearmanValid[k]=corrFor(valSubs,candOf(k));}
 
-// Direct-battle fairness for candidate weights: authoritative close-pair metric
-// (random pairs |dBP|/mean <= 5%, direct 正反位 battles, same as similar-bp-test.js)
+// ---- Direct-battle helpers (all splits) ----
+function pairBattleWR(idA,idB,battles=10,seedBase=300000){
+  const s1=N.runSimulation({seedBase,battles,maxRounds:30,teamA:[idA],teamB:[idB]});
+  const s2=N.runSimulation({seedBase:seedBase+1,battles,maxRounds:30,teamA:[idB],teamB:[idA]});
+  return (s1.winRateA+s2.winRateB)/2; // win rate of idA over idB
+}
 const subOfRow=r=>r.sub||subOf(r);
-function fairnessFor(rowsA,rowsB,w,maxPairs=42,battles=14){
-  let sum=0,n=0;
-  const na=rowsA.length,nb=rowsB.length;
-  for(let i=0;i<220&&n<maxPairs;i++){
-    const a=rowsA[(i*13)%na],b=rowsB[(i*29+5)%nb];
+
+// Build DETERMINISTIC DISJOINT pairs INSIDE one split (no cross-split borrowing).
+// Returns a list of {hi,lo} row references (higher-BP first) whose BP differs by
+// the given relative threshold regime.
+function disjointPairs(splitRows,opt){
+  opt=opt||{};
+  const minRel=opt.minRel||0; // minimum |dB|/mean (0 = any), used to split pairwise vs similar
+  const maxRel=opt.maxRel||1; // maximum |dB|/mean
+  const pairs=[];
+  const n=splitRows.length;
+  for(let i=0;i<n-1;i+=2){
+    const a=splitRows[i],b=splitRows[i+1];
     if(a.cardId==='ERR'||b.cardId==='ERR')continue;
-    const bpA=aggPower({...a,sub:subOfRow(a)},w),bpB=aggPower({...b,sub:subOfRow(b)},w);
-    const meanBP=(bpA+bpB)/2;if(meanBP<=0)continue;
-    if(Math.abs(bpA-bpB)/meanBP>0.05)continue;
-    const hiBP=bpA>=bpB?a:b, loBP=bpA>=bpB?b:a;
-    sum+=pairBattleWR(hiBP.cardId,loBP.cardId,battles,400000+i*131);
+    const meanBP=(a.battlePower+b.battlePower)/2;if(meanBP<=0)continue;
+    const rel=Math.abs(a.battlePower-b.battlePower)/meanBP;
+    if(rel<minRel||rel>maxRel)continue;
+    pairs.push(a.battlePower>=b.battlePower?{hi:a,lo:b}:{hi:b,lo:a});
+  }
+  return pairs;
+}
+
+// ---- model selection on VALIDATION ONLY (audit §14) ----
+// Fairness (similar-BP) measured with VALIDATION-internal disjoint pairs only —
+// FINAL cards never participate in model selection.
+function fairnessFor(splitRows,w,maxPairs=36,battles=14){
+  const pairs=disjointPairs(splitRows,{minRel:0,maxRel:0.05}).slice(0,maxPairs);
+  let sum=0,n=0;
+  for(const p of pairs){
+    const hiBP=aggPower({...p.hi,sub:subOfRow(p.hi)},w),loBP=aggPower({...p.lo,sub:subOfRow(p.lo)},w);
+    // pair was selected by stored BP (same weights), re-check with candidate w
+    const mean=(hiBP+loBP)/2;if(mean<=0)continue;
+    if(Math.abs(hiBP-loBP)/mean>0.05)continue;
+    sum+=pairBattleWR(p.hi.cardId,p.lo.cardId,battles,400000+n*131);
     n++;
   }
   return n?sum/n:null;
 }
-const fairValid={};for(const k of CAND_KEYS)fairValid[k]=fairnessFor(VALIDATION,FINAL,candOf(k),42,14);
-// SELECT: prefer candidates whose validation fairness is in [0.40,0.60]; among
-// those pick the highest validation Spearman. If none qualify, pick the candidate
-// whose fairness is CLOSEST to 0.50 with Spearman >= 0.70; otherwise highest Spearman.
+const fairValid={};for(const k of CAND_KEYS)fairValid[k]=fairnessFor(VALIDATION,candOf(k),36,14);
 function pick(){
   const ok=CAND_KEYS.filter(k=>fairValid[k]!==null&&fairValid[k]>=0.40&&fairValid[k]<=0.60);
   if(ok.length){
@@ -217,12 +222,91 @@ function pick(){
 const SELECTED=pick();
 const selectedWeights=candOf(SELECTED);
 const selectedName=SELECTED;
+// ---- FREEZE MODEL ----
+// From this point FINAL is ONLY evaluated; no further fitting/selection.
+
+// ---- Spearman (FINAL only, frozen model) ----
 const spearmanFinal=corrFor(finSubs,selectedWeights);
 
+// ---- Pairwise ordering accuracy (audit §11): split train/validation/final ----
+// Pairwise = cards with DIFFERENT BP (rel >= 3%); the higher-BP card must win >50%.
+function pairwiseOrdering(splitRows,maxPairs=70,battles=10){
+  const pairs=disjointPairs(splitRows,{minRel:0.03}).slice(0,maxPairs);
+  let correct=0,count=0;
+  for(const p of pairs){
+    const wr=pairBattleWR(p.hi.cardId,p.lo.cardId,battles,300000+count*131);
+    if(wr>0.5)correct++;
+    count++;
+  }
+  return count?correct/count:0;
+}
+const pairwiseTrain=pairwiseOrdering(TRAIN,70,10);
+const pairwiseValidation=pairwiseOrdering(VALIDATION,70,10);
+const pairwiseFinal=pairwiseOrdering(FINAL,70,10);
+
+// ---- Similar-BP fairness (audit §9): split train/validation/final ----
+// |dBP|/mean <= 5% pairs; higher-BP card win rate ideal ~0.50.
+function similarBPFairness(splitRows,maxPairs=36,battles=10){
+  const pairs=disjointPairs(splitRows,{minRel:0,maxRel:0.05}).slice(0,maxPairs);
+  let sum=0,n=0;
+  for(const p of pairs){
+    sum+=pairBattleWR(p.hi.cardId,p.lo.cardId,battles,450000+n*131);
+    n++;
+  }
+  return n?sum/n:null;
+}
+const similarBPTrain=similarBPFairness(TRAIN,36,10);
+const similarBPValidation=similarBPFairness(VALIDATION,36,10);
+const similarBPFinal=similarBPFairness(FINAL,36,10);
+
+// ---- WinProbabilityModel proper holdout (audit §12) ----
+// TRAIN: fit logistic b0/b1. VALIDATION: sanity. FINAL: ONLY Brier/LogLoss/bins/ECE.
+function buildWinProbPairs(splitRows,maxPairs=110){
+  const pairs=[];const n=splitRows.length;
+  for(let i=0;i<n-1&&pairs.length<maxPairs;i+=2){
+    const a=splitRows[i],b=splitRows[i+1];
+    if(a.cardId==='ERR'||b.cardId==='ERR'||Math.abs(a.battlePower-b.battlePower)<1)continue;
+    const wrA=pairBattleWR(a.cardId,b.cardId,8,500000+pairs.length*131);
+    pairs.push({xA:Math.log(a.battlePower),xB:Math.log(b.battlePower),y:wrA>0.5?1:0});
+  }
+  return pairs;
+}
+function logisticFit(pairs){
+  let b0=0,b1=1,eps=1e-4;
+  for(let iter=0;iter<60;iter++){
+    let g0=0,g1=0;
+    for(const p of pairs){const z=b0+b1*(p.xA-p.xB);const s=1/(1+Math.exp(-z));g0+=s-p.y;g1+=(s-p.y)*(p.xA-p.xB);}
+    b0-=0.1*g0/pairs.length;b1-=0.1*g1/pairs.length;
+    if(Math.abs(g0)+Math.abs(g1)<eps*pairs.length)break;
+  }
+  return{b0,b1};
+}
+function evaluateWinProb(pairs,b0,b1){
+  let brier=0,ll=0;const bins={};
+  for(const p of pairs){
+    const z=b0+b1*(p.xA-p.xB);const pr=1/(1+Math.exp(-z));
+    brier+=(pr-p.y)**2;
+    ll+=p.y*Math.log(Math.max(1e-9,pr))+(1-p.y)*Math.log(Math.max(1e-9,1-pr));
+    const b=Math.min(9,Math.floor(pr*10));bins[b]=bins[b]||{n:0,sum:0,win:0};
+    bins[b].n++;bins[b].sum+=pr;bins[b].win+=p.y;
+  }
+  const n=pairs.length;
+  // ECE: mean |predicted - empirical| per bin (weighted by bin size)
+  let ece=0;
+  for(const b of Object.keys(bins)){const c=bins[b];if(c.n)ece+=(c.n/n)*Math.abs(c.sum/c.n-c.win/c.n);}
+  return{brier:brier/n,logLoss:-ll/n,ece,bins,pairs:n};
+}
+const trainWPPairs=buildWinProbPairs(TRAIN,110);
+const {b0,b1}=trainWPPairs.length>=8?logisticFit(trainWPPairs):{b0:0,b1:1};
+const validWP=evaluateWinProb(buildWinProbPairs(VALIDATION,80),b0,b1);
+const finalWP=evaluateWinProb(buildWinProbPairs(FINAL,80),b0,b1);
+const winProb={
+  fittedOn:'TRAIN',b0:Math.round(b0*1000)/1000,b1:Math.round(b1*1000)/1000,
+  validation:{brier:Math.round(validWP.brier*1000)/1000,logLoss:Math.round(validWP.logLoss*1000)/1000,ece:Math.round(validWP.ece*1000)/1000,pairs:validWP.pairs},
+  finalHoldout:{brier:Math.round(finalWP.brier*1000)/1000,logLoss:Math.round(finalWP.logLoss*1000)/1000,ece:Math.round(finalWP.ece*1000)/1000,pairs:finalWP.pairs},
+};
+
 // ---- dedicated LARGE Lv100 rarity distribution (strict + trend monotonicity) ----
-// Same archetype mix for every rarity (each archetype appears equally), so rarity
-// means are not confounded by archetype rotation (audit §1 measured this way:
-// same measurement design as the adjacent-rarity matrix).
 function rarityDistribution(){
   const byR={};
   const perArch=Math.max(2,Math.floor(RARITY_N/ARCHETYPES.length));
@@ -252,117 +336,25 @@ function monotonicity(means){
 }
 const mono=monotonicity(dist.means);
 
-// ---- Authoritative adjacent-rarity matrix (audit §3) ----
-// Run scripts/adjacent-rarity-matrix.js FIRST (writes qa/adjacent-rarity-matrix.json
-// at the same seed/archetype design as this calibration). The matrix measures each
-// adjacent pair DIRECTLY (正反位, thousands of battles, 95% CI) — that is the honest
-// basis for "稀有度越高统计意义上实力越高", not the ladder-mean of a smaller sample
-// (whose B+->A gap sits at the measurement noise floor and flips run to run).
+// ---- Authoritative adjacent-rarity matrix (matched-card bootstrap) ----
+// Produced by scripts/adjacent-rarity-matrix.js; read for the release gate.
 const matrixPath=path.join(root,'qa','adjacent-rarity-matrix.json');
 let matrix=null;
 if(fs.existsSync(matrixPath)){
-  try{
-    const m=JSON.parse(fs.readFileSync(matrixPath,'utf8'));
-    if(m.rows&&m.rows.length===rarities.length-1)matrix=m;
-  }catch(_){/* keep null */}
+  try{const m=JSON.parse(fs.readFileSync(matrixPath,'utf8'));if(m.rows&&m.rows.length===rarities.length-1)matrix=m;}catch(_){/* keep null */}
 }
 const matrixAllDirectionCorrect=matrix?matrix.allDirectionCorrect:null;
 const matrixStrictMonotonic=matrix?(matrix.rows.every(r=>r.winRateHigherTier>=0.50)):null;
-
-// ---- Pairwise ordering accuracy (audit §11): direct pair battles ----
-// Random pairs of cards with DIFFERENT BattlePower (exclude near-equal BP < 3%,
-// which is the similar-BP regime, not an ordering test); run 正反位 battles; the
-// pair is "correctly ordered" when the higher-BP card actually wins (>50% win
-// rate). Larger random sample for a stable estimate. Target >= 75%.
-function pairBattleWR(idA,idB,battles=10,seedBase=300000){
-  const s1=N.runSimulation({seedBase,battles,maxRounds:30,teamA:[idA],teamB:[idB]});
-  const s2=N.runSimulation({seedBase:seedBase+1,battles,maxRounds:30,teamA:[idB],teamB:[idA]});
-  return (s1.winRateA+s2.winRateB)/2; // win rate of idA over idB
-}
-function pairwiseOrdering(rowsA,rowsB,maxPairs=110,battles=10){
-  const pool=[...rowsA,...rowsB].filter(r=>r.cardId!=='ERR');
-  let correct=0,count=0,skipped=0;
-  const n=pool.length;
-  // random-ish deterministic pairs across the union pool
-  for(let i=0;i<n*4&&count<maxPairs;i++){
-    const a=pool[(i*37)%n],b=pool[(i*97+29)%n];
-    if(a.cardId===b.cardId)continue;
-    const rel=Math.abs(a.battlePower-b.battlePower)/((a.battlePower+b.battlePower)/2);
-    if(rel<0.03)continue; // near-equal BP -> similar-BP regime, not ordering test
-    const hiBP=a.battlePower>b.battlePower?a:b;
-    const loBP=a.battlePower>b.battlePower?b:a;
-    const wr=pairBattleWR(hiBP.cardId,loBP.cardId,battles,300000+i*131);
-    if(wr>0.5)correct++;
-    count++;
-    skipped++;
-  }
-  return count?correct/count:0;
-}
-const pairwiseVal=pairwiseOrdering(VALIDATION,FINAL,110,10);
-const pairwiseTrain=pairwiseOrdering(TRAIN,TRAIN.slice().reverse(),110,10);
-
-// ---- Similar-BP fairness (audit §9): DIRECT battles, |dBP|/mean <= 5% ----
-function similarBPFairness(rowsA,rowsB,maxPairs=40,battles=8){
-  let sum=0,n=0;
-  const na=rowsA.length,nb=rowsB.length;
-  for(let i=0;i<100&&n<maxPairs;i++){
-    const a=rowsA[(i*13)%na],b=rowsB[(i*29+5)%nb];
-    if(a.cardId==='ERR'||b.cardId==='ERR')continue;
-    const meanBP=(a.battlePower+b.battlePower)/2;if(meanBP<=0)continue;
-    if(Math.abs(a.battlePower-b.battlePower)/meanBP>0.05)continue;
-    const hiBP=a.battlePower>=b.battlePower?a:b;
-    const loBP=a.battlePower>=b.battlePower?b:a;
-    sum+=pairBattleWR(hiBP.cardId,loBP.cardId,battles,400000+i*131);
-    n++;
-  }
-  return n?sum/n:null;
-}
-const similarVal=similarBPFairness(VALIDATION,FINAL,40,8);
-
-// ---- Win-probability calibration (audit §12): logistic on ln(BPA/BPB) ----
-function logisticFit(pairs){
-  let b0=0,b1=1,eps=1e-4;
-  for(let iter=0;iter<60;iter++){
-    let g0=0,g1=0;
-    for(const p of pairs){const z=b0+b1*(p.xA-p.xB);const s=1/(1+Math.exp(-z));g0+=s-p.y;g1+=(s-p.y)*(p.xA-p.xB);}
-    b0-=0.1*g0/pairs.length;b1-=0.1*g1/pairs.length;
-    if(Math.abs(g0)+Math.abs(g1)<eps*pairs.length)break;
-  }
-  return{b0,b1};
-}
-function calibrationBins(pairs,b0,b1){
-  const bins={};
-  for(const p of pairs){
-    const z=b0+b1*(p.xA-p.xB);const pred=1/(1+Math.exp(-z));
-    const b=Math.min(9,Math.floor(pred*10));
-    bins[b]=bins[b]||{n:0,sum:0,win:0};
-    bins[b].n++;bins[b].sum+=pred;bins[b].win+=p.y;
-  }
-  return bins;
-}
-function winProbReport(rowsA,rowsB,maxPairs=120){
-  const pairs=[];const n=Math.min(rowsA.length,rowsB.length);
-  for(let i=0;i<n&&pairs.length<maxPairs;i++){
-    const a=rowsA[(i*17)%rowsA.length],b=rowsB[(i*23+3)%rowsB.length];
-    if(a.cardId==='ERR'||b.cardId==='ERR'||Math.abs(a.battlePower-b.battlePower)<1)continue;
-    const wrA=pairBattleWR(a.cardId,b.cardId,8,500000+i*131);
-    pairs.push({xA:Math.log(a.battlePower),xB:Math.log(b.battlePower),y:wrA>0.5?1:0});
-  }
-  if(pairs.length<8)return{b0:0,b1:0,brier:0.25,logLoss:0.693,pairs:pairs.length,bins:{},note:'too few pairs'};
-  const {b0,b1}=logisticFit(pairs);
-  let brier=0,ll=0;const bins=calibrationBins(pairs,b0,b1);
-  for(const p of pairs){const z=b0+b1*(p.xA-p.xB);const pr=1/(1+Math.exp(-z));brier+=(pr-p.y)**2;ll+=p.y*Math.log(Math.max(1e-9,pr))+(1-p.y)*Math.log(Math.max(1e-9,1-pr));}
-  return{b0:Math.round(b0*1000)/1000,b1:Math.round(b1*1000)/1000,brier:Math.round(brier/pairs.length*1000)/1000,logLoss:Math.round(-ll/pairs.length*1000)/1000,pairs:pairs.length,bins};
-}
-const winProb=winProbReport(VALIDATION,FINAL,120);
+const matrixHardInversions=matrix?matrix.hardInversions:null;
 
 const report={
-  version:'1.2.1',
+  version:'1.2.2',
   sample:SAMPLE,battles:BATTLES,rarityDistributionN:RARITY_N,
   splits:{train:TRAIN.length,validation:VALIDATION.length,finalTest:FINAL.length},
   fittedWeights:fitted.weights,fittedTrainSpearman:fitted.trainSpearman,
   committedWeights:committed,balancedWeights:balanced,
   selectedWeights,selectedName,
+  modelSelectionUsedSplits:['TRAIN','VALIDATION'],
   spearman:{train:spearmanTrain.fitted,committedTrain:spearmanTrain.committed,balancedTrain:spearmanTrain.balanced,
     validationFitted:spearmanValid.fitted,validationCommitted:spearmanValid.committed,validationBalanced:spearmanValid.balanced,
     validationSelected:spearmanValid[SELECTED],
@@ -373,30 +365,34 @@ const report={
   rarityLadderTrendAcceptable:mono.trend,
   adjacentMatrixAllDirectionCorrect:matrixAllDirectionCorrect,
   adjacentMatrixStrictMonotonic:matrixStrictMonotonic,
+  adjacentMatrixHardInversions:matrixHardInversions,
   rarityAdjacentDiffs:mono.pairs,
-  pairwiseOrderingAccuracy:{train:Math.round(pairwiseTrain*1000)/1000,validation:Math.round(pairwiseVal*1000)/1000},
-  similarBPFairnessHigherBPWinRate:similarVal===null?null:Math.round(similarVal*1000)/1000,
+  pairwiseOrderingAccuracy:{train:Math.round(pairwiseTrain*1000)/1000,validation:Math.round(pairwiseValidation*1000)/1000,final:Math.round(pairwiseFinal*1000)/1000},
+  similarBPFairness:{train:similarBPTrain===null?null:Math.round(similarBPTrain*1000)/1000,
+    validation:similarBPValidation===null?null:Math.round(similarBPValidation*1000)/1000,
+    final:similarBPFinal===null?null:Math.round(similarBPFinal*1000)/1000},
   winProbabilityModel:winProb,
   cards:rows};
 fs.writeFileSync(OUT_JSON,JSON.stringify(report,null,2));
 
-console.log(`POWER CALIBRATION v1.2.1 — sample ${validRows.length} playable · splits T/V/F ${TRAIN.length}/${VALIDATION.length}/${FINAL.length}`);
+console.log(`POWER CALIBRATION v1.2.2 — sample ${validRows.length} playable · splits T/V/F ${TRAIN.length}/${VALIDATION.length}/${FINAL.length}`);
 console.log(`fitBattlePowerWeights (TRAIN only): ${JSON.stringify(fitted.weights)}  trainSpearman ${fitted.trainSpearman.toFixed(3)}`);
 console.log(`Spearman VALIDATION: fitted ${spearmanValid.fitted.toFixed(3)} · committed ${spearmanValid.committed.toFixed(3)} · balanced ${spearmanValid.balanced.toFixed(3)}`);
-console.log(`similar-BP fairness (direct <=5% battles): fitted ${fairValid.fitted===null?'n/a':fairValid.fitted.toFixed(3)} · committed ${fairValid.committed===null?'n/a':fairValid.committed.toFixed(3)} · balanced ${fairValid.balanced===null?'n/a':fairValid.balanced.toFixed(3)}`);
-console.log(`SELECTED (validation): ${selectedName} -> ${JSON.stringify(selectedWeights)}`);
-console.log(`Spearman FINAL_TEST (selected, run once): ${spearmanFinal.toFixed(3)}  (validation target >= 0.70)`);
+console.log(`similar-BP fairness (VALIDATION-internal pairs): fitted ${fairValid.fitted===null?'n/a':fairValid.fitted.toFixed(3)} · committed ${fairValid.committed===null?'n/a':fairValid.committed.toFixed(3)} · balanced ${fairValid.balanced===null?'n/a':fairValid.balanced.toFixed(3)}`);
+console.log(`SELECTED (validation, no FINAL): ${selectedName} -> ${JSON.stringify(selectedWeights)}`);
+console.log(`--- MODEL FREEZED ---`);
+console.log(`Spearman FINAL_TEST (frozen model, holdout): ${spearmanFinal.toFixed(3)}  (target >= 0.70)`);
+console.log(`pairwise ordering: train ${pairwiseTrain.toFixed(3)} · validation ${pairwiseValidation.toFixed(3)} · FINAL ${pairwiseFinal.toFixed(3)}  (final target >= 0.75)`);
+console.log(`similar-BP fairness: train ${similarBPTrain===null?'n/a':similarBPTrain.toFixed(3)} · validation ${similarBPValidation===null?'n/a':similarBPValidation.toFixed(3)} · FINAL ${similarBPFinal===null?'n/a':similarBPFinal.toFixed(3)}  (ideal ~0.50)`);
+console.log(`win-probability model (fitted on TRAIN, b0=${b0.toFixed(3)} b1=${b1.toFixed(3)}):`);
+console.log(`  VALIDATION sanity: Brier ${winProb.validation.brier} LogLoss ${winProb.validation.logLoss} ECE ${winProb.validation.ece} (n=${winProb.validation.pairs})`);
+console.log(`  FINAL holdout:     Brier ${winProb.finalHoldout.brier} LogLoss ${winProb.finalHoldout.logLoss} ECE ${winProb.finalHoldout.ece} (n=${winProb.finalHoldout.pairs})`);
 console.log(`rarity ladder means (n=${RARITY_N}/rarity Lv100): strict=${mono.strict?'YES':'NO'} trend=${mono.trend?'YES':'NO'}`);
-for(const r of rarities)console.log(`  ${r.padEnd(13)}${dist.means[r].toFixed(3)}`);
 if(matrixAllDirectionCorrect!==null){
-  console.log(`adjacent-rarity matrix (direct 正反位, thousands battles/pair): allDirectionCorrect=${matrixAllDirectionCorrect?'YES':'NO'} strictMonotonic=${matrixStrictMonotonic?'YES':'NO'}`);
+  console.log(`adjacent-rarity matrix: allDirectionCorrect=${matrixAllDirectionCorrect?'YES':'NO'} strictMonotonic=${matrixStrictMonotonic?'YES':'NO'} hardInversions(<40%) count=${matrixHardInversions===null?'n/a':matrixHardInversions.length}`);
 }else{
-  console.log('adjacent-rarity matrix: run scripts/adjacent-rarity-matrix.js first (qa/adjacent-rarity-matrix.json missing)');
+  console.log('adjacent-rarity matrix: run scripts/adjacent-rarity-matrix.js first');
 }
-console.log(`pairwise ordering accuracy (direct 正反位): train ${pairwiseTrain.toFixed(3)} · validation ${pairwiseVal.toFixed(3)}  (target >= 0.75)`);
-console.log(`similar-BP fairness (selected weights, direct |dBP|/mean<=5% battles, higher-BP win rate): ${similarVal===null?'n/a':similarVal.toFixed(3)}  (ideal ~0.50)`);
-console.log(`win-probability model: b0=${winProb.b0} b1=${winProb.b1} Brier=${winProb.brier} LogLoss=${winProb.logLoss} n=${winProb.pairs}`);
-const selSpearman=spearmanValid[SELECTED];
-const gate=selSpearman>=0.70&&(matrixStrictMonotonic??mono.strict);
-console.log(gate?'CALIBRATION PASS ✔ (validation Spearman >= 0.70 AND strict rarity monotonic via adjacent matrix)':'CALIBRATION WEAK — improve scoring model');
+const gate=spearmanValid[SELECTED]>=0.70&&(matrixStrictMonotonic??mono.strict)&&(matrixHardInversions===null||matrixHardInversions.length===0);
+console.log(gate?'CALIBRATION PASS ✔ (validation Spearman >= 0.70 AND strict monotonic AND no hard inversions <40%)':'CALIBRATION WEAK — improve scoring model');
 process.exit(gate?0:1);

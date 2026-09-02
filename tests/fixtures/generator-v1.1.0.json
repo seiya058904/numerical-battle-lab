@@ -1,5 +1,6 @@
 {
   "name": "generator-v1.1.0 historical fixture",
+  "historicalCommit": "19ca5a443fcccd418d421a648f29a900098f55f8",
   "version": 1,
   "generatorVersion": 1,
   "canonical": "sha256(recursive-sorted-json of generateCard output)",
