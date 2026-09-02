@@ -51,8 +51,8 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 ```
 
 工作区：`D:\xia zai\AI project\pk\2\NUMERICAL-BATTLE-LAB-v1.0.0`。
-**OLD HEAD** `19ca5a443fcccd418d421a648f29a900098f55f8` → **NEW HEAD** `427a7f7`
-（v1.2.0 提交，main 分支，Verify + Pages 工作流均 PASS）。
+**OLD HEAD** `edf23f820f9eb2e2935d0c5c8ae4fe720b3fd454` → **NEW HEAD** `51e3aeb2951e977b4fcd93e6bf598e3e262135c9`
+（v1.2.1 提交链 f1d0ca9 → 0877644 → 51e3aeb，main 分支，Verify + Pages 工作流均 PASS）。
 
 ## 2. 测试总数
 
