@@ -145,8 +145,8 @@
     },
     {
       "path": "qa/power-calibration.json",
-      "size": 26564,
-      "sha256": "e07989d2d7f51efa26e690cd71d231951ecc712df2861c3d2437125e3b5bfa91"
+      "size": 115850,
+      "sha256": "8b8f95cc783142fe1ca4ec64864ce8413add818f1303feec28ada0139f180ab8"
     },
     {
       "path": "qa/stress-results.json",
@@ -180,8 +180,8 @@
     },
     {
       "path": "scripts/power-calibration.js",
-      "size": 21057,
-      "sha256": "4c5d3e41e4257d53bd0b62734a9cfadefe1292fea0d781f1b5eb43381ba72d4f"
+      "size": 21579,
+      "sha256": "0606b3f4842f867c9e03e79c5bc49d7cb18ae03c387fa4fdc071cc14f39202d1"
     },
     {
       "path": "scripts/similar-bp-test.js",

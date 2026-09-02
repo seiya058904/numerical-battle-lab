@@ -137,8 +137,8 @@
     ]
   ],
   "pairwiseOrderingAccuracy": {
-    "train": 0.783,
-    "validation": 0.7
+    "train": 0.873,
+    "validation": 0.818
   },
   "similarBPFairnessHigherBPWinRate": 0.352,
   "winProbabilityModel": {

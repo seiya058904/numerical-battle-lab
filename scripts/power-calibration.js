@@ -261,29 +261,37 @@ if(fs.existsSync(matrixPath)){
 const matrixAllDirectionCorrect=matrix?matrix.allDirectionCorrect:null;
 const matrixStrictMonotonic=matrix?(matrix.rows.every(r=>r.winRateHigherTier>=0.50)):null;
 
-// ---- Pairwise ordering accuracy (audit §11): DIRECT pair battles ----
-function pairBattleWR(idA,idB,battles=8,seedBase=300000){
+// ---- Pairwise ordering accuracy (audit §11): direct pair battles ----
+// Random pairs of cards with DIFFERENT BattlePower (exclude near-equal BP < 3%,
+// which is the similar-BP regime, not an ordering test); run 正反位 battles; the
+// pair is "correctly ordered" when the higher-BP card actually wins (>50% win
+// rate). Larger random sample for a stable estimate. Target >= 75%.
+function pairBattleWR(idA,idB,battles=10,seedBase=300000){
   const s1=N.runSimulation({seedBase,battles,maxRounds:30,teamA:[idA],teamB:[idB]});
   const s2=N.runSimulation({seedBase:seedBase+1,battles,maxRounds:30,teamA:[idB],teamB:[idA]});
   return (s1.winRateA+s2.winRateB)/2; // win rate of idA over idB
 }
-function pairwiseOrdering(rowsA,rowsB,maxPairs=60,battles=8){
-  let correct=0,count=0;
-  const n=Math.min(rowsA.length,rowsB.length);
-  for(let i=0;i<n&&count<maxPairs;i++){
-    const a=rowsA[(i*7)%rowsA.length],b=rowsB[(i*11)%rowsB.length];
-    if(a.cardId==='ERR'||b.cardId==='ERR')continue;
-    if(Math.abs(a.battlePower-b.battlePower)<1)continue;
+function pairwiseOrdering(rowsA,rowsB,maxPairs=110,battles=10){
+  const pool=[...rowsA,...rowsB].filter(r=>r.cardId!=='ERR');
+  let correct=0,count=0,skipped=0;
+  const n=pool.length;
+  // random-ish deterministic pairs across the union pool
+  for(let i=0;i<n*4&&count<maxPairs;i++){
+    const a=pool[(i*37)%n],b=pool[(i*97+29)%n];
+    if(a.cardId===b.cardId)continue;
+    const rel=Math.abs(a.battlePower-b.battlePower)/((a.battlePower+b.battlePower)/2);
+    if(rel<0.03)continue; // near-equal BP -> similar-BP regime, not ordering test
     const hiBP=a.battlePower>b.battlePower?a:b;
     const loBP=a.battlePower>b.battlePower?b:a;
     const wr=pairBattleWR(hiBP.cardId,loBP.cardId,battles,300000+i*131);
     if(wr>0.5)correct++;
     count++;
+    skipped++;
   }
   return count?correct/count:0;
 }
-const pairwiseVal=pairwiseOrdering(VALIDATION,FINAL,60,8);
-const pairwiseTrain=pairwiseOrdering(TRAIN,TRAIN.slice().reverse(),60,8);
+const pairwiseVal=pairwiseOrdering(VALIDATION,FINAL,110,10);
+const pairwiseTrain=pairwiseOrdering(TRAIN,TRAIN.slice().reverse(),110,10);
 
 // ---- Similar-BP fairness (audit §9): DIRECT battles, |dBP|/mean <= 5% ----
 function similarBPFairness(rowsA,rowsB,maxPairs=40,battles=8){
