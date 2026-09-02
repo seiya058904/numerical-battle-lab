@@ -37,6 +37,14 @@ function parseArg(name,dflt){const i=process.argv.indexOf('--'+name);return i>=0
 const SAMPLE=parseArg('sample',600);
 const BATTLES=parseArg('battles',14);
 const RARITY_N=parseArg('rarityN',48);
+// Optional output override so tests can write to a temp path instead of the
+// committed release artifact qa/power-calibration.json (the smoke test used to
+// clobber it, causing a manifest size mismatch in CI).
+function parseOut(){
+  const i=process.argv.indexOf('--out');
+  return i>=0&&process.argv[i+1]?path.resolve(process.argv[i+1]):path.join(root,'qa','power-calibration.json');
+}
+const OUT_JSON=parseOut();
 
 const ARCHETYPES=Object.keys(N.ARCHETYPES);
 const rarities=N.RARITY_V2_ORDER;
@@ -370,7 +378,7 @@ const report={
   similarBPFairnessHigherBPWinRate:similarVal===null?null:Math.round(similarVal*1000)/1000,
   winProbabilityModel:winProb,
   cards:rows};
-fs.writeFileSync(path.join(root,'qa','power-calibration.json'),JSON.stringify(report,null,2));
+fs.writeFileSync(OUT_JSON,JSON.stringify(report,null,2));
 
 console.log(`POWER CALIBRATION v1.2.1 — sample ${validRows.length} playable · splits T/V/F ${TRAIN.length}/${VALIDATION.length}/${FINAL.length}`);
 console.log(`fitBattlePowerWeights (TRAIN only): ${JSON.stringify(fitted.weights)}  trainSpearman ${fitted.trainSpearman.toFixed(3)}`);

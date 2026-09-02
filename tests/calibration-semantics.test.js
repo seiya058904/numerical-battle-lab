@@ -11,13 +11,17 @@ const root=path.resolve(__dirname,'..');
 // model + all split Spearman values and the direct-battle metrics.
 let _smoke=null;
 function runSmoke(){
-  // fast smoke: small samples, few battles; requires only the generator, no matrix file.
-  // The gate may fail on a tiny smoke sample (exit 1) but the JSON is always written,
-  // so spawnSync captures output regardless of the gate exit code. Run once and cache.
+  // fast smoke: small samples, few battles; requires only the generator, no matrix
+  // file. Writes to a TEMP path (--out) so the committed release artifact
+  // qa/power-calibration.json is never clobbered (this used to cause a manifest
+  // size mismatch in CI). The gate may fail on a tiny sample (exit 1) but the JSON
+  // is always written, so spawnSync captures output regardless of exit code.
   if(_smoke!==null)return _smoke;
-  const res=spawnSync(process.execPath,[path.join(root,'scripts/power-calibration.js'),'--sample','120','--battles','6','--rarityN','12'],{cwd:root,encoding:'utf8'});
+  const out=path.join(root,'qa','.smoke-power-calibration.json');
+  const res=spawnSync(process.execPath,[path.join(root,'scripts/power-calibration.js'),'--sample','120','--battles','6','--rarityN','12','--out',out],{cwd:root,encoding:'utf8'});
   assert.ok(res.status===0||res.status===1,'calibration exits 0 or 1 (gate), never crashes');
-  _smoke=JSON.parse(fs.readFileSync(path.join(root,'qa/power-calibration.json'),'utf8'));
+  _smoke=JSON.parse(fs.readFileSync(out,'utf8'));
+  fs.rmSync(out,{force:true});
   return _smoke;
 }
 

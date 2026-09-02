@@ -180,8 +180,8 @@
     },
     {
       "path": "scripts/power-calibration.js",
-      "size": 21579,
-      "sha256": "0606b3f4842f867c9e03e79c5bc49d7cb18ae03c387fa4fdc071cc14f39202d1"
+      "size": 21958,
+      "sha256": "7aa39409c844fe8e8c67acdce9d4ce1086778500e85f587a0322f10d8cded97f"
     },
     {
       "path": "scripts/similar-bp-test.js",
@@ -310,8 +310,8 @@
     },
     {
       "path": "tests/calibration-semantics.test.js",
-      "size": 3434,
-      "sha256": "cfc94b712bb36943021a6b373e110bf6f5cf8ca490c39cb88800d927189a10bc"
+      "size": 3640,
+      "sha256": "9df31ebdef0198a5798e536ba326f6b2a395d8af03036bf7579e69a164e4cd2f"
     },
     {
       "path": "tests/card-library.test.js",
