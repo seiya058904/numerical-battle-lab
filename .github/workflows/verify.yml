@@ -20,5 +20,13 @@ jobs:
         with:
           node-version: 22
 
-      - name: Verify
+      # v1.2.3 (audit §15): 普通 PR 只跑快速 verify；正式版本提交（push 到 main）
+      # 必须跑 verify:release（verify + health-metrics n=3000 + adjacent-rarity-matrix
+      # + BattlePower calibration + matched-rarity + Similar-BP）。
+      - name: Verify (PR fast gate)
+        if: github.event_name == 'pull_request'
         run: npm run verify
+
+      - name: Verify Release (main release gate)
+        if: github.event_name == 'push'
+        run: npm run verify:release
