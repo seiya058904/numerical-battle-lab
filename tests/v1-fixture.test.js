@@ -4,10 +4,10 @@ const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
 function load(){
-  for(const f of ['kernel','components','rules','content','status-runtime','validator','formula','effects','engine','power','gen-stats','gen-skills','generator','gen-names','gen-v2','battlepower'])
+  for(const f of ['kernel','components','rules','content','status-runtime','validator','formula','effects','engine','power','gen-stats','gen-skills','generator','gen-names','gen-v2','battlepower-model','battlepower'])
     delete require.cache[require.resolve('../src/'+f+'.js')];
   global.NCB={};
-  for(const f of ['kernel','components','rules','content','status-runtime','validator','formula','effects','engine','power','gen-stats','gen-skills','generator','gen-names','gen-v2','battlepower'])
+  for(const f of ['kernel','components','rules','content','status-runtime','validator','formula','effects','engine','power','gen-stats','gen-skills','generator','gen-names','gen-v2','battlepower-model','battlepower'])
     require('../src/'+f+'.js');
   return global.NCB;
 }
@@ -21,17 +21,25 @@ function canon(v){
 }
 function cardHash(card){return crypto.createHash('sha256').update(canon(card)).digest('hex');}
 
-// v1.2.2 historical fixture (audit §15/§17): Generator v1 output is locked
+// v1.2.3 historical fixture (audit §16/§17/§18): Generator v1 output is locked
 // byte-for-byte against the ACTUAL v1.1.0 historical commit
 // 19ca5a443fcccd418d421a648f29a900098f55f8 (fixture generated from a temp worktree
-// at that commit, via scripts/generate-v1-fixture.js --historical-ref).
-// Normal `npm run verify` NEVER regenerates this golden file — it only compares
-// current v1 output against the immutable hashes.
+// at that commit, via scripts/generate-v1-fixture.js --historical-ref, which now
+// ALSO verifies git HEAD and a clean worktree). The fixture carries machine-
+// verifiable provenance (historicalCommit/historicalTree/generatorBlobSha/
+// generatedAtToolVersion — no dynamic timestamp). Normal `npm run verify` NEVER
+// regenerates this golden file — it only compares current v1 output against the
+// immutable hashes; the 189 hashes themselves are unchanged by the provenance
+// additions.
 test('Generator v1 matches the v1.1.0 historical fixture (byte-for-byte hashes)',()=>{
   const N=load();
   const fixture=JSON.parse(fs.readFileSync(path.join(__dirname,'fixtures','generator-v1.1.0.json'),'utf8'));
   assert.equal(fixture.generatorVersion,1);
   assert.equal(fixture.historicalCommit,'19ca5a443fcccd418d421a648f29a900098f55f8','fixture anchored to the v1.1.0 baseline commit');
+  // v1.2.3 provenance (audit §17): machine-verifiable, deterministic, no timestamp
+  assert.equal(fixture.historicalTree,'ad4e2a9d6833599c67310d4a45e9ec7dd4a1b27e','historical tree sha (git rev-parse HEAD^{tree})');
+  assert.equal(fixture.generatorBlobSha,'228e65b98bdedadc1fc83d4542f9b0354f9ad8ac','generator.js blob sha at the historical commit');
+  assert.equal(fixture.generatedAtToolVersion,'v1.2.3','tool version recorded (not a timestamp)');
   assert.equal(fixture.count,189,'official fixture has exactly 189 representative cards');
   let checked=0;
   for(const entry of fixture.entries){

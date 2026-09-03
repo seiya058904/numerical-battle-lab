@@ -288,6 +288,39 @@ v1.2.2 只修统计脚本、**冻结 Generator v2 数值**，用更严格的测�
 
 ---
 
+## 7. v1.2.3 Sustain Health Fix（本轮真正修复）
+
+v1.2.2 诚实记录但未修复的 stalemate 6.40% [5.41-7.56] 在本轮用 **Generator v2
+sustain composition 修复**真正压下去（BattleEngine 冻结、Generator v1 冻结）：
+
+- **Anti-Stall Generator Diagnostics**（§13）：每张生成卡记录 `sustainLoad`、
+  `expectedDPS`、`expectedSelfSustain`、`pressureRatio = expectedDPS /
+  expectedSelfSustain`（Generator-only，绝不进 BattleEngine）。DEF/RES 按引擎冻结
+  公式 `100/(100+def)` 建模到 expectedDPS，pressureRatio 才能反映真实压力。
+- **SustainLoad**（§9）：active heal/shield EV + recurring heal/shield trigger
+  （每轮重复 → 计 2x）+ regen。
+- **Sustain composition ceiling**（§10/§12）：per-archetype `V2_SUSTAIN_CEILING`
+  （Support 0.085 最高，Assassin 0.045 最低）+ `V2_PRESSURE_FLOOR`（Support 1.2，
+  Assassin 1.5）。超限时**重新组合**：移除 recurring sustain trigger 换成
+  utility/resource/status trigger → heal+shield 同现时把 shield 换 damage（保留
+  heal 身份）→ 仍超且有两个 sustain 技能才动最后一个 → pressureRatio 不足时把
+  最慢 damage 技能换成快速 damage（cooldown<=1）。全部按 Effect/Tag 判断，
+  **没有** `if(archetype==='Support')damage*=...`。
+- **Recurrence cost 提高**（§12）：`V2_TRIGGER_RECURRENCE_DISCOUNT` 3.2→6.0，
+  recurring heal/shield trigger 系数减半——之前低估了每轮无限重复价值。
+- **组合级调整**：heal 技能 cooldown 1→2（不再是近似每轮奶）、
+  `V2_SUSTAIN_POWER_SCALE` 720→1100（heal/shield 系数分母）。
+- **结果（n=3000，§20 gate）**：
+  - 整体 stalemate **0.97% [0.67-1.38]**（目标 <4% ✔，硬门禁 <5% ✔）
+  - Support mirror stalemate **6.3%**（目标 <10% ✔）；Support 仍是 Support：
+    healKeep ~44%、P50 14 / P90 30（可拖长但不无限）
+  - Tank mirror stalemate **0.2%**（目标 <7% ✔）
+  - one-shot **0.00%**；median **8** 回合（6-10 ✔）
+- **Rarity 未退化**（§21）：adjacent-rarity-matrix 重跑仍
+  ALL DIRECTION CORRECT + 0 hard inversions；matched-seed / population 重跑待报。
+
+---
+
 *本报告由 `scripts/power-calibration.js`（validation 分离）、
 `scripts/adjacent-rarity-matrix.js`、`scripts/similar-bp-test.js`、
 `scripts/health-metrics.js` 与 `vitest tmp/*.cjs` 实测探针生成；可复跑校验。*

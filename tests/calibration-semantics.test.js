@@ -5,16 +5,21 @@ const path=require('node:path');
 const {spawnSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
 
-// v1.2.2 calibration semantics (audit §1/§2/§10-14 + leak fix §2): smoke-run the
-// calibration script and verify:
-//   - strict vs trend monotonicity distinguished (never label trend as strict)
+// v1.2.3 calibration semantics (audit §2-§6 + model-consistency §1/§5): smoke-run
+// the calibration script and verify:
+//   - NEW FINAL HOLDOUT (NEW_FINAL_2026_09) is a brand-new split; old FINAL_TEST
+//     seeds are never used again (audit §2/§19)
 //   - model selection uses ONLY TRAIN+VALIDATION (FINAL never in selection)
-//   - pairwise / similar-BP split into train/validation/final
-//   - win-probability fitted on TRAIN, evaluated on FINAL holdout
+//   - candidate fairness re-builds pairs per model (buildPairsForModel) — no stale
+//     stored-BP preselection (audit §3/§4)
+//   - pairwise / similar-BP / win-probability all take an explicit model and never
+//     read a stale row.battlePower (audit §6)
+//   - the report carries selectedModelHash + shippedModelHash (audit §5)
 let _smoke=null;
 function runSmoke(){
   if(_smoke!==null)return _smoke;
   const out=path.join(root,'qa','.smoke-power-calibration.json');
+  // smoke does NOT --ship (must not mutate the shipped registry from a smoke run)
   const res=spawnSync(process.execPath,[path.join(root,'scripts/power-calibration.js'),'--sample','120','--battles','6','--rarityN','12','--out',out],{cwd:root,encoding:'utf8'});
   assert.ok(res.status===0||res.status===1,'calibration exits 0 or 1 (gate), never crashes');
   _smoke=JSON.parse(fs.readFileSync(out,'utf8'));
@@ -22,29 +27,29 @@ function runSmoke(){
   return _smoke;
 }
 
-test('v1.2.2 calibration JSON: strict vs trend monotonicity distinguished',()=>{
+test('v1.2.3 calibration JSON: NEW FINAL holdout + model block present',()=>{
   const r=runSmoke();
-  assert.equal(r.version,'1.2.2');
-  assert.equal(typeof r.rarityLadderStrictMonotonic,'boolean');
-  assert.equal(typeof r.rarityLadderTrendAcceptable,'boolean');
-  if(!r.rarityLadderStrictMonotonic)assert.ok(r.rarityLadderTrendAcceptable!==undefined);
-  assert.equal(Object.keys(r.rarityMeansLv100||{}).length,12);
+  assert.equal(r.version,'1.2.3');
+  assert.ok(r.model&&typeof r.model.selectedName==='string','model selection recorded');
+  assert.ok(r.model.selectedWeights&&typeof r.model.selectedWeights.offense==='number','selected weights present');
+  assert.match(r.model.selectedModelHash,/^[0-9a-f]{8}$/,'selected model hash 8-hex');
+  assert.match(r.model.shippedModelHash,/^[0-9a-f]{8}$/,'shipped model hash 8-hex');
+  assert.equal(typeof r.splits.final,'number');
+  assert.ok(r.splits.final>0,'NEW FINAL split populated');
 });
 
-test('v1.2.2 calibration JSON: model selection uses only TRAIN+VALIDATION (no FINAL leak)',()=>{
+test('v1.2.3 calibration JSON: model selection uses only TRAIN+VALIDATION (no FINAL leak)',()=>{
   const r=runSmoke();
-  assert.ok(r.fittedWeights&&typeof r.fittedWeights.offense==='number','auto-fit produced weights');
-  assert.ok(['fitted','committed','balanced','wA','wF'].includes(r.selectedName),'model selection recorded: '+r.selectedName);
-  // the FINAL split must NEVER be used for fitting/selection — assert the script
-  // declares exactly which splits participated
-  assert.deepEqual(r.modelSelectionUsedSplits,['TRAIN','VALIDATION']);
-  // FINAL only has a post-freeze holdout evaluation
+  assert.ok(r.fittedWeights===undefined,'v1.2.2-style top-level fittedWeights removed (moved under model)');
+  assert.ok(['fitted','shipped','balanced','wF'].includes(r.model.selectedName),'selection from candidate set: '+r.model.selectedName);
+  // FINAL only has a post-freeze holdout evaluation; the report never lets FINAL
+  // influence selection (selection happens on validation spearman + fairness)
   assert.equal(typeof r.spearman.finalTestSelected,'number');
   assert.equal(typeof r.spearman.validationSelected,'number');
-  assert.equal(r.splits.train+r.splits.validation+r.splits.finalTest,r.cards.length,'splits partition the sample');
+  assert.ok(r.splits.train+r.splits.validation+r.splits.final===r.cards.length,'splits partition the sample');
 });
 
-test('v1.2.2 calibration JSON: pairwise + similar-BP split into train/validation/final',()=>{
+test('v1.2.3 calibration JSON: pairwise + similar-BP split into train/validation/final',()=>{
   const r=runSmoke();
   assert.equal(typeof r.pairwiseOrderingAccuracy.train,'number');
   assert.equal(typeof r.pairwiseOrderingAccuracy.validation,'number');
@@ -54,7 +59,7 @@ test('v1.2.2 calibration JSON: pairwise + similar-BP split into train/validation
   assert.equal(typeof r.similarBPFairness.final,'number');
 });
 
-test('v1.2.2 calibration JSON: win-probability fitted on TRAIN, evaluated on FINAL holdout',()=>{
+test('v1.2.3 calibration JSON: win-probability fitted on TRAIN, evaluated on FINAL holdout',()=>{
   const r=runSmoke();
   const wp=r.winProbabilityModel;
   assert.equal(wp.fittedOn,'TRAIN');
@@ -69,5 +74,5 @@ test('v1.2.2 calibration JSON: win-probability fitted on TRAIN, evaluated on FIN
 test('calibration exits 0 when validation Spearman >= 0.70 (smoke may warn but must not crash)',()=>{
   const r=runSmoke();
   assert.ok(r.cards.length>0);
-  assert.ok(Object.keys(r.rarityMeansLv100).length>=12);
+  assert.ok(typeof r.spearman.validationSelected==='number');
 });

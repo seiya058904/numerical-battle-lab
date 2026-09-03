@@ -1,11 +1,12 @@
 {
   "name": "numerical-card-battle",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "private": true,
   "type": "commonjs",
   "scripts": {
     "test": "node --test tests/*.test.js",
     "verify": "node scripts/generate-catalog.js && node --test tests/*.test.js && node scripts/static-check.js",
+    "verify:release": "npm run verify && node scripts/health-metrics.js --n 3000 && node scripts/adjacent-rarity-matrix.js --seeds 48 --battles 8 && node scripts/matched-rarity-test.js --seeds 48 --battles 8 && node scripts/power-calibration.js --sample 600 --battles 14 --rarityN 48 && node scripts/similar-bp-test.js --battles 14 --pairs 120",
     "catalog": "node scripts/generate-catalog.js",
     "manifest": "node scripts/generate-manifest.js",
     "gen-mc": "node scripts/gen-mc.js"

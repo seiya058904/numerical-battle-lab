@@ -1,16 +1,17 @@
-# QA 报告 — v1.2.2
+# QA 报告 — v1.2.3
 
-发布候选：`数值对战实验室` v1.2.2（统计验收方法与数据泄漏修正，validation correctness patch）
+发布候选：`数值对战实验室` v1.2.3（BattlePower Release Consistency + Sustain Health Fix）
 
 ## 自动化验证
 
 新源码树验证命令：
 
 ```bash
-npm run verify
+npm run verify        # 快速：catalog + 全量单测 + static check
+npm run verify:release # 正式版本：verify + health(n=3000) + adjacent + calibration + matched + similar-BP
 ```
 
-结果：**全量测试通过**，静态架构检查通过（v1.2.2 版本门禁 + manifest 审计）。
+结果：**全量测试通过（181）**，静态架构检查通过（v1.2.3 版本门禁 + manifest 审计）。
 
 生成能力计数（verify 时）：
 
@@ -24,96 +25,120 @@ npm run verify
 - 示例技能：63
 - 示例状态：33
 
-## 战力校准（v1.2.2 无泄漏三分离门禁）
+## 战力校准（v1.2.3 唯一模型注册表 + NEW FINAL HOLDOUT）
 
-`scripts/power-calibration.js`：TRAIN / VALIDATION / FINAL_TEST 三套 seed 完全分离；
-`fitBattlePowerWeights()` 只在 **TRAIN** 拟合；**VALIDATION** 按 Spearman + similar-BP
-fairness（只用 VALIDATION 内部 disjoint pairs）选模型；**FREEZE**；**FINAL_TEST** 只做
-holdout 评估，全程不参与拟合/选择/调阈值（§2-6）。
+`src/battlepower-model.js` 是 **BattlePower 唯一 Source of Truth**（`BATTLE_POWER_MODEL_VERSION
+= MODEL_V123` + `BATTLE_POWER_WEIGHTS` + 确定性 `modelHash`）；`src/battlepower.js`、
+UI、校准、测试全部读取同一模型。校准流程：
+`TRAIN → fit → VALIDATION → choose（每候选 buildPairsForModel 独立造 pair）→ FREEZE →
+NEW_FINAL_V123（全新种子，从未用过）→ only eval`。
 
 ```text
-Spearman VALIDATION: fitted 0.807 · committed 0.727 · balanced 0.698
-similar-BP fairness (VALIDATION-internal pairs): fitted 0.566 · committed 0.512
-SELECTED (validation, no FINAL): fitted -> {offense 0.25, durability 0.60, tempo 0.05, ...}
+fitBattlePowerWeights (TRAIN): {offense 0.20, durability 0.55, tempo 0.25, ...}  trainSpearman 0.890
+Spearman VALIDATION: fitted 0.865 · shipped 0.740 · balanced 0.734
+similar-BP fairness (VALIDATION-internal, per-model random pairs):
+  fitted 0.641 · shipped 0.567 · balanced 0.542
+SELECTED (validation, no FINAL): shipped = MODEL_V123
+selectedModelHash=1ddb2797 shippedModelHash=1ddb2797 hashesEqual=YES
 --- MODEL FREEZED ---
-Spearman FINAL_TEST (frozen model, holdout): 0.785   (target >= 0.70)
-pairwise ordering: train 0.800 · validation 0.825 · FINAL 0.761  (final >= 0.75)
-similar-BP fairness: train 0.670 · validation 0.608 · FINAL 0.543  (ideal ~0.50)
-win-probability (fitted on TRAIN, b0=0.027 b1=1.309):
-  FINAL holdout: Brier 0.214 · LogLoss 0.621 · ECE 0.191 (n=75)
+Spearman NEW_FINAL (frozen model, holdout): 0.815   (target >= 0.70)  ✔
+pairwise ordering: train 0.929 · validation 0.886 · NEW_FINAL 0.957  (final >= 0.75)  ✔
+similar-BP (canonical similar-bp-test, random pairs 140):
+  |dBP|/mean<=5% higher-BP win 0.534  (ideal 45-55%, relaxed 40-60%)  ✔
+  buckets: 0-2% 0.466 · 2-5% 0.603 · 5-10% 0.548 · 10-20% 0.722 · 20+% 0.890 (单调)
+win-probability (fitted TRAIN, b0=0.168 b1=1.487):
+  NEW_FINAL holdout: Brier 0.195 · LogLoss 0.580 · ECE 0.228 (n=74)
 adjacent-rarity matrix: allDirectionCorrect YES · strictMonotonic YES · hardInversions 0
 CALIBRATION PASS ✔
 ```
 
-## 相邻稀有度矩阵（v1.2.2 matched-card bootstrap）
+**模型一致性（§1/§5）**：shipped 权重 = `{offense 0.30, durability 0.40, tempo 0.22,
+sustain/utility/economy/reliability 0.02}`，与 selected 完全一致（hash 相等）；静态测试
+`tests/battlepower-model.test.js` 强制 `selectedModelHash === shippedModelHash`。
+
+## 相邻稀有度矩阵（v1.2.3 重验，matched-card bootstrap）
 
 `scripts/adjacent-rarity-matrix.js`：11 组 × 7 Archetype（含 Support）× 48 matched seeds
-× 8 局/向；CI 由 **matched-card bootstrap**（统计单位 = 独立生成卡 pair，不是单场 battle）
-给出；胜率为 **conditional win rate（排除平局）**，drawRate 单独报告。
+× 8 局/向；CI 由 **matched-card bootstrap**（统计单位 = 独立生成卡 pair）给出；胜率为
+**conditional win rate（排除平局）**，drawRate 单独报告。
 
 ```text
 ALL ADJACENT DIRECTION CORRECT (conditional): YES
 hard inversions (<40%): 0
-Support 每档 conditional 0.66-0.76 EXPECTED（v1.2.1 的“反转”实为 Support 镜像
-stalemate 平局——v1.2.2 将平局单独报告，不再把平局误计为高阶败）
+每档 OVERALL conditional ≈ 0.78-0.89 全部 EXPECTED；draws 4-7%
 数据: independentSeedCount=48, generatedCardCount=7392, pairCount(cell)=48
 ```
 
-## Matched-Seed Rarity Test（v1.2.2 新增，§10/§11）
+## Matched-Seed Rarity Test（v1.2.3 重验，§10/§11）
 
 `scripts/matched-rarity-test.js`：同 seed/archetype/level 生成 C..XS 保持相同
 composition 结构，只变 rarity budget。
 
 ```text
-Causal (matched)   : 11 组 conditional 0.75-0.85 全部 EXPECTED，hard inversions 0
-Population (random): 11 组 conditional 0.57-0.64 全部 EXPECTED，hard inversions 0
+Causal (matched)   : 11 组 conditional 0.785-0.892 全部 EXPECTED，hard inversions 0
+Population (random): 11 组 conditional 0.585-0.683 全部 EXPECTED，hard inversions 0
+数据: independentSeedCount=48, generatedCardCount=4032, pairCount(cell)=48
 ```
 
-## Health Metrics（v1.2.2 n=2000 + 95% CI + 分位）
+## Health Metrics（v1.2.3 n=3000 + sustain fix）
 
-`scripts/health-metrics.js`：n=2000 同稀有度镜像 1v1，point estimate + Wilson 95% CI。
+`scripts/health-metrics.js`：n=3000 同稀有度镜像 1v1，point estimate + Wilson 95% CI，
+报告 overall / 7 archetype / 12 rarity / archetype×rarity。
 
 ```text
-one-shot : point 0.00%  95%CI [0.00-0.19]   (gate < 5%)  ✔
-stalemate: point 6.40%  95%CI [5.41-7.56]   (gate < 5%)  ✗ 见下
-rounds   : P50 9 · P75 13 · P90 25 · P95 40  (median 6-10) ✔
-per-arch stalemate: Support 30.9% · Tank 8.0% · Balanced 3.8% · Controller 2.1% ·
-                    Bruiser/Assassin/Mage 0.0%
+one-shot : point 0.00%  95%CI [0.00-0.13]   (gate < 5%)  ✔
+stalemate: point 0.97%  95%CI [0.67-1.38]   (gate < 5%, target < 4%)  ✔
+rounds   : P50 8 · P75 11 · P90 15 · P95 19  (median 6-10)  ✔
+per-arch stalemate: Support 6.3% (<10%) · Tank 0.2% (<7%) · Balanced 0.2% ·
+                    Bruiser/Assassin/Mage/Controller 0.0%
+per-rarity stalemate: 12 档全部 0.0-3.6% ✔
 ```
 
-> **stalemate 6.40% [5.41-7.56] 超出 §20 point<5% 门禁**：独立审计 §20/§21 预期此情形
-> （n=300 的 4.7% 统计误差足以让真实率 >5%），要求提高 n 并如实报告，且明确“长尾
-> 不是 blocker”。诊断（sustain-scale 扫描 720-1300）表明 Support 镜像是结构性
-> heal/shield sustain 循环，单一旋钮无法修复；按 §22 “rarity 健康则不继续过度调数值”，
-> v1.2.2 不重调 Generator v2，将其作为已文档化发现记录（后续轮次的最小 sustain/
-> composition 调整），不隐藏、不误标为通过。§24 完成标准 A-E（rarity/FINAL/fixture）
-> 全部满足。
+**Sustain 修复（§7-§13）**：v1.2.2 的 stalemate 6.40% [5.41-7.56]（Support 镜像 30.9%）
+本轮通过 Generator v2 **sustain composition** 真正修复：
+- 每卡记录 `sustainLoad / expectedDPS / expectedSelfSustain / pressureRatio`（anti-stall
+  diagnostics，Generator-only，绝不进 BattleEngine）。
+- per-archetype `V2_SUSTAIN_CEILING` + `V2_PRESSURE_FLOOR`；超限重新组合（移除 recurring
+  sustain trigger → utility/resource/status；heal+shield 同现时 shield→damage 保留 heal；
+  pressure 不足时慢速 damage→快速 damage）。按 Effect/Tag 判断，无 per-archetype 数值倍率。
+- `V2_TRIGGER_RECURRENCE_DISCOUNT` 3.2→6.0（recurring 价值此前低估）、heal 技能 cooldown
+  1→2、`V2_SUSTAIN_POWER_SCALE` 720→1100（组合级，非全局 nerf Heal）。
+- **Support 仍然是 Support**：healKeep ~44%、P50 14 / P90 30（可拖长战斗），但 mirror
+  stalemate 30.9% → **6.3%**。
 
-## 统计口径（v1.2.2 修正）
+## 统计口径（v1.2.3 修正）
 
-- `rarityStrictMonotonic` / `rarityTrendAcceptable` 分离报告。
-- FINAL_TEST 完全未参与模型选择（`modelSelectionUsedSplits = ['TRAIN','VALIDATION']`）。
-- Pairwise / Similar-BP 拆成 train / validation / final，主报 final。
-- 全部脚本用 `Object.keys(N.ARCHETYPES)`（7 个，含 Support）。
-- 平局（stalemate）单独报告，不混入胜率。
-- BattlePower 口径：1v1 通用强度排序指标；3 主评分维度 + 4 诊断维度。
+- **BattlePower 唯一 Source of Truth**：`src/battlepower-model.js`（MODEL_V123）；calibration
+  与线上完全一致（§1）。
+- **NEW FINAL HOLDOUT**：旧 FINAL_TEST 与中间 NEW_FINAL_2026_09 种子均已公开，v1.2.3 用
+  **NEW_FINAL_V123**（全新种子空间）作最终 holdout（§2/§19）。
+- **Candidate fairness 模型错位修复**：`buildPairsForModel(cards, model)` 每个候选用自己的
+  weights 重新算全部卡 BP、判断高低/close pair、构造 pair（§3/§4）；指标全部
+  `scoreRow(row, model)` 显式接受模型，不再读旧缓存 `row.battlePower`（§6）。
+- FINAL 完全未参与模型选择（`modelSelectionUsedSplits = ['TRAIN','VALIDATION']`）。
+- 全部脚本用 `Object.keys(N.ARCHETYPES)`（7 个，含 Support）；平局单独报告。
 - UI 移除精确预估胜率百分比 → `战力较高 / 战力接近 / 战力较低`（`card-ui.bpRelation`）。
 
-## Generator 平衡（v1.2 深度重调 + v1.2.1 保留 + v1.2.2 冻结）
+## Generator 平衡（v1.2 深度重调 + v1.2.1/1.2.2 保留 + v1.2.3 sustain fix）
 
 `docs/GENERATOR-BALANCE-v1.2.md` 记录：
 
 - 第一回合秒杀率：**0.0%**（目标 <5%）
-- 战斗时长中位数：**9 回合**（目标 6–10）
-- v1.2.2 **冻结 Generator v2**：rarity（matched + population）均健康、无 hard
-  inversion，故不做数值重调；stalemate 发现如实记录。
+- 僵局率：**0.97% [0.67-1.38]**（目标 <4% ✔，硬门禁 <5% ✔；v1.2.2 为 6.40% 超标）
+- 战斗时长中位数：**8 回合**（目标 6–10）
+- v1.2.3 未动 RPI / Budget Curve / BattleEngine / Generator v1；只修 Generator v2
+  sustain composition（SustainLoad + ceiling + recurrence cost）。
 
-## v1 历史 fixture（v1.2.2 真正锚定历史 commit）
+## v1 历史 fixture（v1.2.3 provenance 可机器验证）
 
 `tests/fixtures/generator-v1.1.0.json`：**189 张**旧卡 sha256(canonicalGeneratedCard)
 锁定，**由 v1.1.0 历史 commit `19ca5a443fcccd418d421a648f29a900098f55f8` 的临时
-worktree 实际生成**（`scripts/generate-v1-fixture.js --historical-ref ... --src-dir ...`，
-golden 不可自动再生成）；`tests/v1-fixture.test.js` 只做 current-v1 vs golden 比对。
+worktree 实际生成**；fixture 顶部 provenance：
+`historicalCommit / historicalTree (ad4e2a9d…) / generatorBlobSha (228e65b9…) /
+generatedAtToolVersion (v1.2.3)`（无动态时间，可复现）。工具
+`scripts/generate-v1-fixture.js` 现在执行 `git -C <srcDir> rev-parse HEAD` 严格等于
+19ca5a4 且 `git status --porcelain` 为空，否则拒绝（§16）；189 张内容与 hash 不变
+（§18），`tests/v1-fixture.test.js` 断言 provenance 字段。
 
 ## 浏览器 QA
 

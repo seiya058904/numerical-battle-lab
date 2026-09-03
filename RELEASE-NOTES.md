@@ -1,4 +1,4 @@
-# Release Notes — v1.2.2
+# Release Notes — v1.2.3
 
 `数值对战实验室` is a fully offline, single-player, deterministic, multi-entity turn-based numerical combat system presented as a card-style web interface.
 
@@ -9,6 +9,78 @@ Cards are presentation only. The engine works with generic combat entities and a
 `Formula + Modifier + Effect + Condition + Target + Event + Status + Resource + Damage Component`.
 
 Ordinary content is composed from registered primitives and parameters instead of character-specific engine branches.
+
+---
+
+## v1.2.3 highlights — BattlePower Release Consistency + Sustain Health Fix
+
+本轮不扩玩法。目标只解决三件事：① BattlePower 验证模型与线上模型不一致；
+② Support/Tank sustain stalemate 超标；③ historical fixture 工具的历史 checkout
+验证不完整。
+
+### 1. BattlePower 唯一 Source of Truth（§1/§5/§6）
+
+- 新增 `src/battlepower-model.js` 作为 **唯一模型注册表**：
+  `BATTLE_POWER_MODEL_VERSION = MODEL_V123` + `BATTLE_POWER_WEIGHTS` +
+  确定性 `modelHash`。Calibration / 浏览器 / 测试 / UI 全部读取同一模型。
+- `src/battlepower.js` 不再硬编码权重，改为消费注册表（`NCB.battlePowerModel`）；
+  消除 v1.2.2 “calibration selected fitted(0.25/0.60/0.05) 而线上 0.22/0.45/0.25”
+  的分裂。
+- `scripts/power-calibration.js`：`scoreRow(row, model)` 显式接受模型，
+  不再读取旧缓存 `row.battlePower`（§6）；FINAL 报告打印并断言
+  `selectedModelHash === shippedModelHash`（§5，静态测试
+  `tests/battlepower-model.test.js` 强制）。
+
+### 2. 新 FINAL HOLDOUT（§2/§19）
+
+- 旧 FINAL_TEST 种子已公开，不再作为新模型最终门禁。
+- 正确流程：`TRAIN → fit → VALIDATION → choose → FREEZE → NEW_FINAL_2026_09`
+  （全新、从未使用的 seed 空间）→ final evaluation。FINAL 至少报告
+  Spearman / Pairwise / Similar-BP / Brier / LogLoss / ECE。
+
+### 3. Candidate fairness 模型错位修复（§3/§4）
+
+- `fairnessFor()` 不再先用旧 stored BP 预选 `p.hi/p.lo` 再套 candidate weights。
+- 新增 `buildPairsForModel(cards, model)`：每个候选模型用自己的
+  `candidateBattlePower(card)` 重新计算所有卡 BP、重新判断高低、重新判断
+  <=5% close pair、重新构造 pair 并运行 fairness——不同模型得到不同的
+  close-pair population，VALIDATION 才是在真正比较模型。
+
+### 4. Health 修复（§7-§13，真正压下去的游戏问题）
+
+- v1.2.2 实测 stalemate 6.40% [5.41-7.56] 未过 <5% 门禁；本轮压到
+  **n=3000 stalemate point 0.97% [0.67-1.38]**（目标 <4%，硬门禁 <5%）。
+- **SustainLoad**（Generator-only，绝不进 BattleEngine）：每张卡记录
+  `sustainLoad / expectedDPS / expectedSelfSustain / pressureRatio`（§9/§13）。
+- **sustain composition ceiling**（§10）：per-archetype `V2_SUSTAIN_CEILING` +
+  `V2_PRESSURE_FLOOR`；超限时**重新组合**而非砍数值——移除 recurring sustain
+  trigger 换成 utility/resource/status trigger、降低 heal+shield 同现、
+  慢速 damage 换快速 damage 增加 pressure；按 Effect/Tag 判断，绝无
+  `if(archetype==='Support')damage*=...`。
+- **recurrence cost 提高**（§12）：`V2_TRIGGER_RECURRENCE_DISCOUNT` 3.2→6.0
+  （roundStart/roundEnd/afterDamage 每轮重复价值此前仍低估），配合 composition
+  ceiling 一起看，不是单旋钮。
+- **Support 仍然是 Support**（§11）：healKeep ~44%、可拖长战斗（P90 30），但
+  mirror stalemate 降到 **6.3%**（目标 <10%）；Tank **0.2%**（目标 <7%）。
+- 组合级调整：heal 技能 cooldown 1→2、`V2_SUSTAIN_POWER_SCALE` 720→1100
+  （heal/shield 系数分母），BattleEngine 冻结、Generator v1 冻结。
+
+### 5. Health 进入 release gate（§15）
+
+- `npm run verify` 保持快速（单测 + static check）。
+- 新增 `npm run verify:release`：verify + health-metrics(n=3000) +
+  adjacent-rarity-matrix + BattlePower calibration + matched-rarity + Similar-BP。
+  正式版本提交必须跑 `verify:release`。
+
+### 6. Historical fixture 真正验证 checkout（§16-§18）
+
+- `generate-v1-fixture.js` 现在执行 `git -C <srcDir> rev-parse HEAD` 并严格等于
+  `19ca5a443fcccd418d421a648f29a900098f55f8`，且 `git status --porcelain` 为空，
+  否则立即拒绝（不再只检查 `src/generator.js exists`）。
+- fixture 顶部加入 provenance：`historicalCommit / historicalTree /
+  generatorBlobSha / generatedAtToolVersion`（无动态时间，保持可复现）。
+- **189 张内容与 hash 完全不变**（provenance 只增不改）；v1-fixture 测试断言
+  provenance 字段。
 
 ---
 

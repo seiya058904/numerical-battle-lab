@@ -1,28 +1,29 @@
-// v1.2.2 Health Metrics gate (audit §20/§21/§23).
+// v1.2.3 Health Metrics gate (audit §14/§15/§20).
 //
 // Same-rarity mirror 1v1 fights (both sides equal rarity, varied seeds/archetypes)
-// — the balanced-fight ecosystem a player meets. v1.2.2 improvements:
-//   - Release sample raised to n=1500-3000 (the v1.2.1 n=300 with stalemate 4.7%
-//     sat too close to the 5% gate: ~14/300 makes the true rate statistically able
-//     to exceed 5%).
-//   - Reports POINT ESTIMATE + 95% CI (Wilson) for one-shot and stalemate, plus
-//     P50/P75/P90/P95 round distribution.
-//   - Gate: point estimate < 5% (CI upper is reported as a risk note).
-//   - Per-archetype percentiles so Tank/Support tail sources are visible.
+// — the balanced-fight ecosystem a player meets. v1.2.3 improvements:
+//   - Release sample RAISED to n=3000 (audit §14) with point estimate + 95% CI.
+//   - Reports overall + 7 archetype + 12 rarity + archetype x rarity breakdown.
+//   - Metrics: oneShot / stalemate / P50 / P75 / P90 / P95.
+//   - Hard gate: point estimate < 5% one-shot and < 5% stalemate (audit §20);
+//     target stalemate < 4% leaving safety margin.
 //   - All registered archetypes via Object.keys(N.ARCHETYPES) (7, incl. Support).
 //
-// Usage: node scripts/health-metrics.js [--n N]
+// Usage: node scripts/health-metrics.js [--n N] [--out path]
 const path=require('node:path');
+const fs=require('node:fs');
 const root=path.resolve(__dirname,'..');
 const src=(f)=>require(path.join(root,'src',f));
 global.NCB={};
-for(const f of ['kernel','components','rules','content','status-runtime','validator','formula','effects','engine','power','gen-stats','gen-skills','generator','gen-names','gen-v2','battlepower'])src(f);
+for(const f of ['kernel','components','rules','content','status-runtime','validator','formula','effects','engine','power','gen-stats','gen-skills','generator','gen-names','gen-v2','battlepower-model','battlepower'])src(f);
 const N=global.NCB;
 function parseArg(name,dflt){const i=process.argv.indexOf('--'+name);return i>=0&&process.argv[i+1]?Number(process.argv[i+1])||dflt:dflt;}
-const N_FIGHTS=parseArg('n',2000);
+const N_FIGHTS=parseArg('n',3000);
 const MAX_ROUNDS=40;
 const ARCH=Object.keys(N.ARCHETYPES);
 const rarities=N.RARITY_V2_ORDER;
+function parseOut(){const i=process.argv.indexOf('--out');return i>=0&&process.argv[i+1]?path.resolve(process.argv[i+1]):null;}
+const OUT_JSON=parseOut();
 
 function fightRounds(idA,idB,seed){
   const e=N.createBattle({seed:'gen5,'+((seed>>>0)&0xffff)+','+((seed>>>16)&0xffff)+',1,2',teamA:[idA],teamB:[idB]});
@@ -40,8 +41,16 @@ function wilsonCI(k,n,z=1.96){
   return{lo:Math.max(0,(c-h)/den),hi:Math.min(1,(c+h)/den)};
 }
 function pct(arr,q){const i=Math.floor((arr.length-1)*q);return arr[i];}
+function summarize(arr){
+  const s=arr.slice().sort((x,y)=>x-y);
+  const n=s.length;
+  if(n===0)return{oneShot:null,oneShotCI:{lo:null,hi:null},stalemate:null,stalemateCI:{lo:null,hi:null},p50:null,p75:null,p90:null,p95:null};
+  const os=s.filter(x=>x<=1).length,st=s.filter(x=>x>=MAX_ROUNDS).length;
+  return{oneShot:os/n,oneShotCI:wilsonCI(os,n),stalemate:st/n,stalemateCI:wilsonCI(st,n),
+    p50:pct(s,0.5),p75:pct(s,0.75),p90:pct(s,0.90),p95:pct(s,0.95)};
+}
 (async()=>{
-  const byArch={};const roundsAll=[];
+  const byArch={},byRar={},byBoth={};const roundsAll=[];
   for(let i=0;i<N_FIGHTS;i++){
     const rar=rarities[i%rarities.length];
     const a=ARCH[i%ARCH.length];
@@ -50,27 +59,34 @@ function pct(arr,q){const i=Math.floor((arr.length-1)*q);return arr[i];}
     const r=fightRounds(N.deployCardV2(c1),N.deployCardV2(c2),1000+i);
     roundsAll.push(r);
     (byArch[a]=byArch[a]||[]).push(r);
+    (byRar[rar]=byRar[rar]||[]).push(r);
+    const key=a+'x'+rar;(byBoth[key]=byBoth[key]||[]).push(r);
   }
-  const summarize=(arr)=>{
-    const s=arr.slice().sort((x,y)=>x-y);
-    const n=s.length;
-    const os=s.filter(x=>x<=1).length,st=s.filter(x=>x>=MAX_ROUNDS).length;
-    return{oneShot:os/n,oneShotCI:wilsonCI(os,n),stalemate:st/n,stalemateCI:wilsonCI(st,n),
-      p50:pct(s,0.5),p75:pct(s,0.75),p90:pct(s,0.90),p95:pct(s,0.95)};
-  };
   const overall=summarize(roundsAll);
   const perArch={};for(const a of ARCH)perArch[a]=summarize(byArch[a]||[]);
+  const perRar={};for(const r of rarities)perRar[r]=summarize(byRar[r]||[]);
   const oneShot=overall.oneShot,stale=overall.stalemate;
-  console.log(`HEALTH METRICS v1.2.2 — n ${N_FIGHTS} (same-rarity mirror 1v1, maxRounds ${MAX_ROUNDS}, ${ARCH.length} archetypes)`);
+  console.log(`HEALTH METRICS v1.2.3 — n ${N_FIGHTS} (same-rarity mirror 1v1, maxRounds ${MAX_ROUNDS}, ${ARCH.length} archetypes)`);
   console.log(`one-shot: point ${(oneShot*100).toFixed(2)}%  95%CI [${(overall.oneShotCI.lo*100).toFixed(2)}-${(overall.oneShotCI.hi*100).toFixed(2)}]  (gate point < 5%)${oneShot<0.05?'  ✔':'  FAIL'}`);
-  console.log(`stalemate: point ${(stale*100).toFixed(2)}%  95%CI [${(overall.stalemateCI.lo*100).toFixed(2)}-${(overall.stalemateCI.hi*100).toFixed(2)}]  (gate point < 5%)${stale<0.05?'  ✔':'  FAIL'}`);
+  console.log(`stalemate: point ${(stale*100).toFixed(2)}%  95%CI [${(overall.stalemateCI.lo*100).toFixed(2)}-${(overall.stalemateCI.hi*100).toFixed(2)}]  (gate < 5%, target < 4%)${stale<0.05?(stale<0.04?'  ✔':'  ⚠ <5% but >=4%'):'  FAIL'}`);
   console.log(`rounds: P50 ${overall.p50} · P75 ${overall.p75} · P90 ${overall.p90} · P95 ${overall.p95}  (median gate 6-10)${overall.p50>=6&&overall.p50<=10?'  ✔':'  FAIL'}`);
   console.log('per-archetype (P50/P75/P90/P95, stalemate point):');
   for(const a of ARCH){
     const p=perArch[a];
-    console.log(`  ${a.padEnd(11)} P50 ${p.p50} · P75 ${p.p75} · P90 ${p.p90} · P95 ${p.p95} · stale ${(p.stalemate*100).toFixed(1)}% n=${(byArch[a]||[]).length}`);
+    console.log(`  ${a.padEnd(11)} P50 ${p.p50} · P75 ${p.p75} · P90 ${p.p90} · P95 ${p.p95} · stale ${p.stalemate===null?'n/a':(p.stalemate*100).toFixed(1)}% n=${(byArch[a]||[]).length}`);
+  }
+  console.log('per-rarity (stalemate point):');
+  for(const r of rarities){
+    const p=perRar[r];
+    console.log(`  ${String(r).padEnd(13)} stale ${p.stalemate===null?'n/a':(p.stalemate*100).toFixed(1)}% · P50 ${p.p50} · P90 ${p.p90} · n=${(byRar[r]||[]).length}`);
   }
   const pass=oneShot<0.05&&stale<0.05&&overall.p50>=6&&overall.p50<=10;
   console.log(pass?'HEALTH METRICS PASS ✔':'HEALTH METRICS WEAK');
+  if(OUT_JSON){
+    const out={version:'1.2.3',n:N_FIGHTS,maxRounds:MAX_ROUNDS,overall,
+      byArchetype:perArch,byRarity:perRar,archetypeXRarity:byBoth,pass};
+    fs.writeFileSync(OUT_JSON,JSON.stringify(out,null,2));
+    console.log('written:',OUT_JSON);
+  }
   process.exit(pass?0:1);
 })();

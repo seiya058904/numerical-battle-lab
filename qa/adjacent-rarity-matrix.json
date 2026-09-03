@@ -12,68 +12,68 @@
   "rows": [
     {
       "pair": "C->C_PLUS",
-      "winRateHigherTier": 0.7905700821995465,
-      "ciLow": 0.7709927721088435,
-      "ciHigh": 0.8106381094104309,
+      "winRateHigherTier": 0.8301770360922147,
+      "ciLow": 0.8132599914965986,
+      "ciHigh": 0.8474802768329555,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.225,
+      "drawRate": 0.069,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.7513020833333334,
-          "ciLow": 0.69140625,
-          "ciHigh": 0.8125,
+          "winRateHigherTier": 0.8382440476190477,
+          "ciLow": 0.7893725198412699,
+          "ciHigh": 0.8859871031746032,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.367
+          "drawRate": 0.07
         },
         "Tank": {
-          "winRateHigherTier": 0.8102430555555555,
-          "ciLow": 0.750347222222222,
-          "ciHigh": 0.8631944444444445,
+          "winRateHigherTier": 0.8545138888888889,
+          "ciLow": 0.8098090277777779,
+          "ciHigh": 0.8949652777777777,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.301
+          "drawRate": 0.061
         },
         "Bruiser": {
-          "winRateHigherTier": 0.8357638888888889,
-          "ciLow": 0.8020833333333334,
-          "ciHigh": 0.8671875,
+          "winRateHigherTier": 0.8203125,
+          "ciLow": 0.7864583333333334,
+          "ciHigh": 0.8515625,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.042
+          "drawRate": 0
         },
         "Assassin": {
-          "winRateHigherTier": 0.8253348214285715,
-          "ciLow": 0.7821800595238096,
-          "ciHigh": 0.8655133928571428,
+          "winRateHigherTier": 0.8190104166666666,
+          "ciLow": 0.7760416666666666,
+          "ciHigh": 0.859375,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.017
+          "drawRate": 0
         },
         "Mage": {
-          "winRateHigherTier": 0.8190104166666666,
-          "ciLow": 0.7786458333333334,
-          "ciHigh": 0.8567708333333334,
+          "winRateHigherTier": 0.80078125,
+          "ciLow": 0.7565104166666666,
+          "ciHigh": 0.84375,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.039
+          "drawRate": 0
         },
         "Support": {
-          "winRateHigherTier": 0.6978794642857142,
-          "ciLow": 0.6350074404761905,
-          "ciHigh": 0.7624627976190478,
+          "winRateHigherTier": 0.8191881613756613,
+          "ciLow": 0.7622767857142857,
+          "ciHigh": 0.8768890542328042,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.568
+          "drawRate": 0.271
         },
         "Controller": {
-          "winRateHigherTier": 0.7944568452380952,
-          "ciLow": 0.7410714285714285,
-          "ciHigh": 0.8450520833333334,
+          "winRateHigherTier": 0.8591889880952381,
+          "ciLow": 0.8158482142857144,
+          "ciHigh": 0.8995535714285715,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.241
+          "drawRate": 0.081
         }
       },
       "battleCount": 5376,
@@ -83,68 +83,68 @@
     },
     {
       "pair": "C_PLUS->B",
-      "winRateHigherTier": 0.8073873299319727,
-      "ciLow": 0.787326388888889,
-      "ciHigh": 0.8279974489795918,
+      "winRateHigherTier": 0.8502183828076685,
+      "ciLow": 0.833561862244898,
+      "ciHigh": 0.8659868777056278,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.196,
+      "drawRate": 0.068,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.7911210317460317,
-          "ciLow": 0.7287946428571429,
-          "ciHigh": 0.8498883928571429,
+          "winRateHigherTier": 0.8418560606060606,
+          "ciLow": 0.7892992424242423,
+          "ciHigh": 0.8881392045454545,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.284
+          "drawRate": 0.048
         },
         "Tank": {
-          "winRateHigherTier": 0.8151041666666666,
-          "ciLow": 0.7565104166666666,
-          "ciHigh": 0.8723958333333334,
+          "winRateHigherTier": 0.8916666666666666,
+          "ciLow": 0.8565104166666666,
+          "ciHigh": 0.9229166666666666,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.333
+          "drawRate": 0.047
         },
         "Bruiser": {
-          "winRateHigherTier": 0.8411458333333334,
-          "ciLow": 0.8111979166666666,
-          "ciHigh": 0.875,
+          "winRateHigherTier": 0.8359375,
+          "ciLow": 0.80078125,
+          "ciHigh": 0.8697916666666666,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0
         },
         "Assassin": {
-          "winRateHigherTier": 0.83984375,
-          "ciLow": 0.7955729166666666,
-          "ciHigh": 0.8815104166666666,
+          "winRateHigherTier": 0.8469122023809524,
+          "ciLow": 0.8046875,
+          "ciHigh": 0.8846726190476191,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.021
+          "drawRate": 0.003
         },
         "Mage": {
-          "winRateHigherTier": 0.8619791666666666,
-          "ciLow": 0.8307291666666666,
-          "ciHigh": 0.8932291666666666,
+          "winRateHigherTier": 0.8541666666666666,
+          "ciLow": 0.8268229166666666,
+          "ciHigh": 0.88671875,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.01
+          "drawRate": 0
         },
         "Support": {
-          "winRateHigherTier": 0.6822048611111112,
-          "ciLow": 0.6223958333333334,
-          "ciHigh": 0.7421875,
+          "winRateHigherTier": 0.7890625,
+          "ciLow": 0.7239583333333334,
+          "ciHigh": 0.8450520833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.516
+          "drawRate": 0.335
         },
         "Controller": {
-          "winRateHigherTier": 0.8203125,
-          "ciLow": 0.765625,
-          "ciHigh": 0.8763020833333334,
+          "winRateHigherTier": 0.8919270833333334,
+          "ciLow": 0.8515625,
+          "ciHigh": 0.9296875,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.208
+          "drawRate": 0.04
         }
       },
       "battleCount": 5376,
@@ -154,68 +154,68 @@
     },
     {
       "pair": "B->B_PLUS",
-      "winRateHigherTier": 0.8122094671201816,
-      "ciLow": 0.7924479166666666,
-      "ciHigh": 0.8321428571428572,
+      "winRateHigherTier": 0.8579595379818594,
+      "ciLow": 0.841826105442177,
+      "ciHigh": 0.8734977324263039,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.195,
+      "drawRate": 0.07,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.8266493055555556,
-          "ciLow": 0.7717881944444445,
-          "ciHigh": 0.8798611111111111,
+          "winRateHigherTier": 0.897904265873016,
+          "ciLow": 0.8625620039682541,
+          "ciHigh": 0.9321056547619048,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.288
+          "drawRate": 0.038
         },
         "Tank": {
-          "winRateHigherTier": 0.7985243055555555,
-          "ciLow": 0.7442708333333332,
-          "ciHigh": 0.853732638888889,
+          "winRateHigherTier": 0.8506944444444445,
+          "ciLow": 0.8059895833333334,
+          "ciHigh": 0.8936631944444443,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.277
+          "drawRate": 0.089
         },
         "Bruiser": {
-          "winRateHigherTier": 0.8605902777777779,
-          "ciLow": 0.8255208333333334,
-          "ciHigh": 0.893142361111111,
+          "winRateHigherTier": 0.8528645833333334,
+          "ciLow": 0.8216145833333334,
+          "ciHigh": 0.8828125,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.01
+          "drawRate": 0
         },
         "Assassin": {
-          "winRateHigherTier": 0.828125,
-          "ciLow": 0.7786458333333334,
-          "ciHigh": 0.87109375,
+          "winRateHigherTier": 0.8372395833333334,
+          "ciLow": 0.7890625,
+          "ciHigh": 0.8802083333333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.001
+          "drawRate": 0
         },
         "Mage": {
-          "winRateHigherTier": 0.8537946428571428,
-          "ciLow": 0.8178943452380952,
+          "winRateHigherTier": 0.84765625,
+          "ciLow": 0.8098958333333334,
+          "ciHigh": 0.8841145833333334,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
+        },
+        "Support": {
+          "winRateHigherTier": 0.8302951388888888,
+          "ciLow": 0.771267361111111,
           "ciHigh": 0.8880208333333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.009
-        },
-        "Support": {
-          "winRateHigherTier": 0.68359375,
-          "ciLow": 0.6197916666666666,
-          "ciHigh": 0.7526041666666666,
-          "sampleCount": 48,
-          "class": "EXPECTED",
-          "drawRate": 0.628
+          "drawRate": 0.355
         },
         "Controller": {
-          "winRateHigherTier": 0.8341889880952381,
-          "ciLow": 0.7842633928571429,
-          "ciHigh": 0.8798363095238096,
+          "winRateHigherTier": 0.8890625,
+          "ciLow": 0.85390625,
+          "ciHigh": 0.921875,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.151
+          "drawRate": 0.008
         }
       },
       "battleCount": 5376,
@@ -225,68 +225,68 @@
     },
     {
       "pair": "B_PLUS->A",
-      "winRateHigherTier": 0.7971554900126328,
-      "ciLow": 0.7777765884908742,
-      "ciHigh": 0.8164903714010856,
+      "winRateHigherTier": 0.8484811980347695,
+      "ciLow": 0.8327983276643991,
+      "ciHigh": 0.8639095568783068,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.209,
+      "drawRate": 0.049,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.7816283831908831,
-          "ciLow": 0.7251157407407408,
-          "ciHigh": 0.8370949074074074,
+          "winRateHigherTier": 0.849363425925926,
+          "ciLow": 0.8084201388888889,
+          "ciHigh": 0.8885995370370371,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.288
+          "drawRate": 0.031
         },
         "Tank": {
-          "winRateHigherTier": 0.8092363365800866,
-          "ciLow": 0.7519277597402597,
-          "ciHigh": 0.8658854166666666,
+          "winRateHigherTier": 0.8828125,
+          "ciLow": 0.8515625,
+          "ciHigh": 0.9140625,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.296
+          "drawRate": 0
         },
         "Bruiser": {
-          "winRateHigherTier": 0.8710069444444445,
-          "ciLow": 0.8332465277777779,
-          "ciHigh": 0.9048611111111112,
+          "winRateHigherTier": 0.8678819444444446,
+          "ciLow": 0.8348958333333334,
+          "ciHigh": 0.9009548611111112,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.022
+          "drawRate": 0.003
         },
         "Assassin": {
-          "winRateHigherTier": 0.8125,
-          "ciLow": 0.7721354166666666,
-          "ciHigh": 0.8489583333333334,
-          "sampleCount": 48,
-          "class": "EXPECTED",
-          "drawRate": 0.065
-        },
-        "Mage": {
-          "winRateHigherTier": 0.8307291666666666,
-          "ciLow": 0.7890625,
+          "winRateHigherTier": 0.8385416666666666,
+          "ciLow": 0.8059895833333334,
           "ciHigh": 0.8697916666666666,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.029
+          "drawRate": 0.003
+        },
+        "Mage": {
+          "winRateHigherTier": 0.828125,
+          "ciLow": 0.7877604166666666,
+          "ciHigh": 0.8671875,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0
         },
         "Support": {
-          "winRateHigherTier": 0.6875,
-          "ciLow": 0.6276041666666666,
-          "ciHigh": 0.7473958333333334,
+          "winRateHigherTier": 0.8277777777777778,
+          "ciLow": 0.7675347222222223,
+          "ciHigh": 0.8824652777777778,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.564
+          "drawRate": 0.305
         },
         "Controller": {
-          "winRateHigherTier": 0.7874875992063494,
-          "ciLow": 0.7369791666666666,
-          "ciHigh": 0.8357638888888889,
+          "winRateHigherTier": 0.8448660714285715,
+          "ciLow": 0.8097098214285715,
+          "ciHigh": 0.8800223214285715,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.203
+          "drawRate": 0.003
         }
       },
       "battleCount": 5376,
@@ -296,68 +296,68 @@
     },
     {
       "pair": "A->A_PLUS",
-      "winRateHigherTier": 0.8660342261904762,
-      "ciLow": 0.8477926587301587,
-      "ciHigh": 0.8838789682539683,
+      "winRateHigherTier": 0.8936631944444445,
+      "ciLow": 0.8797619047619049,
+      "ciHigh": 0.9078000992063493,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.16,
+      "drawRate": 0.058,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.8489583333333334,
-          "ciLow": 0.796875,
-          "ciHigh": 0.89453125,
+          "winRateHigherTier": 0.89453125,
+          "ciLow": 0.8658854166666666,
+          "ciHigh": 0.921875,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.21
+          "drawRate": 0.034
         },
         "Tank": {
-          "winRateHigherTier": 0.8528645833333334,
-          "ciLow": 0.7955729166666666,
-          "ciHigh": 0.9036458333333334,
+          "winRateHigherTier": 0.9049479166666666,
+          "ciLow": 0.8684895833333334,
+          "ciHigh": 0.9375,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.281
+          "drawRate": 0.061
         },
         "Bruiser": {
-          "winRateHigherTier": 0.8984375,
-          "ciLow": 0.8580729166666666,
-          "ciHigh": 0.9361979166666666,
+          "winRateHigherTier": 0.88671875,
+          "ciLow": 0.8450520833333334,
+          "ciHigh": 0.9231770833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0
         },
         "Assassin": {
-          "winRateHigherTier": 0.9203993055555556,
-          "ciLow": 0.8919270833333334,
-          "ciHigh": 0.9449652777777778,
+          "winRateHigherTier": 0.9112847222222222,
+          "ciLow": 0.8835937500000001,
+          "ciHigh": 0.9375,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.005
+        },
+        "Mage": {
+          "winRateHigherTier": 0.8655381944444445,
+          "ciLow": 0.822829861111111,
+          "ciHigh": 0.9072048611111111,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0.001
         },
-        "Mage": {
-          "winRateHigherTier": 0.8762152777777777,
-          "ciLow": 0.8294270833333334,
-          "ciHigh": 0.9165798611111112,
-          "sampleCount": 48,
-          "class": "EXPECTED",
-          "drawRate": 0.017
-        },
         "Support": {
-          "winRateHigherTier": 0.7630208333333334,
-          "ciLow": 0.6979166666666666,
-          "ciHigh": 0.8307291666666666,
+          "winRateHigherTier": 0.8736979166666666,
+          "ciLow": 0.8151041666666666,
+          "ciHigh": 0.9244791666666666,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.491
+          "drawRate": 0.279
         },
         "Controller": {
-          "winRateHigherTier": 0.90234375,
-          "ciLow": 0.8606770833333334,
-          "ciHigh": 0.9375,
+          "winRateHigherTier": 0.9189236111111111,
+          "ciLow": 0.8919270833333334,
+          "ciHigh": 0.9449652777777778,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.121
+          "drawRate": 0.025
         }
       },
       "battleCount": 5376,
@@ -367,68 +367,68 @@
     },
     {
       "pair": "A_PLUS->S",
-      "winRateHigherTier": 0.8093377976190477,
-      "ciLow": 0.7899925595238095,
-      "ciHigh": 0.8284970238095238,
+      "winRateHigherTier": 0.8406940901360545,
+      "ciLow": 0.8242718962585033,
+      "ciHigh": 0.8566379676870748,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.166,
+      "drawRate": 0.056,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.8098958333333334,
-          "ciLow": 0.7565104166666666,
-          "ciHigh": 0.8606770833333334,
+          "winRateHigherTier": 0.8603050595238094,
+          "ciLow": 0.8199404761904763,
+          "ciHigh": 0.8976934523809524,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.259
+          "drawRate": 0.057
         },
         "Tank": {
-          "winRateHigherTier": 0.8111979166666666,
-          "ciLow": 0.7565104166666666,
-          "ciHigh": 0.8658854166666666,
+          "winRateHigherTier": 0.8498883928571429,
+          "ciLow": 0.8039434523809524,
+          "ciHigh": 0.8919270833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.193
+          "drawRate": 0.04
         },
         "Bruiser": {
           "winRateHigherTier": 0.828125,
           "ciLow": 0.78515625,
-          "ciHigh": 0.8697916666666666,
-          "sampleCount": 48,
-          "class": "EXPECTED",
-          "drawRate": 0.039
-        },
-        "Assassin": {
-          "winRateHigherTier": 0.8684895833333334,
-          "ciLow": 0.8411458333333334,
-          "ciHigh": 0.8958333333333334,
+          "ciHigh": 0.8671875,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0
         },
+        "Assassin": {
+          "winRateHigherTier": 0.8597470238095237,
+          "ciLow": 0.8275669642857143,
+          "ciHigh": 0.8922991071428571,
+          "sampleCount": 48,
+          "class": "EXPECTED",
+          "drawRate": 0.003
+        },
         "Mage": {
-          "winRateHigherTier": 0.8151041666666666,
-          "ciLow": 0.7708333333333334,
-          "ciHigh": 0.8580729166666666,
+          "winRateHigherTier": 0.80859375,
+          "ciLow": 0.7643229166666666,
+          "ciHigh": 0.8489583333333334,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0.003
         },
         "Support": {
-          "winRateHigherTier": 0.6822916666666666,
-          "ciLow": 0.6223958333333334,
-          "ciHigh": 0.7447916666666666,
+          "winRateHigherTier": 0.8292410714285715,
+          "ciLow": 0.7734375,
+          "ciHigh": 0.8841145833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.59
+          "drawRate": 0.27
         },
         "Controller": {
-          "winRateHigherTier": 0.8502604166666666,
-          "ciLow": 0.8098958333333334,
-          "ciHigh": 0.8880208333333334,
+          "winRateHigherTier": 0.8489583333333334,
+          "ciLow": 0.8125,
+          "ciHigh": 0.8841145833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.078
+          "drawRate": 0.021
         }
       },
       "battleCount": 5376,
@@ -438,68 +438,68 @@
     },
     {
       "pair": "S->SS",
-      "winRateHigherTier": 0.813145324417646,
-      "ciLow": 0.7938492063492064,
-      "ciHigh": 0.8316951401772831,
+      "winRateHigherTier": 0.8460322291795506,
+      "ciLow": 0.8313124871160585,
+      "ciHigh": 0.8607833758503403,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.179,
+      "drawRate": 0.044,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.796875,
-          "ciLow": 0.7395833333333334,
-          "ciHigh": 0.8528645833333334,
+          "winRateHigherTier": 0.89453125,
+          "ciLow": 0.86328125,
+          "ciHigh": 0.921875,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.374
+          "drawRate": 0.036
         },
         "Tank": {
-          "winRateHigherTier": 0.8528645833333334,
-          "ciLow": 0.7994791666666666,
-          "ciHigh": 0.8984375,
+          "winRateHigherTier": 0.8900331439393939,
+          "ciLow": 0.8587831439393939,
+          "ciHigh": 0.9186789772727272,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.188
+          "drawRate": 0.029
         },
         "Bruiser": {
-          "winRateHigherTier": 0.8370535714285715,
-          "ciLow": 0.7976190476190476,
-          "ciHigh": 0.875,
+          "winRateHigherTier": 0.8344494047619048,
+          "ciLow": 0.7994791666666666,
+          "ciHigh": 0.8681175595238094,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.038
+          "drawRate": 0.003
         },
         "Assassin": {
-          "winRateHigherTier": 0.83203125,
-          "ciLow": 0.7955729166666666,
-          "ciHigh": 0.8671875,
+          "winRateHigherTier": 0.82421875,
+          "ciLow": 0.7903645833333334,
+          "ciHigh": 0.8567708333333334,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0
         },
         "Mage": {
-          "winRateHigherTier": 0.828125,
-          "ciLow": 0.7903645833333334,
-          "ciHigh": 0.8658854166666666,
+          "winRateHigherTier": 0.81640625,
+          "ciLow": 0.7747395833333334,
+          "ciHigh": 0.8567708333333334,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0
         },
         "Support": {
-          "winRateHigherTier": 0.6988873106060606,
-          "ciLow": 0.6338304924242424,
-          "ciHigh": 0.7631392045454546,
+          "winRateHigherTier": 0.7940972222222222,
+          "ciLow": 0.7377604166666667,
+          "ciHigh": 0.8489583333333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.509
+          "drawRate": 0.242
         },
         "Controller": {
-          "winRateHigherTier": 0.8461805555555556,
-          "ciLow": 0.8019097222222222,
-          "ciHigh": 0.8893229166666666,
+          "winRateHigherTier": 0.8684895833333334,
+          "ciLow": 0.83203125,
+          "ciHigh": 0.9010416666666666,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.142
+          "drawRate": 0
         }
       },
       "battleCount": 5376,
@@ -509,68 +509,68 @@
     },
     {
       "pair": "SS->SSS",
-      "winRateHigherTier": 0.8214683175620675,
-      "ciLow": 0.8039583969271469,
-      "ciHigh": 0.8395528083028083,
+      "winRateHigherTier": 0.8541418650793651,
+      "ciLow": 0.8399801587301587,
+      "ciHigh": 0.8692336309523809,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.157,
+      "drawRate": 0.041,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.8404113247863249,
-          "ciLow": 0.7886284722222223,
-          "ciHigh": 0.8900240384615384,
+          "winRateHigherTier": 0.9034722222222222,
+          "ciLow": 0.8798611111111111,
+          "ciHigh": 0.9282118055555556,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.199
+          "drawRate": 0.026
         },
         "Tank": {
-          "winRateHigherTier": 0.8371527777777779,
-          "ciLow": 0.7798611111111112,
-          "ciHigh": 0.8931423611111112,
+          "winRateHigherTier": 0.8763020833333334,
+          "ciLow": 0.83203125,
+          "ciHigh": 0.9166666666666666,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.267
+          "drawRate": 0.042
         },
         "Bruiser": {
-          "winRateHigherTier": 0.87890625,
-          "ciLow": 0.8424479166666666,
-          "ciHigh": 0.9127604166666666,
+          "winRateHigherTier": 0.8541666666666666,
+          "ciLow": 0.81640625,
+          "ciHigh": 0.890625,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.017
+          "drawRate": 0
         },
         "Assassin": {
-          "winRateHigherTier": 0.8359375,
-          "ciLow": 0.7994791666666666,
-          "ciHigh": 0.87109375,
+          "winRateHigherTier": 0.8463541666666666,
+          "ciLow": 0.80859375,
+          "ciHigh": 0.87890625,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0
         },
         "Mage": {
-          "winRateHigherTier": 0.8372395833333334,
-          "ciLow": 0.8020833333333334,
-          "ciHigh": 0.8723958333333334,
+          "winRateHigherTier": 0.8424479166666666,
+          "ciLow": 0.8046875,
+          "ciHigh": 0.8776041666666666,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0
         },
         "Support": {
-          "winRateHigherTier": 0.6928530092592592,
-          "ciLow": 0.6328125,
-          "ciHigh": 0.7557870370370371,
+          "winRateHigherTier": 0.8216145833333334,
+          "ciLow": 0.7708333333333334,
+          "ciHigh": 0.8697916666666666,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.557
+          "drawRate": 0.217
         },
         "Controller": {
-          "winRateHigherTier": 0.8277777777777778,
-          "ciLow": 0.7848090277777778,
-          "ciHigh": 0.8694444444444445,
+          "winRateHigherTier": 0.8346354166666666,
+          "ciLow": 0.80078125,
+          "ciHigh": 0.8684895833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.056
+          "drawRate": 0
         }
       },
       "battleCount": 5376,
@@ -580,68 +580,68 @@
     },
     {
       "pair": "SSS->SSS_COLLECTOR",
-      "winRateHigherTier": 0.7496984290511077,
-      "ciLow": 0.7310543127507414,
-      "ciHigh": 0.7682814952904238,
+      "winRateHigherTier": 0.7818632260596545,
+      "ciLow": 0.7654062827053897,
+      "ciHigh": 0.7983385661957091,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.168,
+      "drawRate": 0.054,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.7407986111111112,
-          "ciLow": 0.6888020833333334,
-          "ciHigh": 0.79296875,
+          "winRateHigherTier": 0.76953125,
+          "ciLow": 0.7252604166666666,
+          "ciHigh": 0.8125,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.253
+          "drawRate": 0.063
         },
         "Tank": {
-          "winRateHigherTier": 0.7553943452380952,
-          "ciLow": 0.7014508928571429,
-          "ciHigh": 0.8087797619047619,
+          "winRateHigherTier": 0.8218005952380953,
+          "ciLow": 0.7764136904761904,
+          "ciHigh": 0.8630952380952381,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.284
+          "drawRate": 0.021
         },
         "Bruiser": {
-          "winRateHigherTier": 0.7988715277777777,
-          "ciLow": 0.7611979166666667,
-          "ciHigh": 0.8358506944444445,
+          "winRateHigherTier": 0.796875,
+          "ciLow": 0.7591145833333334,
+          "ciHigh": 0.8346354166666666,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.016
+          "drawRate": 0
         },
         "Assassin": {
-          "winRateHigherTier": 0.76953125,
-          "ciLow": 0.7278645833333334,
-          "ciHigh": 0.80859375,
+          "winRateHigherTier": 0.8046875,
+          "ciLow": 0.7721354166666666,
+          "ciHigh": 0.8359375,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0
         },
         "Mage": {
-          "winRateHigherTier": 0.7666266025641025,
-          "ciLow": 0.7262620192307692,
-          "ciHigh": 0.8098958333333334,
+          "winRateHigherTier": 0.7408854166666666,
+          "ciLow": 0.69921875,
+          "ciHigh": 0.7786458333333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.026
+          "drawRate": 0
         },
         "Support": {
-          "winRateHigherTier": 0.6614583333333334,
-          "ciLow": 0.609375,
-          "ciHigh": 0.71484375,
+          "winRateHigherTier": 0.7554086538461539,
+          "ciLow": 0.700420673076923,
+          "ciHigh": 0.8079927884615383,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.473
+          "drawRate": 0.292
         },
         "Controller": {
-          "winRateHigherTier": 0.7552083333333334,
-          "ciLow": 0.7083333333333334,
-          "ciHigh": 0.80078125,
+          "winRateHigherTier": 0.7838541666666666,
+          "ciLow": 0.7447916666666666,
+          "ciHigh": 0.8216145833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.125
+          "drawRate": 0
         }
       },
       "battleCount": 5376,
@@ -651,68 +651,68 @@
     },
     {
       "pair": "SSS_COLLECTOR->XS",
-      "winRateHigherTier": 0.8329044839089482,
-      "ciLow": 0.8143990929705216,
-      "ciHigh": 0.8499652505232861,
+      "winRateHigherTier": 0.8629402963108319,
+      "ciLow": 0.8488777963108318,
+      "ciHigh": 0.875905257936508,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.146,
+      "drawRate": 0.044,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.8156250000000002,
-          "ciLow": 0.7604166666666666,
-          "ciHigh": 0.8681423611111111,
+          "winRateHigherTier": 0.8823784722222222,
+          "ciLow": 0.8433159722222223,
+          "ciHigh": 0.91796875,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.283
+          "drawRate": 0.1
         },
         "Tank": {
-          "winRateHigherTier": 0.8459201388888888,
-          "ciLow": 0.7958333333333334,
-          "ciHigh": 0.8927083333333333,
+          "winRateHigherTier": 0.8863715277777778,
+          "ciLow": 0.8560763888888889,
+          "ciHigh": 0.9153645833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.18
+          "drawRate": 0.008
         },
         "Bruiser": {
-          "winRateHigherTier": 0.8467881944444443,
-          "ciLow": 0.8098958333333334,
-          "ciHigh": 0.8836805555555555,
+          "winRateHigherTier": 0.8520337301587301,
+          "ciLow": 0.8220858134920636,
+          "ciHigh": 0.8819816468253968,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.027
+          "drawRate": 0.004
         },
         "Assassin": {
-          "winRateHigherTier": 0.8561698717948718,
-          "ciLow": 0.8184094551282052,
-          "ciHigh": 0.8913261217948718,
+          "winRateHigherTier": 0.8444511217948718,
+          "ciLow": 0.8066907051282052,
+          "ciHigh": 0.8803084935897436,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0.004
         },
         "Mage": {
-          "winRateHigherTier": 0.8447916666666666,
-          "ciLow": 0.8182291666666667,
-          "ciHigh": 0.8723958333333334,
+          "winRateHigherTier": 0.8357638888888889,
+          "ciLow": 0.8041666666666667,
+          "ciHigh": 0.8657118055555556,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0.001
         },
         "Support": {
-          "winRateHigherTier": 0.7596153846153846,
-          "ciLow": 0.6971153846153846,
-          "ciHigh": 0.8247195512820512,
+          "winRateHigherTier": 0.8645833333333334,
+          "ciLow": 0.8059895833333334,
+          "ciHigh": 0.9114583333333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.452
+          "drawRate": 0.182
         },
         "Controller": {
-          "winRateHigherTier": 0.8614211309523809,
-          "ciLow": 0.8182663690476191,
-          "ciHigh": 0.9047619047619048,
+          "winRateHigherTier": 0.875,
+          "ciLow": 0.8424479166666666,
+          "ciHigh": 0.9075520833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.077
+          "drawRate": 0.005
         }
       },
       "battleCount": 5376,
@@ -722,68 +722,68 @@
     },
     {
       "pair": "XS->XS_COLLECTOR",
-      "winRateHigherTier": 0.8092551256613757,
-      "ciLow": 0.7903480489417989,
-      "ciHigh": 0.8271169926303856,
+      "winRateHigherTier": 0.8455729166666667,
+      "ciLow": 0.8300258645124717,
+      "ciHigh": 0.8595875850340136,
       "sampleCount": 336,
       "class": "EXPECTED",
-      "drawRate": 0.18,
+      "drawRate": 0.072,
       "byArchetype": {
         "Balanced": {
-          "winRateHigherTier": 0.7816757605820106,
-          "ciLow": 0.7284308862433863,
-          "ciHigh": 0.8310515873015872,
+          "winRateHigherTier": 0.8785342261904763,
+          "ciLow": 0.849516369047619,
+          "ciHigh": 0.9047619047619048,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.303
+          "drawRate": 0.07
         },
         "Tank": {
-          "winRateHigherTier": 0.8390128968253968,
-          "ciLow": 0.7829365079365079,
-          "ciHigh": 0.8918402777777779,
+          "winRateHigherTier": 0.9039310515873016,
+          "ciLow": 0.872123015873016,
+          "ciHigh": 0.9327628968253968,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.284
+          "drawRate": 0.063
         },
         "Bruiser": {
-          "winRateHigherTier": 0.8645833333333334,
-          "ciLow": 0.8268229166666666,
-          "ciHigh": 0.8984375,
+          "winRateHigherTier": 0.83203125,
+          "ciLow": 0.7942708333333334,
+          "ciHigh": 0.87109375,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.018
+          "drawRate": 0
         },
         "Assassin": {
-          "winRateHigherTier": 0.8266493055555556,
-          "ciLow": 0.7952256944444445,
-          "ciHigh": 0.8580729166666666,
+          "winRateHigherTier": 0.8292534722222222,
+          "ciLow": 0.7981770833333334,
+          "ciHigh": 0.8605034722222222,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0.001
         },
         "Mage": {
-          "winRateHigherTier": 0.83984375,
-          "ciLow": 0.8033854166666666,
-          "ciHigh": 0.875,
+          "winRateHigherTier": 0.8229166666666666,
+          "ciLow": 0.7890625,
+          "ciHigh": 0.8541666666666666,
           "sampleCount": 48,
           "class": "EXPECTED",
           "drawRate": 0
         },
         "Support": {
-          "winRateHigherTier": 0.6744791666666666,
-          "ciLow": 0.6171875,
-          "ciHigh": 0.73046875,
+          "winRateHigherTier": 0.7877604166666666,
+          "ciLow": 0.7239583333333334,
+          "ciHigh": 0.8450520833333334,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.523
+          "drawRate": 0.368
         },
         "Controller": {
-          "winRateHigherTier": 0.8385416666666666,
-          "ciLow": 0.7890625,
-          "ciHigh": 0.8841145833333334,
+          "winRateHigherTier": 0.8645833333333334,
+          "ciLow": 0.8346354166666666,
+          "ciHigh": 0.8971354166666666,
           "sampleCount": 48,
           "class": "EXPECTED",
-          "drawRate": 0.13
+          "drawRate": 0
         }
       },
       "battleCount": 5376,

@@ -25,20 +25,17 @@
   // ---------------------------------------------------------------------------
 
   // ---------------------------------------------------------------------------
-  // Calibrated sub-score weights (spec 17: "if below 0.75, fix the scoring
-  // model"). v1.2.1: the aggregation uses THREE PRIMARY scoring dimensions
-  // (offense / durability / tempo) plus FOUR DIAGNOSTIC dimensions (sustain /
-  // utility / economy / reliability, computed & reported but ~0 weight). The
-  // values below are the SHIPPED product weights: they were re-fit by
-  // scripts/power-calibration.js on the TRAIN split (fitBattlePowerWeights) and
-  // SELECTED on the VALIDATION split by BOTH validation Spearman AND similar-BP
-  // fairness (|dBP|/mean <= 5% direct battles near 50%), then FINAL_TEST ran once.
-  // Spearman validation ~0.75-0.80; this set (offense 0.22 / durability 0.45 /
-  // tempo 0.25) balances ranking quality against close-BP fight fairness (a
-  // durability-heavy fit of 0.6 over-ranks defensive kits and makes close fights
-  // anti-correlated). All 7 sub-scores are still computed & displayed.
+  // v1.2.3 (audit §1/§5): the aggregation weights come from the SINGLE SOURCE OF
+  // TRUTH registry (src/battlepower-model.js) — the model SELECTED on VALIDATION
+  // and FROZEN, then evaluated once on the NEW FINAL holdout. Calibration,
+  // browser, tests and UI all read the same weights; battlepower.js must never
+  // hardcode its own divergent weights. The model registry also exposes the pure
+  // geometric aggregator (battlePowerWithWeights) and the canonical model hash.
   // ---------------------------------------------------------------------------
-  const SUBSCORE_WEIGHTS={offense:0.22,durability:0.45,tempo:0.25,sustain:0.02,utility:0.02,economy:0.02,reliability:0.02};  // Standard benchmark defenders (spec 14): light / balanced / heavy armor.
+  const MODEL=NCB.battlePowerModel||{weights:{offense:0.22,durability:0.45,tempo:0.25,sustain:0.02,utility:0.02,economy:0.02,reliability:0.02}};
+  const SUBSCORE_WEIGHTS=MODEL.weights;  // Standard benchmark defenders (spec 14): light / balanced / heavy armor.
+  const BATTLE_POWER_MODEL_VERSION=MODEL.version||'MODEL_FALLBACK';
+  const BATTLE_POWER_MODEL_HASH=MODEL.hash||(NCB.battlePowerModel?NCB.battlePowerModel.modelHash(SUBSCORE_WEIGHTS):'fallback');
   // They are pure measurement targets — never shipped as playable content.
   // HP is intentionally very high so expected-damage previews are NOT capped by
   // target HP (expectedDamageUtility clamps to hp+shield); a high ceiling keeps

@@ -1,7 +1,7 @@
 # FINAL-REPORT — 数值对战实验室
 
-**Status:** v1.2.2 · validation-correctness patch · §24 完成标准 A-E 全满足
-（health stalemate 发现已如实记录，非本版 blocker）· competencies verified
+**Status:** v1.2.3 · BattlePower Release Consistency + Sustain Health Fix ·
+§24 完成判断 1-5 全满足 · competencies verified
 
 ## 1. 项目最终结构
 
@@ -13,7 +13,7 @@ Condition + Target + Event + Status + Resource + Damage Component`。
 NUMERICAL-BATTLE-LAB-v1.0.0/
 ├── index.html                 # 单页离线入口（玩家向导航 + 高级实验室）
 ├── styles.css                 # 移动优先 + 12 稀有度卡框/典藏标记
-├── package.json               # v1.2.1 · npm test / verify / manifest / gen-mc
+├── package.json               # v1.2.3 · test / verify / verify:release / manifest / gen-mc
 ├── src/
 │   ├── kernel.js              # Gen5PRNG(Showdown) + EventKernel + action 排序
 │   ├── components.js          # 组件注册表（参数/Effect/Condition/Target/Event/Modifier）
@@ -122,28 +122,31 @@ NUMERICAL-BATTLE-LAB-v1.0.0/
 - 战斗按 priority/speed 顺序结算（顺序非分片）；相同/镜像阵容先手方约 -2~6 个百分点。
 - 单机本地，无网络多人/服务端/云存档；卡牌库存在浏览器本地存储。
 - 生成卡镜像自愈组合可能打满 maxRounds（draw），由 maxRounds 兜底不挂起。
-- **v1.2.2 实测**：Health stalemate n=2000 point **6.40% [5.41-7.56]**，超出 §20
-  point<5% 门禁；主因是 Support 镜像（30.9%）与 Tank 镜像（8.0%）的 heal/shield
-  sustain 循环。诊断确认单一 sustain 旋钮无法修复（结构性），按 §22 不重调 Generator v2，
-  作为已文档化发现记录待后续轮次；不隐藏、不误标通过。
+- **v1.2.3 修复**：v1.2.2 的 Health stalemate 6.40% [5.41-7.56] 已通过 Generator v2
+  sustain composition 修复（整体 0.97% [0.67-1.38]，Support 6.3%，Tank 0.2%）；Support
+  仍然可拖长战斗（P50 14 / P90 30），但不再无限自愈。
 - 战力是 1v1 通用排序指标，不是任意 matchup 的精确胜率；UI 不显示精确百分比，
   用 `战力较高 / 战力接近 / 战力较低` 或仅显示战力数字。
 
 ## 6. 验证门禁（本环境重测）
 
 ```
-ALL TESTS PASS              ✔ 全量测试通过（177，含 v1 fixture / budget-curve / calibration-semantics）
-STATIC CHECK PASS           ✔ 91 参数 / 18 Effect / v1.2.2 版本门禁 / manifest 审计
-V1 HISTORICAL FIXTURE       ✔ 189 张旧卡 sha256，由 v1.1.0 历史 commit 19ca5a4 worktree 生成
-HEALTH METRICS              ✔ 秒杀 0% [0-0.19] · 中位数 9 · P90 25 · P95 40
-                              ⚠ stalemate 6.40% [5.41-7.56]（>5% 门禁，已文档化，非本版 blocker）
+ALL TESTS PASS              ✔ 全量测试通过（181，含 v1 fixture / budget-curve /
+                              calibration-semantics / battlepower-model-consistency）
+STATIC CHECK PASS           ✔ 91 参数 / 18 Effect / v1.2.3 版本门禁 / manifest 审计
+V1 HISTORICAL FIXTURE       ✔ 189 张旧卡 sha256，由 v1.1.0 历史 commit 19ca5a4 worktree 生成；
+                              provenance（historicalTree/generatorBlobSha/toolVersion）可机器验证
+HEALTH METRICS (n=3000)     ✔ 秒杀 0% [0-0.13] · stalemate 0.97% [0.67-1.38]（<4% 目标）
+                              · 中位数 8 · P90 15 · P95 19
+                              · Support 6.3% (<10%) · Tank 0.2% (<7%)
 STRICT RARITY MONOTONICITY  ✔ adjacent-rarity-matrix：11 组方向全部正确（conditional）
-ADJACENT RARITY MATRIX      ✔ conditional win rate 全部 EXPECTED（0.66-0.86），hard inversions 0
-MATCHED-SEED RARITY TEST    ✔ Causal 0.75-0.85 / Population 0.57-0.64 全部 EXPECTED，hard 0
-SPEARMAN                    ✔ FINAL_TEST (frozen holdout) 0.785（validation selected）
-PAIRWISE ORDERING ACCURACY  ✔ FINAL 0.761 ≥ 0.75（split train/validation/final 隔离）
-SIMILAR-BP FAIRNESS         ✔ FINAL 0.543（ideal ~0.50）∈ 40-60%
-WIN PROBABILITY CALIBRATION ✔ 拟合于 TRAIN，FINAL holdout Brier 0.214 / LogLoss 0.621 / ECE 0.191
+ADJACENT RARITY MATRIX      ✔ conditional win rate 全部 EXPECTED（0.78-0.89），hard inversions 0
+MATCHED-SEED RARITY TEST    ✔ Causal 0.785-0.892 / Population 0.585-0.683 全部 EXPECTED，hard 0
+SPEARMAN                    ✔ NEW_FINAL_V123 (frozen holdout) 0.815（validation selected）
+PAIRWISE ORDERING ACCURACY  ✔ NEW_FINAL 0.957 ≥ 0.75（split train/validation/final 隔离）
+SIMILAR-BP FAIRNESS         ✔ random pairs |dBP|/mean≤5% higher-BP win 0.534 ∈ 40-60%
+WIN PROBABILITY CALIBRATION ✔ 拟合于 TRAIN，NEW_FINAL holdout Brier 0.195 / LogLoss 0.580 / ECE 0.228
+MODEL CONSISTENCY           ✔ selectedModelHash=1ddb2797 === shippedModelHash=1ddb2797（静态测试）
 BROWSER QA DESKTOP          ✔ Chromium 1440×1000：全中文、新手流程可独立玩通、
                               卡牌库/生成/帮助/高级实验室全部可用、无 JS 错误
 BROWSER QA MOBILE           ✔ Chromium 390×844：无横向溢出、无 NaN
@@ -153,27 +156,73 @@ PAGES ACTION                ✔ GitHub Pages deploy PASS
 
 附注：浏览器控制台仅有 1 条 `favicon.ico` 404（非引擎错误，可忽略）。
 
-## 7. 最终判断（v1.2.2 §24）
+## 7. 最终判断（v1.2.3 §24）
 
 - **A. 高稀有度整体人群统计更强** —— Population 11 组 conditional 全部 EXPECTED
-  （0.57-0.64），hard inversions 0。
+  （0.585-0.683），hard inversions 0。
 - **B. 同 seed/archetype 仅提升 rarity 绝大多数不变弱** —— Causal matched 11 组
-  conditional 全部 EXPECTED（0.75-0.85），hard inversions 0。
+  conditional 全部 EXPECTED（0.785-0.892），hard inversions 0。
 - **C. 不存在大量 same-archetype higher-rarity WR<40% 系统性反转** —— matched +
   population 均 hard inversions 0。
 - **D. BattlePower FINAL 完全未参与模型选择** —— `modelSelectionUsedSplits =
-  ['TRAIN','VALIDATION']`，FINAL 只在 freeze 后 holdout。
+  ['TRAIN','VALIDATION']`，NEW_FINAL_V123 只在 freeze 后 holdout。
 - **E. v1 fixture 真正来自 v1.1.0 历史 commit** —— 由 19ca5a4 worktree 生成，golden
   不可自动再生成。
 - **战力只是观测指标，不参与实际战斗结算** —— 由 battlepower.js 只读实现 +
   identical-data-diff-rarity 同 BP 测试 + BattleEngine 冻结保证。
 
-## 8. v1.2.2 版本策略结论（§26）
+## 8. v1.2.3 最终报告块（§23）
 
-- 本轮只修统计脚本（Phase A）：FINAL_TEST 泄漏、pseudo-replication、Archetype 覆盖、
-  v1 fixture 锚定、health CI 等全部修正；**产品功能与 Generator v2 冻结**。
-- 新严格测量证明 **matched-seed rarity 与 population rarity 均健康**（0 hard
-  inversion），故按 §22 Phase B **不做 Generator v2 数值重调**。
-- Health stalemate 6.40% [5.41-7.56] 超出 §20 point<5% 门禁，作为 **validation
-  correctness patch 的诚实发现**报告（§21 明确“长尾不是 blocker”，§24 A-E 全满足），
-  不隐藏、不误标通过，留给后续轮次最小 sustain/composition 调整。
+### BattlePower model
+
+```text
+Selected weights:  {offense 0.30, durability 0.40, tempo 0.22, sustain 0.02,
+                    utility 0.02, economy 0.02, reliability 0.02}  (MODEL_V123)
+Shipped weights:   {offense 0.30, durability 0.40, tempo 0.22, sustain 0.02,
+                    utility 0.02, economy 0.02, reliability 0.02}
+Hashes equal:      YES (selectedModelHash=1ddb2797 === shippedModelHash=1ddb2797)
+```
+
+### New untouched FINAL (NEW_FINAL_V123, 全新种子空间)
+
+```text
+Spearman : 0.815  (>= 0.70)
+Pairwise : 0.957  (>= 0.75)
+Similar BP: 0.534  (canonical standalone, random pairs, ∈ [0.40, 0.60])
+Brier    : 0.195
+LogLoss  : 0.580
+ECE      : 0.228
+```
+
+### Health
+
+```text
+n: 3000（overall + 7 archetype + 12 rarity + archetype×rarity）
+one-shot: 0.00% [0.00-0.13]
+stalemate: 0.97% [0.67-1.38]      (target < 4%, hard gate < 5%)
+Support stalemate: 6.3%           (target < 10%)
+Tank stalemate: 0.2%              (target < 7%)
+P50/P75/P90/P95: 8 / 11 / 15 / 19
+```
+
+### Fixture
+
+```text
+Historical ref:     19ca5a443fcccd418d421a648f29a900098f55f8
+Actual worktree HEAD: 19ca5a443fcccd418d421a648f29a900098f55f8（git rev-parse 校验）
+Worktree dirty:     NO（git status --porcelain 空，否则拒绝）
+189/189:            YES（hash 逐字节一致；provenance 只增不改）
+```
+
+## 9. v1.2.3 版本策略结论（§26）
+
+- **① 模型一致性**：建立 `src/battlepower-model.js` 唯一 Source of Truth，calibration
+  与线上完全一致（hash 相等，静态测试强制）——不再有 v1.2.2
+  “selected fitted 而 shipped 分裂” 状态。
+- **② Sustain Health Fix**：整体 stalemate 6.40% → 0.97%，Support 30.9% → 6.3%，
+  Tank 8.0% → 0.2%；只改 Generator v2 sustain composition（SustainLoad + ceiling +
+  recurrence cost），BattleEngine / Generator v1 / RPI / Budget Curve 冻结。
+- **③ Fixture provenance**：工具验证真实 checkout（HEAD + 干净 worktree），fixture
+  provenance 可机器验证。
+- rarity 未退化（adjacent + matched 重跑全绿），按 §21 保持 RPI / Budget Curve 不动。
+- 完成判断 **1-5 全满足**，至此停止继续调数值；下一阶段才能回到内容/UI 扩展。

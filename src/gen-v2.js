@@ -22,7 +22,7 @@
     {id:'arc-bolt',kind:'damage',target:'enemy',targetCount:1,accuracy:1,cooldown:1,priority:0,damageType:'lightning',hits:1,tags:['lightning']},
     {id:'venom',kind:'damage',target:'enemy',targetCount:1,accuracy:0.9,cooldown:1,priority:0,damageType:'toxic',hits:1,tags:['toxic']},
     {id:'cleave',kind:'damage',target:'all-enemies',targetCount:3,accuracy:0.85,cooldown:3,priority:0,damageType:'physical',hits:1,tags:['aoe','heavy']},
-    {id:'heal',kind:'heal',target:'ally',targetCount:1,accuracy:1,cooldown:1,priority:0,scaling:'MAX_HP',tags:['support']},
+    {id:'heal',kind:'heal',target:'ally',targetCount:1,accuracy:1,cooldown:2,priority:0,scaling:'MAX_HP',tags:['support']},
     {id:'barrier',kind:'shield',target:'self',targetCount:0,accuracy:1,cooldown:2,priority:0,scaling:'MAX_HP',tags:['defense']},
     {id:'fortify',kind:'status',target:'self',targetCount:0,accuracy:1,cooldown:2,priority:0,status:'fortified',tags:['buff']},
     {id:'weaken',kind:'status',target:'enemy',targetCount:1,accuracy:1,cooldown:1,priority:0,status:'weak',tags:['debuff']},
@@ -90,7 +90,7 @@
     SPD:bp=>52+Number(bp)*0.26,
   };
   const V2_SKILL_POWER_SCALE=100;   // damage coefficient denominator (v2)
-  const V2_SUSTAIN_POWER_SCALE=720; // heal/shield coefficient denominator (v2)
+  const V2_SUSTAIN_POWER_SCALE=1100; // heal/shield coefficient denominator (v2)
   const V2_TARGET_SKILLS=[0.30,0.30,0.40];
 
   // ---------------------------------------------------------------------------
@@ -131,8 +131,13 @@
   // hit (afterDamageTaken/afterDamageDealt): a one-time budget purchase buys
   // near-infinite value, so their sustain must be discounted far below a bounded
   // skill heal. afterKill is bounded (once per kill) and uses the normal scale.
+  // v1.2.3 (audit §12): recurrence cost raised 3.2 -> 6.0 — the v1.2.2 discount
+  // still undervalued the every-round repetition and recurring sustain triggers
+  // were a primary driver of Support/Tank mirror stalls (n=2000 stalemate 6.40%).
+  // This is combined with a sustain COMPOSITION ceiling (enforceSustainCeiling) —
+  // not a single-knob change (audit §12).
   const V2_TRIGGER_RECURRING_EVENTS=['roundStart','roundEnd','afterDamageTaken','afterDamageDealt'];
-  const V2_TRIGGER_RECURRENCE_DISCOUNT=3.2;
+  const V2_TRIGGER_RECURRENCE_DISCOUNT=6.0;
   function triggerSustainScale(event,share){
     return V2_SUSTAIN_POWER_SCALE*(V2_TRIGGER_RECURRING_EVENTS.includes(event)?V2_TRIGGER_RECURRENCE_DISCOUNT:1);
   }
@@ -406,9 +411,17 @@
 
     const skillsRaw=V2_TARGET_SKILLS.map((f,i)=>composeSkill({seed,archetype,slot:i,budget:Math.round(split.activeSkills*f),cardId:id}));
     // Composition constraints (spec balance audit §7): repair non-healthy kits.
-    const skills=enforceComposition({archetype,seed,skills:skillsRaw,cardId:id});
+    let skills=enforceComposition({archetype,seed,skills:skillsRaw,cardId:id});
 
     const passiveOut=generatePassivesAndTriggers({seed,archetype,budget:split.passiveTrigger});
+
+    // v1.2.3 anti-stall (audit §9-§13): keep the kit's sustain within the
+    // archetype ceiling by re-composing (swap recurring sustain triggers to
+    // utility/resource/status; swap heal/shield skills to damage). Generator-only;
+    // BattleEngine untouched; decided by Effect/Tag, never per-skill-id.
+    const sustainFix=enforceSustainCeiling({archetype,seed,skills,triggers:passiveOut.triggers,passives:passiveOut.passives,cardId:id,stats:primary.stats});
+    skills=sustainFix.skills;
+    passiveOut.triggers=sustainFix.triggers;
 
     const stats={...primary.stats,...secondary.seconds,ENERGY_MAX:4,ENERGY_REGEN:2};
     const resources={ENERGY:{max:stats.ENERGY_MAX,regen:stats.ENERGY_REGEN}};
@@ -423,6 +436,8 @@
       _primary:primary,_secondary:secondary,
     };
     card.powerAudit=powerAuditV2(card,passiveOut.spent);
+    // v1.2.3 anti-stall diagnostics (audit §13): Generator-only metrics.
+    card.antiStall=computeSustainLoad(card);
     return card;
   }
 
@@ -474,6 +489,194 @@
     throw new Error('unsupported generatorVersion: '+version);
   }
 
+  // ---------------------------------------------------------------------------
+  // v1.2.3 SustainLoad + sustain composition ceiling (audit §9-§13).
+  //
+  // Anti-Stall Generator Diagnostics: a per-card, GENERATOR-ONLY metric that
+  // estimates how much self-sustain a kit carries. It NEVER enters the
+  // BattleEngine — it is used only to detect and repair stall-prone compositions
+  // (high durability + heal + shield + recurring sustain trigger + resource
+  // economy). Repair is decided generically by Effect/Tag role, never by
+  // per-skill-id and never by `if(archetype==='Support')damage*=...`.
+  //
+  //   sustainLoad       : per-round self-sustain as a fraction of MAX_HP
+  //                       (active heal/shield EV + recurring trigger EV + regen)
+  //   expectedDPS       : per-round damage EV as a fraction of MAX_HP
+  //   expectedSelfSustain: sustainLoad without the defense bonus
+  //   pressureRatio     : expectedDPS / expectedSelfSustain (stall risk: low ratio)
+  // ---------------------------------------------------------------------------
+  function coeffOf(formula){
+    if(!formula)return 0;
+    const m=String(formula).match(/MAX_HP\s*\*\s*(\d+(?:\.\d+)?)/);
+    return m?parseFloat(m[1]):0;
+  }
+  function atkCoeffOf(formula){
+    if(!formula)return 0;
+    const m=String(formula).match(/ATK\s*\*\s*(\d+(?:\.\d+)?)/);
+    return m?parseFloat(m[1]):0;
+  }
+  function computeSustainLoad(card){
+    const stats=card.stats||{};
+    const maxHp=Math.max(1,Number(stats.MAX_HP)||1);
+    const atk=Math.max(1,Number(stats.ATK)||1);
+    // Engine mitigation model (frozen formula: 100/(100+effectiveDefense)):
+    // a neutral mid benchmark (physical vs DEF, magical vs RES) — Generator-only.
+    const def=Number(stats.DEF)||0,res=Number(stats.RES)||0;
+    const physMit=100/(100+Math.max(0,def));
+    const magMit=100/(100+Math.max(0,res));
+    let active=0,activeDPS=0;
+    for(const s of card.skills||[]){
+      const freq=1/(1+Number(s.cooldown||0));
+      for(const e of s.effects||[]){
+        if(e.type==='heal'||e.type==='shield'){const c=coeffOf(e.formula||s.formula);active+=c*freq;}
+        else if(e.type==='damage'){
+          const dt=e.damageType||s.damageType||'physical';
+          const mit=dt==='physical'?physMit:magMit;
+          activeDPS+=atkCoeffOf(e.formula||s.formula)*atk*freq*mit;
+        }
+      }
+    }
+    // Recurring sustain triggers fire EVERY round (or every hit) — near-infinite
+    // value, so they are weighted more than an active skill's per-round EV.
+    let recurring=0,recurringDps=0;
+    for(const t of card.triggers||[]){
+      const rec=V2_TRIGGER_RECURRING_EVENTS.includes(t.event);
+      if(!rec)continue;
+      for(const e of t.effects||[]){
+        if(e.type==='heal'||e.type==='shield'){recurring+=coeffOf(e.formula);}
+        else if(e.type==='damage'){
+          const dt=e.damageType||'physical';
+          const mit=dt==='physical'?physMit:magMit;
+          recurringDps+=atkCoeffOf(e.formula)*atk*0.5*mit;
+        }
+      }
+    }
+    const regen=Number(stats.ENERGY_REGEN||2);
+    // SustainLoad = per-round self-sustain as a fraction of MAX_HP, weighted so a
+    // recurring trigger counts ~2x an active skill (it repeats every round).
+    const sustainLoad=active+2*recurring+(regen-2)*0.02;
+    const expectedSelfSustain=active+recurring;
+    const expectedDPS=(activeDPS+recurringDps)/maxHp;
+    const pressureRatio=expectedSelfSustain>0?expectedDPS/expectedSelfSustain:999;
+    return{sustainLoad:Math.round(sustainLoad*1000)/1000,
+      expectedDPS:Math.round(expectedDPS*1000)/1000,
+      expectedSelfSustain:Math.round(expectedSelfSustain*1000)/1000,
+      pressureRatio:Math.round(pressureRatio*1000)/1000};
+  }
+  // Per-archetype sustain ceilings (Generator-only, deterministic). Support may
+  // drag fights (heal/function) but must not be unkillable; Assassin must be
+  // low-sustain. Ceiling is a composition LIMIT, not a damage multiplier. Read via
+  // NCB.V2_SUSTAIN_CEILING so probes/calibration can sweep it deterministically.
+  const V2_SUSTAIN_CEILING={
+    Balanced:0.06,Tank:0.075,Bruiser:0.055,Assassin:0.045,Mage:0.06,Support:0.085,Controller:0.06,
+  };
+  function sustainCeilingOf(archetype){
+    const t=NCB.V2_SUSTAIN_CEILING||V2_SUSTAIN_CEILING;
+    return t[archetype]??0.06;
+  }
+  // Anti-stall pressure floor (audit §13): a kit whose post-mitigation DPS is not
+  // meaningfully above its own sustain (pressureRatio below the floor) cannot
+  // finish a mirror fight and will hit maxRounds. The generator repairs such kits
+  // by converting the SLOWEST damage skill to a fast damage skill — composition-
+  // level (adds damage pressure), never a per-archetype damage multiplier.
+  const V2_PRESSURE_FLOOR={
+    Balanced:1.0,Tank:1.0,Bruiser:1.2,Assassin:1.5,Mage:1.2,Support:1.2,Controller:1.1,
+  };
+  function pressureFloorOf(archetype){
+    const t=NCB.V2_PRESSURE_FLOOR||V2_PRESSURE_FLOOR;
+    return t[archetype]??1.0;
+  }
+
+  // Repair a stall-prone kit (audit §10/§11): (1) drop recurring sustain triggers
+  // and swap to utility/resource/status triggers; (2) reduce heal+shield
+  // co-occurrence by converting a SHIELD skill to damage while KEEPING the heal
+  // (Support identity: heal/function high, output low — but not unkillable);
+  // (3) only as a last resort convert one heal skill when the kit has TWO sustain
+  // skills AND still exceeds the ceiling (never strip the sole sustain skill).
+  // Deterministic via seed. Never per-skill-id, never `if(archetype===...)*=`.
+  function enforceSustainCeiling({archetype,seed,skills,triggers,passives,cardId,stats}){
+    const prng=genSeed(seed,'sustain-fix');
+    const triggerSwap={regenStart:TRIGGER_BLUEPRINTS.find(b=>b.id==='regen-start'),
+      secondWind:TRIGGER_BLUEPRINTS.find(b=>b.id==='second-wind'),
+      vengeance:TRIGGER_BLUEPRINTS.find(b=>b.id==='vengeance'),
+      counter:TRIGGER_BLUEPRINTS.find(b=>b.id==='counter'),
+      hasteHit:TRIGGER_BLUEPRINTS.find(b=>b.id==='haste-hit'),
+      energyKill:TRIGGER_BLUEPRINTS.find(b=>b.id==='energy-kill'),
+      bulwark:TRIGGER_BLUEPRINTS.find(b=>b.id==='bulwark')};
+    const utilityBlueprints=[triggerSwap.hasteHit,triggerSwap.energyKill,triggerSwap.bulwark].filter(Boolean);
+    const out={skills:skills.slice(),triggers:(triggers||[]).map(t=>({...t,effects:(t.effects||[]).map(e=>({...e}))}))};
+    // pseudo-card for SustainLoad estimation using the REAL card stats
+    const pseudoCard=()=>({stats:{MAX_HP:stats?.MAX_HP||330,ATK:stats?.ATK||60,DEF:stats?.DEF||45,RES:stats?.RES||45,ENERGY_REGEN:stats?.ENERGY_REGEN||2},skills:out.skills,triggers:out.triggers});
+    const loadNow=()=>computeSustainLoad(pseudoCard()).sustainLoad;
+    let load=loadNow();
+    const ceiling=sustainCeilingOf(archetype);
+    let guard=0;
+    // 1) swap recurring sustain triggers -> utility/resource/status triggers
+    while(load>ceiling&&guard++<6){
+      const idx=out.triggers.findIndex(t=>V2_TRIGGER_RECURRING_EVENTS.includes(t.event)&&(t.effects||[]).some(e=>e.type==='heal'||e.type==='shield'));
+      if(idx<0)break;
+      const bp=utilityBlueprints[prng.random(utilityBlueprints.length)];
+      const trigger={event:bp.event,target:bp.target,effects:[],tags:bp.tags||[]};
+      if(bp.kind==='status'){
+        const sv=NCB.statusValue(20,{targetCount:1,accuracy:1,cooldown:0,priority:0,statusStacks:1});
+        trigger.effects.push({type:'status',status:bp.status,duration:Math.max(1,Math.min(6,sv.duration)),stacks:sv.stacks});
+      } else if(bp.kind==='gain'){
+        trigger.effects.push({type:'gain',resource:bp.resource||'ENERGY',amount:Math.max(1,Math.round(20/150))});
+      }
+      out.triggers[idx]=trigger;
+      load=loadNow();
+    }
+    // 2) reduce heal+shield co-occurrence: convert SHIELD skills to damage,
+    //    KEEP the heal (Support keeps its sustain identity; audit §11).
+    guard=0;
+    const pool=ARCHETYPE_PRIMARY[archetype]||ARCHETYPE_PRIMARY.Balanced;
+    const damageCandidates=pool.filter(id=>GRAMMAR_PRIMARY.find(p=>p.id===id)?.kind==='damage');
+    const hasHeal=()=>out.skills.some(s=>skillRole(s)==='heal');
+    while(load>ceiling&&guard++<4){
+      const idx=out.skills.findIndex(s=>skillRole(s)==='shield'&&(hasHeal()||out.skills.filter(x=>skillRole(x)==='shield').length>1));
+      if(idx<0||!damageCandidates.length)break;
+      const primId=damageCandidates[prng.random(damageCandidates.length)];
+      out.skills[idx]=rebuildSkill({archetype,seed,slot:idx,budget:out.skills[idx]._budget||0,cardId,primaryId:primId});
+      load=loadNow();
+    }
+    // 3) last resort: convert ONE sustain skill only if TWO sustain skills remain
+    //    and the ceiling is still exceeded (never strip the sole sustain skill).
+    guard=0;
+    while(load>ceiling&&guard++<3){
+      const sustainIdx=out.skills.map((s,i)=>({s,i})).filter(x=>skillRole(x.s)==='heal'||skillRole(x.s)==='shield');
+      if(sustainIdx.length<2||!damageCandidates.length)break;
+      const pick=sustainIdx[prng.random(sustainIdx.length)];
+      const primId=damageCandidates[prng.random(damageCandidates.length)];
+      out.skills[pick.i]=rebuildSkill({archetype,seed,slot:pick.i,budget:out.skills[pick.i]._budget||0,cardId,primaryId:primId});
+      load=loadNow();
+    }
+    // 4) anti-stall pressure (audit §13): if post-mitigation DPS is below the
+    //    archetype pressure floor, the kit cannot finish a mirror fight — convert
+    //    the SLOWEST damage skill to a FAST damage primary (cooldown<=1) to add
+    //    explicit damage pressure. Composition-level, never a damage multiplier.
+    const fastDamagePool=pool.filter(id=>{
+      const p=GRAMMAR_PRIMARY.find(x=>x.id===id);
+      return p&&p.kind==='damage'&&Number(p.cooldown||0)<=1;
+    });
+    guard=0;
+    const pressureNow=()=>{const p=computeSustainLoad(pseudoCard());return p.expectedSelfSustain>0?p.pressureRatio:999;};
+    while(pressureNow()<pressureFloorOf(archetype)&&guard++<4){
+      if(!fastDamagePool.length)break;
+      // pick the slowest damage skill (highest cooldown); fall back to any damage
+      let idx=-1,worstCd=-1;
+      for(let i=0;i<out.skills.length;i++){
+        const s=out.skills[i];
+        if(skillRole(s)==='burst'&&Number(s.cooldown||0)>worstCd){worstCd=Number(s.cooldown||0);idx=i;}
+      }
+      if(idx<0){idx=out.skills.findIndex(s=>skillRole(s)==='burst');}
+      if(idx<0)break;
+      if(Number(out.skills[idx].cooldown||0)<=1)break; // already fast enough
+      const primId=fastDamagePool[prng.random(fastDamagePool.length)];
+      out.skills[idx]=rebuildSkill({archetype,seed,slot:idx,budget:out.skills[idx]._budget||0,cardId,primaryId:primId});
+    }
+    return{skills:out.skills,triggers:out.triggers};
+  }
+
   NCB.CARD_GENERATOR_VERSION_V2=CARD_GENERATOR_VERSION_V2;
   NCB.GRAMMAR_PRIMARY=GRAMMAR_PRIMARY;
   NCB.GRAMMAR_SECONDARY=GRAMMAR_SECONDARY;
@@ -487,6 +690,12 @@
   NCB.COMPOSITION_RULES=COMPOSITION_RULES;
   NCB.skillRole=skillRole;
   NCB.enforceComposition=enforceComposition;
+  NCB.computeSustainLoad=computeSustainLoad;
+  NCB.V2_SUSTAIN_CEILING=V2_SUSTAIN_CEILING;
+  NCB.sustainCeilingOf=sustainCeilingOf;
+  NCB.V2_PRESSURE_FLOOR=V2_PRESSURE_FLOOR;
+  NCB.pressureFloorOf=pressureFloorOf;
+  NCB.enforceSustainCeiling=enforceSustainCeiling;
   NCB.canonicalGenerationIdentityV2=canonicalGenerationIdentityV2;
   NCB.composeSkill=composeSkill;
   NCB.generatePassivesAndTriggers=generatePassivesAndTriggers;

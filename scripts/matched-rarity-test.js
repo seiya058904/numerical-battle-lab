@@ -25,7 +25,7 @@ const fs=require('node:fs');
 const root=path.resolve(__dirname,'..');
 const src=(f)=>require(path.join(root,'src',f));
 global.NCB={};
-for(const f of ['kernel','components','rules','content','status-runtime','validator','formula','effects','engine','power','gen-stats','gen-skills','generator','gen-names','gen-v2','battlepower'])src(f);
+for(const f of ['kernel','components','rules','content','status-runtime','validator','formula','effects','engine','power','gen-stats','gen-skills','generator','gen-names','gen-v2','battlepower-model','battlepower'])src(f);
 const N=global.NCB;
 function parseArg(name,dflt){const i=process.argv.indexOf('--'+name);return i>=0&&process.argv[i+1]?Number(process.argv[i+1])||dflt:dflt;}
 const K=parseArg('seeds',48);
