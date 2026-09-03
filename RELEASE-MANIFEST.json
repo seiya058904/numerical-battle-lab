@@ -10,8 +10,8 @@
   "files": [
     {
       "path": ".github/workflows/verify.yml",
-      "size": 332,
-      "sha256": "f1074646084fb91fcd7dbb4b3e2ae907f2e497150dcc984f39548757e71ab93d"
+      "size": 782,
+      "sha256": "54bd3a153b0fb93e7f4a313cb3a701b854f25ac673b2074141fa8d444d114a60"
     },
     {
       "path": ".gitignore",
@@ -35,8 +35,8 @@
     },
     {
       "path": "README.md",
-      "size": 6240,
-      "sha256": "8d437e13a24330c26f90be5a6059bed56fcd0532c928a6469e0d54a03f3ad173"
+      "size": 6291,
+      "sha256": "be840ff5a494340d84b05dd998c89cb0aae976550f3af6446a41207569db9fdc"
     },
     {
       "path": "RELEASE-NOTES.md",
