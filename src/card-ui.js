@@ -71,9 +71,13 @@
     return `<svg class="card-art" viewBox="0 0 120 110" role="img" aria-label="黑白战斗角色 稀有度阶 ${tierLabel}"><g fill="#fff" stroke="#171717" stroke-width="4" stroke-linejoin="round">${ears}<ellipse cx="60" cy="65" rx="37" ry="32"/><path d="M35 91 29 102 49 102M73 102 91 102 86 91"/><path d="M47 77 Q60 ${h%3?90:71} 74 77" fill="none"/></g><circle cx="46" cy="59" r="5"/><circle cx="75" cy="59" r="5"/>${h%3===0?'<path d="m37 47 17 4m12 0 18-4" stroke="#171717" stroke-width="4"/>':''}${inner}<text x="10" y="18" fill="#171717" font-size="12" font-family="monospace">${tierLabel||''}</text></svg>`;
   }
 
-  // BattlePower display number (canonical NCB.battlePower, rounded integer).
+  // BattlePower display number (v2 for v4 cards, legacy model otherwise).
+  // Both are display/diagnostic only — never read by the engine.
   function battlePowerOf(card){
-    try{const bp=NCB.battlePower?.(card);return bp&&Number.isFinite(bp.power)?Math.round(bp.power):null;}catch(_){return null;}
+    try{
+      if(card?.generatorVersion===4&&NCB.battlePowerV2){const r=NCB.battlePowerV2(card);return r&&Number.isFinite(r.power)?Math.round(r.power):null;}
+      const bp=NCB.battlePower?.(card);return bp&&Number.isFinite(bp.power)?Math.round(bp.power):null;
+    }catch(_){return null;}
   }
   // "战力 12,840" — thousands-separated, integer only (no fractional/winrate).
   function formatBattlePower(power){

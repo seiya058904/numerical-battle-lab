@@ -11,6 +11,8 @@
     "manifest": "node scripts/generate-manifest.js",
     "gen-mc": "node scripts/gen-mc.js",
     "diagnostics:legacy": "node scripts/health-metrics.js --n 3000 && node scripts/adjacent-rarity-matrix.js --seeds 48 --battles 8 && node scripts/matched-rarity-test.js --seeds 48 --battles 8 && node scripts/power-calibration.js --sample 600 --battles 14 --rarityN 48 && node scripts/similar-bp-test.js --battles 14 --pairs 120",
-    "diversity": "node scripts/diversity-audit.js 3000"
+    "diversity": "node scripts/diversity-audit.js 3000",
+    "diversity:v4": "node scripts/diversity-audit-v4.js 10000",
+    "calibration:v4": "node scripts/power-v4-calibration.js 72 1600"
   }
 }
