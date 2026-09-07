@@ -35,6 +35,18 @@
 
   function validateContentPack(pack={}){
     const errors=[],warnings=[];
+    try{JSON.stringify(pack);}catch(_){return{ok:false,errors:['content must be acyclic JSON'],warnings:[]};}
+    // Bound authoring input before recursive DSL traversal (including cyclic JS input).
+    const pending=[[pack,0]],seen=new Set();let nodes=0;
+    while(pending.length){
+      const [value,depth]=pending.pop();
+      if(++nodes>100000||depth>32)return{ok:false,errors:['content exceeds structural work limit'],warnings:[]};
+      if(typeof value==='number'&&!Number.isFinite(value))return{ok:false,errors:['content contains non-finite number'],warnings:[]};
+      if(value&&typeof value==='object'){
+        if(seen.has(value))continue;seen.add(value);
+        for(const child of Object.values(value))pending.push([child,depth+1]);
+      }
+    }
     const units=pack.units||{},skills=pack.skills||{},statuses=pack.statuses||{};
     const err=(path,msg)=>errors.push(`${path}: ${msg}`);
     const warn=(path,msg)=>warnings.push(`${path}: ${msg}`);
@@ -84,7 +96,9 @@
       }
       scanCondition(query.where,`${path}.where`);
     }
-    function scanEffect(effect,path){
+    let effectWork=0;
+    function scanEffect(effect,path,weight=1){
+      effectWork+=weight;if(effectWork>8192){if(!errors.includes('effect work exceeds 8192'))errors.push('effect work exceeds 8192');return;}
       if(!effect||typeof effect!=='object'){err(path,'invalid effect');return;}
       if(!NCB.EFFECT_COMPONENTS?.[effect.type])err(path,`unknown effect ${effect.type}`);
       scanCondition(effect.condition,`${path}.condition`);
@@ -96,9 +110,9 @@
         if(c.type&&!NCB.DAMAGE_TYPES?.[c.type])err(`${path}.components[${i}]`,`unknown damageType ${c.type}`);
         scanFormula(c.formula,`${path}.components[${i}].formula`);
       }
-      (effect.effects||[]).forEach((x,i)=>scanEffect(x,`${path}.effects[${i}]`));
-      (effect.then||[]).forEach((x,i)=>scanEffect(x,`${path}.then[${i}]`));
-      (effect.else||[]).forEach((x,i)=>scanEffect(x,`${path}.else[${i}]`));
+      (effect.effects||[]).forEach((x,i)=>scanEffect(x,`${path}.effects[${i}]`,weight*(effect.type==='repeat'?Math.min(32,Math.max(1,Number(effect.times||1))):1)));
+      (effect.then||[]).forEach((x,i)=>scanEffect(x,`${path}.then[${i}]`,weight));
+      (effect.else||[]).forEach((x,i)=>scanEffect(x,`${path}.else[${i}]`,weight));
     }
 
     for(const [id,unit] of Object.entries(units)){

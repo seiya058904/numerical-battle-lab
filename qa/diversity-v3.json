@@ -1,0 +1,96 @@
+{
+  "samples": 3000,
+  "actionCounts": {
+    "2": 265,
+    "3": 1084,
+    "4": 1126,
+    "5": 250,
+    "6": 275
+  },
+  "effectCoverage": {
+    "cooldownReduce": 560,
+    "emitEvent": 615,
+    "heal": 2267,
+    "status": 4274,
+    "cleanse": 743,
+    "damage": 7051,
+    "gain": 8428,
+    "repeat": 2498,
+    "toggleStatus": 579,
+    "conditional": 3401,
+    "resource": 364,
+    "selfDamagePct": 786,
+    "shield": 3886,
+    "ward": 716,
+    "consumeStatus": 749,
+    "dispel": 708,
+    "convertResource": 582
+  },
+  "conditionCoverage": {
+    "hpPctBelow": 3651,
+    "targetHasStatus": 633,
+    "targetHpPctBelow": 682,
+    "resourceAtLeast": 724,
+    "missingStatus": 711
+  },
+  "eventCoverage": {
+    "afterKill": 4212,
+    "ModifyDamageTaken": 2028,
+    "afterDamageTaken": 2649,
+    "afterDamageDealt": 574,
+    "roundStart": 582,
+    "roundEnd": 626
+  },
+  "damageTypeCoverage": {
+    "physical": 3021,
+    "toxic": 1023,
+    "bleed": 1034,
+    "lightning": 1009,
+    "fire": 948,
+    "arcane": 1019,
+    "true": 1016,
+    "frost": 1079
+  },
+  "resourceCoverage": {
+    "RAGE": 5031,
+    "HP": 2760,
+    "SOUL": 4960,
+    "CHRONO": 4895,
+    "ENERGY": 582
+  },
+  "statusInteractionCoverage": {
+    "status": 4274,
+    "replace": 1212,
+    "toggleStatus": 579,
+    "targetHasStatus": 633,
+    "dynamic": 793,
+    "consumeStatus": 749,
+    "stack": 1168,
+    "apply": 822,
+    "refresh": 1263,
+    "missingStatus": 711
+  },
+  "targetCoverage": {
+    "ally": 1336,
+    "self": 10392,
+    "query": 2401,
+    "query:ally": 729,
+    "source": 2028,
+    "enemy": 3057,
+    "query:enemy": 1672
+  },
+  "triggerCoverage": {
+    "afterDamageTaken": 2649,
+    "afterDamageDealt": 574,
+    "afterKill": 3597,
+    "roundStart": 582,
+    "roundEnd": 626
+  },
+  "uniqueFingerprints": 3000,
+  "uniqueActionStructures": 10337,
+  "duplicateRate": 0,
+  "nonDamage": 1227,
+  "multiHeal": 79,
+  "multiShield": 262,
+  "multiStatus": 562
+}

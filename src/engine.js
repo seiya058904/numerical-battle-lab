@@ -17,6 +17,7 @@
   class BattleEngine {
     constructor(config) {
       this.config = {seed:config.seed || 'gen5,1,2,3,4', teamA:config.teamA.slice(), teamB:config.teamB.slice()};
+      this.config.maxRounds = Number.isInteger(config.maxRounds) && config.maxRounds > 0 ? Math.min(config.maxRounds,1000) : 100;
       this.prng = new NCB.Gen5PRNG(this.config.seed);
       this.round = 1;
       this.log = [];
@@ -108,6 +109,7 @@
       const e=typeof entityOrId==='string'?this.entity(entityOrId):entityOrId;const costs=this.skillCosts(e,skill);if(!costs.every(c=>c.resource==='HP'&&!c.allowLethal?this.getResource(e,c.resource)>c.amount:this.getResource(e,c.resource)>=c.amount))return false;
       for(const c of costs)this.changeResource(e,c.resource,-c.amount,{skill,cost:true});return true;
     }
+    getLegalActions(entityId){return this.getLegalSkills(entityId);}
     getLegalSkills(entityId){const e=this.entity(entityId); if(e.hp<=0||this.statusFlags(e).stun)return[];return e.skills.map(id=>NCB.SKILL_DEFS[id]).filter(s=>{
       if(!s)return false;if(!this.canPaySkillCosts(e,s))return false;if(s.requirements&&!NCB.conditionMatches(s.requirements,{battle:this,source:e,actor:e,target:e}))return false;if((e.cooldowns[s.id]||0)>0)return false;if(this.statusFlags(e).silence && s.kind!=='damage')return false;return true;
     });}
@@ -233,6 +235,8 @@
       const damage=components.reduce((sum,c)=>sum+this.previewDamageComponent(actor.id,target.id,c).finalDamage,0);
       return{components,damage,crit,trace:[`命中率: ${(accuracy.chance*100).toFixed(1)}%`,...componentTrace,`暴击: ${crit?'是':'否'} ×${round2(critMult)}`]};}
     resolveEffect(actor,target,skill,effect,ctx={}){
+      this._effectWork=(this._effectWork||0)+1;
+      if(this._effectWork>8192)return;
       target=effect.effectTarget==='actor'?actor:target;
       if(!target||target.hp<=0)return;
       if(effect.type!=='conditional'&&effect.condition&&!NCB.conditionMatches(effect.condition,{battle:this,source:actor,actor,target,skill,...ctx}))return;
@@ -283,10 +287,16 @@
       }
     }
     orderActions(actions){const normalized=[];for(const [i,a] of actions.entries()){let actor;try{actor=this.entity(a.actorId);}catch{continue;}if(actor.hp<=0)continue;const skill=NCB.SKILL_DEFS[a.skillId];if(!skill)continue;const basePriority=a.overridePriority??skill.priority??0;const priority=Number(this.kernel.run('ModifyPriority',actor,basePriority,null,{skill,action:a}));normalized.push({...a,id:`r${this.round}-${i}`,order:200,priority,speed:this.getStat(actor.id,'SPD')});}return NCB.sortActions(normalized,this.prng);}
-    resolveRound(actions){if(this.outcome().ended)return;const ordered=this.orderActions(actions);const record=actions.map(a=>({...a}));for(const a of ordered){if(this.outcome().ended)break;this.useSkill(a);}this.processTurnEnd();this.history.push(record);if(!this.outcome().ended){this.round++;this.processRoundStart(false);}return this.outcome();}
-    outcome(){const a=this.getLiving('A').length,b=this.getLiving('B').length;if(a&&b)return{ended:false};if(!a&&!b)return{ended:true,winner:'draw'};return{ended:true,winner:a?'A':'B'};}
+    resolveRound(actions){if(this.outcome().ended)return;this._effectWork=0;const ordered=this.orderActions(actions);const record=actions.map(a=>({...a}));for(const a of ordered){if(this.outcome().ended)break;this.useSkill(a);}this.processTurnEnd();this.history.push(record);if(!this.outcome().ended){this.round++;this.processRoundStart(false);}return this.outcome();}
+    outcome(){const a=this.getLiving('A').length,b=this.getLiving('B').length;if(a&&b)return this.history.length>=this.config.maxRounds?{ended:true,winner:'draw'}:{ended:false};if(!a&&!b)return{ended:true,winner:'draw'};return{ended:true,winner:a?'A':'B'};}
     serializableSnapshot(){return{seed:this.config.seed,rng:this.prng.getSeed(),round:this.round,teams:Object.fromEntries(['A','B'].map(t=>[t,this.teams[t].entities.map(e=>({id:e.id,templateId:e.templateId,hp:e.hp,shield:e.shield,energy:e.energy,stats:{...e.stats},statuses:e.statuses.map(s=>({...s,data:s.data?{...s.data}:undefined})),cooldowns:{...e.cooldowns},alive:e.alive,wards:{...(e.wards||{})},resistances:{...e.resistances},affinities:{...e.affinities},immunities:{...e.immunities},tags:[...(e.tags||[])]}))])),outcome:this.outcome(),log:this.log.map(x=>({...x,trace:x.trace?x.trace.slice():undefined}))};}
-    exportReplay(){return{version:1,seed:this.config.seed,teamA:this.config.teamA.slice(),teamB:this.config.teamB.slice(),rounds:this.history.map(r=>r.map(a=>({...a})))};}
+    exportReplay(){
+      const units={},skills={},statuses={};
+      for(const id of [...this.config.teamA,...this.config.teamB]){units[id]=NCB.UNIT_DEFS[id];for(const actionId of units[id].skills)skills[actionId]=NCB.SKILL_DEFS[actionId];}
+      const visit=value=>{if(!value||typeof value!=='object')return;if(value.status&&NCB.STATUS_DEFS[value.status]&&!statuses[value.status]){statuses[value.status]=NCB.STATUS_DEFS[value.status];visit(statuses[value.status]);}for(const child of Object.values(value))if(child&&typeof child==='object')visit(child);};
+      visit(units);visit(skills);
+      return{version:2,content:NCB.deepClone({units,skills,statuses}),maxRounds:this.config.maxRounds,seed:this.config.seed,teamA:this.config.teamA.slice(),teamB:this.config.teamB.slice(),rounds:this.history.map(r=>r.map(a=>({...a})))};
+    }
   }
 
   function createBattle(config){return new BattleEngine(config);}
@@ -375,7 +385,12 @@
   }
 
 
-  function replayBattle(replay){const e=createBattle({seed:replay.seed,teamA:replay.teamA,teamB:replay.teamB});for(const r of replay.rounds){if(e.outcome().ended)break;e.resolveRound(r);}return e;}
+  function restoreReplayContent(replay){
+    if(!replay.content)return;
+    const v=NCB.validateContentPack(replay.content);if(!v.ok)throw new Error(v.errors.join('\n'));
+    Object.assign(NCB.UNIT_DEFS,NCB.deepClone(replay.content.units));Object.assign(NCB.SKILL_DEFS,NCB.deepClone(replay.content.skills));Object.assign(NCB.STATUS_DEFS,NCB.deepClone(replay.content.statuses));
+  }
+  function replayBattle(replay){restoreReplayContent(replay);const e=createBattle({seed:replay.seed,teamA:replay.teamA,teamB:replay.teamB,maxRounds:replay.maxRounds});for(const r of replay.rounds){if(e.outcome().ended)break;e.resolveRound(r);}return e;}
 
   function runSimulation(opts){
     const battles=Math.max(1,Math.min(5000,opts.battles||100));
@@ -385,7 +400,7 @@
     for(let i=0;i<battles;i++){
       const e=createBattle({seed:deriveSeed((opts.seedBase||1)+i),teamA:opts.teamA,teamB:opts.teamB});
       let guard=0;
-      while(!e.outcome().ended&&guard++<(opts.maxRounds||50))e.resolveRound([...planAI(e,'A',opts.difficultyA||'normal'),...planAI(e,'B',opts.difficultyB||'normal')]);
+      while(!e.outcome().ended&&guard++<(opts.maxRounds||50))e.resolveRound([...NCB.planAI(e,'A',opts.difficultyA||'canonical'),...NCB.planAI(e,'B',opts.difficultyB||'canonical')]);
       const o=e.outcome();if(!o.ended)draws++;else if(o.winner==='A')winsA++;else if(o.winner==='B')winsB++;else draws++;
       totalRounds+=Math.min(e.round,opts.maxRounds||50);
       for(const row of e.log){
@@ -402,7 +417,7 @@
   }
 
 
-  NCB.BattleEngine=BattleEngine;NCB.createBattle=createBattle;NCB.planAI=planAI;NCB.estimateSkillUtility=skillScore;NCB.replayBattle=replayBattle;NCB.runSimulation=runSimulation;NCB.deriveSeed=deriveSeed;
+  NCB.BattleEngine=BattleEngine;NCB.createBattle=createBattle;NCB.planAI=planAI;NCB.estimateSkillUtility=skillScore;NCB.replayBattle=replayBattle;NCB.restoreReplayContent=restoreReplayContent;NCB.runSimulation=runSimulation;NCB.deriveSeed=deriveSeed;
   // Single Source of Truth for preview math (v1.2): expose the pure expected-value
   // calculators so BattlePower / UI previews reuse EXACTLY the engine's own formulas
   // (accuracy/crit/penetration/defense mitigation/resistance/multi-hit) and cannot drift.

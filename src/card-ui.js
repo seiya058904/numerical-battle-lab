@@ -19,9 +19,7 @@
     {key:'MAX_HP',zh:'生命',abbr:'HP'},
     {key:'ATK',zh:'攻击',abbr:'ATK'},
     {key:'DEF',zh:'防御',abbr:'DEF'},
-    {key:'RES',zh:'抗性',abbr:'RES'},
     {key:'SPD',zh:'速度',abbr:'SPD'},
-    {key:'CRIT',zh:'暴击',abbr:'CRIT'},
   ];
   // Secondary stat labels for the expandable 详细数值 panel (spec 9).
   const DETAIL_STATS=[
@@ -63,21 +61,9 @@
   // SVG placeholder "卡图" (art area). Pure inline SVG so there are no image
   // files and no external assets. Design varies by rarity frame / collector.
   function artPlaceholder(rarityId,seed){
-    const id=NCB.toV2RarityId?.(rarityId)||'C';
-    const s=String(seed||'');let h=2166136261>>>0;
-    for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}
-    const hue=(h%360);
-    const coll=NCB.RARITY_V2_RPI&&NCB.RARITY_V2_RPI[id]>=218;
-    const glyph=coll?'◆':'▲';
-    return `<svg class="card-art" viewBox="0 0 120 120" role="img" aria-label="卡图占位">
-      <defs><radialGradient id="artg${id}" cx="35%" cy="30%" r="75%">
-        <stop offset="0%" stop-color="hsl(${hue} 70% 78%)"/>
-        <stop offset="100%" stop-color="hsl(${(hue+40)%360} 55% 45%)"/>
-      </radialGradient></defs>
-      <rect width="120" height="120" rx="10" fill="url(#artg${id})"/>
-      <text x="60" y="72" text-anchor="middle" font-size="40" fill="rgba(255,255,255,.9)" font-family="sans-serif">${glyph}</text>
-      <text x="60" y="104" text-anchor="middle" font-size="12" fill="rgba(255,255,255,.75)">${esc(NCB.V2_RARITY_DISPLAY?.[id]||id)}</text>
-    </svg>`;
+    let h=0;for(const c of String(seed||''))h=(Math.imul(h,31)+c.charCodeAt(0))>>>0;
+    const ears=h%2?'<path d="M30 48 22 18 49 35M72 35 99 18 91 49"/>':'<path d="M30 47 15 36 34 28M84 28 105 36 90 48"/>';
+    return `<svg class="card-art" viewBox="0 0 120 110" role="img" aria-label="黑白战斗角色"><g fill="#fff" stroke="#171717" stroke-width="4" stroke-linejoin="round">${ears}<ellipse cx="60" cy="65" rx="37" ry="32"/><path d="M35 91 29 102 49 102M73 102 91 102 86 91"/><path d="M47 77 Q60 ${h%3?90:71} 74 77" fill="none"/></g><circle cx="46" cy="59" r="5"/><circle cx="75" cy="59" r="5"/>${h%3===0?'<path d="m37 47 17 4m12 0 18-4" stroke="#171717" stroke-width="4"/>':''}</svg>`;
   }
 
   // BattlePower display number.
@@ -104,7 +90,23 @@
   }
 
   // Chinese skill description via describeSkill (unified, data-driven).
-  function describe(skill){try{return NCB.describeSkill?.(skill)||'';}catch(_){return '';}}
+  const ACTION_WORDS={damage:'造成伤害',heal:'恢复生命',shield:'获得护盾',ward:'抵挡特定类型伤害',status:'施加状态',toggleStatus:'切换战意',consumeStatus:'消耗状态层数',cleanse:'净化负面状态',dispel:'驱散增益',resource:'调整资源',gain:'积蓄资源',convertResource:'转换资源',cooldownReduce:'缩短行动冷却',selfDamagePct:'牺牲生命',emitEvent:'触发事件能力'};
+  function describeAction(action,statusDefs=NCB.STATUS_DEFS){
+    const words=[];
+    const walk=effects=>{for(const e of effects||[]){
+      if(e.type==='conditional'){words.push(({hpPctBelow:'生命较低时强化',targetHpPctBelow:'针对虚弱目标',resourceAtLeast:'蓄能后强化',targetHasStatus:'利用目标已有状态',missingStatus:'未强化时发动'})[e.condition?.type]||'满足条件时发动');walk(e.then);walk(e.else);}
+      else if(e.type==='repeat'){words.push('连续发动');walk(e.effects);}
+      else {let word=ACTION_WORDS[e.type]||'影响战场';if(e.type==='status')word=(e.effectTarget==='actor'?'自身获得':'施加')+(statusDefs?.[e.status]?.name||'战斗状态');if(!words.includes(word))words.push(word);}
+    }};walk(action.effects);
+    return words.slice(0,3).join('，')+'。';
+  }
+  function presentCard(card){
+    const actions=card.actions||card.skills||[],st=card.stats||{};const defs={...NCB.STATUS_DEFS,...Object.fromEntries((card.statuses||[]).map(x=>[x.id,x]))};
+    const kinds=new Set(actions.map(a=>a.kind));
+    const style=kinds.has('heal')?'擅长恢复与持久作战':kinds.has('status')?'善于利用状态改变战局':'依靠行动组合寻找胜机';
+    return {name:card.displayName||card.name,summary:style,actions:actions.map(a=>({name:a.name,description:describeAction(a,defs)})),stats:st};
+  }
+  function describe(skill){return describeAction(skill);}
 
   // Core stat chips (中文+缩写).
   function coreStatChips(card){
@@ -129,12 +131,12 @@
 
   // Skill list: name + unified Chinese description (spec 7).
   function skillListHtml(card){
-    const skills=card.skills||[];
+    const skills=card.actions||card.skills||[];
     if(!skills.length)return'';
-    return `<div class="card-skills"><div class="card-skills-title">技能</div>${skills.map(s=>{
-      const desc=describe(s);
-      const free=s.cost==null||s.cost===0||s.cost==='FREE';
-      const costHtml=free?'<span class="skill-free">无消耗</span>':`<span class="skill-cost">消耗 ${esc(s.cost)}</span>`;
+    return `<div class="card-skills"><div class="card-skills-title">行动</div>${skills.map(s=>{
+      const desc=describeAction(s,{...NCB.STATUS_DEFS,...Object.fromEntries((card.statuses||[]).map(x=>[x.id,x]))});
+      const costs=[...(Number(s.cost)>0?[{resource:'ENERGY',amount:s.cost}]:[]),...(s.costs||[])];const free=!costs.length;
+      const costHtml=free?'<span class="skill-free">无消耗</span>':`<span class="skill-cost">消耗 ${esc(costs.map(c=>`${({ENERGY:'能量',HP:'生命',RAGE:'怒气',SOUL:'魂力',CHRONO:'时能'})[c.resource]||c.resource} ${c.amount}`).join(' / '))}</span>`;
       const cd=s.cooldown?`<span class="skill-cd">冷却 ${s.cooldown}</span>`:'';
       return `<div class="card-skill"><div class="card-skill-head"><b>${esc(s.name)}</b><span class="card-skill-meta">${costHtml}${cd}</span></div>${desc?`<p class="card-skill-desc">${esc(desc)}</p>`:''}</div>`;
     }).join('')}</div>`;
@@ -157,7 +159,7 @@
   function renderCard(card,opts={}){
     if(!card)return'';
     const ui=rarityUI(card.rarity);
-    const bp=battlePowerOf(card);
+    const bp=null;
     const lv=card.level??100;
     const role=ROLE_ZH[card.archetype]||card.archetype||'';
     const st=card.stats||{};
@@ -179,13 +181,13 @@
         </div>
         <div class="card-meta-line">
           <span class="card-lv">Lv.${lv}</span>
-          ${bp?`<span class="card-power">战力 ${bp}</span>`:''}
+
           <span class="card-role">${esc(role)}</span>
         </div>
         <div class="card-stats">${coreStatChips(card)}</div>
-        ${detailStatsHtml(card)}
+        <p class="card-summary">${esc(presentCard(card).summary)}</p>
         ${skillListHtml(card)}
-        ${tagListHtml(card)}
+
       </div>
     </article>`;
   }
@@ -194,7 +196,7 @@
   function renderCompactCard(card){
     if(!card)return'';
     const ui=rarityUI(card.rarity);
-    const bp=battlePowerOf(card);
+    const bp=null;
     const st=card.stats||{};
     return `<div class="card-tile ${ui.frame} ${ui.collector?'is-collector':''}" data-card-id="${esc(card.id)}">
       <span class="rarity-badge">${esc(ui.badge)}</span>
@@ -205,6 +207,7 @@
     </div>`;
   }
 
+  NCB.describeAction=describeAction;NCB.presentCard=presentCard;
   NCB.CORE_STATS=CORE_STATS;
   NCB.DETAIL_STATS=DETAIL_STATS;
   NCB.ROLE_ZH=ROLE_ZH;

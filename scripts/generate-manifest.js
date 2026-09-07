@@ -99,11 +99,13 @@ const manifest = {
   files,
   combinedDefaultCompositionWinRate: 0.595,
   notes:
-    `v${version}: player-facing UI (对战/卡牌/生成卡牌/玩法说明 + 高级实验室), 12-rarity ` +
-    'extension (C..XS典藏), Generator v2 (Composition Grammar + passive/trigger budget), ' +
-    'BattlePower 战力评分 (calibrated 7-subscore, validation Spearman ~0.75-0.78), Chinese ' +
-    'card presentation adapter, Generator v2 deep balance rebalance (health metrics: median 8 ' +
-    'rounds, one-shot 0%, stalemate <2%; rarity distribution monotonic). Generator v1 frozen.',
+    `v${version}: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension ` +
+    'numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both ' +
+    'sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 ' +
+    'composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, ' +
+    'mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales ' +
+    'monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. ' +
+    'Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path.',
 };
 
 fs.writeFileSync(OUT, JSON.stringify(manifest, null, 2) + '\n');

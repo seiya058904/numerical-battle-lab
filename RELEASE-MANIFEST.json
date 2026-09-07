@@ -6,7 +6,7 @@
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 181,
+  "verifiedTests": 193,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
@@ -35,8 +35,8 @@
     },
     {
       "path": "README.md",
-      "size": 6291,
-      "sha256": "be840ff5a494340d84b05dd998c89cb0aae976550f3af6446a41207569db9fdc"
+      "size": 7621,
+      "sha256": "3f09fd8ef930efe6a622a59adb80e8f2c03b40364f77a36ec01897166aa066dd"
     },
     {
       "path": "RELEASE-NOTES.md",
@@ -50,8 +50,8 @@
     },
     {
       "path": "docs/ARCHITECTURE.md",
-      "size": 6140,
-      "sha256": "6aaa14a5156dfb4fe8265fc983da91f195bb70cb0f20031ab6950a8a84c6ee58"
+      "size": 7625,
+      "sha256": "f7983d65c5023d525d0f1e98aec6c662d04b860e682d444769c8a0a3a6a6dc32"
     },
     {
       "path": "docs/BALANCE-AUDIT-v1.2.md",
@@ -69,9 +69,19 @@
       "sha256": "0ab8ec8844449b3f6852b7986e3bd84cec80bec39b3981f55af55d4dbcbc99e6"
     },
     {
+      "path": "docs/GENERATOR-V3-REPORT.md",
+      "size": 12904,
+      "sha256": "821a49590d89391168de88fa77a001a44270e2ddc52788156dfbd73315b7b20d"
+    },
+    {
+      "path": "docs/GENERATOR-V3.md",
+      "size": 4699,
+      "sha256": "65d1637dcfe9ef12750ad456c0dff0d00c001e56b4cdda20c53bb91f254398c7"
+    },
+    {
       "path": "docs/GENERATOR.md",
-      "size": 11777,
-      "sha256": "8e2fe5973aac84c100dbdc9c2288e849ab72bc3752043bfad1d45d9e0e065b40"
+      "size": 11986,
+      "sha256": "f8778781c80701075bc917b3ae938f5b19bf2302e5ae0303ce07acddde96624c"
     },
     {
       "path": "docs/NUMERIC-COMPONENT-CATALOG.md",
@@ -114,14 +124,19 @@
       "sha256": "0517cde7144bdcfdf3700c902e3ee26ddbc2ab78413c18592f5c956111b63ec8"
     },
     {
+      "path": "docs/superpowers/plans/2026-09-07-generator-v3.md",
+      "size": 1780,
+      "sha256": "71b02ad684d58417bb24b5961e03f82c11f667eeabf8d6faad6184e6692c2877"
+    },
+    {
       "path": "index.html",
-      "size": 3321,
-      "sha256": "29b76dfcee697c72c5a315e122fd53c1d067c3e9cadc113d49382a5447e83a97"
+      "size": 3280,
+      "sha256": "cb2b169e2adf7359284298b3877f88b61c3b533f765aab70c85ec1e513ae9392"
     },
     {
       "path": "package.json",
-      "size": 766,
-      "sha256": "61b4ea2b204e4841d20e7b6665422a7322c8cfae4fb19167654d6f65232b5dab"
+      "size": 870,
+      "sha256": "eeda8154bcbbeb0ee6b9e203fc211f1b6cd56f1a6f6d23a27a6803a537294827"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
@@ -134,9 +149,19 @@
       "sha256": "1c1eea7e9b4146ed87222f255b2277e5b7a3a113425a4ed542e7fd3d6332a579"
     },
     {
+      "path": "qa/browser-v3.json",
+      "size": 806,
+      "sha256": "f8b8292aaa858e8b825ab8b7f459e7b0e1e34a89d7276af75484719751f7f397"
+    },
+    {
       "path": "qa/desktop.png",
       "size": 168820,
       "sha256": "7ab1cabab2c4793e04cda28199ef4cdb02a7b6e76d5601e5d7bec90d71591302"
+    },
+    {
+      "path": "qa/diversity-v3.json",
+      "size": 1922,
+      "sha256": "6a458ca9b72963eee6fcdf1e92c7d61e47d5853ac5622f725599505fd99f583a"
     },
     {
       "path": "qa/health-metrics.json",
@@ -164,9 +189,34 @@
       "sha256": "3954ed204ba82e3ed0b4664057ac74bfd528f99867aa9dbc388517373902f6b9"
     },
     {
+      "path": "qa/v3-battle-desktop.png",
+      "size": 90871,
+      "sha256": "c4579edf42a7c3fcf254a768b514268c0720358aa9abf4c7ac14366c3ed8691e"
+    },
+    {
+      "path": "qa/v3-battle-mobile.png",
+      "size": 74220,
+      "sha256": "5ff1d11c27c9b37700f1d95d747d53668591cd58a79d3151115159df61abd71e"
+    },
+    {
+      "path": "qa/v3-create-desktop.png",
+      "size": 65854,
+      "sha256": "db92f3c4209cf8848e55d13d7608aafe58995aeb02d93841d5dcf30cecdf8c4b"
+    },
+    {
+      "path": "qa/v3-create-mobile.png",
+      "size": 59919,
+      "sha256": "e4f03cdbdf83681ba0b3ff4df75695c0e41a02e14188b2fa247d7e8629cef75b"
+    },
+    {
       "path": "scripts/adjacent-rarity-matrix.js",
       "size": 6571,
       "sha256": "f5695a681f3475355a6b860587b32065552287c38eb0e4cec33ea4d5c61afbad"
+    },
+    {
+      "path": "scripts/diversity-audit.js",
+      "size": 2782,
+      "sha256": "80c599d4bded4ff794e4d9ced82ce006683283345234eb0883b57882546373c5"
     },
     {
       "path": "scripts/gen-mc.js",
@@ -214,9 +264,14 @@
       "sha256": "a02c834ca5bdb25aa44b13ed8428d8608f7945e206e34d8342cce5c8ebc3459c"
     },
     {
+      "path": "src/ai.js",
+      "size": 5726,
+      "sha256": "4878d1a2f3b20d0558e4d346ac295be95252100c4b6ce3caa92da21f3675ecee"
+    },
+    {
       "path": "src/app.js",
-      "size": 43990,
-      "sha256": "932a89b878a4b2987cc1bdc3323e458065d81146103026d6f94ea3e86609c195"
+      "size": 46668,
+      "sha256": "27fbe1ac971bc7cb555efec5fcf773d49012d58615679894e82d99f8ec3980da"
     },
     {
       "path": "src/battlepower-model.js",
@@ -230,8 +285,8 @@
     },
     {
       "path": "src/card-ui.js",
-      "size": 10602,
-      "sha256": "b8bf2688535b7737a7dbf5cddce776be2ac4f79e50b3da617ea27ecbd9784194"
+      "size": 12269,
+      "sha256": "2e89466a5533598b38357495fa477d2e4b84ede950b4a451bd6026c9ca85abd3"
     },
     {
       "path": "src/components.js",
@@ -250,8 +305,8 @@
     },
     {
       "path": "src/engine.js",
-      "size": 43892,
-      "sha256": "43d7a8d8e988be2053cad0650a65be5608dc2a58568bfada52ad90afdf98dd27"
+      "size": 45428,
+      "sha256": "e2cc836a072bb1fbf67364378141fd1cc912a681623da1b9f446dca6d3f92dac"
     },
     {
       "path": "src/formula.js",
@@ -284,6 +339,11 @@
       "sha256": "c9302e17a4d172aafddb404721e8f7d8deef21c5a24bf5a48d174c3ae68ec15c"
     },
     {
+      "path": "src/gen-v3.js",
+      "size": 11183,
+      "sha256": "48aca1472eb4cbceb15a6d2de028089e384f58221292fc4bbf28f5ca2bd0fca6"
+    },
+    {
       "path": "src/generator.js",
       "size": 9611,
       "sha256": "6b8e21ed616995ada953b3e0031eb476d36395bba2e7e619555c2af2ecb37934"
@@ -310,13 +370,23 @@
     },
     {
       "path": "src/validator.js",
-      "size": 10269,
-      "sha256": "a682a74eaa84674c5ab6098b7aee16e2cf6db660df0fd26df1a13f52fade3b05"
+      "size": 11298,
+      "sha256": "affa1d3e7799eb437d955ca90c24f1294bdd0315f8e49c5866374506cb92ed2b"
     },
     {
       "path": "styles.css",
-      "size": 16232,
-      "sha256": "bc4b309d59550334a8e0894afe19d8a7c8ca382ff15ff1aa4c03affd41593909"
+      "size": 18346,
+      "sha256": "fd09270c2c335cc8cfd4fc108c0753e1350179528d9145e0c6c5253ac45f3730"
+    },
+    {
+      "path": "tests/actions-v3.test.js",
+      "size": 1001,
+      "sha256": "d174790ef3046e348f7ca41f96149de6b0ac32edb20a2cd613d420080f8b686e"
+    },
+    {
+      "path": "tests/ai-v3.test.js",
+      "size": 2082,
+      "sha256": "dc15b585233d2f7a94df227842c4c485716608281cdc9e1eb7d01f9b0cc1e3be"
     },
     {
       "path": "tests/battlepower-model.test.js",
@@ -345,8 +415,8 @@
     },
     {
       "path": "tests/engine.test.js",
-      "size": 67329,
-      "sha256": "d492c151cba6bc809c0d232d58de3c36b09cb596e42599931b013921ed267fdb"
+      "size": 67319,
+      "sha256": "f136f2997e9da8d9d2a2574c65b0eb94d3c8ffbbd2a707fb2067d00600feaaf3"
     },
     {
       "path": "tests/fixtures/generator-v1.1.0.json",
@@ -380,8 +450,13 @@
     },
     {
       "path": "tests/gen-v2.test.js",
-      "size": 10661,
-      "sha256": "bf3aadd3ef3a3f03a31ac48ebd6b140689c91a47834ac14dc8772eb9995e037c"
+      "size": 9761,
+      "sha256": "3d704c253b887e5250aca8d573b5a5656647d6a0f9f15515401d0d34d2aa4b10"
+    },
+    {
+      "path": "tests/gen-v3.test.js",
+      "size": 2552,
+      "sha256": "4af756c8a54824cfc4ab65ab7c5ec6c84863d0b9a9f95af9b62310ead4d8426a"
     },
     {
       "path": "tests/generator.test.js",
@@ -402,6 +477,11 @@
       "path": "tests/v1-fixture.test.js",
       "size": 4242,
       "sha256": "c748dea1b19a8834784686a38f446299e1362b804509a565ac6029073735d9d4"
+    },
+    {
+      "path": "tests/v3-safety.test.js",
+      "size": 1731,
+      "sha256": "752f46b3128bd933d754f232ef7b24b0e7ecf2762b4d8f3c47e4f134513e75a3"
     },
     {
       "path": "third_party/acorn/LICENSE",
@@ -440,5 +520,5 @@
     }
   ],
   "combinedDefaultCompositionWinRate": 0.595,
-  "notes": "v1.2.3: player-facing UI (对战/卡牌/生成卡牌/玩法说明 + 高级实验室), 12-rarity extension (C..XS典藏), Generator v2 (Composition Grammar + passive/trigger budget), BattlePower 战力评分 (calibrated 7-subscore, validation Spearman ~0.75-0.78), Chinese card presentation adapter, Generator v2 deep balance rebalance (health metrics: median 8 rounds, one-shot 0%, stalemate <2%; rarity distribution monotonic). Generator v1 frozen."
+  "notes": "v1.2.3: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path."
 }

@@ -1,4 +1,6 @@
-# 卡牌稀有度 / 等级 / 随机数值生成 — Generator
+# 卡牌稀有度 / 等级 / 随机数值生成 — Legacy Generator
+
+> 本文保留 v1/v2 历史算法说明；当前浏览器与默认版本分发器使用 [Generator v3](GENERATOR-V3.md)。下文的组成约束、压力修复和胜率目标只属于旧版本复现。
 
 本文件描述引擎内新加入的“卡牌生成器”子系统（`src/power.js`、`src/gen-stats.js`、
 `src/gen-skills.js`、`src/generator.js`、`src/gen-names.js`、`src/gen-v2.js`、

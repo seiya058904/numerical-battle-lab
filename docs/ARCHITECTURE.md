@@ -149,3 +149,16 @@ Logs are structured projections from resolution. Detailed traces record formulas
 - every registered effect has an executable resolver,
 - bundled content compiles through the validator,
 - component catalog remains above the expected coverage floor.
+
+
+## 14. Generator v3 and Action boundary
+
+`gen-v3.js` owns `generateCardV3`, `getCardActions`, `assembleCardPack`, `deployCard`, and `mechanicFingerprint`.
+V3 cards store `actions`; legacy cards store `skills`. The adapter emits the unchanged Skill execution schema.
+`BattleEngine.getLegalActions` aliases legal Skill programs; there is no injected basic attack. Both teams plan against the same round-start state, then the existing priority/speed queue resolves their intents.
+
+`ai.js` selects canonical utility actions without consuming battle RNG. It reuses effect estimates and adds status horizon, duplicate avoidance, bounded resource value, conversion, conditional branches and event utility. Legacy difficulty planners remain explicitly accessible.
+
+The engine defaults to 100 rounds (configurable 1–1000) and returns a draw at the bound. Recursive effect resolution is capped at 8192 calls per round. Validator rejects nonfinite data, cyclic JSON and excessive structural/repeat work. Replay v2 embeds the relevant content and maxRounds; legacy replay without embedded content still uses the loaded definitions.
+
+`card-ui.js` converts internal actions to short Chinese descriptions. `app.js` schedules whole deterministic rounds for spectating; pause/speed/animation cannot change the outcome. Card JSON editing validates before replacing a saved draft. Complete calculation traces remain in the laboratory; normal battle log renders the latest 200 rows to bound DOM work.

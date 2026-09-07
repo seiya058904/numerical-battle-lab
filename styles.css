@@ -6,15 +6,9 @@
    =========================================================================== */
 
 :root{
-  --bg:#0d1117; --bg2:#161b22; --panel:#1c2333; --panel2:#232b3d;
-  --text:#e6edf3; --muted:#8b949e; --line:#30363d;
-  --accent:#58a6ff; --accent2:#3fb950; --warn:#d29922; --danger:#f85149;
-  --radius:12px;
-  --rarity-c:#9da7b3; --rarity-cplus:#b8c4d0; --rarity-b:#4aa3ff;
-  --rarity-bplus:#66c2ff; --rarity-a:#a371f7; --rarity-aplus:#c586ff;
-  --rarity-s:#f778ba; --rarity-ss:#f0a020; --rarity-sss:#f85149;
-  --rarity-sss-coll:linear-gradient(135deg,#f0a020,#f85149,#a371f7);
-  --rarity-xs:#e0e6ed; --rarity-xs-coll:linear-gradient(135deg,#66c2ff,#f0a020,#f778ba);
+  --bg:#fafafa;--bg2:#f0f0f0;--panel:#fff;--panel2:#f5f5f5;
+  --text:#171717;--muted:#595959;--line:#d1d1d1;
+  --accent:#171717;--accent2:#333;--warn:#444;--danger:#333;--radius:10px;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -33,7 +27,7 @@ body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-syste
 .lab-menu{position:relative}
 .lab-menu summary{cursor:pointer;list-style:none;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:12px;color:var(--muted)}
 .lab-menu summary::-webkit-details-marker{display:none}
-.lab-menu-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:60;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:170px;padding:6px;display:flex;flex-direction:column}
+.lab-menu-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:60;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);min-width:170px;padding:6px;display:flex;flex-direction:column}
 .lab-menu-panel button{background:none;border:0;color:var(--text);text-align:left;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13px}
 .lab-menu-panel button:hover{background:var(--panel2)}
 
@@ -49,13 +43,13 @@ body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-syste
 /* ---- buttons ---- */
 .btn{background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 14px;font-size:14px;cursor:pointer;font-family:inherit}
 .btn:hover{border-color:var(--accent);color:var(--accent)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#0b1220;font-weight:700}
-.btn.primary:hover{filter:brightness(1.1);color:#0b1220}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.btn.primary:hover{filter:brightness(1.1);color:#fff}
 .btn.big{padding:12px 22px;font-size:16px;border-radius:12px}
 .btn.small{padding:5px 10px;font-size:12px;border-radius:8px}
 .btn.ghost{background:transparent}
 .btn:disabled{opacity:.4;cursor:not-allowed}
-.btn.is-active{background:var(--accent);color:#0b1220;border-color:var(--accent)}
+.btn.is-active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 .spacer{flex:1}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -84,7 +78,7 @@ body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-syste
 
 /* ---- battle field ---- */
 .battle-toolbar{display:flex;align-items:center;gap:10px;padding:8px 2px;flex-wrap:wrap}
-.battle-mode-pill{background:var(--accent);color:#0b1220;border-radius:999px;padding:3px 12px;font-size:12px;font-weight:700}
+.battle-mode-pill{background:var(--accent);color:#fff;border-radius:999px;padding:3px 12px;font-size:12px;font-weight:700}
 .battle-vs{display:flex;flex-direction:column;gap:10px;align-items:center}
 .battle-vs-divider{font-size:22px;font-weight:900;color:var(--muted)}
 .battle-side{width:100%}
@@ -92,7 +86,7 @@ body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-syste
 .arena-line .team-line{display:grid;gap:10px;grid-template-columns:repeat(var(--team-cols,4),minmax(0,1fr))}
 .entity-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:10px;position:relative}
 .entity-card.selectable{cursor:pointer}
-.entity-card.is-selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(88,166,255,.35)}
+.entity-card.is-selected{border-color:var(--accent);box-shadow:0 0 0 2px #444}
 .entity-card.is-target{border-color:var(--danger)}
 .entity-card.is-dead{opacity:.4}
 .entity-top{display:flex;justify-content:space-between;gap:6px;margin-bottom:8px}
@@ -107,14 +101,14 @@ body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-syste
 .status-line{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .status{background:var(--panel2);border-radius:999px;padding:2px 8px;font-size:11px}
 .status.debuff{border:1px solid var(--danger)}
-.action-marker{position:absolute;top:8px;right:8px;background:var(--accent2);color:#0b1220;font-size:10px;border-radius:999px;padding:2px 8px}
+.action-marker{position:absolute;top:8px;right:8px;background:var(--accent2);color:#fff;font-size:10px;border-radius:999px;padding:2px 8px}
 
 /* ---- command / skill buttons ---- */
 .command-panel{display:flex;flex-direction:column;gap:12px;margin-top:14px}
 .skill-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin:10px 0}
 .skill-btn{background:var(--bg2);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px;display:flex;justify-content:space-between;gap:8px;cursor:pointer;text-align:left;min-height:56px}
 .skill-btn:hover{border-color:var(--accent)}
-.skill-btn.is-active{border-color:var(--accent);background:rgba(88,166,255,.12)}
+.skill-btn.is-active{border-color:var(--accent);background:#eee}
 .skill-name{font-weight:700}
 .skill-meta{display:block;font-size:11px;color:var(--muted);margin-top:2px}
 .skill-cost{font-size:11px;color:var(--accent2);white-space:nowrap}
@@ -129,7 +123,7 @@ body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-syste
 .log-index{color:var(--muted);margin-right:8px;font-size:11px}
 .log-row summary{cursor:pointer;color:var(--accent)}
 .trace{font-size:11px;color:var(--muted);margin:4px 0}
-.result-banner{background:var(--accent2);color:#0b1220;font-weight:800;text-align:center;padding:12px;border-radius:var(--radius);margin:10px 0}
+.result-banner{background:var(--accent2);color:#fff;font-weight:800;text-align:center;padding:12px;border-radius:var(--radius);margin:10px 0}
 .log-tools{display:flex;align-items:center;gap:8px}
 .log-tools select{background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:4px 8px;font-size:12px}
 
@@ -151,8 +145,8 @@ body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-syste
 .card-headline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative}
 .card-name{font-size:17px;font-weight:800}
 .card-id{font-size:10px;color:var(--muted)}
-.rarity-badge{font-size:11px;font-weight:800;border-radius:6px;padding:2px 8px;color:#0b1220}
-.collector-mark{font-size:15px;color:var(--warn);animation:pulse 2s infinite}
+.rarity-badge{font-size:11px;font-weight:800;border-radius:6px;padding:2px 8px;color:#fff}
+.collector-mark{font-size:15px;color:var(--warn);animation:none}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .card-meta-line{display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px;color:var(--muted);flex-wrap:wrap}
 .card-lv,.card-power{font-weight:700}
@@ -178,32 +172,7 @@ body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-syste
 .card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
 .tag{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:10px;color:var(--muted)}
 
-/* rarity frames: distinct border style + badge color + collector graphic */
-.rarity-c{border-color:var(--rarity-c)}
-.rarity-c .rarity-badge{background:var(--rarity-c)}
-.rarity-cplus{border-color:var(--rarity-cplus)}
-.rarity-cplus .rarity-badge{background:var(--rarity-cplus)}
-.rarity-b{border-color:var(--rarity-b)}
-.rarity-b .rarity-badge{background:var(--rarity-b)}
-.rarity-bplus{border-color:var(--rarity-bplus)}
-.rarity-bplus .rarity-badge{background:var(--rarity-bplus)}
-.rarity-a{border-color:var(--rarity-a)}
-.rarity-a .rarity-badge{background:var(--rarity-a)}
-.rarity-aplus{border-color:var(--rarity-aplus)}
-.rarity-aplus .rarity-badge{background:var(--rarity-aplus)}
-.rarity-s{border-color:var(--rarity-s)}
-.rarity-s .rarity-badge{background:var(--rarity-s)}
-.rarity-ss{border-color:var(--rarity-ss)}
-.rarity-ss .rarity-badge{background:var(--rarity-ss)}
-.rarity-sss{border-color:var(--rarity-sss)}
-.rarity-sss .rarity-badge{background:var(--rarity-sss)}
-.rarity-sss-coll{border:3px double var(--warn);border-image:var(--rarity-sss-coll) 1}
-.rarity-sss-coll .rarity-badge{background:linear-gradient(135deg,#f0a020,#f85149)}
-.rarity-xs{border:2px solid var(--rarity-xs);box-shadow:0 0 0 1px #fff inset}
-.rarity-xs .rarity-badge{background:var(--rarity-xs)}
-.rarity-xs-coll{border:3px dashed var(--accent);border-image:var(--rarity-xs-coll) 1;box-shadow:0 0 12px rgba(102,194,255,.35)}
-.rarity-xs-coll .rarity-badge{background:linear-gradient(135deg,#66c2ff,#f0a020)}
-
+.rarity-badge{background:#eee;color:#171717;border:1px solid #aaa}
 /* compact tile */
 .card-tile{position:relative;background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer}
 .card-tile .rarity-badge{position:absolute;top:6px;right:6px}
@@ -230,7 +199,7 @@ body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-syste
 .roster-btn{background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px 10px;text-align:left;cursor:pointer}
 .roster-btn.is-active{border-color:var(--accent)}
 .roster-btn span{display:block;font-size:11px;color:var(--muted)}
-.code{font-family:ui-monospace,Consolas,monospace;font-size:12px;background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre-wrap;overflow:auto}
+.code{font-family:ui-monospace,Consolas,monospace;font-size:12px;background:#f0f0f0;border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre-wrap;overflow:auto}
 .reference-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .parameter-group{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}
 .parameter-group summary{cursor:pointer}
@@ -246,3 +215,51 @@ footer{display:flex;justify-content:space-between;color:var(--muted);font-size:1
   .battle-vs-divider{padding-top:80px}
   .card-stats{grid-template-columns:repeat(3,1fr)}
 }
+
+/* v3 spectator and creation surfaces */
+main{flex:1;padding-bottom:32px;min-width:0}
+.topbar{padding:24px 0}.brand{letter-spacing:1px}.topbar h1{font-size:21px}
+.battle-empty{padding-top:60px}.big-title{font-size:clamp(26px,4vw,44px);letter-spacing:-.03em}
+.battle-empty p{color:var(--muted)}
+.battle-setup-panel{max-width:720px;background:transparent;border:0;padding:24px 0;gap:24px}
+.setup-vs{align-self:center;font-size:20px;padding-top:20px}
+.empty-duel{display:flex;flex-direction:column;align-items:center;gap:16px}
+.empty-duel .card-art{width:180px}
+.btn{min-height:40px}.btn.small{min-height:36px}
+button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #555;outline-offset:3px}
+input,select,textarea{min-width:0;max-width:100%}select{min-height:44px}
+.battle-side{min-width:0}.battle-vs{gap:24px;padding:18px 0}
+.entity-card{border:2px solid #222;padding:16px}.entity-card.selectable{cursor:default}
+.entity-name{font-size:20px}.entity-card .card-art{height:135px;width:100%}
+.entity-card .stat-chip{border:0;padding:4px 6px}.meter{height:9px}
+.battle-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;font-size:12px}
+.battle-actions span{border-bottom:1px solid #aaa;padding:2px}
+.current-event{padding:16px;text-align:center;font-size:16px;font-weight:650;background:#eee;border-radius:8px}
+.auto-controls{justify-content:center;padding:10px 0}.auto-controls .spacer{flex:0}
+.card{background:#fff;border-color:#222}.card-art{height:140px;aspect-ratio:auto;fill:#171717}
+.card-stats{grid-template-columns:repeat(4,1fr)}.card-stat i{display:none}.card-stat em{font-size:19px}
+.card-stat{background:transparent;padding:4px}.card-skill-desc{font-size:12px}.card-summary{font-size:12px;color:#595959}
+.card-center .card{width:100%;max-width:430px}.card-frame-glow{display:none}
+.generate-layout{display:grid;grid-template-columns:minmax(260px,.85fr) minmax(280px,1fr);gap:28px;align-items:start}
+.generate-layout>.panel{border:0;background:transparent}.generate-layout .panel-head{padding:18px 0}.generate-layout .panel-body{padding:20px 0}
+.generate-layout .field-row{flex-direction:column;gap:20px}.generate-layout .row{margin-top:24px}
+.help-layout{max-width:720px;padding:24px 8px;gap:12px}.help-layout p{margin:0}
+#card-json-editor{width:100%;font:13px/1.6 Consolas,monospace;background:#fff;color:#171717}
+#card-edit-error{color:#7b2020;overflow-wrap:anywhere}
+.battle-log{overflow-wrap:anywhere}.trace{white-space:pre-wrap}
+@keyframes impact{0%{transform:translateX(0)}30%{transform:translateX(5px)}65%{transform:translateX(-4px)}100%{transform:translateX(0)}}
+.entity-card.is-hit{animation:impact .25s ease-out}
+@media(min-width:768px){.battle-side{flex:1}.arena-line .team-line{grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr))}.card-stats{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:767px){
+  .app-shell{padding:0 16px 24px}.topbar{padding:18px 0}.topbar h1{font-size:17px}.brand{font-size:9px}
+  .tab{padding:10px 11px;font-size:14px}.generate-layout{grid-template-columns:minmax(0,1fr);gap:8px}
+  .battle-empty{padding:34px 0}.battle-setup-panel .field-row{flex-direction:column}.setup-vs{padding:0}
+  .arena-line .team-line{grid-template-columns:1fr}.entity-card .card-art{height:90px}
+  .battle-vs{gap:10px}.entity-card{padding:12px}.battle-vs-divider{font-size:16px}
+  .editor-layout,.reference-grid,.sim-layout{grid-template-columns:minmax(0,1fr)}.card-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.combat-number{position:absolute;right:18px;top:48px;font-size:26px;font-weight:800;background:#fff;padding:2px 6px;border:2px solid #222;animation:damage-rise .6s ease-out forwards;pointer-events:none}
+@keyframes damage-rise{to{transform:translateY(-24px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.combat-number{display:none}}
