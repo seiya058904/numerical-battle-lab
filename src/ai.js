@@ -53,7 +53,34 @@
     let score=N.effectUtility(engine,actor,target,skill,e,ctx);
     if(e.type==='damage'){
       if(friendly)score=-Math.abs(score);
-      else {const raw=engine.evaluateFormula(e.formula||skill.formula||'0',actor,target,ctx);score+=Math.min(target.hp,raw)*(Number(e.drainRatio??skill.drainRatio??0)*Math.min(1,(actor.maxHp-actor.hp)/actor.maxHp)-Number(e.recoilRatio??skill.recoilRatio??0));}
+      else {
+        const raw=engine.evaluateFormula(e.formula||skill.formula||'0',actor,target,ctx);
+        // expected value under the action's variance window (VOLATILITY-aware: use midpoint)
+        const vmin=Number(e.varianceMin??skill.varianceMin??1),vmax=Number(e.varianceMax??skill.varianceMax??1);
+        const evMultiplier=(vmin+vmax)/2;
+        const damageEV=Math.min(target.hp,raw*evMultiplier);
+        const missingFactor=Math.max(0,Math.min(1,(actor.maxHp-actor.hp)/actor.maxHp));
+        // entity LIFESTEAL: hitting an enemy also heals the attacker (bounded by missing HP)
+        const ls=Math.max(0,Math.min(0.6,Number(actor.stats?.LIFESTEAL||0)/100));
+        const lsValue=damageEV*ls*missingFactor;
+        // drain / recoil from the action data
+        const drainValue=damageEV*(Number(e.drainRatio??skill.drainRatio??0))*missingFactor;
+        const recoilCost=damageEV*(Number(e.recoilRatio??skill.recoilRatio??0));
+        // bounded expected self-harm from the actor's OWN afterDamageTaken triggers
+        // (prevents the 'action repeatedly self-damages via its own counter' blindness)
+        let selfHarm=0;
+        for(const inst of actor.statuses||[]){
+          const def=N.STATUS_DEFS[inst.id];if(!def||!def.triggers)continue;
+          for(const t of def.triggers){
+            if(t.event!=='afterDamageTaken'||t.target!=='source')continue;
+            for(const te of t.effects||[])if(te.type==='damage'){
+              const counter=Math.max(0,engine.evaluateFormula(te.formula||'0',actor,actor,{}));
+              selfHarm+=Math.min(counter,Math.max(0,damageEV)*1.0); // bounded: at most the incoming damage
+            }
+          }
+        }
+        score+=lsValue+drainValue-recoilCost-selfHarm;
+      }
     }
     if(e.type==='heal'||e.type==='shield'||e.type==='ward'||e.type==='cooldownReduce'||e.type==='cleanse')score*=friendly?1:-1;
     if(e.type==='ward'){
