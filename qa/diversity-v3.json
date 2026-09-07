@@ -14,7 +14,7 @@
     "status": 4274,
     "cleanse": 743,
     "damage": 7051,
-    "gain": 8428,
+    "gain": 9006,
     "repeat": 2498,
     "toggleStatus": 579,
     "conditional": 3401,
@@ -34,10 +34,11 @@
     "missingStatus": 711
   },
   "eventCoverage": {
-    "afterKill": 4212,
+    "command": 1193,
     "ModifyDamageTaken": 2028,
     "afterDamageTaken": 2649,
     "afterDamageDealt": 574,
+    "afterKill": 3597,
     "roundStart": 582,
     "roundEnd": 626
   },
@@ -52,10 +53,10 @@
     "frost": 1079
   },
   "resourceCoverage": {
-    "RAGE": 5031,
+    "RAGE": 5210,
     "HP": 2760,
-    "SOUL": 4960,
-    "CHRONO": 4895,
+    "SOUL": 5170,
+    "CHRONO": 5084,
     "ENERGY": 582
   },
   "statusInteractionCoverage": {
@@ -72,7 +73,7 @@
   },
   "targetCoverage": {
     "ally": 1336,
-    "self": 10392,
+    "self": 10970,
     "query": 2401,
     "query:ally": 729,
     "source": 2028,
@@ -83,6 +84,7 @@
     "afterDamageTaken": 2649,
     "afterDamageDealt": 574,
     "afterKill": 3597,
+    "command": 578,
     "roundStart": 582,
     "roundEnd": 626
   },

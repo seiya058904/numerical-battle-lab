@@ -68,6 +68,7 @@
     ];
     const count=pick([2,3,3,3,3,4,4,4,4,5,6]);
     const actions=[];
+    let hasCommand=false; // an 'event' family action emits a semantic 'command' signal
     const condition=()=>pick([{type:'hpPctBelow',value:.5},{type:'targetHpPctBelow',value:.4},{type:'resourceAtLeast',resource,value:3},{type:'targetHasStatus',status:dotId},{type:'missingStatus',status:buffId}]);
     for(let i=0;i<count;i++){
       const weighted=FAMILIES.concat(ROLES[archetype],ROLES[archetype]);
@@ -89,7 +90,7 @@
         case 'resource':a.effects=[{type:pick(['gain','resource']),resource,amount:2+r.random(3)}];break;
         case 'convert':a.effects=[{type:'convertResource',from:'ENERGY',to:resource,amount:2,ratio:2}];break;
         case 'cooldown':a.target='ally';a.effects=[{type:'cooldownReduce',amount:1+r.random(2)}];break;
-        case 'event':a.effects=[{type:'emitEvent',event:'afterKill',eventSubject:'actor'}];break;
+        case 'event':hasCommand=true;a.effects=[{type:'emitEvent',event:'command',eventSubject:'actor'}];break;
         case 'toggle':a.kind='status';a.effects=[{type:'toggleStatus',status:buffId,duration}];break;
       }
       // Independently compose secondary effects, control flow, target queries and costs.
@@ -109,7 +110,8 @@
       actions.push(a);
     }
     const triggers=[{event:pick(['roundStart','roundEnd','afterDamageTaken','afterDamageDealt','afterKill']),target:'self',effects:[{type:pick(['heal','shield']),formula:'MAX_HP * '+round(.025*scale)}]},
-      {event:'afterKill',target:'self',effects:[{type:'gain',resource,amount:3}]}];
+      {event:'afterKill',target:'self',effects:[{type:'gain',resource,amount:3}]},
+      ...(hasCommand?[{event:'command',target:'self',effects:[{type:'gain',resource,amount:2}]}]:[])];
     const name=N.generateDisplayName({seed,rarity,level,archetype});
     const card={id,identity,seed,generatorVersion:3,rarity,level,archetype,name,displayName:name,generationBudget,quality:N.qualityFactor(seed),stats,actions,statuses,triggers,resourceRegens,
       resources:{ENERGY:{max:8,regen:2},[resource]:{max:8,regen:1}},resistances:{[type]:round(.15*scale)},affinities:{[type]:round(.12*scale)},

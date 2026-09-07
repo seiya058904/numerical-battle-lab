@@ -5,15 +5,10 @@
 
 ## 1. Git 基线
 
-- **OLD HEAD**: `b590eb7` `manifest: refresh .github/workflows/verify.yml size entry`（分支 `main`，旧 v1.2.3）
-- **NEW HEAD（远端 `origin/main`）**: `2a6c118`（已 fast-forward push，无 force push）
-- **提交链（6 个）**：
-  1. `3fc145a` v3 主体（30 文件）+1091/−266
-  2. `1ef06f1` docs: 记录报告 NEW HEAD 哈希
-  3. `c7db5ad` docs: 报告 NEW HEAD 引用定稿
-  4. `b3d4667` manifest: 匹配定稿报告 blob
-  5. `01b213b` docs: 报告 NEW HEAD 定稿 + 刷新清单
-  6. `2a6c118` docs: 钉死报告 NEW HEAD 至远端 tip + 刷新清单
+- **OLD HEAD**: `b590eb7`（旧 v1.2.3，branch `main`）
+- **内容主提交**: `3fc145a`（v3 主体，30 文件 +1091/−266）—— 本轮实现的稳定锚点
+- **推送**: 已 fast-forward push 到 `origin/main`，全程无 force push
+- **说明**: 本文档不追踪自身及其书签提交的滚动哈希（避免"为更新 HEAD 又产生新 HEAD"的自引用追赶）。当前 `origin/main` tip 以 `git rev-parse origin/main` 为准；截稿期 tip 由本地与远端一致确认。
 - **本地未提交基线**：接手时工作树已含上一轮 v3 实现（未提交），本报告基于该实现做完整验证并整理提交。
 
 ## 2. 修改文件
@@ -91,7 +86,7 @@ resourceCoverage: RAGE/SOUL/CHRONO/ENERGY/HP → 5 种
 statusInteractionCoverage: stack/refresh/replace/dynamic/apply/toggle/consume/targetHas/missing → 10 项
 targetCoverage: self/enemy/ally/query(query:enemy/query:ally)/source → 7 项
 triggerCoverage: roundStart/roundEnd/afterDamageTaken/afterDamageDealt/afterKill → 5 项
-uniqueFingerprints: 3000     uniqueActionStructures: 7628     duplicateRate: 0
+uniqueFingerprints: 3000     uniqueActionStructures: 10337     duplicateRate: 0
 nonDamage: 1227     multiHeal: 79     multiShield: 262     multiStatus: 562
 ```
 
@@ -145,7 +140,7 @@ nonDamage: 1227     multiHeal: 79     multiShield: 262     multiStatus: 562
 
 ### 13.1 3000/3000 唯一 Fingerprint（不是过度碎片化的证据）
 
-`mechanicFingerprint()` 里所有具体数字先折叠为 `'#'`（`typeof x==='number' → '#'`），省略 `id/name/displayName/_budget/tags`，seed 从不进入；公式**符号/运算符**保留（如 `'ATK * #'` vs `'MAX_HP * # + RAGE * #'`，区分资源缩放与 ATK 缩放——这是有意的机制差异）。因此同结构仅改数值 → 归为同一 fingerprint。0 重复说明组合器确实在结构空间里展开（17 effect × 6 event × 5 资源 × 8 伤害类型 × 3 叠加策略 × 目标查询等），而非把数值差算成结构差。另单独统计 `uniqueActionStructures=7628`（逐 Action 结构）。如审阅怀疑，可直接验证：改任一 coefficient 或数值，fingerprint 应不变。
+`mechanicFingerprint()` 里所有具体数字先折叠为 `'#'`（`typeof x==='number' → '#'`），省略 `id/name/displayName/_budget/tags`，seed 从不进入；公式**符号/运算符**保留（如 `'ATK * #'` vs `'MAX_HP * # + RAGE * #'`，区分资源缩放与 ATK 缩放——这是有意的机制差异）。因此同结构仅改数值 → 归为同一 fingerprint。0 重复说明组合器确实在结构空间里展开（17 effect × 6 event × 5 资源 × 8 伤害类型 × 3 叠加策略 × 目标查询等），而非把数值差算成结构差。另单独统计 `uniqueActionStructures`（逐 Action 结构，随 3000 样本 regenerate 会略有波动，当前为准）。如审阅怀疑，可直接验证：改任一 coefficient 或数值，fingerprint 应不变。
 
 ### 13.2 Condition / Event 覆盖偏窄（合理的 v3.1 加强项）
 
@@ -155,8 +150,18 @@ nonDamage: 1227     multiHeal: 79     multiShield: 262     multiStatus: 562
 
 该 sanity probe 是**镜像**构造（C 与 XS 用同一 `rarity-probe-i` seed），结构与机制完全一致、仅预算量级不同。当双方都是纯续航/双龟时，镜像走向 maxRounds → Draw。数据含义：一旦见胜负 XS 从不输（25:0），但 48 局中 23 局到界。这是**镜像续航现象**，不是生成器批量制造"无法收尾"的卡；本方向允许防御镜像判 Draw（§13），且不要求精确胜率。审阅时可定向核对 Draw 局是否多为 sustain 镜像，而非系统性 stall。
 
-> 关于报告文字：正文 §1 已列全 **6 个提交**（不再称"4 个"）。
+> 关于报告文字：正文 §1 不再逐字追踪滚动 tip（避免自引用追赶）；产品实现锚点为内容主提交 `3fc145a`。
 
-## 14. Ready for Human Review
+## 14. Human Review Corrective Pass（v3 正式验收前）
 
-**是。** 外部极简、内部高维差分、AI 自动对战可观赏、创建/选择/观察为主行为；193 测试 + verify + diversity + browser(mobile/desktop) 全部通过，工作树整理后干净，符合 §38 完成标准。
+第二轮独立评审后做的最小 corrective pass，不扩大玩法，仅修订验收指出的三处：
+
+1. **LIFESTEAL 并非惰性字段 —— 已用回归测试锁定**。评审认为 `LIFESTEAL` 生成但未参与战斗，经核对实际不成立：引擎 `applyDamage`（`engine.js:197`）在每次 HP 伤害后按 `LIFESTEAL` 统计吸取生命（区别于 `effects.js` 的 skill 级 `drainRatio`）。新增测试证明：生成卡 `LIFESTEAL` 高时，对敌造成 200 点真实 HP 伤害后施法者按 `LIFESTEAL/100` 回血，并有 heal 日志。生成器**不需要改**（该数字真实生效）；以测试锁死该行为，防止未来回归。`tests/gen-v3.test.js`。
+2. **`号令`(event family) 不再伪造 `afterKill`**。原实现 `emitEvent('afterKill')` 会在未真正击杀时人为触发"击杀后"类效果，语义错误。已改为发射**独立语义事件 `command`**（在 `components.js` 注册为标准 trigger event），并在生成 `command` 时给卡附带对应 `command` trigger（发令回收资源），与真实 `afterKill` 完全隔离。测试断言：`command` 不放 `afterKill` 事件、`command` 不触发 afterKill listener，而显式 afterKill action 仍能到达其 listener。`src/components.js`、`src/gen-v3.js`、`tests/gen-v3.test.js`。
+3. **文档/数字同步**：`qa/diversity-v3.json` 当前 `uniqueActionStructures=10337`（报告原写 7628 已更新，并注明该数随 3000 样本 regenerate 微波动）；`verify.yml` 过时注释已改为描述 v3 的 `verify:release = verify + diversity`（旧公平性 gate 仅 `diagnostics:legacy`）；报告 §1 改为引用内容主提交、不再自引用追逐 tip。
+
+Condition/Event 覆盖偏窄不在本 pass 范围（已判定为 v3.1 加强项）。本次通过后，Human Review 即可基于现有 v3 侧重点直接体验自动观战。
+
+## 15. Ready for Human Review
+
+**是。** 外部极简、内部高维差分、AI 自动对战可观赏、创建/选择/观察为主行为；193+ 测试 + verify + diversity + browser(mobile/desktop) 全部通过，工作树整理后干净，符合 §38 完成标准。

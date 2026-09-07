@@ -6,7 +6,7 @@
     "effects": 18,
     "conditions": 27,
     "targets": 8,
-    "events": 28,
+    "events": 29,
     "damageTypes": 8,
     "units": 20,
     "skills": 63,
@@ -1963,6 +1963,14 @@
       "name": "状态移除后",
       "human": "标准 Trigger Event：状态移除后。",
       "ai": "trigger-event afterStatusRemoved",
+      "fields": [],
+      "kind": "trigger"
+    },
+    "command": {
+      "id": "command",
+      "name": "号令",
+      "human": "标准 Trigger Event：号令。",
+      "ai": "trigger-event command",
       "fields": [],
       "kind": "trigger"
     },

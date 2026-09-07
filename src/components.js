@@ -271,7 +271,7 @@
   [
     ['afterDamageTaken','受伤后'],['afterDamageDealt','造成伤害后'],['afterHealTaken','受到治疗后'],['afterHealDealt','造成治疗后'],
     ['afterDefeated','被击倒后'],['afterKill','击杀后'],['afterStatusApplied','获得状态后'],['afterStatusInflicted','施加状态后'],
-    ['afterStatusRemoved','状态移除后'],['roundStart','回合开始'],['roundEnd','回合结束']
+    ['afterStatusRemoved','状态移除后'],['command','号令'],['roundStart','回合开始'],['roundEnd','回合结束']
   ].forEach(([id,name])=>registerEventComponent(id,{name,kind:'trigger',human:`标准 Trigger Event：${name}。`,ai:`trigger-event ${id}`}));
 
   function describeParameter(id,value){const def=PARAMETER_CATALOG[id];if(!def)return null;return{...def,value,summary:`${def.name}: ${value ?? def.defaultValue}${def.unit?` ${def.unit}`:''}。${def.effect}`};}

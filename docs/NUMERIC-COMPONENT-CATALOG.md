@@ -2,7 +2,7 @@
 
 这不是角色技能表，而是整个战斗系统的“积木盒”。角色、技能、状态只允许组合这些通用积木和参数；新增普通内容不应要求修改 BattleEngine。
 
-当前固定能力面：**91 个参数旋钮 / 18 个 Effect 组件 / 27 个 Condition 组件 / 8 个 Target 组件 / 28 个 Event 插入点 / 8 个 Damage Type**。
+当前固定能力面：**91 个参数旋钮 / 18 个 Effect 组件 / 27 个 Condition 组件 / 8 个 Target 组件 / 29 个 Event 插入点 / 8 个 Damage Type**。
 
 当前内容只是示例组合：20 个实体、63 个技能、33 个状态。理论组合空间远大于这些示例。
 
@@ -232,6 +232,7 @@
 - `afterStatusApplied` — 标准 Trigger Event：获得状态后。
 - `afterStatusInflicted` — 标准 Trigger Event：施加状态后。
 - `afterStatusRemoved` — 标准 Trigger Event：状态移除后。
+- `command` — 标准 Trigger Event：号令。
 - `roundStart` — 标准 Trigger Event：回合开始。
 - `roundEnd` — 标准 Trigger Event：回合结束。
 
