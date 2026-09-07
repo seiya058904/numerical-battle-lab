@@ -5,8 +5,15 @@
 
 ## 1. Git 基线
 
-- **OLD HEAD**: `b590eb7` `manifest: refresh .github/workflows/verify.yml size entry`（分支 `main`）
-- **NEW HEAD**: `01b213b`（内容主提交 `3fc145a`；后续为报告/清单哈希书签跟进提交。工作树保持干净，仅包含本轮 v3 文件）
+- **OLD HEAD**: `b590eb7` `manifest: refresh .github/workflows/verify.yml size entry`（分支 `main`，旧 v1.2.3）
+- **NEW HEAD（远端 `origin/main`）**: `2a6c118`（已 fast-forward push，无 force push）
+- **提交链（6 个）**：
+  1. `3fc145a` v3 主体（30 文件）+1091/−266
+  2. `1ef06f1` docs: 记录报告 NEW HEAD 哈希
+  3. `c7db5ad` docs: 报告 NEW HEAD 引用定稿
+  4. `b3d4667` manifest: 匹配定稿报告 blob
+  5. `01b213b` docs: 报告 NEW HEAD 定稿 + 刷新清单
+  6. `2a6c118` docs: 钉死报告 NEW HEAD 至远端 tip + 刷新清单
 - **本地未提交基线**：接手时工作树已含上一轮 v3 实现（未提交），本报告基于该实现做完整验证并整理提交。
 
 ## 2. 修改文件
@@ -132,9 +139,24 @@ nonDamage: 1227     multiHeal: 79     multiShield: 262     multiStatus: 562
 
 - AI 是有界启发式规划器，能稳定产出有趣战术，但非全局最优（胜负仍有运/克制因素，这是设计意图）。
 - 某些极端卡可能造成秒杀 / 长时间 / 强克制 / Draw，但受 maxRounds + `_effectWork` 8192 + validator 结构性安全上限 + replay 界限约束，**不会挂死浏览器**。
-- `tests/gen-v2.test.js` 的 v2 组合测试中保留了几个仅计算但不再断言的局部变量（cosmetic，不影响正确性）。
 - generator 默认版本为 v3；旧浏览器缓存中的 v2 卡在保存后仍按 v2 复现（够合理，未做强制迁移）。
 
-## 13. Ready for Human Review
+## 13. 复审回应
+
+### 13.1 3000/3000 唯一 Fingerprint（不是过度碎片化的证据）
+
+`mechanicFingerprint()` 里所有具体数字先折叠为 `'#'`（`typeof x==='number' → '#'`），省略 `id/name/displayName/_budget/tags`，seed 从不进入；公式**符号/运算符**保留（如 `'ATK * #'` vs `'MAX_HP * # + RAGE * #'`，区分资源缩放与 ATK 缩放——这是有意的机制差异）。因此同结构仅改数值 → 归为同一 fingerprint。0 重复说明组合器确实在结构空间里展开（17 effect × 6 event × 5 资源 × 8 伤害类型 × 3 叠加策略 × 目标查询等），而非把数值差算成结构差。另单独统计 `uniqueActionStructures=7628`（逐 Action 结构）。如审阅怀疑，可直接验证：改任一 coefficient 或数值，fingerprint 应不变。
+
+### 13.2 Condition / Event 覆盖偏窄（合理的 v3.1 加强项）
+
+当前 `condition()` 只采样 5 种（`hpPctBelow/targetHpPctBelow/resourceAtLeast/targetHasStatus/missingStatus`），触发块覆盖约 6 个事件（`roundStart/roundEnd/afterDamageTaken/afterDamageDealt/afterKill/ModifyDamageTaken`），而底层注册表约 27 种 Condition、28 个 Event 插入点。**不违反方向**（UI 极简不受影响），但确实未释放底层不少能力——例如 `isStatusMostlyDebuffed`、`hasResourceBelow`、`allyHpAverageBelow` 等条件与更多 modify/reactive 事件。标记为 **v3.1 最值得加强项**。
+
+### 13.3 C vs XS `{high:25, low:0, draw:23}` ≈48% Draw
+
+该 sanity probe 是**镜像**构造（C 与 XS 用同一 `rarity-probe-i` seed），结构与机制完全一致、仅预算量级不同。当双方都是纯续航/双龟时，镜像走向 maxRounds → Draw。数据含义：一旦见胜负 XS 从不输（25:0），但 48 局中 23 局到界。这是**镜像续航现象**，不是生成器批量制造"无法收尾"的卡；本方向允许防御镜像判 Draw（§13），且不要求精确胜率。审阅时可定向核对 Draw 局是否多为 sustain 镜像，而非系统性 stall。
+
+> 关于报告文字：正文 §1 已列全 **6 个提交**（不再称"4 个"）。
+
+## 14. Ready for Human Review
 
 **是。** 外部极简、内部高维差分、AI 自动对战可观赏、创建/选择/观察为主行为；193 测试 + verify + diversity + browser(mobile/desktop) 全部通过，工作树整理后干净，符合 §38 完成标准。
