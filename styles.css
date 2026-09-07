@@ -275,4 +275,7 @@ input,select,textarea{min-width:0;max-width:100%}select{min-height:44px}
 .card-source-preset{opacity:.96}
 .card-source-preset .card{border-style:dashed}
 .card-power{font-weight:700;color:#333}
+.card-summary-beh{font-size:12px;color:#171717}
+.card-summary-beh b{font-weight:700}
+.card-beh b{color:#171717}
 @media(max-width:767px){.entity-meta{font-size:11px}.card-region{margin-bottom:20px}}

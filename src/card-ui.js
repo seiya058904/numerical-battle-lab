@@ -171,7 +171,6 @@
     const ui=rarityUI(card.rarity);
     const bp=battlePowerOf(card);
     const lv=card.level??100;
-    const role=ROLE_ZH[card.archetype]||card.archetype||'';
     const st=card.stats||{};
     const hp=Math.round(Number(st.MAX_HP)||0);
     const atk=Math.round(Number(st.ATK)||0);
@@ -179,6 +178,9 @@
     const res=Math.round(Number(st.RES)||0);
     const spd=Math.round(Number(st.SPD)||0);
     const crit=Math.round(Number(st.CRIT)||0);
+    // v4: the card's 特点 come from the Behavior Analyzer (post-hoc), never a class.
+    const beh=(NCB.analyzeBehavior&&!card._beh)?(card._beh=NCB.analyzeBehavior(card)):(card._beh||null);
+    const behLine=beh&&beh.tags&&beh.tags.length?`<span class="card-beh">特点 ${beh.tags.map(t=>`<b>${esc(t)}</b>`).join(' · ')}</span>`:'';
     return `<article class="card ${ui.frame} ${ui.collector?'is-collector':''}" data-card-id="${esc(card.id)}">
       <div class="card-frame-glow"></div>
       ${artPlaceholder(card.rarity,card.seed)}
@@ -192,10 +194,9 @@
         <div class="card-meta-line">
           <span class="card-lv">Lv.${lv}</span>
           ${bp?`<span class="card-power">${esc(formatBattlePower(bp))}</span>`:''}
-          <span class="card-role">${esc(role)}</span>
         </div>
         <div class="card-stats">${coreStatChips(card)}</div>
-        <p class="card-summary">${esc(presentCard(card).summary)}</p>
+        ${behLine?`<p class="card-summary card-summary-beh">${behLine}</p>`:`<p class="card-summary">${esc(presentCard(card).summary)}</p>`}
         ${skillListHtml(card)}
 
       </div>
