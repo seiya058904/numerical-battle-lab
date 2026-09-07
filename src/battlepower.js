@@ -97,7 +97,17 @@
   // ---------------------------------------------------------------------------
   function computeSubScores(card){
     ensureBenchmarkDefs();
-    const deployed=NCB.deployCardV2(card);
+    // Normalize the card's action/skill list so both v2 (`skills`) and v3
+    // (`actions`) generated cards score identically. v3 actions are already
+    // skill-shaped objects (id/effects/...), so reusing the v2 deploy path that
+    // reads `card.skills` would choke; hand the proper deployer to each version.
+    const skills = (card.actions && card.actions.length) ? card.actions : (card.skills||[]);
+    let deployed;
+    if(card.generatorVersion===3 && NCB.deployCard){
+      deployed=NCB.deployCard(card); // gen-v3 assembles actions + local statuses.
+    } else {
+      deployed=NCB.deployCardV2({...card, skills});
+    }
     // engine with the card on team A vs a benchmark defender (offense math)
     const engineOf=(teamBId)=>NCB.createBattle({seed:'gen5,8,8,8,8',teamA:[deployed],teamB:[teamBId]});
     const actorOf=(e)=>e.teams.A.entities[0];
@@ -108,7 +118,7 @@
     for(const key of Object.keys(BENCH_DEFENDERS)){
       const e=engineOf(BENCH_DEFENDERS[key].id);const actor=actorOf(e),target=enemyOf(e);
       let dmg=0;
-      for(const skill of card.skills||[])dmg+=skillPerRoundByKind(e,actor,target,skill).damage;
+      for(const skill of skills)dmg+=skillPerRoundByKind(e,actor,target,skill).damage;
       offenseSum+=dmg;offenseN++;
     }
     const offense=Math.max(0.1,offenseSum/Math.max(1,offenseN)+Number(card.stats?.ATK||0)*0.22);
@@ -120,7 +130,7 @@
     // --- sustain: heal+shield expected value per round (self/ally), vs max HP ---
     const e=engineOf('bench-def-balanced');const actor=actorOf(e);
     let healShield=0;
-    for(const skill of card.skills||[]){
+    for(const skill of skills){
       const b=skillPerRoundByKind(e,actor,actor,skill);
       healShield+=b.heal+b.shield;
     }
@@ -134,20 +144,20 @@
     // --- utility: status / cleanse / dispel effect utilities (Effect Registry) ---
     const e2=engineOf('bench-def-balanced');const actor2=actorOf(e2),target2=enemyOf(e2);
     let utilSum=0;
-    for(const skill of card.skills||[])utilSum+=Math.min(15,skillPerRoundByKind(e2,actor2,target2,skill).status);
+    for(const skill of skills)utilSum+=Math.min(15,skillPerRoundByKind(e2,actor2,target2,skill).status);
     const utility=Math.max(0.05,utilSum+0.05);
 
     // --- economy: energy regen + resource-gain skills + low costs ---
     const regen=Number(card.stats?.ENERGY_REGEN||2);
     let econSkill=0;
-    for(const skill of card.skills||[])for(const effect of skill.effects||[]){
+    for(const skill of skills)for(const effect of skill.effects||[]){
       if(effect.type==='gain'||effect.type==='energy'||effect.type==='resource')econSkill+=1;
     }
     const economy=Math.max(0.1,regen/2*(1+econSkill*0.25));
 
     // --- reliability: average accuracy across skills ---
-    const accSum=(card.skills||[]).reduce((a,s)=>a+Number(s.accuracy??1),0);
-    const reliability=Math.max(0.1,(card.skills||[]).length?(accSum/(card.skills||[]).length):1);
+    const accSum=skills.reduce((a,s)=>a+Number(s.accuracy??1),0);
+    const reliability=Math.max(0.1,skills.length?(accSum/skills.length):1);
 
     return {offense,durability,sustain,tempo,utility,economy,reliability};
   }

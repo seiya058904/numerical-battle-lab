@@ -263,3 +263,16 @@ input,select,textarea{min-width:0;max-width:100%}select{min-height:44px}
 .combat-number{position:absolute;right:18px;top:48px;font-size:26px;font-weight:800;background:#fff;padding:2px 6px;border:2px solid #222;animation:damage-rise .6s ease-out forwards;pointer-events:none}
 @keyframes damage-rise{to{transform:translateY(-24px);opacity:0}}
 @media(prefers-reduced-motion:reduce){.combat-number{display:none}}
+
+/* UX pass — system presets + battle rarity/level/战力 readability (B&W only) */
+.entity-meta{font-size:12px;font-weight:700;color:#333;margin-top:2px}
+.entity-meta b{color:#171717}
+.entity-role{font-size:11px;color:#595959;white-space:nowrap}
+.card-region{margin-bottom:28px}
+.cards-region-head{display:flex;align-items:baseline;gap:12px;padding:6px 2px;border-bottom:2px solid #222;margin-bottom:12px}
+.cards-region-head h2{margin:0;font-size:18px}
+.cards-region-head .hint{color:#595959;font-size:12px}
+.card-source-preset{opacity:.96}
+.card-source-preset .card{border-style:dashed}
+.card-power{font-weight:700;color:#333}
+@media(max-width:767px){.entity-meta{font-size:11px}.card-region{margin-bottom:20px}}

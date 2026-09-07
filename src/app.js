@@ -47,6 +47,8 @@
     tab:'battle',
     setup:loadSetup(),
     library:loadLibrary(),
+    // Read-only system presets (NOT part of the user's localStorage library).
+    systemPresets:(NCB.SYSTEM_PRESETS||[]).map(NCB.deepClone),
     engine:null,
     pending:new Map(),
     selectedActorId:null,
@@ -107,18 +109,64 @@
     state.library.push(NCB.deepClone(card));
     saveLibrary();
   }
+  // Copy a read-only system preset into the user library as a NEW editable entry
+  // (new id + remapped internal ids) so it never collides with the preset's id and
+  // keeps deterministic combat identity of its own.
+  function copyPresetToLibrary(preset){
+    if(!preset)return null;
+    let c=NCB.deepClone(preset);const oldId=c.id,newId=oldId+'-mine-'+Date.now();
+    const remap=x=>{if(typeof x==='string')return x.startsWith(oldId)?newId+x.slice(oldId.length):x;if(Array.isArray(x))return x.map(remap);if(x&&typeof x==='object')return Object.fromEntries(Object.entries(x).map(([k,v])=>[k,remap(v)]));return x;};
+    c=remap(c);c.id=newId;
+    addToLibrary(c);renderCards();
+    return c;
+  }
   function stopAuto(){if(autoTimer)clearInterval(autoTimer);autoTimer=null;}
   function beginBattle(config){
     stopAuto();state.engine=NCB.createBattle(config);state.battleMode='auto';state.autoPaused=false;
+    // Build per-entity battle-card metadata map so every entity (incl. multi-team
+    // extra members) resolves its own rarity/level/BattlePower, not a shared one.
+    state._deployedMeta=new Map();
+    for(const t of ['A','B'])for(const ent of state.engine.teams[t].entities){
+      const meta=state.systemPresets.find(c=>c.id===ent.templateId)||state.library.find(c=>c.id===ent.templateId)||null;
+      if(meta)state._deployedMeta.set(ent.templateId,meta);
+    }
     state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;
     setTab('battle');startAuto();
   }
   function startBattleWithCard(card){
-    if(!libraryContains(card.id))addToLibrary(card);
-    state.selectedLeft=state.library.findIndex(c=>c.id===card.id);
+    if(!libraryContains(card.id)&&!isSystemPreset(card.id))addToLibrary(card);
+    const pool=selectableCards();const idx=pool.findIndex(c=>c.id===card.id);
+    state.selectedLeft=idx>=0?idx:0;state.selectedRight=pool[1]?1:0;
     state.engine=null;stopAuto();setTab('battle');
   }
-  function cardOptions(selected=0){return state.library.map((c,i)=>`<option value="${i}" ${i===selected?'selected':''}>${esc(c.displayName||c.name)} · Lv.${c.level} · ${esc(NCB.rarityUI(c.rarity).badge)}</option>`).join('');}
+
+  // ---- Card sources: system presets (read-only) + user library (editable) ----
+  function isSystemPreset(id){return!!(state.systemPresets||[]).find(c=>c.id===id);}
+  function selectableCards(){return [...(state.systemPresets||[]), ...state.library];}
+
+  // Unified battle-card metadata resolver: system preset → user library → none.
+  // Replaces the old `state.library.find(...)` assumption that every battle card
+  // lived in the user library.
+  function resolveBattleCardMeta(templateId){
+    return NCB.resolveCardMeta(templateId,{system:state.systemPresets,library:state.library,deployed:state._deployedMeta});
+  }
+
+  // The pool index maps to a concrete card (preset or user card). Used for the
+  // battle selectors AND multi-unit team building (extra members cycle the pool).
+  function cardAt(poolIndex){
+    const pool=selectableCards();
+    return pool.length?pool[((poolIndex%pool.length)+pool.length)%pool.length]:null;
+  }
+  function selectableOptionHtml(values){
+    // values: array of pool indices already chosen; returns <optgroup> markup.
+    const presets=state.systemPresets||[], lib=state.library;
+    const pool=selectableCards();
+    const opt=(c,i)=>{const ui=NCB.rarityUI(c.rarity);const cpower=NCB.battlePowerOf(c);return `<option value="${c.id}" ${values.includes(c.id)?'selected':''}>${esc(c.displayName||c.name)} · ${esc(ui.badge)} · Lv.${c.level??100}${cpower?` · ${esc(NCB.formatBattlePower(cpower))}`:''}</option>`;};
+    const groups=[];
+    if(presets.length)groups.push(`<optgroup label="系统预设（14）">${presets.map((c,i)=>opt(c,i)).join('')}</optgroup>`);
+    if(lib.length)groups.push(`<optgroup label="我的卡牌（${lib.length}）">${lib.map((c,i)=>opt(c,i+presets.length)).join('')}</optgroup>`);
+    return groups.join('');
+  }
 
   function renderBattle(){
     const view=$('#view-battle');if(!view)return;
@@ -126,17 +174,15 @@
     if(!engine){
       view.innerHTML=`<div class="battle-empty">
         <div class="big-title">让创造，自己交锋。</div>
-        <p>选择两张卡，观察它们如何出招。修改一点，再来一场。</p>
-        ${state.library.length?`<div class="battle-setup-panel">
-          <div class="field-row"><label class="field"><span>左方卡牌</span><select data-battle-card>${cardOptions(state.selectedLeft||0)}</select></label><b class="setup-vs">VS</b><label class="field"><span>右方卡牌</span><select data-battle-right>${cardOptions(state.selectedRight??Math.min(1,state.library.length-1))}</select></label></div>
+        <p>直接选两张系统预设卡，或从「我的卡牌」用自建卡，观察它们如何出招。</p>
+        <div class="battle-setup-panel">
+          <div class="field-row"><label class="field"><span>左方卡牌</span><select data-battle-card>${selectableOptionHtml(state.selectedLeft!=null?[selectableCards()[state.selectedLeft]?.id]:[])}</select></label><b class="setup-vs">VS</b><label class="field"><span>右方卡牌</span><select data-battle-right>${selectableOptionHtml(state.selectedRight!=null?[selectableCards()[state.selectedRight]?.id]:[])}</select></label></div>
           <button class="btn big primary" data-action="battle-start">开始对战</button>
-          <details class="advanced-note"><summary>高级设置</summary><div class="field-row"><label class="field"><span>左方人数</span><select data-battle-size-a>${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></label><label class="field"><span>右方人数</span><select data-battle-size-b>${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></label><label class="field"><span>最大回合</span><input data-max-rounds type="number" min="1" max="1000" value="100"></label></div><p class="hint">额外成员按卡牌列表顺序循环选取，无站位规则。双方始终使用同一个 AI。</p></details>
-        </div>`:`<div class="empty-duel">${NCB.artPlaceholder('C','welcome')}<button class="btn big primary" data-action="cards-to-generate">创造第一张卡</button><button class="btn" data-action="demo-cards">用两张示例卡试试</button></div>`}
+          <details class="advanced-note"><summary>高级设置</summary><div class="field-row"><label class="field"><span>左方人数</span><select data-battle-size-a>${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></label><label class="field"><span>右方人数</span><select data-battle-size-b>${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></label><label class="field"><span>最大回合</span><input data-max-rounds type="number" min="1" max="1000" value="100"></label></div><p class="hint">额外成员按可选手牌顺序循环选取，无站位规则；系统预设为只读来源。</p></details>
+        </div>
       </div>`;
       return;
     }
-    const lib=state.library;
-    const myCard=lib.find(c=>c.id===engine.teams.A.entities[0]?.templateId);
     view.innerHTML=`
       <div class="battle-toolbar">
         <span class="battle-mode-pill">${state.battleMode==='manual'?'实验接管':'AI 对战'}</span>
@@ -186,9 +232,13 @@
     if(state.selectedSkillId&&state.selectedActorId){try{target=engine.getValidTargets(state.selectedActorId,state.selectedSkillId).some(t=>t.id===entity.id);}catch(_){}}
     const planned=state.pending.get(entity.id);
     const derived=id=>engine.getStat(entity.id,id);
+    const meta=resolveBattleCardMeta(entity.templateId);
+    const ui=meta?NCB.rarityUI(meta.rarity):null;
+    const bp=meta?NCB.battlePowerOf(meta):null;
+    const lv=meta?meta.level:null;
     return `<article class="entity-card ${entity.hp>0?'selectable':''} ${selected?'is-selected':''} ${target?'is-target':''} ${entity.hp<=0?'is-dead':''}" data-entity-id="${entity.id}">
-      <div class="entity-top"><div><div class="entity-name">${esc(entity.name)}</div></div><span class="entity-role">${esc(ROLE_ZH[entity.role]||'')}</span></div>
-      ${NCB.artPlaceholder('C',entity.templateId)}<div class="meter-group">${meter('生命',entity.hp,entity.maxHp)}${meter('护盾',entity.shield,entity.maxHp)}</div>
+      <div class="entity-top"><div><div class="entity-name">${esc(entity.name)}</div>${meta&&ui?`<div class="entity-meta">${esc(ui.badge)} · Lv.${lv??''}${bp?` · ${esc(NCB.formatBattlePower(bp))}`:''}</div>`:''}</div><span class="entity-role">${esc(ROLE_ZH[entity.role]||'')}</span></div>
+      ${NCB.artPlaceholder(meta?meta.rarity:'C',entity.templateId)}<div class="meter-group">${meter('生命',entity.hp,entity.maxHp)}${meter('护盾',entity.shield,entity.maxHp)}</div>
       <div class="stat-line"><span class="stat-chip">攻击<b>${derived('ATK')}</b></span><span class="stat-chip">防御<b>${derived('DEF')}</b></span><span class="stat-chip">速度<b>${derived('SPD')}</b></span><span class="stat-chip">暴击<b>${derived('CRIT')}%</b></span></div>
       <div class="status-line">${statusLine(entity)}</div><div class="battle-actions">${entity.skills.map(id=>`<span title="${esc(NCB.describeAction(NCB.SKILL_DEFS[id]))}">${esc(NCB.SKILL_DEFS[id].name)}</span>`).join('')}</div>
       ${planned?`<span class="action-marker">已选择行动</span>`:''}
@@ -266,8 +316,16 @@
   // ===========================================================================
   function renderCards(){
     const view=$('#view-cards');if(!view)return;
-    const lib=state.library;
-    view.innerHTML=`<div class="cards-toolbar"><h2>我的卡牌</h2><span class="hint">本地保存 · ${lib.length} 张</span><span class="spacer"></span><button class="btn small" data-action="cards-to-generate">生成新卡</button></div>
+    const lib=state.library,presets=state.systemPresets||[];
+    const presetTile=(c,i)=>`<div class="card-collection-item card-source-preset" data-preset-index="${i}">
+      ${NCB.renderCard(c,{showId:false})}
+      <div class="card-collection-actions card-preset-actions">
+        <button class="btn small primary" data-preset-action="battle" data-preset-index="${i}">立即对战</button>
+        <button class="btn small" data-preset-action="copy" data-preset-index="${i}">复制到我的卡牌</button>
+      </div>
+    </div>`;
+    const presetRegion=presets.length?`<div class="card-region"><div class="cards-region-head"><h2>系统预设</h2><span class="hint">只读 · ${presets.length} 张 · 不可删除/改名</span></div><div class="card-grid">${presets.map(presetTile).join('')}</div></div>`:'';
+    const libRegion=`<div class="card-region"><div class="cards-region-head"><h2>我的卡牌</h2><span class="hint">本地保存 · ${lib.length} 张</span><span class="spacer"></span><button class="btn small" data-action="cards-to-generate">生成新卡</button></div>
       ${lib.length?`<div class="card-grid">${lib.map((c,i)=>`<div class="card-collection-item" data-lib-index="${i}">
         ${NCB.renderCard(c,{showId:false})}
         <div class="card-collection-actions">
@@ -277,7 +335,8 @@
           <button class="btn small" data-lib-action="regenerate" data-lib-index="${i}">同种子再生成</button>
           <button class="btn small ghost" data-lib-action="delete" data-lib-index="${i}">删除</button>
         </div>
-      </div>`).join('')}</div>`:'<div class="empty-state"><p>卡牌库为空。</p><button class="btn primary" data-action="cards-to-generate">去生成第一张卡</button></div>'}`;
+      </div>`).join('')}</div>`:'<div class="empty-state"><p>还没有自建卡。可以从上方系统预设「复制到我的卡牌」，或生成新卡。</p><button class="btn primary" data-action="cards-to-generate">去生成第一张卡</button></div>'}</div>`;
+    view.innerHTML=`${presetRegion}${libRegion}`;
   }
 
   // ===========================================================================
@@ -310,7 +369,7 @@
   // HELP (玩法说明)
   // ===========================================================================
   function renderHelp(){
-    $('#view-help').innerHTML=`<div class="help-layout"><h2>创造、组合、观察。</h2><ol class="help-steps"><li>选择稀有度、等级和定位，创造卡牌。</li><li>保存到我的卡牌，选择左右双方。</li><li>开始对战，看 AI 自动决策。随时暂停、单步或调速。</li><li>结束后重开、换卡，或打开高级编辑修改数值。</li></ol><h3>同时决策，顺序结算</h3><p>每轮所有存活角色先选择一个行动与合法目标，再按行动优先级、速度和确定性规则统一排序。状态与反击会即时触发。达到最大回合则平局。</p><h3>自由实验</h3><p>等级可输入 1–100 的任意整数。12 档稀有度代表逐步增加的数值预算；强弱与克制都可以存在。定位只影响生成倾向。没有升级、奖励或解锁。</p><p>数据保存在当前浏览器。高级实验室可编辑完整行动、资源、状态、公式，查看回放与计算详情。</p></div>`;
+    $('#view-help').innerHTML=`<div class="help-layout"><h2>创造、组合、观察。</h2><ol class="help-steps"><li>可直接选两张「系统预设」开战，无需先建卡；或选择稀有度、等级和定位自建卡。</li><li>保存到我的卡牌，选择左右双方。</li><li>开始对战，看 AI 自动决策。随时暂停、单步或调速。</li><li>结束后重开、换卡，或打开高级编辑修改数值。</li></ol><h3>同时决策，顺序结算</h3><p>每轮所有存活角色先选择一个行动与合法目标，再按行动优先级、速度和确定性规则统一排序。状态与反击会即时触发。达到最大回合则平局。</p><h3>稀有度 · 等级 · 战力</h3><p>内置 14 张系统预设（7 定位 × 2），覆盖 12 档稀有度、Lv.10–100，方便第一眼对比。卡面上「战力」是综合实力的<b>参考数值</b>，<b>不参与</b>战斗计算。</p><p>等级可输入 1–100 的任意整数；12 档稀有度代表逐步增加的数值预算；强弱与克制都可以存在。定位只影响生成倾向。没有升级、奖励或解锁。</p><p>数据保存在当前浏览器。高级实验室可编辑完整行动、资源、状态、公式，查看回放与计算详情。</p></div>`;
   }
 
   // ===========================================================================
@@ -383,6 +442,15 @@
   document.addEventListener('click',event=>{
     const roster=event.target.closest('[data-editor-unit]');if(roster){state.editorUnitId=roster.dataset.editorUnit;renderEditor();return;}
     const tab=event.target.closest('[data-tab]');if(tab){$('#lab-menu').open=false;setTab(tab.dataset.tab);if(tab.dataset.tab==='battle'){renderBattle();}return;}
+    const presetBtn=event.target.closest('[data-preset-action]');
+    if(presetBtn){
+      const i=Number(presetBtn.dataset.presetIndex);const card=(state.systemPresets||[])[i];
+      if(!card)return;
+      const act=presetBtn.dataset.presetAction;
+      if(act==='battle'){const pool=selectableCards();const idx=pool.findIndex(c=>c.id===card.id);state.selectedLeft=idx>=0?idx:0;state.selectedRight=idx>=0?((idx+1)%pool.length):1;state.engine=null;stopAuto();setTab('battle');renderBattle();}
+      if(act==='copy')copyPresetToLibrary(card);
+      return;
+    }
     const libBtn=event.target.closest('[data-lib-action]');
     if(libBtn){
       const i=Number(libBtn.dataset.libIndex);const card=state.library[i];
@@ -407,18 +475,21 @@
     const remove=event.target.closest('[data-remove-action]');if(remove){state.pending.delete(remove.dataset.removeAction);ensureActor();renderBattle();return;}
     const action=event.target.closest('[data-action]')?.dataset.action;if(!action)return;
     if(action==='battle-start'){
-      const left=Number($('[data-battle-card]')?.value),right=Number($('[data-battle-right]')?.value);
-      if(!state.library[left]||!state.library[right])return;
+      const leftId=$('[data-battle-card]')?.value,rightId=$('[data-battle-right]')?.value;
+      const pool=selectableCards();
+      const left=leftId?pool.findIndex(c=>c.id===leftId):-1,right=rightId?pool.findIndex(c=>c.id===rightId):-1;
+      if(left<0||right<0||!pool.length)return;
       const sizeA=Number($('[data-battle-size-a]').value),sizeB=Number($('[data-battle-size-b]').value),maxRounds=Number($('[data-max-rounds]').value);
       if(!Number.isInteger(maxRounds)||maxRounds<1||maxRounds>1000){alert('最大回合请输入 1–1000 的整数。');return;}
       state.selectedLeft=left;state.selectedRight=right;
-      const team=(index,n)=>Array.from({length:n},(_,i)=>NCB.deployCard(state.library[(index+i)%state.library.length]));
+      // Extra members cycle the combined selectable pool (presets + user library).
+      const team=(anchor,n)=>Array.from({length:n},(_,i)=>{const card=cardAt(anchor+i);return NCB.deployCard(card);});
       beginBattle({seed:NCB.deriveSeed(state.setup.seedNumber),teamA:team(left,sizeA),teamB:team(right,sizeB),maxRounds});
     }
-    if(action==='demo-cards'){for(const seed of ['example-1','example-9']){const c=NCB.generateCardV3({seed,rarity:'A',level:37});if(!libraryContains(c.id))addToLibrary(c);}renderBattle();}
+    if(action==='demo-cards'){for(const c of (state.systemPresets||[]).slice(0,2))copyPresetToLibrary(c);renderCards();renderBattle();}
     if(action==='manual-takeover'){state.battleMode=state.battleMode==='auto'?'manual':'auto';state.autoPaused=state.battleMode==='manual';if(state.battleMode==='auto')startAuto();renderBattle();}
     if(action==='edit-generated'&&state.lastGenerated)openCardEditor(state.lastGenerated);
-    if(action==='edit-battle-card'){const c=state.library.find(c=>c.id===state.engine?.config.teamA[0]);if(c)openCardEditor(c);}
+    if(action==='edit-battle-card'){let c=resolveBattleCardMeta(state.engine?.config.teamA[0]);if(c){if(isSystemPreset(c.id)){c=copyPresetToLibrary(c);}if(c)openCardEditor(c);}}
     if(action==='save-card-edit')saveCardEdit();
     if(action==='battle-restart'){if(state.engine)createBattleWithSameCard();}
     if(action==='battle-back'){stopAuto();state.engine=null;renderBattle();}
@@ -472,7 +543,7 @@
   }
 
   function downloadJson(filename,data){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),500);}
-  function applyReplay(replay,index=replay.rounds.length){stopAuto();state.autoPaused=true;NCB.restoreReplayContent(replay);const engine=NCB.createBattle({seed:replay.seed,teamA:replay.teamA,teamB:replay.teamB,maxRounds:replay.maxRounds});for(let i=0;i<Math.min(index,replay.rounds.length);i++){if(engine.outcome().ended)break;engine.resolveRound(replay.rounds[i]);}state.engine=engine;state.replay=replay;state.replayIndex=Math.min(index,replay.rounds.length);state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;}
+  function applyReplay(replay,index=replay.rounds.length){stopAuto();state.autoPaused=true;NCB.restoreReplayContent(replay);const engine=NCB.createBattle({seed:replay.seed,teamA:replay.teamA,teamB:replay.teamB,maxRounds:replay.maxRounds});for(let i=0;i<Math.min(index,replay.rounds.length);i++){if(engine.outcome().ended)break;engine.resolveRound(replay.rounds[i]);}state.engine=engine;state._deployedMeta=new Map();for(const t of ['A','B'])for(const ent of engine.teams[t].entities){const meta=state.systemPresets.find(c=>c.id===ent.templateId)||state.library.find(c=>c.id===ent.templateId)||null;if(meta)state._deployedMeta.set(ent.templateId,meta);}state.replay=replay;state.replayIndex=Math.min(index,replay.rounds.length);state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;}
   function importContent(data){if(!data?.units||!data?.skills||!data?.statuses)throw new Error('JSON 缺少 units / skills / statuses');const validation=NCB.validateContentPack(data);if(!validation.ok)throw new Error(`内容验证失败:\n${validation.errors.slice(0,12).join('\n')}`);const repl=k=>{for(const key of Object.keys(NCB[k]))delete NCB[k][key];Object.assign(NCB[k],NCB.deepClone(data[k]));};repl('UNIT_DEFS');repl('SKILL_DEFS');repl('STATUS_DEFS');alert('内容已导入。');setTab('guide');}
 
   function updateHeader(){

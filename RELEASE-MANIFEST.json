@@ -6,7 +6,7 @@
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 196,
+  "verifiedTests": 202,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
@@ -35,8 +35,8 @@
     },
     {
       "path": "README.md",
-      "size": 7621,
-      "sha256": "3f09fd8ef930efe6a622a59adb80e8f2c03b40364f77a36ec01897166aa066dd"
+      "size": 8066,
+      "sha256": "5358c41f29c051f79d78611d41582fbfa01a4f226774de240ee790b2346e51a1"
     },
     {
       "path": "RELEASE-NOTES.md",
@@ -130,8 +130,8 @@
     },
     {
       "path": "index.html",
-      "size": 3280,
-      "sha256": "cb2b169e2adf7359284298b3877f88b61c3b533f765aab70c85ec1e513ae9392"
+      "size": 3321,
+      "sha256": "6bdac7f2e1f858071d95ff8d4e8487853574d2b9f7ae264e111ae343ebe1a0ce"
     },
     {
       "path": "package.json",
@@ -147,6 +147,16 @@
       "path": "qa/browser-results.json",
       "size": 937,
       "sha256": "1c1eea7e9b4146ed87222f255b2277e5b7a3a113425a4ed542e7fd3d6332a579"
+    },
+    {
+      "path": "qa/browser-ux-pass.js",
+      "size": 9371,
+      "sha256": "f1755a2eef2917bc12db4bbc2c476a33018ce6972cbc641434e5061ada12a71b"
+    },
+    {
+      "path": "qa/browser-ux-pass.json",
+      "size": 1313,
+      "sha256": "55be3a739639fce581ae0d41a6adc02cd6a3631296afde91b9fa2f03397820ab"
     },
     {
       "path": "qa/browser-v3.json",
@@ -187,6 +197,16 @@
       "path": "qa/stress-results.json",
       "size": 7800,
       "sha256": "3954ed204ba82e3ed0b4664057ac74bfd528f99867aa9dbc388517373902f6b9"
+    },
+    {
+      "path": "qa/ux-battle-3v3-desktop.png",
+      "size": 83076,
+      "sha256": "1542142b405a9de5a6f55b442af0f7abd1773c999c46d6d56d60b64d2344f6cf"
+    },
+    {
+      "path": "qa/ux-cards-mobile.png",
+      "size": 48810,
+      "sha256": "8827d64c8ab0830d4581404ac83ab706805a76ef8d6793b9f605a73c7a7aa132"
     },
     {
       "path": "qa/v3-battle-desktop.png",
@@ -270,8 +290,8 @@
     },
     {
       "path": "src/app.js",
-      "size": 46668,
-      "sha256": "27fbe1ac971bc7cb555efec5fcf773d49012d58615679894e82d99f8ec3980da"
+      "size": 51978,
+      "sha256": "a0d6ec4d740153cab75168377a1768e25bb854a84809279c29a702d33c14d65d"
     },
     {
       "path": "src/battlepower-model.js",
@@ -280,13 +300,13 @@
     },
     {
       "path": "src/battlepower.js",
-      "size": 15842,
-      "sha256": "73307af18892b6c50047d1f57f122abc249b69179643fa941719b80dcee8ff66"
+      "size": 16363,
+      "sha256": "626b98fcad613d591ae31a3d0924930b28d3129e809a7035864f439f4d135559"
     },
     {
       "path": "src/card-ui.js",
-      "size": 12269,
-      "sha256": "2e89466a5533598b38357495fa477d2e4b84ede950b4a451bd6026c9ca85abd3"
+      "size": 13283,
+      "sha256": "a51d621bd5674493d37c33e6c2fd3e116c456e2ca0e11f2b24ab086b64d21567"
     },
     {
       "path": "src/components.js",
@@ -359,6 +379,11 @@
       "sha256": "63f9e5bf60a447d87aef255ac5ae2f3100532f348dac5d093faaf1677a89e550"
     },
     {
+      "path": "src/presets.js",
+      "size": 5491,
+      "sha256": "0f2dd7e022feea60de830425820cdbfedd95ec8df58c4655cacc6a653dc5fc72"
+    },
+    {
       "path": "src/rules.js",
       "size": 1666,
       "sha256": "8a0539ae61616cab5ce1804afa83912852c1f89eb1024e074babc50dee387f46"
@@ -375,8 +400,8 @@
     },
     {
       "path": "styles.css",
-      "size": 18346,
-      "sha256": "fd09270c2c335cc8cfd4fc108c0753e1350179528d9145e0c6c5253ac45f3730"
+      "size": 19063,
+      "sha256": "49a1a3bbca10b9626e692ae788008764f1a950b00a21f874b06d7fbc3970c1a6"
     },
     {
       "path": "tests/actions-v3.test.js",
@@ -472,6 +497,11 @@
       "path": "tests/power.test.js",
       "size": 3692,
       "sha256": "8b055addcb71922bbe7ece1c41408320e1e75664f254a67344751d61fb509e27"
+    },
+    {
+      "path": "tests/presets.test.js",
+      "size": 4673,
+      "sha256": "cc5b8842b13493d8bee8f302d1003729e59ed4e2db8e37af0da1b80a0067eab3"
     },
     {
       "path": "tests/v1-fixture.test.js",

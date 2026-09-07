@@ -1,0 +1,32 @@
+{
+  "checks": [
+    "✔ battle page has 系统预设 group with >=14 options — options=14",
+    "✔ left+right both have preset optgroups",
+    "✔ can pick two distinct presets — left=14 right=14",
+    "✔ AI battle started",
+    "✔ battle entity shows rarity badge/level/战力 —  磐石C · Lv.90 · 战力 6,822均衡 1生命311/311护盾0/311 ",
+    "✔ battle 战力 parsed — =6822",
+    "✔ high rarity (SS/XS) metadata present (not fixed C)",
+    "✔ card page has 系统预设 + 我的卡牌 regions — regions=2",
+    "✔ preset region shown first",
+    "✔ system presets have no delete/rename button",
+    "✔ preset cards show 立即对战 + 复制到我的卡牌",
+    "✔ card page preset card shows 战力",
+    "✔ copy preset -> 我的卡牌 has >=1 entry — lib entries=1",
+    "✔ 3v3 has 6 entities — entities=6",
+    "✔ each 3v3 entity has its own rarity/level/战力 meta — meta=6",
+    "✔ desktop no horizontal overflow",
+    "✔ mobile no overflow (battle page)",
+    "✔ mobile no overflow (cards page)",
+    "✔ no console/page errors"
+  ],
+  "errors": [],
+  "browser": "Chromium via Playwright",
+  "desktop": "1440x1000",
+  "mobile": "390x844",
+  "presetOptionsSeen": 14,
+  "battleBPSeen": 6822,
+  "consoleErrors": [],
+  "pass": 19,
+  "total": 19
+}

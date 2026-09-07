@@ -60,15 +60,25 @@
 
   // SVG placeholder "卡图" (art area). Pure inline SVG so there are no image
   // files and no external assets. Design varies by rarity frame / collector.
+  // The rarity is REFLECTED (not hardcoded): a small black tier tag + on higher
+  // tiers extra inner strokes, still strictly black/grey — no color.
   function artPlaceholder(rarityId,seed){
     let h=0;for(const c of String(seed||''))h=(Math.imul(h,31)+c.charCodeAt(0))>>>0;
     const ears=h%2?'<path d="M30 48 22 18 49 35M72 35 99 18 91 49"/>':'<path d="M30 47 15 36 34 28M84 28 105 36 90 48"/>';
-    return `<svg class="card-art" viewBox="0 0 120 110" role="img" aria-label="黑白战斗角色"><g fill="#fff" stroke="#171717" stroke-width="4" stroke-linejoin="round">${ears}<ellipse cx="60" cy="65" rx="37" ry="32"/><path d="M35 91 29 102 49 102M73 102 91 102 86 91"/><path d="M47 77 Q60 ${h%3?90:71} 74 77" fill="none"/></g><circle cx="46" cy="59" r="5"/><circle cx="75" cy="59" r="5"/>${h%3===0?'<path d="m37 47 17 4m12 0 18-4" stroke="#171717" stroke-width="4"/>':''}</svg>`;
+    const tier=(NCB.RARITY_V2_ORDER||[]).indexOf(NCB.toV2RarityId?.(rarityId)||rarityId);
+    const tierLabel=tier>=0?tier+1:0; // 1..12 ranking
+    const inner=tier>=9?'<path d="M52 40h16M52 47h10" stroke="#595959" stroke-width="3"/>':'';
+    return `<svg class="card-art" viewBox="0 0 120 110" role="img" aria-label="黑白战斗角色 稀有度阶 ${tierLabel}"><g fill="#fff" stroke="#171717" stroke-width="4" stroke-linejoin="round">${ears}<ellipse cx="60" cy="65" rx="37" ry="32"/><path d="M35 91 29 102 49 102M73 102 91 102 86 91"/><path d="M47 77 Q60 ${h%3?90:71} 74 77" fill="none"/></g><circle cx="46" cy="59" r="5"/><circle cx="75" cy="59" r="5"/>${h%3===0?'<path d="m37 47 17 4m12 0 18-4" stroke="#171717" stroke-width="4"/>':''}${inner}<text x="10" y="18" fill="#171717" font-size="12" font-family="monospace">${tierLabel||''}</text></svg>`;
   }
 
-  // BattlePower display number.
+  // BattlePower display number (canonical NCB.battlePower, rounded integer).
   function battlePowerOf(card){
-    try{const bp=NCB.battlePower?.(card);return bp?Math.round(bp.power):null;}catch(_){return null;}
+    try{const bp=NCB.battlePower?.(card);return bp&&Number.isFinite(bp.power)?Math.round(bp.power):null;}catch(_){return null;}
+  }
+  // "战力 12,840" — thousands-separated, integer only (no fractional/winrate).
+  function formatBattlePower(power){
+    if(power==null||!Number.isFinite(power))return '';
+    return '战力 ' + Math.round(power).toLocaleString('en-US');
   }
 
   // v1.2.1 (audit §8): BattlePower is a 1v1 ordering indicator, NOT a precise
@@ -159,7 +169,7 @@
   function renderCard(card,opts={}){
     if(!card)return'';
     const ui=rarityUI(card.rarity);
-    const bp=null;
+    const bp=battlePowerOf(card);
     const lv=card.level??100;
     const role=ROLE_ZH[card.archetype]||card.archetype||'';
     const st=card.stats||{};
@@ -181,7 +191,7 @@
         </div>
         <div class="card-meta-line">
           <span class="card-lv">Lv.${lv}</span>
-
+          ${bp?`<span class="card-power">${esc(formatBattlePower(bp))}</span>`:''}
           <span class="card-role">${esc(role)}</span>
         </div>
         <div class="card-stats">${coreStatChips(card)}</div>
@@ -196,13 +206,13 @@
   function renderCompactCard(card){
     if(!card)return'';
     const ui=rarityUI(card.rarity);
-    const bp=null;
+    const bp=battlePowerOf(card);
     const st=card.stats||{};
     return `<div class="card-tile ${ui.frame} ${ui.collector?'is-collector':''}" data-card-id="${esc(card.id)}">
       <span class="rarity-badge">${esc(ui.badge)}</span>
       ${ui.collector?'<span class="collector-mark">★</span>':''}
       <div class="card-tile-name">${esc(card.displayName||card.name||'未命名')}</div>
-      <div class="card-tile-meta">Lv.${card.level??100} ${bp?'· 战力 '+bp:''} ${esc(ROLE_ZH[card.archetype]||card.archetype||'')}</div>
+      <div class="card-tile-meta">Lv.${card.level??100} ${bp?'· '+esc(formatBattlePower(bp)):''} ${esc(ROLE_ZH[card.archetype]||card.archetype||'')}</div>
       <div class="card-tile-stats">生命 ${Math.round(Number(st.MAX_HP)||0)} · 攻击 ${Math.round(Number(st.ATK)||0)}</div>
     </div>`;
   }
@@ -215,6 +225,7 @@
   NCB.rarityUI=rarityUI;
   NCB.artPlaceholder=artPlaceholder;
   NCB.battlePowerOf=battlePowerOf;
+  NCB.formatBattlePower=formatBattlePower;
   NCB.bpRelation=bpRelation;
   NCB.compareCards=compareCards;
   NCB.renderCard=renderCard;
