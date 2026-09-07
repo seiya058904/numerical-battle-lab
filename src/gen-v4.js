@@ -20,22 +20,15 @@
   const FAMILIES=['damage','heal','shield','ward','status','dot','consume','cleanse','dispel','resource','convert','cooldown','recoil','event','toggle'];
   const LEGACY_WORDS=/archetype|Balanced|Tank|Bruiser|Assassin|Mage|Support|Controller/;
 
-  // ---- continuous, seeded primary allocation (no archetype ratios) ----
-  // Each stat gets its own continuous value range; five INDEPENDENT seeded
-  // weights pick a position inside that range, so ordinal shapes vary widely
-  // (not a whitelist of archetype templates). No normalization: independence
-  // is what creates real individuals.
-  const PRIMARY_RANGES={
-    MAX_HP:[140,420],ATK:[38,120],DEF:[24,90],RES:[20,75],SPD:[32,100],
-  };
+  // Positive continuous weights normalized to an exact primary budget.
+  const PRIMARY_COSTS={MAX_HP:.5,ATK:1.3,DEF:1.1,RES:1.1,SPD:1.5};
   function allocatePrimaryV4(budget,seed){
-    const r=rng(seed+'|primary');
-    return {MAX_HP:r.random(),ATK:r.random(),DEF:r.random(),RES:r.random(),SPD:r.random()};
+    const r=rng(seed+'|primary'),keys=Object.keys(PRIMARY_COSTS);
+    const weights=keys.map(()=>.03+Math.pow(r.random(),2));
+    const total=weights.reduce((a,b)=>a+b,0);
+    return Object.fromEntries(keys.map((k,i)=>[k,budget*(.035+.825*weights[i]/total)]));
   }
-  function statFromShare(w,kind,scale){
-    const [lo,hi]=PRIMARY_RANGES[kind]||[10,60];
-    return Math.max(1,Math.round((lo+w*(hi-lo))*scale));
-  }
+  function statFromShare(points,kind,scale){return Math.max(1,Math.round(points/PRIMARY_COSTS[kind]*scale));}
   // individual random variables — all finite, all used by engine math later
   function individualVars(r,scale){
     const volRoll=r.random(); // 0..1
@@ -64,7 +57,8 @@
     if(opts.generatorVersion!==undefined&&opts.generatorVersion!==4)throw new Error('unsupported generatorVersion: '+opts.generatorVersion);
     if('archetype' in opts)throw new Error('Generator v4 is classless: archetype is not a valid input');
     const seed=String(opts.seed??''),rarity=N.toV2RarityId(opts.rarity),level=N.normalizeLevel(opts.level);
-    const identity=`v4|seed=${seed}|rarity=${rarity}|level=${level}`;
+    const seedToken=LEGACY_WORDS.test(seed)?Array.from(seed,c=>c.codePointAt(0).toString(16)).join('-'):seed;
+    const identity=`v4|seed=${seedToken}|rarity=${rarity}|level=${level}`;
     if(LEGACY_WORDS.test(identity))throw new Error('v4 identity must not contain archetype vocabulary');
     const id=N.cardId(identity),r=rng(seed+'|v4');
     const pick=a=>a[r.random(a.length)],roll=p=>r.random(100)<p;
@@ -102,9 +96,9 @@
     const actions=[];let hasCommand=false;
     // Weak correlation from REAL rolled stats — never a whitelist, never archetype.
     const s=stats;
-    const weight={damage:1.0,heal:0.35+s.HEAL_POWER/400,shield:0.3+s.DEF/260,ward:0.25,status:0.45+s.CRIT/200,
+    const weight={damage:1.0,heal:0.35+s.HEAL_POWER/400,shield:0.3+(s.DEF/scale)/260,ward:0.25,status:0.45+s.CRIT/200,
       dot:0.4+s.PEN/120,consume:0.35+s.CRIT/260,cleanse:0.3,dispel:0.3,resource:0.4+s.ENERGY_REGEN/8,
-      convert:0.3,cooldown:0.35,recoil:0.3+s.ATK/520,event:0.35,toggle:0.3};
+      convert:0.3,cooldown:0.35,recoil:0.3+(s.ATK/scale)/520,event:0.35,toggle:0.3};
     const weightedFamilies=[];for(const fam of FAMILIES){const w=weight[fam]||0.3;for(let i=0;i<Math.round(w*10);i++)weightedFamilies.push(fam);}
     const condition=()=>pick([{type:'hpPctBelow',value:.5},{type:'targetHpPctBelow',value:.4},{type:'resourceAtLeast',resource,value:3},{type:'targetHasStatus',status:dotId},{type:'missingStatus',status:buffId}]);
     for(let i=0;i<count;i++){
@@ -136,7 +130,7 @@
       if(a.target!=='self'&&roll(35)){const relation=a.target==='enemy'?'enemy':'ally';a.target='query';a.targetQuery={relation,sortBy:{kind:pick(['hpPct','shield','stat']),key:'SPD'},order:pick(['asc','desc']),limit:1+r.random(3),mode:pick(['first','all'])};}
       if(roll(25))a.costs=[{resource,amount:2+r.random(2)},{resource:'HP',amount:round(stats.MAX_HP*.03)}];
       const walk=effects=>{for(const e of effects){if(e.type==='damage'){
-        e.varianceMin=roll(50)?.7:1;e.varianceMax=e.varianceMin===1?1:1.5;e.penetration=r.random(51)/100;a.critBonus=r.random(21);
+        e.varianceMin=roll(50)?.8:.9;e.varianceMax=e.varianceMin===.9?1.1:1.3;e.penetration=r.random(51)/100;a.critBonus=r.random(21);
         if(roll(35))e.components=[{type:e.damageType,formula:e.formula,multiplier:.6},{type:pick(damageTypes),formula:'ATK * '+round(c*.4)}];
         if(roll(25))e.formula='('+e.formula+') + '+resource+' * '+round(3*c);
       }if(e.effects)walk(e.effects);if(e.then)walk(e.then);if(e.else)walk(e.else);}};walk(a.effects);

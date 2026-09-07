@@ -73,8 +73,11 @@
 
   // BattlePower display number (v2 for v4 cards, legacy model otherwise).
   // Both are display/diagnostic only — never read by the engine.
+  const powerCache=new WeakMap();
   function battlePowerOf(card){
     try{
+      const cached=powerCache.get(card);
+      if(cached&&cached.signature===JSON.stringify([card.stats,card.actions,card.statuses,card.triggers,card.generationBudget]))return cached.power;
       if(card?.generatorVersion===4&&NCB.battlePowerV2){const r=NCB.battlePowerV2(card);return r&&Number.isFinite(r.power)?Math.round(r.power):null;}
       const bp=NCB.battlePower?.(card);return bp&&Number.isFinite(bp.power)?Math.round(bp.power):null;
     }catch(_){return null;}
@@ -152,7 +155,7 @@
       const costs=[...(Number(s.cost)>0?[{resource:'ENERGY',amount:s.cost}]:[]),...(s.costs||[])];const free=!costs.length;
       const costHtml=free?'<span class="skill-free">无消耗</span>':`<span class="skill-cost">消耗 ${esc(costs.map(c=>`${({ENERGY:'能量',HP:'生命',RAGE:'怒气',SOUL:'魂力',CHRONO:'时能'})[c.resource]||c.resource} ${c.amount}`).join(' / '))}</span>`;
       const cd=s.cooldown?`<span class="skill-cd">冷却 ${s.cooldown}</span>`:'';
-      return `<div class="card-skill"><div class="card-skill-head"><b>${esc(s.name)}</b><span class="card-skill-meta">${costHtml}${cd}</span></div>${desc?`<p class="card-skill-desc">${esc(desc)}</p>`:''}</div>`;
+      return `<div class="card-skill"><div class="card-skill-head"><b>${esc(s.name)}</b><span class="card-skill-meta">${costHtml}${cd}<span>优先级 ${s.priority||0}</span></span></div>${desc?`<p class="card-skill-desc">${esc(desc)}</p>`:''}</div>`;
     }).join('')}</div>`;
   }
 
@@ -183,7 +186,7 @@
     const spd=Math.round(Number(st.SPD)||0);
     const crit=Math.round(Number(st.CRIT)||0);
     // v4: the card's 特点 come from the Behavior Analyzer (post-hoc), never a class.
-    const beh=(NCB.analyzeBehavior&&!card._beh)?(card._beh=NCB.analyzeBehavior(card)):(card._beh||null);
+    const beh=NCB.analyzeBehavior?.(card);
     const behLine=beh&&beh.tags&&beh.tags.length?`<span class="card-beh">特点 ${beh.tags.map(t=>`<b>${esc(t)}</b>`).join(' · ')}</span>`:'';
     return `<article class="card ${ui.frame} ${ui.collector?'is-collector':''}" data-card-id="${esc(card.id)}">
       <div class="card-frame-glow"></div>
@@ -217,7 +220,7 @@
       <span class="rarity-badge">${esc(ui.badge)}</span>
       ${ui.collector?'<span class="collector-mark">★</span>':''}
       <div class="card-tile-name">${esc(card.displayName||card.name||'未命名')}</div>
-      <div class="card-tile-meta">Lv.${card.level??100} ${bp?'· '+esc(formatBattlePower(bp)):''} ${esc(ROLE_ZH[card.archetype]||card.archetype||'')}</div>
+      <div class="card-tile-meta">Lv.${card.level??100} ${bp?'· '+esc(formatBattlePower(bp)):''} ${esc(NCB.analyzeBehavior?.(card).tags.join(' · ')||'')}</div>
       <div class="card-tile-stats">生命 ${Math.round(Number(st.MAX_HP)||0)} · 攻击 ${Math.round(Number(st.ATK)||0)}</div>
     </div>`;
   }
@@ -229,6 +232,7 @@
   NCB.RARITY_UI=RARITY_UI;
   NCB.rarityUI=rarityUI;
   NCB.artPlaceholder=artPlaceholder;
+  NCB.cachePresetPower=c=>powerCache.set(c,{signature:JSON.stringify([c.stats,c.actions,c.statuses,c.triggers,c.generationBudget]),power:c.presentation.power});
   NCB.battlePowerOf=battlePowerOf;
   NCB.formatBattlePower=formatBattlePower;
   NCB.bpRelation=bpRelation;

@@ -1,0 +1,19 @@
+{
+  "sample": 3000,
+  "maxRounds": 100,
+  "seedProtocol": "long-v4-a/b-i; half same rarity and level, half varied; canonical AI, alternate strength distribution",
+  "median": 5,
+  "p90": 61,
+  "p95": 69,
+  "max": 88,
+  "maxRoundsRate": 0,
+  "drawRate": 0.011666666666666667,
+  "atMost3RoundRate": 0.4126666666666667,
+  "over40RoundRate": 0.265,
+  "counts": {
+    "hardCap": 0,
+    "draws": 35,
+    "early": 1238,
+    "long": 795
+  }
+}

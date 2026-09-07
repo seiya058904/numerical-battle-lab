@@ -1,14 +1,14 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','gen-stats','gen-skills','generator','gen-names','gen-v2','gen-v3','battlepower-model','battlepower','card-ui','presets'])require('../src/'+f+'.js');
+for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','gen-stats','gen-skills','generator','gen-names','gen-v2','gen-v3','gen-v4','behavior','battlepower-v2','battlepower-model','battlepower','card-ui','presets'])require('../src/'+f+'.js');
 const N=global.NCB;
 
-test('system presets: 14 cards, 7 archetypes x2 each',()=>{
-  assert.equal(N.SYSTEM_PRESETS.length,14);
-  const byArchetype={};
-  for(const c of N.SYSTEM_PRESETS){byArchetype[c.archetype]=(byArchetype[c.archetype]||0)+1;}
-  for(const [arch,n] of Object.entries(byArchetype))assert.ok(n>=2,`archetype ${arch} has only ${n}`);
-  assert.deepEqual(Object.keys(byArchetype).sort(),['Assassin','Balanced','Bruiser','Controller','Mage','Support','Tank']);
+test('system presets: 60 classless cards, five per rarity with level and dynamic coverage',()=>{
+  assert.equal(N.SYSTEM_PRESETS.length,60);
+  const buckets={};
+  for(const r of N.RARITY_V2_ORDER){const cards=N.SYSTEM_PRESETS.filter(c=>c.rarity===r);assert.equal(cards.length,5);assert.ok(Math.max(...cards.map(c=>c.level))-Math.min(...cards.map(c=>c.level))>=50);assert.ok(cards.some(c=>c.stats.VOLATILITY<=.6));assert.ok(cards.some(c=>c.stats.VOLATILITY>=1.6));}
+  for(const c of N.SYSTEM_PRESETS){assert.ok(!('archetype' in c));const b=c.level===100?100:Math.floor(c.level/10)*10;buckets[b]=(buckets[b]||0)+1;assert.ok(c.curated&&c.curationVersion&&c.designNote&&c.originSeed);}
+  for(const b of [10,20,30,40,50,60,70,80,90,100])assert.ok(buckets[b]>=4);
 });
 
 test('system presets: cover all 12 rarity tiers',()=>{
@@ -17,14 +17,11 @@ test('system presets: cover all 12 rarity tiers',()=>{
   assert.equal(tiers.size,12);
 });
 
-test('system presets: all Generator v3, deterministic, valid content, distinct names',()=>{
+test('system presets: all Generator v4, frozen, valid content, distinct names',()=>{
   const names=new Set();
   for(const c of N.SYSTEM_PRESETS){
-    assert.equal(c.generatorVersion,3);
+    assert.equal(c.generatorVersion,4);
     assert.ok(c.actions.length>=2&&c.actions.length<=6);
-    const regen=N.generateCardV3({seed:c.seed,rarity:c.rarity,level:c.level,archetype:c.archetype});
-    assert.deepEqual(c.stats,regen.stats);
-    assert.equal(c.id,regen.id);
     const pack=N.assembleCardPack(c);const v=N.validateContentPack(pack);
     assert.ok(v.ok,v.errors.join('\n'));
     names.add(c.displayName||c.name);
@@ -39,7 +36,7 @@ test('metadata resolver finds system preset and user card with correct rarity/le
   assert.ok(meta,'resolver should find a system preset by templateId');
   assert.equal(meta.rarity,preset.rarity);
   assert.equal(meta.level,preset.level);
-  assert.equal(N.battlePowerOf(meta),Math.round(N.battlePower(meta).power));
+  assert.equal(N.battlePowerOf(meta),Math.round(N.battlePowerV2(meta).power));
 
   // a user card (deployed-generated v3 card) resolves too
   const user=N.generateCardV3({seed:'resolver-user-card',rarity:'S',level:42});
@@ -75,7 +72,6 @@ test('copying a preset produces a distinct library entry (no id conflict)',()=>{
   assert.equal(copy.level,preset.level);
   assert.equal(copy.rarity,preset.rarity);
   assert.equal(copy.archetype,preset.archetype);
-  const rebuild=N.generateCardV3({seed:copy.seed,rarity:copy.rarity,level:copy.level,archetype:copy.archetype});
-  assert.equal(rebuild.actions.length,preset.actions.length);
-  assert.deepEqual(rebuild.stats,preset.stats);
+  assert.deepEqual(copy.stats,preset.stats);
+  assert.equal(copy.actions.length,preset.actions.length);
 });

@@ -4,7 +4,7 @@ for(const f of ['kernel','components','rules','content','status-runtime','formul
 const N=global.NCB;
 test('v3 deterministic, canonical actions, schema and JSON roundtrip',()=>{
   for(let i=0;i<80;i++){
-    const opts={seed:'v3-test-'+i,level:37,rarity:'A'};
+    const opts={seed:'v3-test-'+i,level:37,rarity:'A',generatorVersion:3};
     const c=N.generateCardByVersion(opts);
     assert.equal(c.generatorVersion,3);assert.deepEqual(c,N.generateCardV3(opts));
     assert.ok(c.actions.length>=2&&c.actions.length<=6);

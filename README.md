@@ -7,16 +7,18 @@
 **当前产品：Simple Outside, Deep Inside。** 极简黑白卡牌 + 高维数值内核 + AI 自动观战 + 自由创造沙盒。
 
 核心循环：**直接选两张系统预设开战**，或创造自己的卡 → 保存 → 选择左右双方 → 开始自动对战 → 观察 → 修改或换卡 → 再战。
-内置 14 张系统预设（7 定位 × 2、覆盖 12 档稀有度、Lv.10–100），开箱即可玩，无需先建卡。预设为只读，可对战 / 复制到「我的卡牌」。
+内置 **60 张系统预设**（12 档稀有度 × 精确 5 张、全面覆盖 Lv.10–100，每个等级带 ≥4 张），开箱即可玩，无需先建卡。预设为只读，可对战 / 复制到「我的卡牌」。
 默认 1 VS 1，双方使用同一个 canonical utility AI。暂停、继续、下一步、1×/2×/4× 与重开直接可用；
 1–6 人数参数与手动接管收在高级区域。没有经验、货币、升级、抽卡、关卡或解锁；等级只是 1–100 的自由生成参数。
 
-卡面上的 **「战力」是玩家观察卡牌综合实力的参考数值**（复用 canonical BattlePower），**不参与**任何战斗计算。对战中每个实体单独显示稀有度 / 等级 / 战力。
+卡面上的 **「战力」是玩家观察卡牌综合实力的参考数值**（BattlePower v2，展示/诊断用），**不参与**任何战斗计算。对战中每个实体单独显示稀有度 / 等级 / 战力。
 
-Generator v3 独立组合 2–6 个 Action，保留 v1/v2 显式版本复现。攻击只是 Action 的一种，允许多治疗、多护盾、纯状态和没有直接伤害的卡。
+**Generator v4 完全取消职业**：先生成一个独立的随机个体 → 几十个真实变量共同决定它的战斗表现 → 事后用 Behavior Analyzer 描述特点（如「高波动 · 后期成长 · 吸血」）。攻击只是 Action 的一种，允许多治疗、多护盾、纯状态和没有直接伤害的卡。
+**Battle Wear / 战斗损耗**让治疗互打的长局也自然收敛，几乎不会拖到 maxRounds 平局。
 数值、行动、资源、状态和公式可在卡牌的「编辑」中修改完整 JSON，保存前校验。高级实验室保留数值编辑、批量模拟、组件目录、Trace 和 Replay。
+移动端观战按**事件逐帧**讲故事：血条逐事件同步、每实体单浮动数字队列、暂停/单步/1×/2×/4×。
 
-参阅 [Generator v3](docs/GENERATOR-V3.md) 与 [本轮验证报告](docs/GENERATOR-V3-REPORT.md)。
+参阅 [Generator v4](docs/GENERATOR-V4.md) 与 [本轮验证报告](docs/GENERATOR-V4-REPORT.md)。历史 Generator v3 见 [GENERATOR-V3.md](docs/GENERATOR-V3.md)。
 
 ## 直接运行
 
@@ -34,12 +36,16 @@ python -m http.server 8765
 
 - 1–6 vs 1–6 同时在场，支持不对称人数；默认玩家向 **1 VS 1**（更多对战设置可调 1–6）。
 - 20 个示例实体、63 个示例技能、33 个状态；它们只是组件语言的示范组合，不是引擎上限。
-- **生成卡牌（Generator v3）**：12 档稀有度、任意整数等级 1..100、7 种概率偏好、
-  确定性中文名称、2–6 个可变行动、复合效果、条件、资源循环与状态事件程序。
-- **战力评分（BattlePower）**：1v1 通用强度排序指标（v1.2.3 口径，唯一模型注册表 + NEW FINAL holdout 独立验证），
-  3 个主评分维度（进攻/生存/节奏）+ 4 个诊断维度（续航/功能/经济/稳定），
-  复用引擎期望值数学；作为历史诊断工具，不出现在普通卡面，也不约束 Generator v3。
-- **卡牌库**：本地持久化，可查看/选择/删除/同种子再生成/复制种子/改名。
+- **生成卡牌（Generator v4，Classless）**：12 档稀有度、任意整数等级 1..100、无职业先验、
+  连续随机预算分配、2–6 个可变行动、个体级随机（VOLATILITY/LUCK）、时间成长/疲劳（RAMP/FATIGUE/ENDURANCE）、
+  Battle Wear 长局收敛、确定性中文名称、复合效果、条件、资源循环与状态事件程序。默认派发 v4；
+  显式 `generatorVersion: 1|2|3` 仍逐字节复现历史版本。
+- **Behavior Analyzer（特征分析器）**：生成完成后事后分析卡牌特点（2–4 标签 + 一句话摘要），
+  取代职业展示；纯 Presentation，不参与生成与 AI 决策。
+- **战力评分（BattlePower v2）**：静态递归机制抽取 + generationBudget 锚定的通用强度参考；
+  同 seed/同 level 12 档稀有度 BP 严格递增、level 梯子递增、大差距不平塌；仅展示/诊断，引擎零引用。
+- **卡牌库 + 选择器**：本地持久化；Card Browser 全屏选卡（稀有度 chips / 任意等级区间 / 特点标签 / 名称&行动搜索、
+  12 张分批渲染、详情直选左右），替换长下拉；可查看/选择/删除/同种子再生成/复制种子/改名。
 - 90+ 个有文档的通用数值/规则旋钮，涵盖 Stat、资源、命中、暴击、随机伤害、穿透、复合伤害、抗性、亲和、护符、状态、目标查询、事件 Modifier、Trigger、持续技能等。
 - 8 种注册式 Damage Type；可通过插件增加新类型。
 - 复合 Damage Packet：一个伤害效果可包含多个 Damage Component，每个分量独立拥有类型、公式、倍率、随机区间、防御轴、穿透、抗性绕过、最小/最大伤害等。
@@ -97,12 +103,13 @@ npm run verify
 
 `verify` 会重新生成组件目录、执行全部 Node 行为测试和静态架构门禁。静态门禁拒绝：canonical `Math.random()`、`eval/new Function`、外部 runtime script、角色/状态 ID 泄漏进 Engine、遗留硬编码公式 fallback、无 resolver 的 Effect，以及无效内置内容。
 
-## v3 验证与诊断
+## v4 验证与诊断
 
-- `npm test`：规则正确性、legacy fixture、Action、AI、生成多样性、稀有度方向与安全边界。
-- `npm run verify`：测试、内容目录和静态架构/清单检查。
-- `npm run diversity`：生成 3000 张卡，将覆盖统计写入 `qa/diversity-v3.json`。
-- `npm run verify:release`：verify + diversity；不再运行竞技公平性门禁。
-- `npm run diagnostics:legacy`：旧 v2 健康、相邻稀有度、BattlePower 与公平性诊断，保留旧工具自身退出码，不作为 v3 发布阻断。
-
-仓库清单按 Git 暂存区内容生成。提交新文件或修改后，先暂存明确的本轮文件，再运行 `npm run manifest`，暂存更新的清单并执行 `npm run verify`。
+- `npm test`：规则正确性、legacy fixture（v1/v2/v3）、Action、AI、生成多样性、稀有度/等级方向、安全边界、v4 契约与预设。
+- `npm run verify`：测试、内容目录和静态架构/清单检查（manifest 覆盖全部 tracked 文件）。
+- `npm run diversity:v4`：生成 10,000 张 v4 卡，将覆盖统计写入 `qa/diversity-v4.json`。
+- `npm run calibration:v4`：BattlePower v2 与 canonical AI 实战实力的经验校准 → `qa/power-v4-calibration.json`（Spearman / pairwise / rarity 中位数趋势）。
+- `node scripts/audit-v4-battles.js 3000`：3000 场随机 1v1 长局统计 → `qa/v4-long-battles.json`（maxRounds rate / 回合分位）。
+- `node scripts/audit-v4-presets.js`：60 张预设对手面板实战审计 → `qa/v4-preset-audit.json` + `docs/V4-PRESET-TABLE.md`。
+- `node qa/browser-v4.js`：Playwright 真实 Chromium 手机 390×844 + 桌面流程与截图 → `qa/browser-v4.json`。
+- `npm run verify:release`：verify + `npm run diversity`。仓库清单按 Git 暂存区内容生成；提交新文件后先 `npm run manifest`。

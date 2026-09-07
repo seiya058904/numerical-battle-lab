@@ -50,16 +50,17 @@ function audit(n=10000){
     if(i%40===0){
       const opp=N.generateCardV4({seed:'div4-opp-'+i,rarity:'A',level:50});
       N.deployCard(c);N.deployCard(opp);
-      const e=N.createBattle({seed:N.deriveSeed(90000+i),teamA:[c.id],teamB:[opp.id],maxRounds:80});
-      let g=0;while(!e.outcome().ended&&g++<80)e.resolveRound([...N.planAI(e,'A'),...N.planAI(e,'B')]);
-      if(e.outcome().winner==='draw')maxRoundsRate++;
+      const e=N.createBattle({seed:N.deriveSeed(90000+i),teamA:[c.id],teamB:[opp.id],maxRounds:100});
+      let g=0;while(!e.outcome().ended&&g++<100)e.resolveRound([...N.planAI(e,'A'),...N.planAI(e,'B')]);
+      if(e.history.length>=100)maxRoundsRate++;
+      require('./audit-v4-battles').undeploy(c);require('./audit-v4-battles').undeploy(opp);
     }
   }
   return{samples:n,classless,actionCounts:counts,effectCoverage:effects,conditionCoverage:conditions,eventCoverage:events,
     damageTypeCoverage:damageTypes,resourceCoverage:resources,statusInteractionCoverage:statuses,targetCoverage:targets,
     triggerCoverage:triggers,behaviorTags:tags,timeProfiles,volatilityBands:volBands,uniqueFingerprints:fingerprints.size,
     duplicateRate:1-fingerprints.size/n,nonDamage,multiHeal,multiShield,multiStatus,rarityDistribution:rarityDist,levelBuckets,
-    convergenceProbes:Math.floor(n/40),maxRoundsDraws:maxRoundsRate};
+    convergenceProbes:Math.ceil(n/40),maxRoundsDraws:maxRoundsRate};
 }
 if(require.main===module){const report=audit(Number(process.argv[2])||10000);fs.mkdirSync(path.join(__dirname,'../qa'),{recursive:true});fs.writeFileSync(path.join(__dirname,'../qa/diversity-v4.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));}
 module.exports={audit};

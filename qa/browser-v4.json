@@ -1,0 +1,460 @@
+{
+  "browser": "Installed Chrome via Playwright; Browser plugin not available",
+  "checks": [
+    {
+      "name": "page identity",
+      "pass": true
+    },
+    {
+      "name": "no main card select",
+      "pass": true
+    },
+    {
+      "name": "initial 12 cards",
+      "pass": true
+    },
+    {
+      "name": "candidate has metadata",
+      "pass": true
+    },
+    {
+      "name": "rarity filter",
+      "pass": true
+    },
+    {
+      "name": "combined rarity and level",
+      "pass": true
+    },
+    {
+      "name": "name search",
+      "pass": true
+    },
+    {
+      "name": "action search",
+      "pass": true
+    },
+    {
+      "name": "behavior intersection",
+      "pass": true
+    },
+    {
+      "name": "clear all",
+      "pass": true
+    },
+    {
+      "name": "load next batch",
+      "pass": true
+    },
+    {
+      "name": "detail opened",
+      "pass": true
+    },
+    {
+      "name": "detail returns with page size",
+      "pass": true
+    },
+    {
+      "name": "detail selects left",
+      "pass": true
+    },
+    {
+      "name": "right selects",
+      "pass": true
+    },
+    {
+      "name": "picker no overflow",
+      "pass": true
+    },
+    {
+      "name": "battle starts",
+      "pass": true
+    },
+    {
+      "name": "pause holds display",
+      "pass": true
+    },
+    {
+      "name": "step advanced",
+      "pass": true
+    },
+    {
+      "name": "step stops after group",
+      "pass": true
+    },
+    {
+      "name": "1x control",
+      "pass": true
+    },
+    {
+      "name": "2x control",
+      "pass": true
+    },
+    {
+      "name": "4x control",
+      "pass": true
+    },
+    {
+      "name": "all observed frame HP match captured engine state",
+      "pass": true
+    },
+    {
+      "name": "damage and healing frames observed",
+      "pass": true
+    },
+    {
+      "name": "final display equals final engine",
+      "pass": true
+    },
+    {
+      "name": "battle no overflow",
+      "pass": true
+    },
+    {
+      "name": "desktop no overflow",
+      "pass": true
+    },
+    {
+      "name": "file protocol loads",
+      "pass": true
+    },
+    {
+      "name": "console healthy",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "performance": {
+    "initialLoadMs": 67.79999995231628,
+    "pickerOpenMs": 55,
+    "battleStartMs": 20,
+    "frameIntervalsMs": [
+      610,
+      607,
+      614,
+      604,
+      2496,
+      154,
+      156,
+      156,
+      157,
+      154,
+      152,
+      156,
+      21,
+      154,
+      156,
+      156,
+      24,
+      151,
+      154,
+      152,
+      156,
+      157,
+      156,
+      156,
+      21,
+      153,
+      151,
+      156,
+      156,
+      156,
+      156,
+      156,
+      22,
+      154,
+      156,
+      157,
+      24,
+      158,
+      156,
+      156,
+      156,
+      156,
+      156,
+      156,
+      23,
+      152,
+      156,
+      156,
+      156,
+      156,
+      156,
+      155,
+      22
+    ]
+  },
+  "timeline": {
+    "mismatches": [],
+    "observed": [
+      {
+        "index": 1,
+        "time": 1028,
+        "kind": "action"
+      },
+      {
+        "index": 2,
+        "time": 1638.2000000476837,
+        "kind": "damage"
+      },
+      {
+        "index": 3,
+        "time": 2245.4000000953674,
+        "kind": "damage"
+      },
+      {
+        "index": 4,
+        "time": 2859.7000000476837,
+        "kind": "damage"
+      },
+      {
+        "index": 5,
+        "time": 3464
+      },
+      {
+        "index": 6,
+        "time": 5960.200000047684,
+        "kind": "action"
+      },
+      {
+        "index": 7,
+        "time": 6114,
+        "kind": "damage"
+      },
+      {
+        "index": 8,
+        "time": 6270.200000047684,
+        "kind": "heal"
+      },
+      {
+        "index": 9,
+        "time": 6426.200000047684,
+        "kind": "damage"
+      },
+      {
+        "index": 10,
+        "time": 6582.800000071526,
+        "kind": "heal"
+      },
+      {
+        "index": 11,
+        "time": 6737,
+        "kind": "damage"
+      },
+      {
+        "index": 12,
+        "time": 6889.200000047684,
+        "kind": "heal"
+      },
+      {
+        "index": 13,
+        "time": 7045.5
+      },
+      {
+        "index": 14,
+        "time": 7066.600000023842,
+        "kind": "resource-change"
+      },
+      {
+        "index": 15,
+        "time": 7220.300000071526,
+        "kind": "resource-change"
+      },
+      {
+        "index": 16,
+        "time": 7375.900000095367,
+        "kind": "system"
+      },
+      {
+        "index": 17,
+        "time": 7532.100000023842
+      },
+      {
+        "index": 18,
+        "time": 7556.400000095367,
+        "kind": "action"
+      },
+      {
+        "index": 19,
+        "time": 7707.800000071526,
+        "kind": "damage"
+      },
+      {
+        "index": 20,
+        "time": 7861.900000095367,
+        "kind": "heal"
+      },
+      {
+        "index": 21,
+        "time": 8014.300000071526,
+        "kind": "damage"
+      },
+      {
+        "index": 22,
+        "time": 8170.200000047684,
+        "kind": "heal"
+      },
+      {
+        "index": 23,
+        "time": 8326.800000071526,
+        "kind": "damage"
+      },
+      {
+        "index": 24,
+        "time": 8482.700000047684,
+        "kind": "heal"
+      },
+      {
+        "index": 25,
+        "time": 8639
+      },
+      {
+        "index": 26,
+        "time": 8659.800000071526,
+        "kind": "action"
+      },
+      {
+        "index": 27,
+        "time": 8813.100000023842,
+        "kind": "damage"
+      },
+      {
+        "index": 28,
+        "time": 8964.200000047684,
+        "kind": "heal"
+      },
+      {
+        "index": 29,
+        "time": 9120.600000023842,
+        "kind": "damage"
+      },
+      {
+        "index": 30,
+        "time": 9276.800000071526,
+        "kind": "heal"
+      },
+      {
+        "index": 31,
+        "time": 9433.100000023842,
+        "kind": "damage"
+      },
+      {
+        "index": 32,
+        "time": 9589.400000095367,
+        "kind": "heal"
+      },
+      {
+        "index": 33,
+        "time": 9745.200000047684
+      },
+      {
+        "index": 34,
+        "time": 9766.700000047684,
+        "kind": "resource-change"
+      },
+      {
+        "index": 35,
+        "time": 9920.300000071526,
+        "kind": "resource-change"
+      },
+      {
+        "index": 36,
+        "time": 10076.600000023842,
+        "kind": "system"
+      },
+      {
+        "index": 37,
+        "time": 10233.100000023842
+      },
+      {
+        "index": 38,
+        "time": 10256.800000071526,
+        "kind": "action"
+      },
+      {
+        "index": 39,
+        "time": 10414.300000071526,
+        "kind": "damage"
+      },
+      {
+        "index": 40,
+        "time": 10570.5,
+        "kind": "heal"
+      },
+      {
+        "index": 41,
+        "time": 10726.800000071526,
+        "kind": "damage"
+      },
+      {
+        "index": 42,
+        "time": 10883.100000023842,
+        "kind": "heal"
+      },
+      {
+        "index": 43,
+        "time": 11039.400000095367,
+        "kind": "damage"
+      },
+      {
+        "index": 44,
+        "time": 11195.700000047684,
+        "kind": "heal"
+      },
+      {
+        "index": 45,
+        "time": 11351.800000071526
+      },
+      {
+        "index": 46,
+        "time": 11375,
+        "kind": "action"
+      },
+      {
+        "index": 47,
+        "time": 11526.600000023842,
+        "kind": "damage"
+      },
+      {
+        "index": 48,
+        "time": 11683,
+        "kind": "heal"
+      },
+      {
+        "index": 49,
+        "time": 11839.200000047684,
+        "kind": "damage"
+      },
+      {
+        "index": 50,
+        "time": 11995.5,
+        "kind": "heal"
+      },
+      {
+        "index": 51,
+        "time": 12151.900000095367,
+        "kind": "damage"
+      },
+      {
+        "index": 52,
+        "time": 12308,
+        "kind": "heal"
+      },
+      {
+        "index": 53,
+        "time": 12463.200000047684
+      },
+      {
+        "index": 54,
+        "time": 12484.900000095367
+      }
+    ],
+    "hp": [
+      183,
+      132
+    ],
+    "end": {
+      "ended": true,
+      "winner": "draw"
+    }
+  }
+}

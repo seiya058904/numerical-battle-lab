@@ -39,7 +39,7 @@ for(const marker of ['data-tab="battle"','data-tab="editor"','data-tab="simulati
 
 // ---- Release metadata / manifest audit (review fix 6) ----
 // package.json.version === RELEASE-MANIFEST.json.version === current release version.
-const RELEASE_VERSION='1.2.3';
+const RELEASE_VERSION='1.3.0';
 const pkgMeta=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const manifestMeta=JSON.parse(fs.readFileSync(path.join(root,'RELEASE-MANIFEST.json'),'utf8'));
 if(pkgMeta.version!==RELEASE_VERSION)throw new Error(`package.json version ${pkgMeta.version} != release ${RELEASE_VERSION}`);

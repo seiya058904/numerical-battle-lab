@@ -18,6 +18,7 @@
     constructor(config) {
       this.config = {seed:config.seed || 'gen5,1,2,3,4', teamA:config.teamA.slice(), teamB:config.teamB.slice()};
       this.config.maxRounds = Number.isInteger(config.maxRounds) && config.maxRounds > 0 ? Math.min(config.maxRounds,1000) : 100;
+      this.config.rulesVersion=config.rulesVersion??([...config.teamA,...config.teamB].some(id=>NCB.UNIT_DEFS[id]?.stats?.ENDURANCE!==undefined)?4:3);
       this.prng = new NCB.Gen5PRNG(this.config.seed);
       this.round = 1;
       this.log = [];
@@ -31,6 +32,8 @@
       };
       this.kernel = new NCB.EventKernel({maxDepth:48, discover:(target,event,source)=>this.discoverHandlers(target,event,source)});
       this.processRoundStart(true);
+      this.presentationFrames=config.capturePresentation?[]:null;this.presentationGroup=0;this.presentationIndex=0;
+      this.captureFrame(null);
     }
     buildTeam(teamId, ids) {
       return {id:teamId, entities:ids.map((templateId,i)=>{
@@ -113,7 +116,7 @@
     }
     setResource(entityOrId,resource,value){
       const e=typeof entityOrId==='string'?this.entity(entityOrId):entityOrId;const id=String(resource||'').toUpperCase();const max=this.resourceMax(e,id);const next=clamp(Number(value)||0,0,max);
-      if(id==='ENERGY')e.energy=next;else if(id==='HP'){e.hp=next;this.defeatIfNeeded(e);}else e.stats[id]=next;return next;
+      const before=this.getResource(e,id);if(id==='ENERGY')e.energy=next;else if(id==='HP'){e.hp=next;this.defeatIfNeeded(e);}else e.stats[id]=next;if(before!==next)this.captureFrame({kind:id==='HP'?'hp-cost':'resource-change',targetId:e.id,amount:next-before,text:`${e.name} ${id} ${next-before>0?'+':''}${round2(next-before)}`});return next;
     }
     changeResource(entityOrId,resource,delta,data={}){const e=typeof entityOrId==='string'?this.entity(entityOrId):entityOrId;const id=String(resource||'').toUpperCase();let amount=Number(delta||0);if(amount>0)amount=Number(this.kernel.run('ModifyResourceGain',e,amount,null,{resource:id,...data}));return this.setResource(e,id,this.getResource(e,id)+amount);}
     skillCosts(entityOrSkill,maybeSkill){
@@ -163,7 +166,13 @@
       return true;
     }
     removeStatus(targetId,statusId,sourceId){const e=this.entity(targetId),inst=e.statuses.find(s=>s.id===statusId);if(!inst)return false;e.statuses=e.statuses.filter(s=>s.id!==statusId);this.pushLog({kind:'status-remove',targetId,statusId,text:`${e.name} 移除 ${NCB.STATUS_DEFS[statusId]?.name||statusId}`});const entry=this.log[this.log.length-1];let source=null;if(sourceId){try{source=this.entity(sourceId);}catch(_){}}this.runStatusTriggers('afterStatusRemoved',e,source,{eventId:entry.id,statusId,stacks:inst.stacks,tags:NCB.STATUS_DEFS[statusId]?.tags||[]});return true;}
-    pushLog(entry){this.log.push({id:++this.seq,round:this.round,...entry});}
+    pushLog(entry){this.log.push({id:++this.seq,round:this.round,...entry});this.captureFrame(this.log[this.log.length-1]);}
+    presentationSnapshot(){return {round:this.round,teams:Object.fromEntries(['A','B'].map(t=>[t,{id:t,entities:this.teams[t].entities.map(e=>({...NCB.deepClone(e),displayStats:Object.fromEntries(['ATK','DEF','SPD','CRIT'].map(k=>[k,this.getStat(e.id,k)]))}))}])),outcome:this.outcome(),logLength:this.log.length};}
+    captureFrame(row){if(!this.presentationFrames)return;const snapshot=this.presentationSnapshot();const previous=this._lastPresentation;let displayRow=row?NCB.deepClone(row):null;
+      if(displayRow&&previous&&['shield','ward'].includes(displayRow.kind)){const target=id=>Object.values(snapshot.teams).flatMap(t=>t.entities).find(e=>e.id===id),before=Object.values(previous.teams).flatMap(t=>t.entities).find(e=>e.id===row.targetId),after=target(row.targetId);if(before&&after)displayRow.displayAmount=row.kind==='shield'?after.shield-before.shield:(after.wards[row.damageType]||0)-(before.wards[row.damageType]||0);}
+      this.presentationFrames.push({index:this.presentationIndex++,group:this.presentationGroup,row:displayRow,snapshot});this._lastPresentation=snapshot;}
+
+
     runStatusTriggers(eventName,subject,other,payload={}){
       if(!subject)return;
       const parent=this._procContext;
@@ -208,8 +217,8 @@
       const source=sourceId?this.entity(sourceId):null,target=this.entity(targetId);if(target.hp<=0)return{hpDamage:0,shieldDamage:0,wardDamage:0,total:0};
       let v=Math.max(0,Number(amount));const trace=[`${traceLabel}: ${round2(v)}`];
       if(source){const out=Number(this.kernel.run('ModifyDamageDealt',source,v,target,{tags}));if(out!==v)trace.push(`输出修正: ${round2(v)} → ${round2(out)}`);v=out;}
-      const inc=Number(this.kernel.run('ModifyDamageTaken',target,v,source,{tags}));if(inc!==v)trace.push(`承伤修正: ${round2(v)} → ${round2(inc)}`);v=inc;
-      v=Math.max(0,Math.floor(v));const resolvedType=damageType||tags.find(tag=>NCB.DAMAGE_TYPES?.[tag])||null;let wardDamage=0;if(resolvedType&&target.wards){const pool=Math.max(0,Number(target.wards[resolvedType]||0));wardDamage=Math.min(pool,v);if(wardDamage){target.wards[resolvedType]=pool-wardDamage;v-=wardDamage;trace.push(`${NCB.DAMAGE_TYPES[resolvedType]?.name||resolvedType}护符吸收: ${wardDamage}`);}}let shieldDamage=0;
+      const inc=tags.includes('wear')?v:Number(this.kernel.run('ModifyDamageTaken',target,v,source,{tags}));if(inc!==v)trace.push(`承伤修正: ${round2(v)} → ${round2(inc)}`);v=inc;
+      v=Math.max(0,Math.floor(v));const resolvedType=damageType||tags.find(tag=>NCB.DAMAGE_TYPES?.[tag])||null;let wardDamage=0;if(!tags.includes('wear')&&resolvedType&&target.wards){const pool=Math.max(0,Number(target.wards[resolvedType]||0));wardDamage=Math.min(pool,v);if(wardDamage){target.wards[resolvedType]=pool-wardDamage;v-=wardDamage;trace.push(`${NCB.DAMAGE_TYPES[resolvedType]?.name||resolvedType}护符吸收: ${wardDamage}`);}}let shieldDamage=0;
       // Battle Wear (exhaustion) bypasses shields — it is fatigue, not an attack.
       if(!tags.includes('wear')){shieldDamage=Math.min(target.shield,v);if(shieldDamage){target.shield-=shieldDamage;v-=shieldDamage;trace.push(`屏障吸收: ${shieldDamage}`);}}
       const hpDamage=Math.min(target.hp,v);target.hp-=hpDamage;const total=wardDamage+shieldDamage+hpDamage;trace.push(`HP 伤害: ${hpDamage}`);
@@ -331,7 +340,7 @@
     wearStart(e){const end=Number(e.stats?.ENDURANCE??50);return 18+end*0.34;}
     wearHealFactor(e){return Math.max(0.05,1-Math.min(0.95,(e._wear||0)*1.4));}
     applyBattleWear(){
-      if(this._effectWork&&this._effectWork>8192)return;
+      if(this.config.rulesVersion<4)return;
       for(const teamId of ['A','B'])for(const e of this.teams[teamId].entities){
         if(e.hp<=0)continue;
         const start=this.wearStart(e),round=this.round;
@@ -341,7 +350,8 @@
         e._wear=Math.min(1,(e._wear||0)+step);
         // terminal pressure 1: irrecoverable max-HP decay (hp follows maxHp down)
         if(e._maxHpBase===undefined)e._maxHpBase=e.maxHp;
-        const newMax=Math.max(e._maxHpBase*0.5,Math.round(e._maxHpBase*(1-Math.min(0.5,e._wear))));
+        const terminal=Math.max(0,round-start-12);
+        const newMax=Math.max(1,Math.round(e._maxHpBase*Math.max(0,1-terminal/(20+Number(e.stats.ENDURANCE??50)*.06))));
         if(newMax!==e.maxHp){
           const before=e.maxHp;e.maxHp=newMax;
           if(e.hp>e.maxHp)e.hp=e.maxHp;
@@ -353,7 +363,7 @@
       }
     }
     orderActions(actions){const normalized=[];for(const [i,a] of actions.entries()){let actor;try{actor=this.entity(a.actorId);}catch{continue;}if(actor.hp<=0)continue;const skill=NCB.SKILL_DEFS[a.skillId];if(!skill)continue;const basePriority=a.overridePriority??skill.priority??0;const priority=Number(this.kernel.run('ModifyPriority',actor,basePriority,null,{skill,action:a}));normalized.push({...a,id:`r${this.round}-${i}`,order:200,priority,speed:this.getStat(actor.id,'SPD')});}return NCB.sortActions(normalized,this.prng);}
-    resolveRound(actions){if(this.outcome().ended)return;this._effectWork=0;const ordered=this.orderActions(actions);const record=actions.map(a=>({...a}));for(const a of ordered){if(this.outcome().ended)break;this.useSkill(a);}this.processTurnEnd();this.history.push(record);if(!this.outcome().ended){this.round++;this.processRoundStart(false);}return this.outcome();}
+    resolveRound(actions){if(this.outcome().ended)return;this._effectWork=0;const ordered=this.orderActions(actions);const record=actions.map(a=>({...a}));for(const a of ordered){if(this.outcome().ended)break;this.presentationGroup++;this.useSkill(a);this.captureFrame(null);}this.presentationGroup++;this.processTurnEnd();this.history.push(record);if(!this.outcome().ended){this.round++;this.processRoundStart(false);}this.captureFrame(null);return this.outcome();}
     outcome(){const a=this.getLiving('A').length,b=this.getLiving('B').length;if(a&&b)return this.history.length>=this.config.maxRounds?{ended:true,winner:'draw'}:{ended:false};if(!a&&!b)return{ended:true,winner:'draw'};return{ended:true,winner:a?'A':'B'};}
     serializableSnapshot(){return{seed:this.config.seed,rng:this.prng.getSeed(),round:this.round,teams:Object.fromEntries(['A','B'].map(t=>[t,this.teams[t].entities.map(e=>({id:e.id,templateId:e.templateId,hp:e.hp,maxHp:e.maxHp,shield:e.shield,energy:e.energy,stats:{...e.stats},statuses:e.statuses.map(s=>({...s,data:s.data?{...s.data}:undefined})),cooldowns:{...e.cooldowns},alive:e.alive,wards:{...(e.wards||{})},resistances:{...e.resistances},affinities:{...e.affinities},immunities:{...e.immunities},tags:[...(e.tags||[])],wear:e._wear||0}))])),outcome:this.outcome(),log:this.log.map(x=>({...x,trace:x.trace?x.trace.slice():undefined}))};}
     exportReplay(){
@@ -361,7 +371,7 @@
       for(const id of [...this.config.teamA,...this.config.teamB]){units[id]=NCB.UNIT_DEFS[id];for(const actionId of units[id].skills)skills[actionId]=NCB.SKILL_DEFS[actionId];}
       const visit=value=>{if(!value||typeof value!=='object')return;if(value.status&&NCB.STATUS_DEFS[value.status]&&!statuses[value.status]){statuses[value.status]=NCB.STATUS_DEFS[value.status];visit(statuses[value.status]);}for(const child of Object.values(value))if(child&&typeof child==='object')visit(child);};
       visit(units);visit(skills);
-      return{version:2,content:NCB.deepClone({units,skills,statuses}),maxRounds:this.config.maxRounds,seed:this.config.seed,teamA:this.config.teamA.slice(),teamB:this.config.teamB.slice(),rounds:this.history.map(r=>r.map(a=>({...a})))};
+      return{version:2,rulesVersion:this.config.rulesVersion,content:NCB.deepClone({units,skills,statuses}),maxRounds:this.config.maxRounds,seed:this.config.seed,teamA:this.config.teamA.slice(),teamB:this.config.teamB.slice(),rounds:this.history.map(r=>r.map(a=>({...a})))};
     }
   }
 
@@ -383,7 +393,7 @@
     let perHit=0;
     for(const c of defs){
       const formula=c.formula||effect.formula||skill.formula;
-      const varianceMin=Number(c.varianceMin??effect.varianceMin??skill.varianceMin??1),varianceMax=Number(c.varianceMax??effect.varianceMax??skill.varianceMax??1);const expectedVariance=(varianceMin+varianceMax)/2;
+      const varianceMin=Number(c.varianceMin??effect.varianceMin??skill.varianceMin??1),varianceMax=Number(c.varianceMax??effect.varianceMax??skill.varianceMax??1);const vol=Number(actor.stats?.VOLATILITY??1),luck=Number(actor.stats?.LUCK??0),half=(varianceMax-varianceMin)/2*vol;const u=luck>=0?(1+luck)/(2+luck):1/(2-luck);const expectedVariance=(varianceMin+varianceMax)/2-half+2*half*u;
       const base=Math.max(0,evalFormula(formula,scope))*Number(c.multiplier??1)*Number(effect.spreadMultiplier??skill.spreadMultiplier??1)*expectedCrit*expectedVariance;
       perHit+=engine.previewDamageComponent(actor.id,target.id,{type:c.type||effect.damageType||skill.damageType||'physical',amount:base,penetration:c.penetration??basePen,typePenetration:c.typePenetration??Number(skill.typePenetrationBonus||0)/100,ignoreDefense:c.ignoreDefense??effect.ignoreDefense??skill.ignoreDefense,ignoreResistance:c.ignoreResistance??effect.ignoreResistance??skill.ignoreResistance,defenseStat:c.defenseStat??effect.defenseStat??skill.defenseStat,minDamage:c.minDamage??effect.minDamage??skill.minDamage,maxDamage:c.maxDamage??effect.maxDamage??skill.maxDamage}).finalDamage;
     }
@@ -456,7 +466,7 @@
     const v=NCB.validateContentPack(replay.content);if(!v.ok)throw new Error(v.errors.join('\n'));
     Object.assign(NCB.UNIT_DEFS,NCB.deepClone(replay.content.units));Object.assign(NCB.SKILL_DEFS,NCB.deepClone(replay.content.skills));Object.assign(NCB.STATUS_DEFS,NCB.deepClone(replay.content.statuses));
   }
-  function replayBattle(replay){restoreReplayContent(replay);const e=createBattle({seed:replay.seed,teamA:replay.teamA,teamB:replay.teamB,maxRounds:replay.maxRounds});for(const r of replay.rounds){if(e.outcome().ended)break;e.resolveRound(r);}return e;}
+  function replayBattle(replay){restoreReplayContent(replay);const e=createBattle({seed:replay.seed,teamA:replay.teamA,teamB:replay.teamB,maxRounds:replay.maxRounds,rulesVersion:replay.rulesVersion});for(const r of replay.rounds){if(e.outcome().ended)break;e.resolveRound(r);}return e;}
 
   function runSimulation(opts){
     const battles=Math.max(1,Math.min(5000,opts.battles||100));

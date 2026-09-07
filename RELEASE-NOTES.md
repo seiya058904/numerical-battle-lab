@@ -1,4 +1,4 @@
-# Release Notes — v1.2.3
+# Release Notes — v1.3.0
 
 `数值对战实验室` is a fully offline, single-player, deterministic, multi-entity turn-based numerical combat system presented as a card-style web interface.
 
@@ -9,6 +9,54 @@ Cards are presentation only. The engine works with generic combat entities and a
 `Formula + Modifier + Effect + Condition + Target + Event + Status + Resource + Damage Component`.
 
 Ordinary content is composed from registered primitives and parameters instead of character-specific engine branches.
+
+---
+
+## v1.3.0 — Generator v4 · Classless Dynamic Generation + Mobile Storyboard
+
+本轮是一次方向重构：**不要生成一个“职业”，要生成一个“个体”。** v1.2.3 的核心内核与
+legacy 全部保留；v4 作为新增默认生成器上线。
+
+### 1. 完全取消职业（§3–6）
+
+- v4 生成无 `archetype` 输入；Primary 用**连续随机预算分配**（五维权重归一化到精确预算）。
+- Action family 加权只依赖已生成真实数值（CRIT / HEAL_POWER / DEF / ENERGY_REGEN…），概率相关、永不白名单。
+- legacy v1/v2/v3 逐字节复现不变（`generateCardByVersion(1|2|3)`）。
+
+### 2. 个体级随机与时间变量（§8–13）
+
+- 新增真实进入战斗的 `ENDURANCE / RAMP_START/RATE/CAP / FATIGUE_START/RATE/CAP`，及 `VOLATILITY / LUCK`。
+- Formula scope 增加 `ROUND / BATTLE_TURN`（安全白名单，无 eval）。
+- 10000 卡时间画像：stable 1799 · fatigue 3833 · ramp 2746 · mixed 1622。
+
+### 3. Battle Wear 长局收敛（§14–19）
+
+- 受疗效率随磨损下降 + 约 12 回合后不可完全恢复的血量衰减；wear 穿透护盾/护符。
+- 3000 场随机 1v1：**maxRounds rate 0%**（目标 <1%）；heal-vs-heal 不再普遍无限。
+- legacy 回放经 `rulesVersion` 隔离，v1/v2/v3 完全不变。
+
+### 4. Behavior Analyzer 取代职业（§29–32）
+
+- 事后分析输出 2–4 标签 + 一句话摘要；纯 Presentation，不参与生成与 AI 决策。
+- 旧 v3 卡同样用其描述（不再显示职业字符）。
+
+### 5. BattlePower v2（§20–27）
+
+- 静态递归机制抽取 + generationBudget 锚定；同 seed/Lv50 12 档稀有度 BP 严格递增
+  （C 389 → XS典藏 2640），level 梯子递增，大差距不平塌。展示/诊断用，引擎零引用。
+- 经验校准（72 卡 / 1256 对）：Spearman 0.765、pairwise 0.807（未达建议 0.80/0.85，如实报告）。
+
+### 6. 60 张精选系统预设（补充 §Q–Z）
+
+- 9,600 候选 → 2,907 合格 → 60 张精选冻结为 `content/presets-v4.json`（12 rarity×5，
+  等级带全覆盖，每 rarity span≥72，含 low/high volatility 与时间差异，带 provenance/designNote）。
+- 无专属引擎代码；audit 420 场实战 errors 为空、无近重复、无 hard cap。
+
+### 7. Mobile Card Picker + Storyboard 观战（补充 §A–AB，§33–42）
+
+- 选卡从长 `<select>` 改为**全屏 Card Browser + 槽位**（稀有度 chips / 等级区间 / 特点标签 / 搜索、12 张分批、详情直选左右）。
+- 观战改为**原子 Presentation Timeline**：血条逐事件同步、每实体单浮动数字队列、暂停/单步/1×/2×/4×。
+- Playwright 390×844 + 桌面 30/30 项通过，无 overflow、无 console error，截图存档。
 
 ---
 

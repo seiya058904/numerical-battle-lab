@@ -3,6 +3,10 @@
 **Status:** v1.2.3 · BattlePower Release Consistency + Sustain Health Fix ·
 §24 完成判断 1-5 全满足 · competencies verified
 
+> **v1.3.0 更新**：本文档为历史 v1.2.3 报告。Generator v4（Classless Dynamic Generation）大版本重构的
+> 交付见 **[docs/GENERATOR-V4-REPORT.md](docs/GENERATOR-V4-REPORT.md)**；模块与脚本清单见
+> **[docs/GENERATOR-V4.md](docs/GENERATOR-V4.md)** 与 **[docs/V4-PRESET-TABLE.md](docs/V4-PRESET-TABLE.md)**。
+
 ## 1. 项目最终结构
 
 纯离线、单机、确定性的多实体回合制数值战斗系统。网页以“卡片”呈现实体，但卡牌只是

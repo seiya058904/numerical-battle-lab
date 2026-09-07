@@ -75,7 +75,7 @@
     ({engine,actor,target,skill,effect,ctx})=>engine.heal(actor.id,target.id,engine.evaluateFormula(effect.formula||skill.formula,actor,target,ctx),skill.name),
     ({engine,actor,target,skill,effect,ctx})=>{
       const raw=Math.max(0,engine.evaluateFormula(effect.formula||skill.formula,actor,target,ctx));
-      const final=raw*(engine.getStat(actor.id,'HEAL_POWER')/100)*(engine.getStat(target.id,'HEAL_TAKEN')/100);
+      const final=raw*(engine.getStat(actor.id,'HEAL_POWER')/100)*(engine.getStat(target.id,'HEAL_TAKEN')/100)*engine.wearHealFactor(target);
       const gained=Math.min(target.maxHp-target.hp,Math.max(0,final));
       return gained*(target.hp/target.maxHp<.35?1.5:1.08);
     }

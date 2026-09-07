@@ -1,12 +1,12 @@
 {
   "name": "numerical-card-battle",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "entry": "index.html",
   "runtime": "fully-offline-static-web",
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 202,
+  "verifiedTests": 243,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
@@ -25,28 +25,38 @@
     },
     {
       "path": "FINAL-REPORT.md",
-      "size": 13880,
-      "sha256": "4e092372f0968ca5f35723b44940b542ff647b0340eb4b5ad31030b85563b1e0"
+      "size": 14218,
+      "sha256": "0831704a1c022691495eb6b54874a6705ce4b297624efe8e5cd4286a12c4c581"
     },
     {
       "path": "QA-REPORT.md",
-      "size": 8502,
-      "sha256": "3e6bab0d5ef902b76f1b94ec23945187e320cd0ea04b6525c7a5b88cfa74f2f0"
+      "size": 8825,
+      "sha256": "9b4452e76bef2bcfa49cf87db4a9e977a0e811626014d8828aa7ec93559c7054"
     },
     {
       "path": "README.md",
-      "size": 8066,
-      "sha256": "5358c41f29c051f79d78611d41582fbfa01a4f226774de240ee790b2346e51a1"
+      "size": 9460,
+      "sha256": "9be3e479e484ec5500e00a0ed7b00969b9b0c9e117f41837039502ebb821286d"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "size": 15123,
-      "sha256": "13f61ad2f4f3cae32df90733424614efcb317c25653a789ede6fca1229a53a65"
+      "size": 17880,
+      "sha256": "74629afbe96cfb78403f7c43007212a89a2caca508fc6403de46555be6a9160d"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
       "size": 1948,
       "sha256": "d7039ec21693a16a872d804cddf0b68e88dbc845633c4558575fa9c54d3c59e2"
+    },
+    {
+      "path": "content/presets-v4.js",
+      "size": 451210,
+      "sha256": "0635f062ad05dfad8992796f4c78f0d7990d72390935267a0d30059f4b929554"
+    },
+    {
+      "path": "content/presets-v4.json",
+      "size": 719096,
+      "sha256": "818de2e6662835b54d6c5f3f230f8b9e03966b95c11a56ff046b9ad5ceb77692"
     },
     {
       "path": "docs/ARCHITECTURE.md",
@@ -79,6 +89,16 @@
       "sha256": "65d1637dcfe9ef12750ad456c0dff0d00c001e56b4cdda20c53bb91f254398c7"
     },
     {
+      "path": "docs/GENERATOR-V4-REPORT.md",
+      "size": 10903,
+      "sha256": "81d85c800b61c18a5afef1753aa6bfcb16670420bae058e308e07d185239e3f0"
+    },
+    {
+      "path": "docs/GENERATOR-V4.md",
+      "size": 6514,
+      "sha256": "3c6654646906a49a4c13fc2dd85c923a0a2fa5f2351716add207d48ae68bff28"
+    },
+    {
       "path": "docs/GENERATOR.md",
       "size": 11986,
       "sha256": "f8778781c80701075bc917b3ae938f5b19bf2302e5ae0303ce07acddde96624c"
@@ -92,6 +112,11 @@
       "path": "docs/PLUGIN-API.md",
       "size": 2725,
       "sha256": "1eb0e8f6a7e363abb133506008fb0b45d48dc68721219a804fd6eedae43706e4"
+    },
+    {
+      "path": "docs/V4-PRESET-TABLE.md",
+      "size": 5673,
+      "sha256": "a9ba8b86db33287b99e10a0b13d2111b3af4cc39c093bc49d7e3ea3051cb1e00"
     },
     {
       "path": "docs/numeric-component-catalog.json",
@@ -129,14 +154,19 @@
       "sha256": "71b02ad684d58417bb24b5961e03f82c11f667eeabf8d6faad6184e6692c2877"
     },
     {
+      "path": "docs/superpowers/plans/2026-09-07-generator-v4.md",
+      "size": 5087,
+      "sha256": "b52a169b2f50a79475487c5747265380f73775b6775414499db3b98a650f95d2"
+    },
+    {
       "path": "index.html",
-      "size": 3321,
-      "sha256": "6bdac7f2e1f858071d95ff8d4e8487853574d2b9f7ae264e111ae343ebe1a0ce"
+      "size": 3849,
+      "sha256": "71167af7e6b4312265fa5cc90e3f804720e6c0c64ebc890c010bc615dd287528"
     },
     {
       "path": "package.json",
-      "size": 870,
-      "sha256": "eeda8154bcbbeb0ee6b9e203fc211f1b6cd56f1a6f6d23a27a6803a537294827"
+      "size": 1004,
+      "sha256": "31d38e1c3d866873047fd00029ec9e6b372d5ebc8025036cf1fbcd1f72332e41"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
@@ -164,6 +194,16 @@
       "sha256": "f8b8292aaa858e8b825ab8b7f459e7b0e1e34a89d7276af75484719751f7f397"
     },
     {
+      "path": "qa/browser-v4.js",
+      "size": 9559,
+      "sha256": "4009ed8fb70f728d4f438f747c5fa9998a9379c66b2bb6ebbc86291ca5ccd91b"
+    },
+    {
+      "path": "qa/browser-v4.json",
+      "size": 7998,
+      "sha256": "99ea2c713b83eb8ea8a50bc1b7f00e300c31856c93ce7553c085febf6c3a209c"
+    },
+    {
       "path": "qa/desktop.png",
       "size": 168820,
       "sha256": "7ab1cabab2c4793e04cda28199ef4cdb02a7b6e76d5601e5d7bec90d71591302"
@@ -172,6 +212,11 @@
       "path": "qa/diversity-v3.json",
       "size": 1963,
       "sha256": "b69e1c61400fb6bbc57484c37a3336a4e867d708ee3c22b8997943fba58e67f9"
+    },
+    {
+      "path": "qa/diversity-v4.json",
+      "size": 3199,
+      "sha256": "37d7ce82cb35c67f66865447e3d882edca7ea28e249b1e8188ddfd1aa2c1bcf6"
     },
     {
       "path": "qa/health-metrics.json",
@@ -192,6 +237,11 @@
       "path": "qa/power-calibration.json",
       "size": 244489,
       "sha256": "e74b3e433e84433a37a7b7720d54e06decd2bf4155ccbd649395cab0215aa28d"
+    },
+    {
+      "path": "qa/power-v4-calibration.json",
+      "size": 2145,
+      "sha256": "9d7fee93f9697ddbe6f555ff8e312ab469993c0acb732545a7df4b261b72d39a"
     },
     {
       "path": "qa/stress-results.json",
@@ -229,9 +279,59 @@
       "sha256": "e4f03cdbdf83681ba0b3ff4df75695c0e41a02e14188b2fa247d7e8629cef75b"
     },
     {
+      "path": "qa/v4-curation.json",
+      "size": 49197,
+      "sha256": "02aa76c1ad599d6d3ea65241cdf80c2fdf4821a5bb3dc60bbfadb1e371117280"
+    },
+    {
+      "path": "qa/v4-desktop-battle.png",
+      "size": 63693,
+      "sha256": "f0ee1fbd48c2d546e56919d8eb2505516515ca3ae28ac7c151d1810648a01970"
+    },
+    {
+      "path": "qa/v4-long-battles.json",
+      "size": 435,
+      "sha256": "265f1a2d10b778755234b38d4d021fd077f94a6eb0f4379ade83f8571c0a1675"
+    },
+    {
+      "path": "qa/v4-mobile-battle-1.png",
+      "size": 30003,
+      "sha256": "b9def7ee8abbb6523d8085095765e5df33fe2f77ed9ef8fffa75bfe1cc1e8363"
+    },
+    {
+      "path": "qa/v4-mobile-battle-timeline.png",
+      "size": 35519,
+      "sha256": "2ae9062101a0915e85dcf8d6c94594ebb036c45c8c30b8eb41fa8b28c45014ca"
+    },
+    {
+      "path": "qa/v4-mobile-presets.png",
+      "size": 33743,
+      "sha256": "52590762eca1df02b12cd3ce5706c7d9be5f55c7198f69fb05ae3026a44ef89d"
+    },
+    {
+      "path": "qa/v4-preset-audit.json",
+      "size": 763182,
+      "sha256": "abb68c92591a2afc8ff7cc2c4ccf16840a3adbc81b2be0f5b7b4a46355c3dfaa"
+    },
+    {
       "path": "scripts/adjacent-rarity-matrix.js",
       "size": 6571,
       "sha256": "f5695a681f3475355a6b860587b32065552287c38eb0e4cec33ea4d5c61afbad"
+    },
+    {
+      "path": "scripts/audit-v4-battles.js",
+      "size": 2503,
+      "sha256": "2c67c29acf583ca86388e0d43db0095bbf381e9a335532f1fcf47685b15ae4ee"
+    },
+    {
+      "path": "scripts/audit-v4-presets.js",
+      "size": 3490,
+      "sha256": "64c5fd49176c991d6bfb1cfb6923eb701e340635796e089e6f3678e8879bdf10"
+    },
+    {
+      "path": "scripts/diversity-audit-v4.js",
+      "size": 4414,
+      "sha256": "f8d99201fd265f92da1bb339f80196b1ac3ab22548744fb694e36e3d1152ac61"
     },
     {
       "path": "scripts/diversity-audit.js",
@@ -269,6 +369,16 @@
       "sha256": "58fe82b28936005d1577e132446df90c90cbcd0fa4e2253cfb438b0d45c8318a"
     },
     {
+      "path": "scripts/power-v4-calibration.js",
+      "size": 4912,
+      "sha256": "3a6dc802672e1a51449b1c641bd2225795c457fa55824e0b51ecc49f398c9a96"
+    },
+    {
+      "path": "scripts/select-v4-presets.js",
+      "size": 7022,
+      "sha256": "d08cad5a0715a188f1d9428c77351e9bbdc7d1ceeae0b2f8a2631ae676efcc4c"
+    },
+    {
       "path": "scripts/similar-bp-test.js",
       "size": 3925,
       "sha256": "78ab903a567c54a7a66bc54ce30ac85e92463dd659dd986ec1e77ec29e9d1915"
@@ -276,7 +386,7 @@
     {
       "path": "scripts/static-check.js",
       "size": 7234,
-      "sha256": "8cc30f17ecbc57a8aea07375385d44a8f6f5f0c5674122129bcf0213355fbe69"
+      "sha256": "5360eba2ee9932b985e526d59bb483afd444fd52db4a93885fceadd78c1a6b07"
     },
     {
       "path": "scripts/stress-check.js",
@@ -285,13 +395,13 @@
     },
     {
       "path": "src/ai.js",
-      "size": 5726,
-      "sha256": "4878d1a2f3b20d0558e4d346ac295be95252100c4b6ce3caa92da21f3675ecee"
+      "size": 7217,
+      "sha256": "864f1f1ec4559a5e3cd04ea4c8b54334e8fce12db2573b17203713480a1fc675"
     },
     {
       "path": "src/app.js",
-      "size": 51978,
-      "sha256": "a0d6ec4d740153cab75168377a1768e25bb854a84809279c29a702d33c14d65d"
+      "size": 51218,
+      "sha256": "1799f28bbe596f5583b23f8e617dc23a7071190cf530391ebba1333397023111"
     },
     {
       "path": "src/battlepower-model.js",
@@ -299,14 +409,29 @@
       "sha256": "395578deb0375a4f4949a609d22bb1deb31ff0999473350e674dcb056c76f222"
     },
     {
+      "path": "src/battlepower-v2.js",
+      "size": 10356,
+      "sha256": "2fc6f7972fc6259fd7b454e53664e4214ad703cfddae7aa23f41b8759b1dd5e3"
+    },
+    {
       "path": "src/battlepower.js",
       "size": 16363,
       "sha256": "626b98fcad613d591ae31a3d0924930b28d3129e809a7035864f439f4d135559"
     },
     {
+      "path": "src/behavior.js",
+      "size": 6481,
+      "sha256": "f675dbe7674a8b459c0ac46a646210e31fb003b8e1047b32e5a26da2f084afdf"
+    },
+    {
+      "path": "src/card-browser.js",
+      "size": 9606,
+      "sha256": "97678d13b81682eeb508097dab606505fb3135aac908cc8841f92a1c9f913b67"
+    },
+    {
       "path": "src/card-ui.js",
-      "size": 13283,
-      "sha256": "a51d621bd5674493d37c33e6c2fd3e116c456e2ca0e11f2b24ab086b64d21567"
+      "size": 14172,
+      "sha256": "f981fa2216f4a6228cf3c7f175474fa0386e9e1793b9edaab9a02a0f9c73cb4a"
     },
     {
       "path": "src/components.js",
@@ -320,13 +445,13 @@
     },
     {
       "path": "src/effects.js",
-      "size": 13165,
-      "sha256": "993fd6b8cf660232f39b9f84a36252bd2c50512a777dc814de7ace29c07e3cc3"
+      "size": 13195,
+      "sha256": "960f577fdcd21c50f85df4b6368bb66f394a9547b36db2c19037d16c2846892f"
     },
     {
       "path": "src/engine.js",
-      "size": 45428,
-      "sha256": "e2cc836a072bb1fbf67364378141fd1cc912a681623da1b9f446dca6d3f92dac"
+      "size": 51567,
+      "sha256": "56f3e095fcf31a9a91a27cfd18cda17decb0424d6d2ff87ed1494cc7e1bdc12b"
     },
     {
       "path": "src/formula.js",
@@ -364,6 +489,11 @@
       "sha256": "79fccb3a16b1d3372cdc7bb2a69267e07d4f403d02a846a10bee852618e77815"
     },
     {
+      "path": "src/gen-v4.js",
+      "size": 12864,
+      "sha256": "6cbdead6c079dd0dc4b18dc2297f4770ca97aed5b48bbd0523763281a56b4348"
+    },
+    {
       "path": "src/generator.js",
       "size": 9611,
       "sha256": "6b8e21ed616995ada953b3e0031eb476d36395bba2e7e619555c2af2ecb37934"
@@ -380,8 +510,8 @@
     },
     {
       "path": "src/presets.js",
-      "size": 5491,
-      "sha256": "0f2dd7e022feea60de830425820cdbfedd95ec8df58c4655cacc6a653dc5fc72"
+      "size": 1176,
+      "sha256": "80935a942f8c18820fbf5d5583a5652890f37ed21ada52383a748d2b21874043"
     },
     {
       "path": "src/rules.js",
@@ -400,8 +530,8 @@
     },
     {
       "path": "styles.css",
-      "size": 19063,
-      "sha256": "49a1a3bbca10b9626e692ae788008764f1a950b00a21f874b06d7fbc3970c1a6"
+      "size": 23311,
+      "sha256": "d34d21d7b69406611c3e4e3dbc2e562bac6e0591b52abed46b56d3acee5c1b84"
     },
     {
       "path": "tests/actions-v3.test.js",
@@ -414,14 +544,29 @@
       "sha256": "dc15b585233d2f7a94df227842c4c485716608281cdc9e1eb7d01f9b0cc1e3be"
     },
     {
+      "path": "tests/ai-v4.test.js",
+      "size": 4760,
+      "sha256": "0c8eaec83ab3192ed272731b7e993af931d5061f894742c24acc529630054856"
+    },
+    {
       "path": "tests/battlepower-model.test.js",
       "size": 3943,
       "sha256": "f05d112be526e493e02df41a94c9e00e5367e4c4de122ae64d4a273f81d61288"
     },
     {
+      "path": "tests/battlepower-v2.test.js",
+      "size": 3959,
+      "sha256": "b3384c7a374ea1373a9aad0998f959629f35517058babace90fab599ef4c7e94"
+    },
+    {
       "path": "tests/battlepower.test.js",
       "size": 4200,
       "sha256": "423ac14f29af6b8a9f012644e0da6c17739f608197fb6ceb491ead9ffe9f8d01"
+    },
+    {
+      "path": "tests/behavior.test.js",
+      "size": 4412,
+      "sha256": "d0a4d22ac8c6840c45b7019d2ce3470b563e79abae78c53011c57054a8c6d95a"
     },
     {
       "path": "tests/budget-curve.test.js",
@@ -434,9 +579,24 @@
       "sha256": "22fbd98a74b27fff8ea646619dca2f979b76e41f989499db1fbbf2db1171ca5c"
     },
     {
+      "path": "tests/calibration-v4.test.js",
+      "size": 1538,
+      "sha256": "b22a108bba257bc5037e4fa25c05244a2c337088b4708d2bbfe8cdbcaeb17b05"
+    },
+    {
+      "path": "tests/card-browser.test.js",
+      "size": 1354,
+      "sha256": "6b251db0ffc317ddac3f8f56a801c9df1d9fa82dda53357b2e844115730d0160"
+    },
+    {
       "path": "tests/card-library.test.js",
       "size": 3473,
       "sha256": "81967d9e2a55e4da46a0187ca650e76ac06d132f7fc1a3ffd6f22d1e3668baa1"
+    },
+    {
+      "path": "tests/diversity-v4.test.js",
+      "size": 2054,
+      "sha256": "de40d8a6c9a369405a88a5918bb83c8cd3e302f1b3de13a77e14696b7d83f89c"
     },
     {
       "path": "tests/engine.test.js",
@@ -480,8 +640,13 @@
     },
     {
       "path": "tests/gen-v3.test.js",
-      "size": 6413,
-      "sha256": "42f37995c958ce7df78c7dd7ec80bc9c6f76701d1d47db19c18819118bb0a3e4"
+      "size": 6432,
+      "sha256": "d5a3c7b2161412566f2581e9b90d0dc7ac74f21a8cce834c905e602e0254b519"
+    },
+    {
+      "path": "tests/gen-v4.test.js",
+      "size": 4830,
+      "sha256": "130fed3bc065be13b07b90a4f7920441d0b03624e424258235d73c75cc288b1d"
     },
     {
       "path": "tests/generator.test.js",
@@ -494,14 +659,24 @@
       "sha256": "1b51c6303ac003b1a4980c390216f1a3864fdd97b77bc27afc08dac8f58f2af3"
     },
     {
+      "path": "tests/power-v4-mechanics.test.js",
+      "size": 1212,
+      "sha256": "81e1a7be6c986ded3f9ddadc18058ab305d53138ec3cb6c41553255961b5689f"
+    },
+    {
       "path": "tests/power.test.js",
       "size": 3692,
       "sha256": "8b055addcb71922bbe7ece1c41408320e1e75664f254a67344751d61fb509e27"
     },
     {
+      "path": "tests/presentation.test.js",
+      "size": 1354,
+      "sha256": "c91334e2d6049c63e18068606361ebacd8ec5e97379ce930739966d06ef35fdb"
+    },
+    {
       "path": "tests/presets.test.js",
-      "size": 4673,
-      "sha256": "cc5b8842b13493d8bee8f302d1003729e59ed4e2db8e37af0da1b80a0067eab3"
+      "size": 4718,
+      "sha256": "ae9ea724a8936c26d48bf7a1d95ef84d39a8d0b806850e6786d8604c688852be"
     },
     {
       "path": "tests/v1-fixture.test.js",
@@ -510,8 +685,18 @@
     },
     {
       "path": "tests/v3-safety.test.js",
-      "size": 1731,
-      "sha256": "752f46b3128bd933d754f232ef7b24b0e7ecf2762b4d8f3c47e4f134513e75a3"
+      "size": 1976,
+      "sha256": "c2d58346f6e1a067825fc58ce69048e7324b05ad314b8f757e94ab784f56e1d2"
+    },
+    {
+      "path": "tests/v4-contracts.test.js",
+      "size": 2683,
+      "sha256": "fec034e694719a8bb4f00fc557a925f00db1e51a9744ce54f0159f8315328562"
+    },
+    {
+      "path": "tests/v4-time.test.js",
+      "size": 6745,
+      "sha256": "3aa57acc711891f9c69683106d5d4981f850a81a5e5fc73a394bfdf8584fa522"
     },
     {
       "path": "third_party/acorn/LICENSE",
@@ -550,5 +735,5 @@
     }
   ],
   "combinedDefaultCompositionWinRate": 0.595,
-  "notes": "v1.2.3: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path."
+  "notes": "v1.3.0: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path."
 }

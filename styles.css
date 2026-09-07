@@ -279,3 +279,23 @@ input,select,textarea{min-width:0;max-width:100%}select{min-height:44px}
 .card-summary-beh b{font-weight:700}
 .card-beh b{color:#171717}
 @media(max-width:767px){.entity-meta{font-size:11px}.card-region{margin-bottom:20px}}
+/* Generator v4: shared mobile card browser and atomic battle presentation. */
+.picker-open{overflow:hidden}
+.picker-overlay{position:fixed;inset:0;z-index:1000;background:#fafafa;overflow:auto;padding:20px max(18px,calc((100vw - 1100px)/2));overscroll-behavior:contain}
+.browser-heading,.selection-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.browser-heading h2{font-size:22px}.card-filters{padding:16px 0;border-bottom:1px solid #bbb;margin-bottom:16px}
+.search-field{display:block;font-size:12px;font-weight:700}.search-field input{display:block;width:100%;margin-top:6px;min-height:44px}
+.rarity-filters{display:flex;gap:6px;overflow-x:auto;padding:12px 0;max-width:100%}.rarity-filters button{flex:none;white-space:nowrap}
+.filter-row{display:flex;gap:12px;margin:10px 0}.filter-row label{flex:1;min-width:0;font-size:12px}.filter-row input,.filter-row select{display:block;width:100%;min-width:0;min-height:40px}
+.behavior-filters{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.behavior-filters details{flex-basis:100%}.behavior-filters details button{margin:6px 4px 0 0}
+.active-filters{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.filter-token{border:1px solid #999;border-radius:20px;background:white;padding:6px 10px;font:inherit;font-size:12px}.result-count{font-size:12px;margin-left:auto}
+.selection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.selection-wrap{min-width:0}.selection-card{position:relative;padding:20px;border:1px solid #b0b0b0;background:#fff;border-radius:12px;overflow:hidden}
+.selection-head h3{margin:0;font-size:22px}.selection-head .rarity-badge{position:static;flex:none}.selection-meta{font:12px monospace;color:#555;margin-top:8px}.selection-card .card-art{display:block;width:110px;height:100px;margin:12px auto}
+.selection-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:11px}.selection-stats b{display:block;font-size:18px;margin-top:4px}.selection-summary{font-size:12px;line-height:1.65;min-height:40px;color:#555}.selection-actions{font-size:12px;line-height:1.7}.selection-card>.btn,.select-card{width:100%}.select-card{margin-top:7px}.random-pick{margin-bottom:14px}.load-more{display:block;margin:24px auto;min-width:220px}
+.browser-detail{max-width:640px;margin:auto}.browser-detail>.card{margin:20px 0}.browser-detail pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px}.browser-detail details{margin:14px 0}.detail-footer{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:8px;padding:16px 0;background:#fafafa;border-top:1px solid #aaa}.detail-footer .primary{flex:1}
+.setup-slots{display:grid;grid-template-columns:minmax(0,1fr) 35px minmax(0,1fr);gap:16px;align-items:center}.setup-slot{min-width:0}.setup-slot h2{font-size:15px}.setup-slot>.btn{width:100%;margin-top:10px}.setup-slot .selection-card>[data-browser-detail]{display:none}.empty-slot{padding:40px 20px;border:1px dashed #aaa;border-radius:12px;background:#fff;text-align:center;font-size:28px}.empty-slot p{font-size:14px}.battle-setup-panel>.big{width:100%;margin-top:22px}
+.combat-float-slot{position:absolute;left:50%;top:37%;transform:translateX(-50%);white-space:nowrap;pointer-events:none;padding:6px 12px;background:#111;color:#fff;border:2px solid white;border-radius:6px;font:bold 22px monospace;z-index:5;animation:frame-float .5s ease-out both}
+@keyframes frame-float{from{opacity:.2;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,-8px)}}
+.current-event{min-height:40px;overflow-wrap:anywhere}.entity-card{position:relative}.entity-card .meter i{transition:none}
+@media(max-width:650px){.selection-grid{grid-template-columns:1fr}.picker-overlay{padding:14px 18px}.selection-card{padding:20px}.setup-slots{grid-template-columns:1fr}.setup-vs{text-align:center}.setup-slot .selection-card .card-art{height:72px}.card-browser{min-width:0}.browser-heading h2{font-size:18px}.filter-row{gap:8px}.combat-float-slot{font-size:18px}.browser-detail .card{max-width:100%}.card-filters{padding-top:8px}}
+@media(prefers-reduced-motion:reduce){.combat-float-slot{animation:none}}

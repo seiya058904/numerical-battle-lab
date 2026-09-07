@@ -32,7 +32,7 @@
   function libraryContains(id){return state.library.some(c=>c.id===id);}
 
   const RARITY_OPTIONS=NCB.RARITY_V2_ORDER||[];
-  const ARCHETYPE_OPTIONS=Object.keys(NCB.ARCHETYPES||{});
+  
   const ROLE_ZH=NCB.ROLE_ZH||{};
 
   const defaultSetup={
@@ -48,14 +48,14 @@
     setup:loadSetup(),
     library:loadLibrary(),
     // Read-only system presets (NOT part of the user's localStorage library).
-    systemPresets:(NCB.SYSTEM_PRESETS||[]).map(NCB.deepClone),
+    systemPresets:(NCB.SYSTEM_PRESETS||[]),
     engine:null,
     pending:new Map(),
     selectedActorId:null,
     selectedSkillId:null,
     logFilter:'all',
     // generate form
-    genRarity:'A',genLevel:100,genArchetype:'Balanced',genSeed:'',genManualSeed:false,
+    genRarity:'A',genLevel:100,genSeed:'',genManualSeed:false,
     // battle mode: manual (player picks skills) | auto (both AI)
     battleMode:'auto',autoPaused:false,
     autoSpeed:1,
@@ -72,7 +72,7 @@
     state.tab=tab;
     $$('.tab').forEach(b=>b.classList.toggle('is-active',b.dataset.tab===tab));
     $$('.view').forEach(v=>v.classList.toggle('is-active',v.id===`view-${tab}`));
-    if(tab==='battle')renderBattle();
+    if(tab==='battle'){renderBattle();if(state.engine)startAuto();}
     if(tab==='cards')renderCards();
     if(tab==='generate')renderGenerate();
     if(tab==='help')renderHelp();
@@ -117,13 +117,13 @@
     if(!preset)return null;
     let c=NCB.deepClone(preset);const oldId=c.id,newId=oldId+'-mine-'+Date.now();
     const remap=x=>{if(typeof x==='string')return x.startsWith(oldId)?newId+x.slice(oldId.length):x;if(Array.isArray(x))return x.map(remap);if(x&&typeof x==='object')return Object.fromEntries(Object.entries(x).map(([k,v])=>[k,remap(v)]));return x;};
-    c=remap(c);c.id=newId;
+    c=remap(c);c.id=newId;delete c.presentation;delete c.curated;
     addToLibrary(c);renderCards();
     return c;
   }
   function stopAuto(){if(autoTimer)clearInterval(autoTimer);autoTimer=null;}
   function beginBattle(config){
-    stopAuto();state.engine=NCB.createBattle(config);state.battleMode='auto';state.autoPaused=false;
+    stopAuto();state.engine=NCB.createBattle({...config,capturePresentation:true});state.display=state.engine.presentationFrames.splice(0).at(-1)?.snapshot||state.engine.presentationSnapshot();state.frameQueue=[];state.frameIndex=0;state.frameRow=null;state.stepGroup=null;state.battleMode='auto';state.autoPaused=false;
     // Build per-entity battle-card metadata map so every entity (incl. multi-team
     // extra members) resolves its own rarity/level/BattlePower, not a shared one.
     state._deployedMeta=new Map();
@@ -158,27 +158,24 @@
     const pool=selectableCards();
     return pool.length?pool[((poolIndex%pool.length)+pool.length)%pool.length]:null;
   }
-  function selectableOptionHtml(values){
-    // values: array of pool indices already chosen; returns <optgroup> markup.
-    const presets=state.systemPresets||[], lib=state.library;
-    const pool=selectableCards();
-    const opt=(c,i)=>{const ui=NCB.rarityUI(c.rarity);const cpower=NCB.battlePowerOf(c);return `<option value="${c.id}" ${values.includes(c.id)?'selected':''}>${esc(c.displayName||c.name)} · ${esc(ui.badge)} · Lv.${c.level??100}${cpower?` · ${esc(NCB.formatBattlePower(cpower))}`:''}</option>`;};
-    const groups=[];
-    if(presets.length)groups.push(`<optgroup label="系统预设（14）">${presets.map((c,i)=>opt(c,i)).join('')}</optgroup>`);
-    if(lib.length)groups.push(`<optgroup label="我的卡牌（${lib.length}）">${lib.map((c,i)=>opt(c,i+presets.length)).join('')}</optgroup>`);
-    return groups.join('');
+  function closePicker(){document.querySelector('.picker-overlay')?.remove();document.body.classList.remove('picker-open');}
+  function browserOptions(extra={}){return {onCopy:c=>{copyPresetToLibrary(c);closePicker();setTab('cards');},canEdit:c=>!isSystemPreset(c.id),onEdit:c=>{closePicker();openCardEditor(c);},onDelete:c=>{if(confirm(`删除「${c.displayName||c.name}」？`)){state.library=state.library.filter(x=>x.id!==c.id);saveLibrary();closePicker();renderCards();}},...extra};}
+  function openPicker(side){
+    const overlay=document.createElement('section');overlay.className='picker-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',side==='left'?'选择左方卡牌':'选择右方卡牌');document.body.appendChild(overlay);document.body.classList.add('picker-open');
+    new NCB.CardBrowser(overlay,selectableCards(),browserOptions({title:side==='left'?'选择左方卡牌':'选择右方卡牌',selectLabel:side==='left'?'选择为左方':'选择为右方',onClose:closePicker,onSelect:c=>{state[side==='left'?'selectedLeft':'selectedRight']=selectableCards().findIndex(x=>x.id===c.id);closePicker();renderBattle();}}));overlay.querySelector('input')?.focus({preventScroll:true});
   }
+  function setupSlot(side){const index=state[side==='left'?'selectedLeft':'selectedRight'],card=index==null?null:cardAt(index);return `<div class="setup-slot"><h2>${side==='left'?'左方':'右方'}</h2>${card?NCB.selectionCard(card):'<div class="empty-slot">＋<p>选择卡牌</p></div>'}<button class="btn primary" data-open-picker="${side}">${card?'更换卡牌':'选择卡牌'}</button></div>`;}
 
   function renderBattle(){
-    const view=$('#view-battle');if(!view)return;
+    const view=$('#view-battle');if(!view)return;view.dataset.frameIndex=state.frameIndex||0;
     const engine=state.engine;
     if(!engine){
       view.innerHTML=`<div class="battle-empty">
         <div class="big-title">让创造，自己交锋。</div>
         <p>直接选两张系统预设卡，或从「我的卡牌」用自建卡，观察它们如何出招。</p>
         <div class="battle-setup-panel">
-          <div class="field-row"><label class="field"><span>左方卡牌</span><select data-battle-card>${selectableOptionHtml(state.selectedLeft!=null?[selectableCards()[state.selectedLeft]?.id]:[])}</select></label><b class="setup-vs">VS</b><label class="field"><span>右方卡牌</span><select data-battle-right>${selectableOptionHtml(state.selectedRight!=null?[selectableCards()[state.selectedRight]?.id]:[])}</select></label></div>
-          <button class="btn big primary" data-action="battle-start">开始对战</button>
+          <div class="setup-slots">${setupSlot('left')}<b class="setup-vs">VS</b>${setupSlot('right')}</div>
+          <button class="btn big primary" data-action="battle-start" ${state.selectedLeft==null||state.selectedRight==null?'disabled':''}>开始对战</button>
           <details class="advanced-note"><summary>高级设置</summary><div class="field-row"><label class="field"><span>左方人数</span><select data-battle-size-a>${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></label><label class="field"><span>右方人数</span><select data-battle-size-b>${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></label><label class="field"><span>最大回合</span><input data-max-rounds type="number" min="1" max="1000" value="100"></label></div><p class="hint">额外成员按可选手牌顺序循环选取，无站位规则；系统预设为只读来源。</p></details>
         </div>
       </div>`;
@@ -187,7 +184,7 @@
     view.innerHTML=`
       <div class="battle-toolbar">
         <span class="battle-mode-pill">${state.battleMode==='manual'?'实验接管':'AI 对战'}</span>
-        <span class="hint">回合 ${engine.round}</span>
+        <span class="hint">回合 ${state.display?.round??engine.round}</span>
         <span class="spacer"></span>
         <button class="btn small" data-action="battle-restart">重开</button>
         <button class="btn small" data-action="battle-back">返回选卡</button>
@@ -203,7 +200,7 @@
           <div class="arena-line">${teamCards('B')}</div>
         </div>
       </div>
-      ${outcomeBanner()}<div class="current-event" aria-live="polite">${esc(state.engine.log.filter(x=>x.kind==='action').at(-1)?.text||'双方正在观察战场')}</div>
+      ${outcomeBanner()}<div class="current-event" aria-live="polite">${esc(state.frameRow?.text||'双方正在观察战场')}</div>
       ${state.battleMode==='auto'?autoControls():commandPanel()}<details class="advanced-note"><summary>实验控制</summary><button class="btn small" data-action="manual-takeover">${state.battleMode==='auto'?'手动接管左方':'返回 AI 对战'}</button><button class="btn small" data-action="edit-battle-card">编辑左方卡牌</button></details>
       <div class="battle-log-panel">
         <div class="panel-head"><h3>战斗记录</h3>
@@ -232,20 +229,20 @@
     const engine=state.engine;const selected=state.selectedActorId===entity.id;let target=false;
     if(state.selectedSkillId&&state.selectedActorId){try{target=engine.getValidTargets(state.selectedActorId,state.selectedSkillId).some(t=>t.id===entity.id);}catch(_){}}
     const planned=state.pending.get(entity.id);
-    const derived=id=>engine.getStat(entity.id,id);
+    const derived=id=>entity.displayStats?.[id]??engine.getStat(entity.id,id);
     const meta=resolveBattleCardMeta(entity.templateId);
     const ui=meta?NCB.rarityUI(meta.rarity):null;
     const bp=meta?NCB.battlePowerOf(meta):null;
     const lv=meta?meta.level:null;
     return `<article class="entity-card ${entity.hp>0?'selectable':''} ${selected?'is-selected':''} ${target?'is-target':''} ${entity.hp<=0?'is-dead':''}" data-entity-id="${entity.id}">
-      <div class="entity-top"><div><div class="entity-name">${esc(entity.name)}</div>${meta&&ui?`<div class="entity-meta">${esc(ui.badge)} · Lv.${lv??''}${bp?` · ${esc(NCB.formatBattlePower(bp))}`:''}</div>`:''}</div><span class="entity-role">${esc(ROLE_ZH[entity.role]||'')}</span></div>
+      <div class="entity-top"><div><div class="entity-name">${esc(entity.name)}</div>${meta&&ui?`<div class="entity-meta">${esc(ui.badge)} · Lv.${lv??''}${bp?` · ${esc(NCB.formatBattlePower(bp))}`:''}</div>`:''}</div></div>
       ${NCB.artPlaceholder(meta?meta.rarity:'C',entity.templateId)}<div class="meter-group">${meter('生命',entity.hp,entity.maxHp)}${meter('护盾',entity.shield,entity.maxHp)}</div>
       <div class="stat-line"><span class="stat-chip">攻击<b>${derived('ATK')}</b></span><span class="stat-chip">防御<b>${derived('DEF')}</b></span><span class="stat-chip">速度<b>${derived('SPD')}</b></span><span class="stat-chip">暴击<b>${derived('CRIT')}%</b></span></div>
       <div class="status-line">${statusLine(entity)}</div><div class="battle-actions">${entity.skills.map(id=>`<span title="${esc(NCB.describeAction(NCB.SKILL_DEFS[id]))}">${esc(NCB.SKILL_DEFS[id].name)}</span>`).join('')}</div>
-      ${planned?`<span class="action-marker">已选择行动</span>`:''}
+      ${state.frameRow?.targetId===entity.id?floatHtml(state.frameRow):''}${planned?`<span class="action-marker">已选择行动</span>`:''}
     </article>`;
   }
-  function teamCards(teamId){const entities=state.engine.teams[teamId].entities;return `<div class="team-line" style="--team-cols:${Math.min(entities.length,6)}">${entities.map(entityCard).join('')}</div>`;}
+  function teamCards(teamId){const entities=(state.display?.teams||state.engine.teams)[teamId].entities;return `<div class="team-line" style="--team-cols:${Math.min(entities.length,6)}">${entities.map(entityCard).join('')}</div>`;}
 
   function skillTargetLabel(skill){return ({self:'自己',ally:'单个友方','all-allies':'全体友方',enemy:'单个敌方','all-enemies':'全体敌方'})[skill.target]||skill.target;}
   function commandPanel(){
@@ -266,11 +263,11 @@
   }
 
   function logRows(){
-    const log=state.engine?.log||[];const filtered=state.logFilter==='all'?log:log.filter(x=>x.kind===state.logFilter);
+    const log=(state.engine?.log||[]).slice(0,state.display?.logLength);const filtered=state.logFilter==='all'?log:log.filter(x=>x.kind===state.logFilter);
     if(!filtered.length)return `<div class="empty">暂无战斗记录</div>`;
     return filtered.slice(-200).reverse().map(entry=>`<div class="log-row ${esc(entry.kind)}"><span class="log-index">#${entry.id} R${entry.round}</span>${esc(entry.text||entry.kind)}${entry.trace?.length?`<details><summary>计算详情</summary><ol class="trace">${entry.trace.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></details>`:''}</div>`).join('');
   }
-  function outcomeBanner(){const o=state.engine.outcome();if(!o.ended)return'';return `<div class="result-banner">${o.winner==='draw'?'平局':`${o.winner==='A'?'左方':'右方'}胜利！`}</div>`;}
+  function outcomeBanner(){const o=state.display?.outcome||state.engine.outcome();if(!o.ended)return'';return `<div class="result-banner">${o.winner==='draw'?'平局':`${o.winner==='A'?'左方':'右方'}胜利！`}</div>`;}
 
   function ensureActor(){
     if(!state.engine)return;
@@ -289,60 +286,49 @@
   function autoPlanPlayer(){state.pending.clear();for(const a of NCB.planAI(state.engine,'A','canonical'))state.pending.set(a.actorId,a);state.selectedActorId=null;state.selectedSkillId=null;ensureActor();renderBattle();}
   function resolveRound(){const required=state.engine.getLiving('A').filter(e=>state.engine.getLegalSkills(e.id).length);if(!required.every(e=>state.pending.has(e.id)))return;const enemy=NCB.planAI(state.engine,'B','canonical');state.engine.resolveRound([...state.pending.values(),...enemy]);state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;ensureActor();renderBattle();}
   function autoFinish(){let guard=0;while(!state.engine.outcome().ended&&guard++<60){state.engine.resolveRound([...NCB.planAI(state.engine,'A','canonical'),...NCB.planAI(state.engine,'B','canonical')]);}state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;renderBattle();}
-  function autoStep(){
-    if(!state.engine||state.engine.outcome().ended)return;const before=state.engine.log.length;
-    state.engine.resolveRound([...NCB.planAI(state.engine,'A','canonical'),...NCB.planAI(state.engine,'B','canonical')]);renderBattle();
-    for(const row of state.engine.log.slice(before).filter(x=>['damage','heal','shield'].includes(x.kind)&&(x.amount||0)>0).slice(0,8)){
-      const card=$(`[data-entity-id="${row.targetId}"]`);if(!card)continue;card.classList.add('is-hit');
-      const label=document.createElement('span');label.className='combat-number';label.textContent=(row.kind==='damage'?'−':'+')+Math.round(row.amount??0);card.appendChild(label);
-    }
+  function floatHtml(row){
+    let text='';if(row.kind==='damage'&&row.amount>0)text=row.hpDamage?`−${row.hpDamage} HP`:`−${row.shieldDamage||row.wardDamage||0} 盾`;
+    if(row.kind==='heal'||row.kind==='affinity')text=`+${row.amount} HP`;
+    if((row.kind==='shield'||row.kind==='ward')&&(row.displayAmount??row.amount)>0)text=`+${row.displayAmount??row.amount} ${row.kind==='ward'?'护符':'盾'}`;
+    if(row.kind==='hp-cost')text=`${row.amount} HP`;
+    return text?`<span class="combat-float-slot" data-frame-id="${row.id||0}">${esc(text)}</span>`:'';
   }
-  function autoTogglePause(){state.autoPaused=!state.autoPaused;renderBattle();}
-  function setAutoSpeed(s){state.autoSpeed=s;renderBattle();}
-
-  // Auto-play loop with speed control (used by the 自动推演 mode).
+  function prepareFrames(){
+    if(!state.engine)return false;
+    if(!state.frameQueue?.length&&!state.engine.outcome().ended){
+      state.engine.resolveRound([...NCB.planAI(state.engine,'A','canonical'),...NCB.planAI(state.engine,'B','canonical')]);
+      state.frameQueue=state.engine.presentationFrames.splice(0);
+    }
+    return !!state.frameQueue?.length;
+  }
+  function autoStep(){
+    if(!prepareFrames())return false;
+    const frame=state.frameQueue.shift();state.display=frame.snapshot;state.frameIndex=frame.index;state.frameRow=frame.row;
+    renderBattle();return true;
+  }
+  function autoTogglePause(){state.autoPaused=!state.autoPaused;state.stepGroup=null;renderBattle();startAuto();}
+  function setAutoSpeed(s){state.autoSpeed=s;startAuto();renderBattle();}
   let autoTimer=null;
   function startAuto(){
-    if(state.battleMode!=='auto'){state.battleMode='auto';state.autoPaused=false;}
-    if(autoTimer)clearInterval(autoTimer);
-    autoTimer=setInterval(()=>{
-      if(!state.engine||state.engine.outcome().ended){clearInterval(autoTimer);autoTimer=null;renderBattle();return;}
-      if(state.autoPaused||state.tab!=='battle')return;
-      autoStep();
-    },1200/state.autoSpeed);
+    stopAuto();
+    const tick=()=>{
+      if(!state.engine||state.tab!=='battle'||state.battleMode!=='auto')return;
+      if(state.autoPaused&&state.stepGroup==null)return;
+      if(!autoStep()){state.stepGroup=null;return;}
+      if(state.stepGroup!=null&&state.frameQueue[0]?.group!==state.stepGroup){state.stepGroup=null;return;}
+      autoTimer=setTimeout(tick,(state.frameRow?600:80)/state.autoSpeed);
+    };
+    autoTimer=setTimeout(tick,600/state.autoSpeed);
+  }
+  function stepAction(){
+    stopAuto();state.battleMode='auto';state.autoPaused=true;
+    if(prepareFrames()){state.stepGroup=state.frameQueue[0].group;autoStep();if(state.frameQueue[0]?.group===state.stepGroup)startAuto();else state.stepGroup=null;}
   }
 
   // ===========================================================================
   // CARDS (card library)
   // ===========================================================================
-  function renderCards(){
-    const view=$('#view-cards');if(!view)return;
-    const lib=state.library,presets=state.systemPresets||[];
-    const presetTile=(c,i)=>`<div class="card-collection-item card-source-preset" data-preset-index="${i}">
-      ${NCB.renderCard(c,{showId:false})}
-      <div class="card-collection-actions card-preset-actions">
-        <button class="btn small primary" data-preset-action="battle" data-preset-index="${i}">立即对战</button>
-        <button class="btn small" data-preset-action="copy" data-preset-index="${i}">复制到我的卡牌</button>
-      </div>
-    </div>`;
-    const presetRegion=presets.length?`<div class="card-region"><div class="cards-region-head"><h2>系统预设</h2><span class="hint">只读 · ${presets.length} 张 · 不可删除/改名</span></div><div class="card-grid">${presets.map(presetTile).join('')}</div></div>`:'';
-    const libRegion=`<div class="card-region"><div class="cards-region-head"><h2>我的卡牌</h2><span class="hint">本地保存 · ${lib.length} 张</span><span class="spacer"></span><button class="btn small" data-action="cards-to-generate">生成新卡</button></div>
-      ${lib.length?`<div class="card-grid">${lib.map((c,i)=>`<div class="card-collection-item" data-lib-index="${i}">
-        ${NCB.renderCard(c,{showId:false})}
-        <div class="card-collection-actions">
-          <button class="btn small primary" data-lib-action="battle" data-lib-index="${i}">立即对战</button>
-          <button class="btn small" data-lib-action="edit" data-lib-index="${i}">编辑</button><button class="btn small" data-lib-action="duplicate" data-lib-index="${i}">复制</button><button class="btn small" data-lib-action="rename" data-lib-index="${i}">改名</button>
-          <button class="btn small" data-lib-action="copyseed" data-lib-index="${i}">复制种子</button>
-          <button class="btn small" data-lib-action="regenerate" data-lib-index="${i}">同种子再生成</button>
-          <button class="btn small ghost" data-lib-action="delete" data-lib-index="${i}">删除</button>
-        </div>
-      </div>`).join('')}</div>`:'<div class="empty-state"><p>还没有自建卡。可以从上方系统预设「复制到我的卡牌」，或生成新卡。</p><button class="btn primary" data-action="cards-to-generate">去生成第一张卡</button></div>'}</div>`;
-    view.innerHTML=`${presetRegion}${libRegion}`;
-  }
-
-  // ===========================================================================
-  // GENERATE view
-  // ===========================================================================
+  function renderCards(){const view=$('#view-cards');if(!view)return;new NCB.CardBrowser(view,selectableCards(),browserOptions({title:`卡牌库 · ${state.systemPresets.length} 张系统预设`,selectLabel:'立即对战',onSelect:startBattleWithCard}));}
   function renderGenerate(){
     const view=$('#view-generate');if(!view)return;
     const card=state.lastGenerated;
@@ -369,7 +355,7 @@
   // HELP (玩法说明)
   // ===========================================================================
   function renderHelp(){
-    $('#view-help').innerHTML=`<div class="help-layout"><h2>创造、组合、观察。</h2><ol class="help-steps"><li>可直接选两张「系统预设」开战，无需先建卡；或选择稀有度、等级和定位自建卡。</li><li>保存到我的卡牌，选择左右双方。</li><li>开始对战，看 AI 自动决策。随时暂停、单步或调速。</li><li>结束后重开、换卡，或打开高级编辑修改数值。</li></ol><h3>同时决策，顺序结算</h3><p>每轮所有存活角色先选择一个行动与合法目标，再按行动优先级、速度和确定性规则统一排序。状态与反击会即时触发。达到最大回合则平局。</p><h3>稀有度 · 等级 · 战力</h3><p>内置 14 张系统预设（7 定位 × 2），覆盖 12 档稀有度、Lv.10–100，方便第一眼对比。卡面上「战力」是综合实力的<b>参考数值</b>，<b>不参与</b>战斗计算。</p><p>等级可输入 1–100 的任意整数；12 档稀有度代表逐步增加的数值预算；强弱与克制都可以存在。定位只影响生成倾向。没有升级、奖励或解锁。</p><p>数据保存在当前浏览器。高级实验室可编辑完整行动、资源、状态、公式，查看回放与计算详情。</p></div>`;
+    $('#view-help').innerHTML=`<div class="help-layout"><h2>创造、组合、观察。</h2><ol class="help-steps"><li>可直接选两张「系统预设」开战，无需先建卡；或选择稀有度和等级自建卡。</li><li>保存到我的卡牌，选择左右双方。</li><li>开始对战，看 AI 自动决策。随时暂停、单步或调速。</li><li>结束后重开、换卡，或打开高级编辑修改数值。</li></ol><h3>同时决策，顺序结算</h3><p>每轮所有存活角色先选择一个行动与合法目标，再按行动优先级、速度和确定性规则统一排序。状态与反击会即时触发。达到最大回合则平局。</p><h3>稀有度 · 等级 · 战力</h3><p>内置 60 张经过筛选的系统预设（每档稀有度 5 张），覆盖 12 档稀有度、Lv.10–100，方便第一眼对比。卡面上「战力」是综合实力的<b>参考数值</b>，<b>不参与</b>战斗计算。</p><p>等级可输入 1–100 的任意整数；12 档稀有度代表逐步增加的数值预算；强弱与克制都可以存在。特点由最终数值与行动分析而来。没有升级、奖励或解锁。</p><p>数据保存在当前浏览器。高级实验室可编辑完整行动、资源、状态、公式，查看回放与计算详情。</p></div>`;
   }
 
   // ===========================================================================
@@ -426,7 +412,7 @@
     </div></div>`;
   }
   function renderTrace(){const view=$('#view-trace');if(!view)return;
-    const log=state.engine?.log||[];
+    const log=(state.engine?.log||[]).slice(0,state.display?.logLength);
     view.innerHTML=`<div class="panel"><div class="panel-head"><h2>计算详情</h2><span>${log.length} 条</span></div><div class="panel-body battle-log">${logRows()}</div></div>`;
   }
   function renderJson(){const view=$('#view-json');if(!view)return;
@@ -440,6 +426,7 @@
   // EVENTS
   // ===========================================================================
   document.addEventListener('click',event=>{
+    const picker=event.target.closest('[data-open-picker]');if(picker){openPicker(picker.dataset.openPicker);return;}
     const roster=event.target.closest('[data-editor-unit]');if(roster){state.editorUnitId=roster.dataset.editorUnit;renderEditor();return;}
     const tab=event.target.closest('[data-tab]');if(tab){$('#lab-menu').open=false;setTab(tab.dataset.tab);if(tab.dataset.tab==='battle'){renderBattle();}return;}
     const presetBtn=event.target.closest('[data-preset-action]');
@@ -461,7 +448,7 @@
       if(act==='duplicate'){let c=NCB.deepClone(card);const oldId=c.id,newId=oldId+'-copy-'+Date.now();const remap=x=>{if(typeof x==='string')return x.startsWith(oldId)?newId+x.slice(oldId.length):x;if(Array.isArray(x))return x.map(remap);if(x&&typeof x==='object')return Object.fromEntries(Object.entries(x).map(([k,v])=>[k,remap(v)]));return x;};c=remap(c);c.id=newId;c.displayName=(card.displayName||card.name)+' 副本';addToLibrary(c);renderCards();}
       if(act==='rename'){const n=prompt('输入新名称：',card.displayName||card.name||'');if(n&&n.trim()){card.displayName=n.trim();saveLibrary();renderCards();}}
       if(act==='copyseed'){const seed=card.seed??'';if(navigator.clipboard?.writeText){navigator.clipboard.writeText(seed).then(()=>alert('种子已复制：'+seed)).catch(()=>alert('种子：'+seed));}else alert('种子：'+seed);}
-      if(act==='regenerate'){const c=NCB.generateCardByVersion({rarity:card.rarity,level:card.level,archetype:card.archetype,seed:card.seed,generatorVersion:card.generatorVersion});state.library[i]=NCB.deepClone(c);saveLibrary();renderCards();}
+      if(act==='regenerate'){const c=NCB.generateCardByVersion({rarity:card.rarity,level:card.level,...(card.generatorVersion===4?{}:{archetype:card.archetype}),seed:card.seed,generatorVersion:card.generatorVersion});state.library[i]=NCB.deepClone(c);saveLibrary();renderCards();}
       if(act==='delete'){if(confirm(`删除「${card.displayName||card.name}」？`)){state.library.splice(i,1);saveLibrary();renderCards();}}
       return;
     }
@@ -475,9 +462,8 @@
     const remove=event.target.closest('[data-remove-action]');if(remove){state.pending.delete(remove.dataset.removeAction);ensureActor();renderBattle();return;}
     const action=event.target.closest('[data-action]')?.dataset.action;if(!action)return;
     if(action==='battle-start'){
-      const leftId=$('[data-battle-card]')?.value,rightId=$('[data-battle-right]')?.value;
       const pool=selectableCards();
-      const left=leftId?pool.findIndex(c=>c.id===leftId):-1,right=rightId?pool.findIndex(c=>c.id===rightId):-1;
+      const left=state.selectedLeft??-1,right=state.selectedRight??-1;
       if(left<0||right<0||!pool.length)return;
       const sizeA=Number($('[data-battle-size-a]').value),sizeB=Number($('[data-battle-size-b]').value),maxRounds=Number($('[data-max-rounds]').value);
       if(!Number.isInteger(maxRounds)||maxRounds<1||maxRounds>1000){alert('最大回合请输入 1–1000 的整数。');return;}
@@ -487,7 +473,7 @@
       beginBattle({seed:NCB.deriveSeed(state.setup.seedNumber),teamA:team(left,sizeA),teamB:team(right,sizeB),maxRounds});
     }
     if(action==='demo-cards'){for(const c of (state.systemPresets||[]).slice(0,2))copyPresetToLibrary(c);renderCards();renderBattle();}
-    if(action==='manual-takeover'){state.battleMode=state.battleMode==='auto'?'manual':'auto';state.autoPaused=state.battleMode==='manual';if(state.battleMode==='auto')startAuto();renderBattle();}
+    if(action==='manual-takeover'){state.display=null;state.frameQueue=[];state.engine.presentationFrames=[];state.battleMode=state.battleMode==='auto'?'manual':'auto';state.autoPaused=state.battleMode==='manual';if(state.battleMode==='auto')startAuto();renderBattle();}
     if(action==='edit-generated'&&state.lastGenerated)openCardEditor(state.lastGenerated);
     if(action==='edit-battle-card'){let c=resolveBattleCardMeta(state.engine?.config.teamA[0]);if(c){if(isSystemPreset(c.id)){c=copyPresetToLibrary(c);}if(c)openCardEditor(c);}}
     if(action==='save-card-edit')saveCardEdit();
@@ -497,7 +483,7 @@
     if(action==='resolve-round')resolveRound();
     if(action==='auto-finish')autoFinish();
     if(action==='auto-pause')autoTogglePause();
-    if(action==='auto-step'){state.battleMode='auto';state.autoPaused=true;autoStep();}
+    if(action==='auto-step')stepAction();
     if(action==='auto-speed'){state.autoSpeed=Number(event.target.closest('[data-speed]').dataset.speed);startAuto();renderBattle();}
     if(action==='generate-roll')generateFromForm();
     if(action==='add-to-library'){if(state.lastGenerated){addToLibrary(state.lastGenerated);renderGenerate();}}
@@ -542,7 +528,7 @@
   }
 
   function downloadJson(filename,data){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),500);}
-  function applyReplay(replay,index=replay.rounds.length){stopAuto();state.autoPaused=true;NCB.restoreReplayContent(replay);const engine=NCB.createBattle({seed:replay.seed,teamA:replay.teamA,teamB:replay.teamB,maxRounds:replay.maxRounds});for(let i=0;i<Math.min(index,replay.rounds.length);i++){if(engine.outcome().ended)break;engine.resolveRound(replay.rounds[i]);}state.engine=engine;state._deployedMeta=new Map();for(const t of ['A','B'])for(const ent of engine.teams[t].entities){const meta=state.systemPresets.find(c=>c.id===ent.templateId)||state.library.find(c=>c.id===ent.templateId)||null;if(meta)state._deployedMeta.set(ent.templateId,meta);}state.replay=replay;state.replayIndex=Math.min(index,replay.rounds.length);state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;}
+  function applyReplay(replay,index=replay.rounds.length){stopAuto();state.autoPaused=true;NCB.restoreReplayContent(replay);const engine=NCB.createBattle({seed:replay.seed,teamA:replay.teamA,teamB:replay.teamB,maxRounds:replay.maxRounds,rulesVersion:replay.rulesVersion});for(let i=0;i<Math.min(index,replay.rounds.length);i++){if(engine.outcome().ended)break;engine.resolveRound(replay.rounds[i]);}state.engine=engine;state.display=null;state.frameQueue=[];state._deployedMeta=new Map();for(const t of ['A','B'])for(const ent of engine.teams[t].entities){const meta=state.systemPresets.find(c=>c.id===ent.templateId)||state.library.find(c=>c.id===ent.templateId)||null;if(meta)state._deployedMeta.set(ent.templateId,meta);}state.replay=replay;state.replayIndex=Math.min(index,replay.rounds.length);state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;}
   function importContent(data){if(!data?.units||!data?.skills||!data?.statuses)throw new Error('JSON 缺少 units / skills / statuses');const validation=NCB.validateContentPack(data);if(!validation.ok)throw new Error(`内容验证失败:\n${validation.errors.slice(0,12).join('\n')}`);const repl=k=>{for(const key of Object.keys(NCB[k]))delete NCB[k][key];Object.assign(NCB[k],NCB.deepClone(data[k]));};repl('UNIT_DEFS');repl('SKILL_DEFS');repl('STATUS_DEFS');alert('内容已导入。');setTab('guide');}
 
   function updateHeader(){
