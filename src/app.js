@@ -96,8 +96,9 @@
     // deterministic given any fixed seed; only the auto default varies per click.
     const autoSeed='auto-'+(++autoSeedCounter)+'-'+Date.now();
     if(!Number.isInteger(state.genLevel)||state.genLevel<1||state.genLevel>100){alert('等级请输入 1–100 的整数。');return;}
+    // v4 is classless: no archetype input — an individual, not a class.
     const card=NCB.generateCardByVersion({
-      rarity:state.genRarity,level:state.genLevel,archetype:state.genArchetype,
+      rarity:state.genRarity,level:state.genLevel,
       seed:seed??autoSeed,
     });
     state.lastGenerated=card;
@@ -346,11 +347,10 @@
     const view=$('#view-generate');if(!view)return;
     const card=state.lastGenerated;
     view.innerHTML=`<div class="generate-layout">
-      <div class="panel"><div class="panel-head"><h2>生成卡牌</h2><span class="hint">选择稀有度 / 等级 / 定位，随机生成</span></div><div class="panel-body">
+      <div class="panel"><div class="panel-head"><h2>生成卡牌</h2><span class="hint">选择稀有度 / 等级，生成一个独立个体</span></div><div class="panel-body">
         <div class="field-row">
           <label class="field"><span>稀有度</span><select data-gen-rarity>${RARITY_OPTIONS.map(r=>`<option value="${r}" ${r===state.genRarity?'selected':''}>${esc(NCB.V2_RARITY_DISPLAY?.[r]||r)}</option>`).join('')}</select></label>
           <label class="field"><span>等级</span><input data-gen-level type="number" min="1" max="100" step="1" value="${state.genLevel}"></label>
-          <label class="field"><span>类型定位</span><select data-gen-archetype>${ARCHETYPE_OPTIONS.map(a=>`<option value="${a}" ${a===state.genArchetype?'selected':''}>${esc(ROLE_ZH[a]||a)}</option>`).join('')}</select></label>
         </div>
         <details class="advanced-note"><summary>Seed（高级）</summary>
           <label class="field"><span>固定种子</span><input type="text" data-gen-seed value="${esc(state.genSeed)}" placeholder="留空则自动随机"></label>
@@ -516,7 +516,6 @@
     if(event.target.matches('[data-log-filter]')){state.logFilter=event.target.value;renderBattle();return;}
     if(event.target.matches('[data-gen-rarity]')){state.genRarity=event.target.value;return;}
     if(event.target.matches('[data-gen-level]')){state.genLevel=Number(event.target.value);return;}
-    if(event.target.matches('[data-gen-archetype]')){state.genArchetype=event.target.value;return;}
     if(event.target.matches('[data-gen-seed]')){state.genManualSeed=true;state.genSeed=event.target.value;return;}
     if(event.target.id==='replay-file'){const file=event.target.files[0];if(file)file.text().then(text=>{try{applyReplay(JSON.parse(text),JSON.parse(text).rounds?.length);setTab('replay');}catch(e){alert(`Replay 无效: ${e.message}`);}});}
     if(event.target.id==='content-file'){const file=event.target.files[0];if(file)file.text().then(text=>{try{importContent(JSON.parse(text));}catch(e){alert(`内容包无效: ${e.message}`);}});}
