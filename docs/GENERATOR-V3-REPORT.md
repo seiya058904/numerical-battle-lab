@@ -6,7 +6,7 @@
 ## 1. Git 基线
 
 - **OLD HEAD**: `b590eb7` `manifest: refresh .github/workflows/verify.yml size entry`（分支 `main`）
-- **NEW HEAD**: `1ef06f1`（内容主提交 `3fc145a` + 文档哈希跟进提交；工作树保持干净，仅包含本轮 v3 文件）
+- **NEW HEAD**: `b3d4667`（内容主提交 `3fc145a` + 报告哈希/清单跟进提交；工作树保持干净，仅包含本轮 v3 文件）
 - **本地未提交基线**：接手时工作树已含上一轮 v3 实现（未提交），本报告基于该实现做完整验证并整理提交。
 
 ## 2. 修改文件
