@@ -82,7 +82,24 @@
       base=NCB.applyModifierBand(base,passives,{battle:this,source:e,target:e,scope:rawScope});
       const statusMods=NCB.collectStatModifiers(e,statId,NCB.STATUS_DEFS,{battle:this,source:e});
       base=NCB.applyStatModifierBand(base,statusMods,{battle:this,source:e,target:e,scope:rawScope});
+      // v4 time dynamics: per-card RAMP (grows) / FATIGUE (decays) over battle rounds.
+      // Legacy cards carry no RAMP_*/FATIGUE_* params -> factor stays exactly 1.
+      if(this._timeDynamicsEnabled!==false&&['ATK','DEF','RES','SPD','HEAL_POWER','HEAL_TAKEN'].includes(statId)){
+        base*=this.timeStatFactor(e);
+      }
       return round2(Number(this.kernel.run('ModifyStat',e,base,null,{statId})));
+    }
+    // Deterministic per-round stat factor from RAMP/FATIGUE params (v4 individuals).
+    // Legacy entities (no params) always return 1.
+    timeStatFactor(e){
+      const s=e.stats||{};
+      const rampRate=Number(s.RAMP_RATE||0),fatigueRate=Number(s.FATIGUE_RATE||0);
+      if(!rampRate&&!fatigueRate)return 1;
+      const round=this.round||1;
+      let factor=1;
+      if(rampRate){const start=Number(s.RAMP_START??0);const cap=Number(s.RAMP_CAP??1);const growth=1+Math.max(0,round-start)*rampRate;factor*=Math.min(Math.max(1,cap),growth);}
+      if(fatigueRate){const start=Number(s.FATIGUE_START??999);const cap=Number(s.FATIGUE_CAP??1);const decay=1-Math.max(0,round-start)*fatigueRate;factor*=Math.max(Math.min(1,cap),decay);}
+      return factor;
     }
     statusFlags(e){const flags={}; for(const s of e.statuses){Object.assign(flags,NCB.STATUS_DEFS[s.id]?.flags||{});} return flags;}
     getResource(entityOrId,resource){
@@ -125,6 +142,8 @@
       for(const key of Object.keys(actor?.stats||{}))scope[key]=this.getStat(actor.id,key);if(target)for(const key of Object.keys(target.stats||{}))scope[`TARGET_${key}`]=this.getStat(target.id,key);addEntitySignals(actor,'');addEntitySignals(target,'TARGET_');Object.assign(scope,{
       MAX_HP:actor.maxHp,HP:actor.hp,HP_PCT:actor.hp/actor.maxHp,MISSING_HP:actor.maxHp-actor.hp,ENERGY:this.getResource(actor,'ENERGY'),
       TARGET_HP:target?.hp||0,TARGET_MAX_HP:target?.maxHp||0,TARGET_HP_PCT:target?target.hp/target.maxHp:0,
+      // v4 battle-time signals: deterministic, safe, and used by generator formulas
+      ROUND:this.round,BATTLE_TURN:this.round,
       STACKS:1,EVENT_DAMAGE:0,EVENT_HP_DAMAGE:0,EVENT_SHIELD_DAMAGE:0,CONSUMED_STACKS:0,...extra
     });return scope;}
     applyStatus(targetId,statusId,opts={}){const e=this.entity(targetId),def=NCB.STATUS_DEFS[statusId];if(!def||e.hp<=0)return false;
@@ -183,14 +202,16 @@
       const unitDef=NCB.UNIT_DEFS[subject.templateId];
       for(const [index,trigger] of (unitDef?.triggers||[]).entries())executeTrigger(`unit:${subject.templateId}`,unitDef.name,trigger,index,1);
     }
-    heal(sourceId,targetId,amount,label='治疗'){const target=this.entity(targetId);if(target.hp<=0)return 0;const source=this.entity(sourceId);const sourcePower=this.getStat(sourceId,'HEAL_POWER')/100;const takenPower=this.getStat(targetId,'HEAL_TAKEN')/100;let value=Math.max(0,Number(amount)*sourcePower);value=Number(this.kernel.run('ModifyHealDealt',source,value,target,{tags:['heal'],label}));value*=takenPower;value=Number(this.kernel.run('ModifyHealTaken',target,value,source,{tags:['heal'],label}));const final=Math.max(0,Math.floor(value));const before=target.hp;target.hp=Math.min(target.maxHp,target.hp+final);const gained=target.hp-before;if(gained){this.pushLog({kind:'heal',sourceId,targetId,amount:gained,text:`${target.name} 恢复 ${gained} HP`,trace:[`${label}: ${round2(amount)}`,`治疗强度 ×${round2(sourcePower)}`,`受疗属性 ×${round2(takenPower)}`,`事件修正后: ${round2(value)}`,`最终: ${gained}`]});const entry=this.log[this.log.length-1];const payload={eventId:entry.id,heal:gained,amount:gained,tags:['heal']};this.runStatusTriggers('afterHealTaken',target,source,payload);if(source.id!==target.id)this.runStatusTriggers('afterHealDealt',source,target,payload);}return gained;}
+    heal(sourceId,targetId,amount,label='治疗'){const target=this.entity(targetId);if(target.hp<=0)return 0;const source=this.entity(sourceId);const sourcePower=this.getStat(sourceId,'HEAL_POWER')/100;const takenPower=this.getStat(targetId,'HEAL_TAKEN')/100;let value=Math.max(0,Number(amount)*sourcePower);value=Number(this.kernel.run('ModifyHealDealt',source,value,target,{tags:['heal'],label}));value*=takenPower;value=Number(this.kernel.run('ModifyHealTaken',target,value,source,{tags:['heal'],label}));value*=this.wearHealFactor(target);const final=Math.max(0,Math.floor(value));const before=target.hp;target.hp=Math.min(target.maxHp,target.hp+final);const gained=target.hp-before;if(gained){this.pushLog({kind:'heal',sourceId,targetId,amount:gained,text:`${target.name} 恢复 ${gained} HP`,trace:[`${label}: ${round2(amount)}`,`治疗强度 ×${round2(sourcePower)}`,`受疗属性 ×${round2(takenPower)}`,`事件修正后: ${round2(value)}`,`最终: ${gained}`]});const entry=this.log[this.log.length-1];const payload={eventId:entry.id,heal:gained,amount:gained,tags:['heal']};this.runStatusTriggers('afterHealTaken',target,source,payload);if(source.id!==target.id)this.runStatusTriggers('afterHealDealt',source,target,payload);}return gained;}
     defeatIfNeeded(target,sourceId){if(target.hp<=0&&target.alive){target.hp=0;target.alive=false;this.pushLog({kind:'defeat',targetId:target.id,sourceId,text:`${target.name} 被击倒`});const entry=this.log[this.log.length-1];let source=null;if(sourceId){try{source=this.entity(sourceId);}catch(_){}}this.kernel.run('EntityDefeated',target,true,source,{sourceId});this.runStatusTriggers('afterDefeated',target,source,{eventId:entry.id,tags:['defeat']});if(source&&source.id!==target.id)this.runStatusTriggers('afterKill',source,target,{eventId:entry.id,tags:['kill']});}}
     applyDamage({sourceId,targetId,amount,tags=[],damageType=null,traceLabel='伤害',canReflect=true}){
       const source=sourceId?this.entity(sourceId):null,target=this.entity(targetId);if(target.hp<=0)return{hpDamage:0,shieldDamage:0,wardDamage:0,total:0};
       let v=Math.max(0,Number(amount));const trace=[`${traceLabel}: ${round2(v)}`];
       if(source){const out=Number(this.kernel.run('ModifyDamageDealt',source,v,target,{tags}));if(out!==v)trace.push(`输出修正: ${round2(v)} → ${round2(out)}`);v=out;}
       const inc=Number(this.kernel.run('ModifyDamageTaken',target,v,source,{tags}));if(inc!==v)trace.push(`承伤修正: ${round2(v)} → ${round2(inc)}`);v=inc;
-      v=Math.max(0,Math.floor(v));const resolvedType=damageType||tags.find(tag=>NCB.DAMAGE_TYPES?.[tag])||null;let wardDamage=0;if(resolvedType&&target.wards){const pool=Math.max(0,Number(target.wards[resolvedType]||0));wardDamage=Math.min(pool,v);if(wardDamage){target.wards[resolvedType]=pool-wardDamage;v-=wardDamage;trace.push(`${NCB.DAMAGE_TYPES[resolvedType]?.name||resolvedType}护符吸收: ${wardDamage}`);}}const shieldDamage=Math.min(target.shield,v);if(shieldDamage){target.shield-=shieldDamage;v-=shieldDamage;trace.push(`屏障吸收: ${shieldDamage}`);}
+      v=Math.max(0,Math.floor(v));const resolvedType=damageType||tags.find(tag=>NCB.DAMAGE_TYPES?.[tag])||null;let wardDamage=0;if(resolvedType&&target.wards){const pool=Math.max(0,Number(target.wards[resolvedType]||0));wardDamage=Math.min(pool,v);if(wardDamage){target.wards[resolvedType]=pool-wardDamage;v-=wardDamage;trace.push(`${NCB.DAMAGE_TYPES[resolvedType]?.name||resolvedType}护符吸收: ${wardDamage}`);}}let shieldDamage=0;
+      // Battle Wear (exhaustion) bypasses shields — it is fatigue, not an attack.
+      if(!tags.includes('wear')){shieldDamage=Math.min(target.shield,v);if(shieldDamage){target.shield-=shieldDamage;v-=shieldDamage;trace.push(`屏障吸收: ${shieldDamage}`);}}
       const hpDamage=Math.min(target.hp,v);target.hp-=hpDamage;const total=wardDamage+shieldDamage+hpDamage;trace.push(`HP 伤害: ${hpDamage}`);
       this.pushLog({kind:'damage',sourceId,targetId,amount:total,hpDamage,shieldDamage,wardDamage,damageType:resolvedType,tags:[...tags],text:`${source?source.name:'效果'} → ${target.name}: ${total} 伤害`,trace});
       const logEntry=this.log[this.log.length-1];
@@ -231,7 +252,21 @@
     accuracyCheck(actor,target,skill,effect={}){const acc=this.getStat(actor.id,'ACC');const ignoreEvasion=effect.ignoreEvasion??skill.ignoreEvasion??false;const eva=ignoreEvasion?0:this.getStat(target.id,'EVA');const base=this.skillAccuracy(actor,target,skill,effect);const chance=clamp(base*(100+acc)/(100+acc+eva*.85),.05,.995);const hit=this.prng.random()<chance;return{hit,chance};}
     computeDamage(actor,target,skill,effect={},extraScope={}){const scope=this.scopeFor(actor,target,extraScope);const accuracy=effect.canMiss===false?{hit:true,chance:1}:this.accuracyCheck(actor,target,skill,effect);if(!accuracy.hit)return{miss:true,trace:[`命中率: ${(accuracy.chance*100).toFixed(1)}% → MISS`]};
       const critChance=this.skillCritChance(actor,target,skill,effect);const crit=critChance>0&&this.prng.random()<critChance;const critMult=crit?this.getStat(actor.id,'CRIT_DMG')/100:1;const basePen=this.skillPenetration(actor,target,skill,effect);
-      const defs=effect.components||skill.damageComponents||[{type:effect.damageType||skill.damageType||'physical',formula:effect.formula||skill.formula,penetration:effect.penetration,typePenetration:effect.typePenetration}];const componentTrace=[];const components=defs.map(c=>{const formula=c.formula||effect.formula||skill.formula;const base=Math.max(0,evalFormula(formula,scope))*Number(c.multiplier??1)*Number(effect.spreadMultiplier??skill.spreadMultiplier??1);const varianceMin=Number(c.varianceMin??effect.varianceMin??skill.varianceMin??1),varianceMax=Number(c.varianceMax??effect.varianceMax??skill.varianceMax??1);const lo=Math.min(varianceMin,varianceMax),hi=Math.max(varianceMin,varianceMax);const variance=lo===hi?lo:lo+this.prng.random()*(hi-lo);const raw=base*critMult*variance;componentTrace.push(`公式: ${formula}`,`基础: ${round2(base)}`,`随机倍率: ×${round2(variance)}`);return{type:c.type||effect.damageType||skill.damageType||'physical',amount:raw,penetration:c.penetration??basePen,typePenetration:c.typePenetration??Number(skill.typePenetrationBonus||0)/100,formula,variance,ignoreDefense:c.ignoreDefense??effect.ignoreDefense??skill.ignoreDefense,ignoreResistance:c.ignoreResistance??effect.ignoreResistance??skill.ignoreResistance,defenseStat:c.defenseStat??effect.defenseStat??skill.defenseStat,minDamage:c.minDamage??effect.minDamage??skill.minDamage,maxDamage:c.maxDamage??effect.maxDamage??skill.maxDamage};});
+      const defs=effect.components||skill.damageComponents||[{type:effect.damageType||skill.damageType||'physical',formula:effect.formula||skill.formula,penetration:effect.penetration,typePenetration:effect.typePenetration}];const componentTrace=[];const components=defs.map(c=>{const formula=c.formula||effect.formula||skill.formula;const base=Math.max(0,evalFormula(formula,scope))*Number(c.multiplier??1)*Number(effect.spreadMultiplier??skill.spreadMultiplier??1);const varianceMin=Number(c.varianceMin??effect.varianceMin??skill.varianceMin??1),varianceMax=Number(c.varianceMax??effect.varianceMax??skill.varianceMax??1);const lo=Math.min(varianceMin,varianceMax),hi=Math.max(varianceMin,varianceMax);
+      // v4 individual randomness: VOLATILITY widens/narrows the variance window
+      // around its midpoint; LUCK biases the draw toward the top/bottom half.
+      // Legacy actors (VOLATILITY=1, LUCK=0) reproduce the old roll exactly.
+      const vol=Number(actor.stats?.VOLATILITY??1),luck=Number(actor.stats?.LUCK??0);
+      let variance;
+      if(vol===1&&luck===0){variance=lo===hi?lo:lo+this.prng.random()*(hi-lo);}
+      else{
+        const mid=(lo+hi)/2,half=(hi-lo)/2;const lo2=mid-half*vol,hi2=mid+half*vol;
+        let u=this.prng.random();
+        if(luck>0)u=Math.pow(u,1/(1+luck));else if(luck<0)u=1-Math.pow(1-u,1/(1-luck));
+        u=Math.max(0,Math.min(1,u));
+        variance=lo2+(hi2-lo2)*u;
+      }
+      const raw=base*critMult*variance;componentTrace.push(`公式: ${formula}`,`基础: ${round2(base)}`,`随机倍率: ×${round2(variance)}`);return{type:c.type||effect.damageType||skill.damageType||'physical',amount:raw,penetration:c.penetration??basePen,typePenetration:c.typePenetration??Number(skill.typePenetrationBonus||0)/100,formula,variance,ignoreDefense:c.ignoreDefense??effect.ignoreDefense??skill.ignoreDefense,ignoreResistance:c.ignoreResistance??effect.ignoreResistance??skill.ignoreResistance,defenseStat:c.defenseStat??effect.defenseStat??skill.defenseStat,minDamage:c.minDamage??effect.minDamage??skill.minDamage,maxDamage:c.maxDamage??effect.maxDamage??skill.maxDamage};});
       const damage=components.reduce((sum,c)=>sum+this.previewDamageComponent(actor.id,target.id,c).finalDamage,0);
       return{components,damage,crit,trace:[`命中率: ${(accuracy.chance*100).toFixed(1)}%`,...componentTrace,`暴击: ${crit?'是':'否'} ×${round2(critMult)}`]};}
     resolveEffect(actor,target,skill,effect,ctx={}){
@@ -285,11 +320,42 @@
           e.statuses=e.statuses.filter(s=>(s.duration===null||s.duration>0)&&e.hp>0);
         }
       }
+      this.applyBattleWear();
+    }
+    // Battle Wear: deterministic long-match pressure so even pure-sustain mirrors
+    // eventually converge instead of healing forever. ENDURANCE delays the onset,
+    // FATIGUE_RATE accelerates it. Two pressures compound:
+    //   1) healing effectiveness declines toward ~5%
+    //   2) unhealable wear damage (true) grows with accumulated wear
+    // => terminal pressure no sustain can out-heal. Legacy entities default ENDURANCE=50.
+    wearStart(e){const end=Number(e.stats?.ENDURANCE??50);return 18+end*0.34;}
+    wearHealFactor(e){return Math.max(0.05,1-Math.min(0.95,(e._wear||0)*1.4));}
+    applyBattleWear(){
+      if(this._effectWork&&this._effectWork>8192)return;
+      for(const teamId of ['A','B'])for(const e of this.teams[teamId].entities){
+        if(e.hp<=0)continue;
+        const start=this.wearStart(e),round=this.round;
+        if(round<=start)continue;
+        const fatigueRate=Number(e.stats?.FATIGUE_RATE||0);
+        const step=Math.max(0.008,0.012+fatigueRate*0.05);
+        e._wear=Math.min(1,(e._wear||0)+step);
+        // terminal pressure 1: irrecoverable max-HP decay (hp follows maxHp down)
+        if(e._maxHpBase===undefined)e._maxHpBase=e.maxHp;
+        const newMax=Math.max(e._maxHpBase*0.5,Math.round(e._maxHpBase*(1-Math.min(0.5,e._wear))));
+        if(newMax!==e.maxHp){
+          const before=e.maxHp;e.maxHp=newMax;
+          if(e.hp>e.maxHp)e.hp=e.maxHp;
+          this.pushLog({kind:'wear',targetId:e.id,amount:before-newMax,text:`${e.name} 战斗损耗：最大生命 ${before} → ${e.maxHp}`});
+        }
+        // terminal pressure 2: unhealable wear damage that eventually out-paces heal
+        const wearDmgPct=Math.min(0.08,0.008+(e._wear||0)*0.05);
+        if(e.hp>0)this.applyDamage({sourceId:null,targetId:e.id,amount:Math.max(1,Math.round(e.maxHp*wearDmgPct)),tags:['wear','true'],traceLabel:'战斗损耗',canReflect:false});
+      }
     }
     orderActions(actions){const normalized=[];for(const [i,a] of actions.entries()){let actor;try{actor=this.entity(a.actorId);}catch{continue;}if(actor.hp<=0)continue;const skill=NCB.SKILL_DEFS[a.skillId];if(!skill)continue;const basePriority=a.overridePriority??skill.priority??0;const priority=Number(this.kernel.run('ModifyPriority',actor,basePriority,null,{skill,action:a}));normalized.push({...a,id:`r${this.round}-${i}`,order:200,priority,speed:this.getStat(actor.id,'SPD')});}return NCB.sortActions(normalized,this.prng);}
     resolveRound(actions){if(this.outcome().ended)return;this._effectWork=0;const ordered=this.orderActions(actions);const record=actions.map(a=>({...a}));for(const a of ordered){if(this.outcome().ended)break;this.useSkill(a);}this.processTurnEnd();this.history.push(record);if(!this.outcome().ended){this.round++;this.processRoundStart(false);}return this.outcome();}
     outcome(){const a=this.getLiving('A').length,b=this.getLiving('B').length;if(a&&b)return this.history.length>=this.config.maxRounds?{ended:true,winner:'draw'}:{ended:false};if(!a&&!b)return{ended:true,winner:'draw'};return{ended:true,winner:a?'A':'B'};}
-    serializableSnapshot(){return{seed:this.config.seed,rng:this.prng.getSeed(),round:this.round,teams:Object.fromEntries(['A','B'].map(t=>[t,this.teams[t].entities.map(e=>({id:e.id,templateId:e.templateId,hp:e.hp,shield:e.shield,energy:e.energy,stats:{...e.stats},statuses:e.statuses.map(s=>({...s,data:s.data?{...s.data}:undefined})),cooldowns:{...e.cooldowns},alive:e.alive,wards:{...(e.wards||{})},resistances:{...e.resistances},affinities:{...e.affinities},immunities:{...e.immunities},tags:[...(e.tags||[])]}))])),outcome:this.outcome(),log:this.log.map(x=>({...x,trace:x.trace?x.trace.slice():undefined}))};}
+    serializableSnapshot(){return{seed:this.config.seed,rng:this.prng.getSeed(),round:this.round,teams:Object.fromEntries(['A','B'].map(t=>[t,this.teams[t].entities.map(e=>({id:e.id,templateId:e.templateId,hp:e.hp,maxHp:e.maxHp,shield:e.shield,energy:e.energy,stats:{...e.stats},statuses:e.statuses.map(s=>({...s,data:s.data?{...s.data}:undefined})),cooldowns:{...e.cooldowns},alive:e.alive,wards:{...(e.wards||{})},resistances:{...e.resistances},affinities:{...e.affinities},immunities:{...e.immunities},tags:[...(e.tags||[])],wear:e._wear||0}))])),outcome:this.outcome(),log:this.log.map(x=>({...x,trace:x.trace?x.trace.slice():undefined}))};}
     exportReplay(){
       const units={},skills={},statuses={};
       for(const id of [...this.config.teamA,...this.config.teamB]){units[id]=NCB.UNIT_DEFS[id];for(const actionId of units[id].skills)skills[actionId]=NCB.SKILL_DEFS[actionId];}
