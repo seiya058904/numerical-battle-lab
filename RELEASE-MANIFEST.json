@@ -1,12 +1,12 @@
 {
   "name": "numerical-card-battle",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "entry": "index.html",
   "runtime": "fully-offline-static-web",
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 256,
+  "verifiedTests": 282,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
@@ -25,8 +25,8 @@
     },
     {
       "path": "AGENTS.md",
-      "size": 7303,
-      "sha256": "ae0094a49389d77f8b7b4b3c720b3d63468a7e23eba083933db69bbb8aaf93b8"
+      "size": 8863,
+      "sha256": "e62b3f00a6ff960e07614629426048ee6578288f6e0cf1822396439daf1d74a1"
     },
     {
       "path": "FINAL-REPORT.md",
@@ -40,8 +40,8 @@
     },
     {
       "path": "README.md",
-      "size": 10632,
-      "sha256": "68239007fcba4c71a072de39ded9bd6e15492c7b97edf037a3492b8818cf1097"
+      "size": 12981,
+      "sha256": "b184bc48907abaa1d26ff29c8ac68dd0b82fc7fcd0bad7b3aa3e2deaecc052fd"
     },
     {
       "path": "RELEASE-NOTES.md",
@@ -64,9 +64,19 @@
       "sha256": "63f6d67e3b3804d55e02cd2986ce3d93533703b2a4fba29e7e6413d38e5849bc"
     },
     {
+      "path": "content/presets-v5.js",
+      "size": 662085,
+      "sha256": "b3745f56c9b3f04d6ef964b98a684129123a534b68c34acd28b61007847bd266"
+    },
+    {
+      "path": "content/presets-v5.json",
+      "size": 944386,
+      "sha256": "f612d7339df1cb9466486a4e608bdbae83f1275ba3b9f8b8c975e8c0941417a7"
+    },
+    {
       "path": "docs/ARCHITECTURE.md",
-      "size": 7625,
-      "sha256": "f7983d65c5023d525d0f1e98aec6c662d04b860e682d444769c8a0a3a6a6dc32"
+      "size": 9654,
+      "sha256": "0211db72692a079f05837c39da83cc8d3874c7e5d5e92a1aa8140c60c1ed4837"
     },
     {
       "path": "docs/BALANCE-AUDIT-v1.2.md",
@@ -119,6 +129,11 @@
       "sha256": "3c6654646906a49a4c13fc2dd85c923a0a2fa5f2351716add207d48ae68bff28"
     },
     {
+      "path": "docs/GENERATOR-V5.md",
+      "size": 5624,
+      "sha256": "9fd7b4c09b048a64823c399deb4794da1b764d2d2691e1ac5eda53914cd3cc18"
+    },
+    {
       "path": "docs/GENERATOR.md",
       "size": 11986,
       "sha256": "f8778781c80701075bc917b3ae938f5b19bf2302e5ae0303ce07acddde96624c"
@@ -142,6 +157,11 @@
       "path": "docs/V4-PRESET-TABLE.md",
       "size": 5654,
       "sha256": "3ecba885af773993552382c87c6129ac2b88aba36e62c13c67f1c7aba297a844"
+    },
+    {
+      "path": "docs/V5-DELIVERY-REPORT.md",
+      "size": 7786,
+      "sha256": "02fb7cf6b7eee8ff64269693ee46b9af933bb4df7dc74d9a8e32374ebc3b37fc"
     },
     {
       "path": "docs/numeric-component-catalog.json",
@@ -185,13 +205,13 @@
     },
     {
       "path": "index.html",
-      "size": 3902,
-      "sha256": "59c7fa8a7d2b3b5461560ae29cde376daa4db393d4ad75e05a0599afbabd4629"
+      "size": 4131,
+      "sha256": "c4cfd66229f625c7d64afb83bbaa46463d93f84c1c9958f14355f6820176d072"
     },
     {
       "path": "package.json",
-      "size": 1239,
-      "sha256": "481dbb7659b937605040e864b4bc122caa737e9e1e1dfc9827611920f8d14ea0"
+      "size": 1489,
+      "sha256": "365fcf068e3a2b645d1be2ff58ddb086c2495524bb7f7b65f654ed371e77e157"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
@@ -200,13 +220,23 @@
     },
     {
       "path": "qa/browser-knowledge.js",
-      "size": 5057,
-      "sha256": "e433279f4d03e1400327a4648b5d658bad49f39e677f7e19cea24124d5f89669"
+      "size": 5069,
+      "sha256": "3e9d9a856141e1e59d9f0dc75f6e8af73467eafa618d666dca4216bc096033e5"
     },
     {
       "path": "qa/browser-knowledge.json",
       "size": 1366,
       "sha256": "c0a809f6db96fa465c047bdacc5159aa4b79615a832dce9d2e8ae0d5711c150b"
+    },
+    {
+      "path": "qa/browser-multi.js",
+      "size": 6919,
+      "sha256": "0bca8ae54cc20b21c3c9b6b07d695479d4829fa138715af5d2f2fb2e4d8072d2"
+    },
+    {
+      "path": "qa/browser-multi.json",
+      "size": 1696,
+      "sha256": "8f63b6155bca8d89cd7cbb9bb2bce8524e0d7960f31b184427e4880398871d2f"
     },
     {
       "path": "qa/browser-results.json",
@@ -230,18 +260,18 @@
     },
     {
       "path": "qa/browser-v4.js",
-      "size": 10788,
-      "sha256": "157e3d80777ecfaf0a004b7c72627efd3737d50bc7f6e2204deb9e2ad2d63dc6"
+      "size": 10810,
+      "sha256": "b81dd28f3501caf6e883faac72f8fcebb1935d1e538ae8dab2fd33c45f296634"
     },
     {
       "path": "qa/browser-v4.json",
-      "size": 8249,
-      "sha256": "aace14875b1b1995bcb9b1a1c43cd599f87f15a47e69c2eeff08d06418f7b407"
+      "size": 8256,
+      "sha256": "c453a742fd117d1d53b6f8518006f2eec0caa79e2e66f42b9998ab4cbd1e9dc4"
     },
     {
       "path": "qa/browser-vision.js",
-      "size": 5422,
-      "sha256": "e30f8f367ffa1e5b7ce881c4c0dc7b249602b42655e0cfaec37db355bbecf605"
+      "size": 5489,
+      "sha256": "30f38405dc9ba4b045ec7346a05791503bb9b729bd9701ca70ad417fe1279de2"
     },
     {
       "path": "qa/browser-vision.json",
@@ -270,8 +300,8 @@
     },
     {
       "path": "qa/human-like-review.json",
-      "size": 248841,
-      "sha256": "07d6759ec1bdb5d5c44d0439ccdec9f6b815207ec2269ab8dee41bd8b8e59cd7"
+      "size": 709260,
+      "sha256": "20d431fba9e61447a32f241fbd2d19b41d21212c1f07666493d3015f06bf060f"
     },
     {
       "path": "qa/matched-rarity-test.json",
@@ -284,9 +314,14 @@
       "sha256": "4055cf457d34a8e78a805583ed0c29910a96364957ae078e22a7a6cecbb0a7ff"
     },
     {
+      "path": "qa/naming-v2-audit.json",
+      "size": 574,
+      "sha256": "2e5f406bd2857f69ddd2eff697e127d45992a278909ad846e5de740c474c7790"
+    },
+    {
       "path": "qa/numerical-coverage.json",
-      "size": 244,
-      "sha256": "1611ace4e05c4e24e36074674bf6d9bde62adf5c99b768765dbff3e1f274804b"
+      "size": 263,
+      "sha256": "e3165902bb2680651c752935cd4436d7866a7f003d32aef01635ee8f95cee485"
     },
     {
       "path": "qa/numerical-semantics.json",
@@ -299,6 +334,11 @@
       "sha256": "e74b3e433e84433a37a7b7720d54e06decd2bf4155ccbd649395cab0215aa28d"
     },
     {
+      "path": "qa/power-envelope-v5.json",
+      "size": 2459,
+      "sha256": "e33f80708aca728f3c14065804168d3a819ab2ff7a72b11375f141950b21dda2"
+    },
+    {
       "path": "qa/power-v4-calibration.json",
       "size": 2145,
       "sha256": "40d5a8283334eced1a031576e4ea37f29d6a7d89d7e397bb2d01e3b9eb8ffdbe"
@@ -309,194 +349,214 @@
       "sha256": "d21564a094c9e10dc679f5c16b8ffbfa6317645a8c6ac882108395488ce58fa4"
     },
     {
+      "path": "qa/presets-v5-audit.json",
+      "size": 208346,
+      "sha256": "3b3e463c2b5b9bd83e7d83804691a1fbc879f6d4ec163b2a7c456518e6bec1f2"
+    },
+    {
       "path": "qa/review-1-battle.png",
-      "size": 39029,
-      "sha256": "afec3f3bcf3290ef7266e6e7e6c3c6301976c32772949c3c561d9411949c7584"
+      "size": 43740,
+      "sha256": "cb16a025e9aace186a00eb2457d01d2db7db9a26053825b3be6abd7e48628c12"
     },
     {
       "path": "qa/review-1-finish.png",
-      "size": 39029,
-      "sha256": "afec3f3bcf3290ef7266e6e7e6c3c6301976c32772949c3c561d9411949c7584"
+      "size": 41278,
+      "sha256": "bb6067cca5317df8ddac12a8dacc6d361e26ebfec6b17ca13ab47d5a9551f69a"
     },
     {
       "path": "qa/review-1-left-detail.png",
-      "size": 45527,
-      "sha256": "01ba79126cdf3729a8598d1624d66cc1225268de1ad485104f9017f8057c6e9c"
+      "size": 46078,
+      "sha256": "5a139ced9fee948b8029761c9896a231e198c57365ff7e85df4ed1f65e042f9f"
     },
     {
       "path": "qa/review-1-right-detail.png",
-      "size": 42841,
-      "sha256": "3d53a385598528305ba95cc9dd0d8513a658801d36fce1741f42b04494d3599a"
+      "size": 44521,
+      "sha256": "aae900513713b987e94b6f1f1eb4cc6065e9671b34306d0c8624ca15c275358f"
     },
     {
       "path": "qa/review-10-battle.png",
-      "size": 43327,
-      "sha256": "3e6b24bb2d90fd54a751aea5156ce8ed7ef99b7c13a1e1f39a0551b9fdd66389"
+      "size": 45130,
+      "sha256": "c1240c260b9f5f9d8377b5fc7e3fa55278948ef8c5ac54e23c5e4ea18656f90f"
     },
     {
       "path": "qa/review-10-finish.png",
-      "size": 41018,
-      "sha256": "842e64aa383e78790ca2f0e1dbaa7fa5b7d66653b9bb7fe16f719395a1df719f"
+      "size": 42290,
+      "sha256": "393231885633b920b4d0149d57e8342ef78ab5a7840f3ccfc542396b2a1f8729"
+    },
+    {
+      "path": "qa/review-11-battle.png",
+      "size": 44553,
+      "sha256": "61e542def3049ec04c34dc3ea158a44bc9f836c8710f5f74af11881d0015e7a7"
     },
     {
       "path": "qa/review-11-finish.png",
-      "size": 40316,
-      "sha256": "b8f008729ad3e62bb4ff2f549ae765cd67ae07b03601ede8c1f63afa2fad886c"
+      "size": 42778,
+      "sha256": "99d869fbcf89ea4ce7c1c716030dafec47e09a32ee20da6e6982ee185cbbde5e"
     },
     {
       "path": "qa/review-12-battle.png",
-      "size": 44687,
-      "sha256": "b162c39d3645c644f17f201a7fb4fa31a17c9c6dfbc9b2bc0ccb6a5549333a41"
+      "size": 45954,
+      "sha256": "75e62c90266ba2e4e2034dd9a0ba37658b47b7f7d581a8ca275a80e3ad33adae"
     },
     {
       "path": "qa/review-12-finish.png",
-      "size": 43223,
-      "sha256": "25a1eef36d75913be41e172b39be3ade33b526beb2723a6c26bcf39abfe4a3f0"
+      "size": 43937,
+      "sha256": "d14e45102714dc4679efcca13b4cbf1e2020888534b0936adb3393f9abfc3475"
     },
     {
       "path": "qa/review-13-finish.png",
-      "size": 39454,
-      "sha256": "465e281fd2f3529befd7f730eaf79482027c82781f63259db557f118ae411570"
+      "size": 40978,
+      "sha256": "83f6a59dc4dfda56b53b068d63ea8037cf9bb0fb56c64c8ff6533b9dcd5d622e"
     },
     {
       "path": "qa/review-14-battle.png",
-      "size": 42024,
-      "sha256": "a8e3dfcd70dbd6a47d6c5085e49206e79981c550afa939dfa98069a20d579a91"
+      "size": 46901,
+      "sha256": "19214082971d5122f5808b77f97c348e32cbe445c2a4b795f028ae44078e7048"
     },
     {
       "path": "qa/review-14-finish.png",
-      "size": 40551,
-      "sha256": "19b8ab2ed2051e7e84c7dd8ace3cadd36096812857fbb8db9d3951724ff59efe"
+      "size": 43175,
+      "sha256": "204fda4f56f981995228b849bf9cbbb2cc62fb721130c36efe8a6f9a1802aa26"
     },
     {
       "path": "qa/review-15-battle.png",
-      "size": 42029,
-      "sha256": "4805950cbbc543b92cf12cc90a784c8681d881cc4f897c4f434a9113361d1204"
+      "size": 45858,
+      "sha256": "766f5c0463ef84bd745316a2839bb057d5942053abde72ffbfd7403be34d0c5e"
     },
     {
       "path": "qa/review-15-finish.png",
-      "size": 41390,
-      "sha256": "916cbcbd91bd76196f0fe633dcf8b79b7cf6d54ec88c85838609f2b73afcd289"
+      "size": 43873,
+      "sha256": "44dc35bbc1af80d715937131cea6979c647ee63e8cda97dfbea5024a24aa7a3b"
     },
     {
       "path": "qa/review-2-battle.png",
-      "size": 39941,
-      "sha256": "0fca7378f2d1126f85a8a07a93589f4520a3664dceacadab6d091d57e2a8a721"
+      "size": 45080,
+      "sha256": "c7444ccdf68c578913a3813885b7fdd3d01bc86c23e3899c2d63c609833ca5c4"
     },
     {
       "path": "qa/review-2-finish.png",
-      "size": 39941,
-      "sha256": "0fca7378f2d1126f85a8a07a93589f4520a3664dceacadab6d091d57e2a8a721"
+      "size": 42170,
+      "sha256": "1d04b03f70e1b2b0ef4106e5367ef157da590f0949643069c3959a146613fe28"
     },
     {
       "path": "qa/review-2-left-detail.png",
-      "size": 42428,
-      "sha256": "b9945095703dc5b3d3a33bc2ebdd86a36605d13e1ecda8b6d5000e033173fd34"
+      "size": 43800,
+      "sha256": "4db2850abe4307f1b6582581fc8cd65970a60460cb59275400744db9a40f85d6"
     },
     {
       "path": "qa/review-2-right-detail.png",
-      "size": 49461,
-      "sha256": "dfee7886a17e99fcbbdea45c24cf8c7a16d23f86f0998286f098b6aed18a3db5"
+      "size": 50410,
+      "sha256": "a0f25f3b43b99b1c6accabbba3f5664f0a76e852d502bae9d8b9b293c7d7b342"
     },
     {
       "path": "qa/review-3-battle.png",
-      "size": 41545,
-      "sha256": "074c25871fee8314114cf42bbe0304f0f0d17f4e70c9bf6e0aa5e3e8e61b4df4"
+      "size": 44983,
+      "sha256": "839f606689c6a57ec1ebcbf47c4f5db7cf1b2ab172ae4a9873f4e663dfc96ec7"
     },
     {
       "path": "qa/review-3-finish.png",
-      "size": 39856,
-      "sha256": "3bec918865aaae7f695256c6ec86d7baf986fde59de8b1f696ad0e0ef2642ecd"
+      "size": 42692,
+      "sha256": "7618329bc99809fd3320bb8ee586d74760f4875ab0c662d24c8412f60b10986e"
     },
     {
       "path": "qa/review-3-left-detail.png",
-      "size": 41795,
-      "sha256": "850dbc4af2fef04246c235ab29071d01cec298969d07fd129097b87d52a74ec6"
+      "size": 43196,
+      "sha256": "26d5b60657ecf14f657973f587dcc7dda12215227d09d657d8760f4a76c773ce"
     },
     {
       "path": "qa/review-3-right-detail.png",
-      "size": 47021,
-      "sha256": "f4eb571764672871b80eff8600c40da6ce4179f86064274588152ffd3d2a46ca"
+      "size": 47654,
+      "sha256": "2d96ebfee8983865c8ab1cb3af3a0714d81e7d094e9c8c9d80ca6fa0675f6ce1"
+    },
+    {
+      "path": "qa/review-4-battle.png",
+      "size": 46023,
+      "sha256": "b7f851e469cf33967e623549b7eec461f583dfd16dae26a910216fac3c3269d6"
     },
     {
       "path": "qa/review-4-finish.png",
-      "size": 41117,
-      "sha256": "12a66f87a87e704ff0fe5e38b31e9f88f3e7f36e3693ec4c9e10c565b9537386"
+      "size": 43794,
+      "sha256": "c51453d8cdd5aaa67575d7288c5872567c44b165da64c8cb59416fdc8da5dfce"
     },
     {
       "path": "qa/review-4-left-detail.png",
-      "size": 48664,
-      "sha256": "eacfb4ed3fcce98a41b8962a92922f03cc179c3aaf174be36ecae00660c317eb"
+      "size": 49553,
+      "sha256": "832afe10d17ce29a2bdc67ea17c62c13f053b0237ddaf78e459a7fc0d70e8f14"
     },
     {
       "path": "qa/review-4-right-detail.png",
-      "size": 47916,
-      "sha256": "f90cb402eefdef4569c609360739270c57064acaafb156212418b7bc8700b940"
+      "size": 49137,
+      "sha256": "5ab0e703b0ceaa2659fb5dfecc01b44a79b8be619f877cba0067972c716bbe56"
     },
     {
       "path": "qa/review-5-battle.png",
-      "size": 42421,
-      "sha256": "1c3af534dbbdfc10fd748a9b7340ce9d29ecd318095c9ab5c53b30261e1880eb"
+      "size": 46491,
+      "sha256": "dc360a16f18a7ab79c865fabf160a3cb198e7500bab70800fe5226bc29e7d316"
     },
     {
       "path": "qa/review-5-finish.png",
-      "size": 41182,
-      "sha256": "42787c86e3b1e709e3d9708117c8b3a1bd92a82b84604ffb89c84e2a76f33395"
+      "size": 43057,
+      "sha256": "b8c96eaec1caa65b8deda017111412bb6f7daaabf177286c3e4841d246b10135"
     },
     {
       "path": "qa/review-5-left-detail.png",
-      "size": 49375,
-      "sha256": "fed3d44da8651bdd4215cb9384cd6e9547c5e467d1c73ba8457f5183cf65c9cf"
+      "size": 50670,
+      "sha256": "c09b590f1b8307d55304d84bc306f9ea8ceafd85f4e5ee03f8eaa9f82106e914"
     },
     {
       "path": "qa/review-5-right-detail.png",
-      "size": 46821,
-      "sha256": "570dd859f5ee620ca6fa6def9cd6609bc9055f67ae43583119f2441cc745df45"
+      "size": 48635,
+      "sha256": "b1f7618ac35ba59aac474e5d3514a4f0c87abb7c539596c9f596b8b315973cb5"
     },
     {
       "path": "qa/review-6-battle.png",
-      "size": 44813,
-      "sha256": "a60303f83a45288a701115f34daa981bb76df2987427d48c66e9a5bd6b76c8db"
+      "size": 47301,
+      "sha256": "d64d0a42d8fc6f93926b6d1dbdf520ac7f851fade6e8acd7acb72d6ff5fe46fe"
     },
     {
       "path": "qa/review-6-finish.png",
-      "size": 42022,
-      "sha256": "b22dedfcc330c56bd6f1bbb9134c1588bc9b8113d3b511e84d4c7ce88456b8e6"
+      "size": 43648,
+      "sha256": "26851afffd034e8bf608f9204c96afc353fe00fbec7a9acd2204d45332696047"
     },
     {
       "path": "qa/review-6-left-detail.png",
-      "size": 42300,
-      "sha256": "6989b083242fb3785fc30c2d8f8378c10eb3f01b3dee423a4729b0172ab8df53"
+      "size": 43050,
+      "sha256": "4efde3a7ca3fddc1bf7ffc440fea85f25cea56173a1d4e886f29b9b3df1a24f9"
     },
     {
       "path": "qa/review-6-right-detail.png",
-      "size": 46165,
-      "sha256": "d76c953cf8d875ea92f28ce7d336e35796c9f943db91429c1b6442219e7f6a25"
+      "size": 47447,
+      "sha256": "e280a433417e2e5038ef81276bdc82857bb9e4e9e3bc5bd636f5487302dd9027"
+    },
+    {
+      "path": "qa/review-7-battle.png",
+      "size": 44569,
+      "sha256": "62cb2875018d5301b8cc6b9634453eaedea5b3a599d015a468b1021ad2aeb288"
     },
     {
       "path": "qa/review-7-finish.png",
-      "size": 39890,
-      "sha256": "34948ffda1fbc50dedee6f90edadeaf7156f41d02f83a54dbfad88cb2972f807"
+      "size": 42670,
+      "sha256": "7fbdbc20c2bf3e39561b9430ecfb921160690ce0f919851a9add1a63feb4740e"
     },
     {
       "path": "qa/review-8-battle.png",
-      "size": 41893,
-      "sha256": "00bb54558a7f4582b198ee53ae7bd5a6afa0763923f1e0da4971f7a1db9638c7"
+      "size": 45905,
+      "sha256": "9bf63bee8082c5a39153e68985e78d24c5973f2013d1471298ad0309d7588b41"
     },
     {
       "path": "qa/review-8-finish.png",
-      "size": 40462,
-      "sha256": "dc69deb7563d4175f568db44703fa6249e95c51fec65e85a6431f686b7b27892"
+      "size": 42430,
+      "sha256": "7801967fae84f719d417266e972931c3e96d8a62fd9c90d04b32e65420a3c34a"
     },
     {
       "path": "qa/review-9-battle.png",
-      "size": 42763,
-      "sha256": "035577cbb8a16d15325aa377348bd2a0385390664fed48810066cb0256150c6a"
+      "size": 45818,
+      "sha256": "0c6cf26f5837b9bb970bb1b55139df10472b73aafd210de6f3d47b2d9296d6e3"
     },
     {
       "path": "qa/review-9-finish.png",
-      "size": 41333,
-      "sha256": "ac0e05000d876c0c2ad880b7463e894de66b99a32adc70258287a8a497ddf7f5"
+      "size": 43586,
+      "sha256": "d02980de5b400b9cae7266d73d2d8d8d7b8c73b9a121129200c12a557e7d8f4a"
     },
     {
       "path": "qa/stress-results.json",
@@ -540,8 +600,8 @@
     },
     {
       "path": "qa/v4-desktop-battle.png",
-      "size": 62666,
-      "sha256": "dcbf5c25632f897748406fe065aaca76be37a9df5bd607b299d079f0cdaa286f"
+      "size": 62581,
+      "sha256": "b64208a6b4a346e6b6be4bfe88e8d12f0ba7d1c718092c4d3f16ed5af038b1d2"
     },
     {
       "path": "qa/v4-dossiers.json",
@@ -555,8 +615,8 @@
     },
     {
       "path": "qa/v4-knowledge-mobile.png",
-      "size": 39414,
-      "sha256": "ce07ddfbb34dcebdddf7bfc7bb9494178c4e09f4d1a707c89984f79c38fdaeaa"
+      "size": 39216,
+      "sha256": "70f66f0457557b353f37cdcce58c031c55d495b4f2d91df1dfcab05418aa32cb"
     },
     {
       "path": "qa/v4-long-battles.json",
@@ -565,13 +625,13 @@
     },
     {
       "path": "qa/v4-mobile-battle-1.png",
-      "size": 41538,
-      "sha256": "40861f972ae5fb8be04074726f42481b5ea391b7f9c30680e02afcffa525413f"
+      "size": 42880,
+      "sha256": "57b6d5542c036b5dad72c8031160982c628273376671b179b57c04cd8ffc5dd9"
     },
     {
       "path": "qa/v4-mobile-battle-timeline.png",
-      "size": 42679,
-      "sha256": "c8da0bc1854a4317c5274fa69108d81b56e74e9fd84f55955f11bb13ba9528b2"
+      "size": 42761,
+      "sha256": "ccc60cadda7f225f050820d0cc3837753224d4f765375184af6938863b0e0b07"
     },
     {
       "path": "qa/v4-mobile-create.png",
@@ -580,8 +640,8 @@
     },
     {
       "path": "qa/v4-mobile-detail.png",
-      "size": 56072,
-      "sha256": "4cffcccfaf518939b233a884184dcb39b8cec30f393a5a25c1c79b9b254f5b6e"
+      "size": 56358,
+      "sha256": "83364e2b4206669c665b9110ac2553a7e6f0178c609e09a085ac9f9984cdb2e6"
     },
     {
       "path": "qa/v4-mobile-encyclopedia.png",
@@ -594,14 +654,19 @@
       "sha256": "434e1fde3adf3891b8de8c606df504c9cb49ce8b636203702559723cb7375493"
     },
     {
+      "path": "qa/v4-mobile-multiteam-3v2.png",
+      "size": 37865,
+      "sha256": "9e89701e22ce178b84ab6671cd19cb8324cdbd85f508d62d70801793059ca761"
+    },
+    {
       "path": "qa/v4-mobile-presets.png",
-      "size": 34458,
-      "sha256": "7b3ba567d31e2f6996a5b67e4b018d9759f95dea0faa529a822ea889ecb29d32"
+      "size": 34873,
+      "sha256": "16a931cb8ba397f472ec875fb0e50a5c7f7e90b156b4fe41b4e95f3e3a88ed6b"
     },
     {
       "path": "qa/v4-mobile-stat.png",
-      "size": 41651,
-      "sha256": "ac35536e8b67e7ca9075f993e4d3b3435762d5426d297b6d9d645fd2ecb9da82"
+      "size": 41409,
+      "sha256": "3f9439cfb0ad14fc5a8e46caaec24e622e74826b30eec206c5fdf4898a9d0009"
     },
     {
       "path": "qa/v4-mobile-tutorial.png",
@@ -624,14 +689,24 @@
       "sha256": "5e4d1cc554bb7dce31efaaf0712ce8bd45ab9ca5c0ee76d641252bea0ca45d75"
     },
     {
+      "path": "scripts/audit-naming-v2.js",
+      "size": 3104,
+      "sha256": "2747e609df1e169eca699adcb5e6aa7da27f73f970e9234cff925922fcdb0b82"
+    },
+    {
       "path": "scripts/audit-numerical-coverage.js",
-      "size": 2476,
-      "sha256": "cdb5c790bf414fcb52873c5f438bb3d98a01a3722f2a4e7f5753c549d36d17ff"
+      "size": 2782,
+      "sha256": "78e2677eaf77e50e0aeeb667e2946f307ecf8787d86b0f1eb1612491238b59f4"
     },
     {
       "path": "scripts/audit-numerical-semantics.js",
       "size": 11352,
       "sha256": "79a5930795987155fafdc37eecb6ae621294d1fcc5bd6342ef490752c1201045"
+    },
+    {
+      "path": "scripts/audit-presets-v5.js",
+      "size": 2551,
+      "sha256": "41ca4b3d61315da325b67a071e017310d0ea4db9ff887d6193b2484b7b004459"
     },
     {
       "path": "scripts/audit-v4-battles.js",
@@ -647,6 +722,11 @@
       "path": "scripts/audit-v4-presets.js",
       "size": 3490,
       "sha256": "64c5fd49176c991d6bfb1cfb6923eb701e340635796e089e6f3678e8879bdf10"
+    },
+    {
+      "path": "scripts/audit-v5-strength.js",
+      "size": 4271,
+      "sha256": "c18fc556ded4e5fba8e27d982edcba9a465a17b6b8f413f53a481f85073b0c59"
     },
     {
       "path": "scripts/diversity-audit-v4.js",
@@ -689,6 +769,11 @@
       "sha256": "bbc33fff0d68b41e1b9904e9e9fc415a197a84803e738422670f0252255a2713"
     },
     {
+      "path": "scripts/migrate-presets-v5.js",
+      "size": 4482,
+      "sha256": "fdaa41e51a9554d82ce054a816e5804dd3b64f05ed137ab928672178a402544c"
+    },
+    {
       "path": "scripts/power-calibration.js",
       "size": 19509,
       "sha256": "58fe82b28936005d1577e132446df90c90cbcd0fa4e2253cfb438b0d45c8318a"
@@ -716,7 +801,7 @@
     {
       "path": "scripts/static-check.js",
       "size": 7234,
-      "sha256": "b7c2e15bdf1a6171c963c75eb8dd87d79fa854bbc11d00c5b6d71fb6c0af0937"
+      "sha256": "e6514679919b5931582c7882d893cb36845c81b1ae8f4d51e074ce26dfca5995"
     },
     {
       "path": "scripts/stress-check.js",
@@ -730,8 +815,8 @@
     },
     {
       "path": "src/app.js",
-      "size": 60642,
-      "sha256": "398b0925a755fb9da6e1ab0dac32a174016390eb394b2bc4ae4a1daf746e8e5a"
+      "size": 65513,
+      "sha256": "9cb38ad943c887d1befcea2b3592bdfecd43de66799c86963c8e739e035b5f10"
     },
     {
       "path": "src/battlepower-model.js",
@@ -742,6 +827,11 @@
       "path": "src/battlepower-v2.js",
       "size": 10400,
       "sha256": "4a652633d5fdc3abc9bd4cacf3e6824dccb8616e92b2a7c63bd5f0d7cd85def5"
+    },
+    {
+      "path": "src/battlepower-v3.js",
+      "size": 13459,
+      "sha256": "55530c10f94386ae4a1e3601304d9165c9892b249e6af7f948dc0f0fb39e3712"
     },
     {
       "path": "src/battlepower.js",
@@ -760,8 +850,8 @@
     },
     {
       "path": "src/card-ui.js",
-      "size": 14883,
-      "sha256": "80081f9dee2c2fe9260939132e53916f8c8fc4e14ffcce2e22d9bc1e60f5feb2"
+      "size": 15735,
+      "sha256": "ec91ed39664700f384619b7372ef3025b1901d3423b4e17e4d19346e7a8e56b2"
     },
     {
       "path": "src/components.js",
@@ -824,19 +914,34 @@
       "sha256": "6cbdead6c079dd0dc4b18dc2297f4770ca97aed5b48bbd0523763281a56b4348"
     },
     {
+      "path": "src/gen-v5.js",
+      "size": 13492,
+      "sha256": "a9b19b1f22a30936d3c0c412c6a803ac1b86b8a504e0c326a93d38356b5ffa7d"
+    },
+    {
       "path": "src/generator.js",
       "size": 9611,
       "sha256": "6b8e21ed616995ada953b3e0031eb476d36395bba2e7e619555c2af2ecb37934"
     },
     {
       "path": "src/kernel.js",
-      "size": 4375,
-      "sha256": "8d21019af63dbd2194f06956832dd9f1cb159a890a2eff745ac23f2ecad3588c"
+      "size": 5474,
+      "sha256": "48623c44759864c6a5cd2c81c1ec5eac70a2e0e77abf2ef9876577b7eb3b17b4"
+    },
+    {
+      "path": "src/name-generator-v2.js",
+      "size": 7998,
+      "sha256": "a1f8980c800658c904a49eed8271ceb55d4d0d0859ff9dc85d3d3bfe2e875189"
     },
     {
       "path": "src/numerical-knowledge.js",
-      "size": 50068,
-      "sha256": "0db21043b04bcf42256c5082070cfc19befb5f660b5efb234017264decc3f59b"
+      "size": 56864,
+      "sha256": "ea3f41cad386845581310c6c8f7aed9927328fdd5bec490ce74445f99a530aeb"
+    },
+    {
+      "path": "src/power-v5.js",
+      "size": 5116,
+      "sha256": "8963d929aff88359aefdcdb83c4070be8e4c0c3b73725c3e08f05a447e1f2da2"
     },
     {
       "path": "src/power.js",
@@ -845,8 +950,8 @@
     },
     {
       "path": "src/presets.js",
-      "size": 1176,
-      "sha256": "80935a942f8c18820fbf5d5583a5652890f37ed21ada52383a748d2b21874043"
+      "size": 1266,
+      "sha256": "ad8b0ad69edbab0faaabb68095860c6d1aa1180134c4f42c50dca6c281335f62"
     },
     {
       "path": "src/rules.js",
@@ -989,9 +1094,24 @@
       "sha256": "289ea845560ed618c299cc3653cc09a1bbfc758be21eeb7f606abf44e73b4375"
     },
     {
+      "path": "tests/match-randomness.test.js",
+      "size": 6472,
+      "sha256": "f58f8e7058d9545e05f678ff52068ff7909ab3121f17d9bed9bb1b9e9d5c732f"
+    },
+    {
+      "path": "tests/naming-v2.test.js",
+      "size": 3308,
+      "sha256": "f0aa322eab55a90a5dab206859a979b3157cdf587e70e0a4a93525ec87ad229d"
+    },
+    {
       "path": "tests/numerical-knowledge.test.js",
       "size": 3449,
       "sha256": "cf39d57c5b45623d4db07b91cb43bad8794677187fe5ea41b1c14559166e917b"
+    },
+    {
+      "path": "tests/power-envelope.test.js",
+      "size": 5691,
+      "sha256": "b969f6aa6243507c031ec1ca32606ca44b50852e532854c916625e9e100a146d"
     },
     {
       "path": "tests/power-v12.test.js",
@@ -1015,8 +1135,8 @@
     },
     {
       "path": "tests/presets.test.js",
-      "size": 6339,
-      "sha256": "aac25fb9a725ccdb59f1f775b650d6a7b74ca3b3dbd7cca15df1159c007d33a7"
+      "size": 6881,
+      "sha256": "face8683b5a50fcb6b82886de735b1ddc89e95fcdb132d550e9160fbebb47ac9"
     },
     {
       "path": "tests/v1-fixture.test.js",
@@ -1075,5 +1195,5 @@
     }
   ],
   "combinedDefaultCompositionWinRate": 0.595,
-  "notes": "v1.3.1: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path."
+  "notes": "v1.4.0: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path."
 }

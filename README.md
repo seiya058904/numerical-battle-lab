@@ -6,19 +6,27 @@
 
 **当前产品：Simple Outside, Deep Inside。** 极简黑白卡牌 + 高维数值内核 + AI 自动观战 + 自由创造沙盒。
 
-核心循环：**直接选两张系统预设开战**，或创造自己的卡 → 保存 → 选择左右双方 → 开始自动对战 → 观察 → 修改或换卡 → 再战。
+核心循环：**直接选两张系统预设开战**，或创造自己的卡 → 保存 → 选择左右双方（每人 1–6 个槽位，每个槽位独立选卡，未填满不能开始，绝不自动补卡）→ 开始自动对战 → 观察 → 修改或换卡 → 再战。
 内置 **60 张系统预设**（12 档稀有度 × 精确 5 张、全面覆盖 Lv.10–100，每个等级带 ≥4 张），开箱即可玩，无需先建卡。预设为只读，可对战 / 复制到「我的卡牌」。
-默认 1 VS 1，双方使用同一个 canonical utility AI。暂停、继续、下一步、1×/2×/4× 与重开直接可用；
-1–6 人数参数与手动接管收在高级区域。没有经验、货币、升级、抽卡、关卡或解锁；等级只是 1–100 的自由生成参数。
+默认 **1 VS 1**，双方使用同一个 canonical utility AI。暂停、继续、下一步、1×/2×/4× 与重开直接可用；
+普通「开始对战」与「重开」每局都会生成**新的对局随机种子**（相同阵容 + 新随机轨迹），精确复现走 Replay / 高级实验室「同种子重放」。
+没有经验、货币、升级、抽卡、关卡或解锁；等级只是 1–100 的自由生成参数。
 
-卡面上的 **「战力」是玩家观察卡牌综合实力的参考数值**（BattlePower v2，展示/诊断用），**不参与**任何战斗计算。对战中每个实体单独显示稀有度 / 等级 / 战力。
+卡面上的 **「战力」是玩家观察卡牌综合实力的参考数值**（v5 用 BattlePower v3 真实估算；v4 旧卡仍用 BattlePower v2），**不参与**任何战斗计算。对战中每个实体单独显示稀有度 / 等级 / 战力。
+
+**Generator v5 是当前默认生成器（v4 保留为 legacy 兼容）**。强度体系是权威的 Level × Rarity 规则：
+**Level 决定整体数值尺度，Rarity 决定该尺度内允许的实力 min–max（同等级下低稀有度上限 < 高稀有度下限），Seed 只决定卡牌在稀有度区间内的个体位置，机制决定打法和爆冷可能，BattlePower 是真实实力的静态估算。**
+同 seed 的卡无论 Lv/Rarity 怎么变，**机制指纹与物种专名都不变**——只是数值强度按包络校准。
+**命名体系全面重做（Name Generator v2）**：卡名是原创物种专名（如 珀岚、蜃环、沧溟…），不再是「火狼/雷刃」式的两字拼词。
+**对局随机**：同 Priority 层内，SPD 决定先手概率（initiative = SPD × jitter∈[0.85,1.15]，读取对局 PRNG），
+小速度优势是概率优势、大速度差距固定先手；命中/暴击/波动照旧全部来自对局 seed，Replay 精确可复现。
 
 **Generator v4 完全取消职业**：先生成一个独立的随机个体 → 几十个真实变量共同决定它的战斗表现 → 事后用 Behavior Analyzer 描述特点（如「高波动 · 后期成长 · 吸血」）。攻击只是 Action 的一种，允许多治疗、多护盾、纯状态和没有直接伤害的卡。
 **Battle Wear / 战斗损耗**让治疗互打的长局也自然收敛，几乎不会拖到 maxRounds 平局。
 数值、行动、资源、状态和公式可在卡牌的「编辑」中修改完整 JSON，保存前校验。高级实验室保留数值编辑、批量模拟、组件目录、Trace 和 Replay。
 移动端观战按**事件逐帧**讲故事：血条逐事件同步、每实体单浮动数字队列、暂停/单步/1×/2×/4×。
 
-参阅 [Generator v4](docs/GENERATOR-V4.md) 与 [本轮验证报告](docs/GENERATOR-V4-REPORT.md)。历史 Generator v3 见 [GENERATOR-V3.md](docs/GENERATOR-V3.md)。
+参阅 [Generator v4](docs/GENERATOR-V4.md)、[Generator v5 / Power Envelope](docs/GENERATOR-V5.md) 与 [本轮验证报告](docs/GENERATOR-V4-REPORT.md)。历史 Generator v3 见 [GENERATOR-V3.md](docs/GENERATOR-V3.md)。
 
 ## 直接运行
 
@@ -36,14 +44,18 @@ python -m http.server 8765
 
 - 1–6 vs 1–6 同时在场，支持不对称人数；默认玩家向 **1 VS 1**（更多对战设置可调 1–6）。
 - 20 个示例实体、63 个示例技能、33 个状态；它们只是组件语言的示范组合，不是引擎上限。
-- **生成卡牌（Generator v4，Classless）**：12 档稀有度、任意整数等级 1..100、无职业先验、
+- **生成卡牌（Generator v5，Classless，默认）**：12 档稀有度、任意整数等级 1..100、无职业先验、
   连续随机预算分配、2–6 个可变行动、个体级随机（VOLATILITY/LUCK）、时间成长/疲劳（RAMP/FATIGUE/ENDURANCE）、
-  Battle Wear 长局收敛、确定性中文名称、复合效果、条件、资源循环与状态事件程序。默认派发 v4；
-  显式 `generatorVersion: 1|2|3` 仍逐字节复现历史版本。
+  Battle Wear 长局收敛、物种专名（Name Generator v2）、复合效果、条件、资源循环与状态事件程序。
+  强度由 **LevelScale × Rarity PowerEnvelope → targetPower → BattlePower v3 有界校准** 决定：
+  同 seed 结构跨 Lv/Rarity 不变，实测 BP 严格落在对应包络内（C+ Lv100 永远 < A+ Lv100）。
+  显式 `generatorVersion: 1|2|3|4` 仍逐字节复现历史版本。
+- **战力评分（BattlePower v3，v5 canonical）**：只读真实 stats/actions/formulas 的静态综合实力估算；
+  绝不读取稀有度/等级、绝不 clamp、绝不因对局种子变化。v4 旧卡继续用 BattlePower v2。
+- **对局随机语义**：普通「开始/重开」每局新 seed；同 seed 精确复现；Replay 逐步重现原局；
+  SPD 先手为有界随机（Priority 优先 → SPD×jitter → 确定性兜底）。
 - **Behavior Analyzer（特征分析器）**：生成完成后事后分析卡牌特点（2–4 标签 + 一句话摘要），
   取代职业展示；纯 Presentation，不参与生成与 AI 决策。
-- **战力评分（BattlePower v2）**：静态递归机制抽取 + generationBudget 锚定的通用强度参考；
-  同 seed/同 level 12 档稀有度 BP 严格递增、level 梯子递增、大差距不平塌；仅展示/诊断，引擎零引用。
 - **卡牌库 + 选择器**：本地持久化；Card Browser 全屏选卡（稀有度 chips / 任意等级区间 / 特点标签 / 名称&行动搜索、
   12 张分批渲染、详情直选左右），替换长下拉；可查看/选择/删除/同种子再生成/复制种子/改名。
 - 90+ 个有文档的通用数值/规则旋钮，涵盖 Stat、资源、命中、暴击、随机伤害、穿透、复合伤害、抗性、亲和、护符、状态、目标查询、事件 Modifier、Trigger、持续技能等。
@@ -121,4 +133,8 @@ npm run verify
 - `npm run audit:numerical-coverage`：数值知识覆盖审计（60 预设 + 10000 v4 卡，`undocumentedActiveFields` 必须为 0）。
 - `npm run audit:numerical-semantics`：参数扰动验证（ATK/LIFESTEAL/VOLATILITY/RAMP/FATIGUE/HEAL_POWER 文档描述 == 引擎行为）。
 - `node qa/browser-knowledge.js`：数值百科 UI QA（390×844，搜索/弹层/详情 ⓘ/无 overflow/无 console error）。
+- `node qa/browser-multi.js`：多人显式编队 + 新种子/重开语义 QA（无自动补卡、未填满禁止开始、返回保留阵容）。
+- `npm run audit:power-envelope`：v5 强度审计（包络/等级梯子/稀有度梯子/C+ vs A+ 跨种子回归/跨稀有度 Monte Carlo）→ `qa/power-envelope-v5.json`。
+- `npm run audit:presets-v5`：v5 预设审计（60 张全部落入包络、名字唯一、结构自洽）→ `qa/presets-v5-audit.json`。
+- `npm run audit:naming`：Name Generator v2 审计（10k 唯一率 ≥99%、通用后缀/模板泄漏为零）→ `qa/naming-v2-audit.json`。
 - `npm run verify:release`：verify + `npm run diversity`。仓库清单按 Git 暂存区内容生成；提交新文件后先 `npm run manifest`。

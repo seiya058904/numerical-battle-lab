@@ -50,8 +50,8 @@ const OUT=__dirname,BASE='http://127.0.0.1:8774/';
   await p.waitForFunction(()=>!document.querySelector('.picker-overlay'));
   check('browser back closes overlay',await p.locator('.picker-overlay').count()===0);
   await p.locator('[data-tab="battle"]').click();
-  await p.waitForSelector('[data-open-picker="left"]');
-  await p.locator('[data-open-picker="left"]').click();
+  await p.waitForSelector('[data-open-picker="picker:A:0"]');
+  await p.locator('[data-open-picker="picker:A:0"]').click();
   await p.locator('.selection-card [data-browser-detail]').first().click();
   await p.locator('.browser-detail summary').first().click(); // open 详细数值
   check('detail stat rows have knowledge buttons',await p.locator('.browser-detail [data-knowledge]').count()>=4);

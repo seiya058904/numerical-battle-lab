@@ -598,6 +598,66 @@
     return null;
   };
   // Coverage helper: every KEY used anywhere on a card resolves to a knowledge entry.
+  // ---------- v5 Level × Rarity strength system (Generator v5) ----------
+  // These are SYSTEM concepts, not card stats: they describe how Level, Rarity,
+  // Seed and BattlePower compose the card's strength. The coverage audit checks
+  // card stats/effects; these entries exist so the 百科 and the generated
+  // reference can explain the v5 power model honestly.
+  def('LevelScale',{
+    nameZh:'等级尺度',summary:'v5 权威等级强度曲线：LevelScale(L)=0.10+0.90·((L-1)/99)^0.95。决定该等级允许存在的整体数值尺度。',
+    higherEffect:'等级越高，同稀有度卡牌的综合实力尺度越大；Lv1≈0.10、Lv100=1.00。',
+    lowerEffect:'低等级卡牌整体数值尺度更小。',
+    direction:'positive',battleEffect:'不直接参与单场战斗公式；它定义 Generator v5 生成时该等级的目标强度尺度。',
+    interactions:['PowerEnvelope','targetPower','Level'],aiMeaning:'AI 不读取它；它是生成期概念。',
+    battlePowerMeaning:'v5 中 Lv100 的稀有度区间 × LevelScale(level) 得到该等级的 PowerEnvelope。',
+    examples:['Lv1≈0.10','Lv50≈0.56','Lv100=1.00'],tuningGuidance:'若"等级差距不明显"，先检查 LevelScale 曲线，不要直接改全局伤害。',
+    userIntentExamples:['等级没用','低等级太强'],readBy:['Generator v5','Power Envelope v1'],writtenBy:['power-v5.js'],affects:['generation strength scale'],doesNotAffect:['battle formulas']});
+  def('PowerEnvelope',{
+    nameZh:'稀有度实力包络',summary:'v5 权威规则：Level 决定尺度，Rarity 决定该尺度内允许的综合实力 min–max。同等级下低稀有度上限 < 高稀有度下限。',
+    higherEffect:'更高稀有度拥有严格更高的实力区间（max(低) < min(高)）。',
+    lowerEffect:'低稀有度被限制在较低区间，不能因随机 Seed 穿透高稀有度。',
+    direction:'contextual',battleEffect:'不直接参与战斗；它约束 Generator v5 的 targetPower。',
+    interactions:['LevelScale','targetPower','BattlePower v3'],aiMeaning:'AI 不读取。',
+    battlePowerMeaning:'BattlePower v3 是真实卡牌实力测量；Generator 把包络目标烤进真实数值，因此测量值自然落在区间内（不是显示 clamp）。',
+    examples:['C Lv100:1000–1040','A+ Lv100:1310–1380','XS 典藏 Lv100:1770–1840'],tuningGuidance:'调整稀有度强度应改包络表，而不是在 BP 上加 rarity 数字。',
+    userIntentExamples:['C+ 战力超过 A+','稀有度没意义'],readBy:['Generator v5','audits'],writtenBy:['power-v5.js'],affects:['generation target strength'],doesNotAffect:['battle formulas']});
+  def('targetPower',{
+    nameZh:'目标战力',summary:'Generator v5 为每张卡确定的综合实力目标：包络 min–max 内由 Seed 决定个体位置（lerp 内区间）。',
+    higherEffect:'目标越高，生成数值的绝对尺度越大。',
+    lowerEffect:'目标越低，生成数值尺度越小。',
+    direction:'contextual',battleEffect:'生成期目标；BattlePower v3 校准使实际战力接近它。',
+    interactions:['PowerEnvelope','deterministicQualityPercentile','BattlePower v3'],aiMeaning:'AI 不读取。',
+    battlePowerMeaning:'校准后的 BattlePower v3 ≈ targetPower，且严格落在包络内。',
+    examples:['C Lv100 目标约 1012','A+ Lv100 目标约 1345'],tuningGuidance:'不要直接改它；改包络表或质量百分位映射。',
+    userIntentExamples:[],readBy:['Generator v5'],writtenBy:['power-v5.js'],affects:['generation strength'],doesNotAffect:['battle formulas']});
+  def('deterministicQualityPercentile',{
+    nameZh:'确定性质量百分位',summary:'v5 中 Seed 的唯一职责之一：在稀有度包络内部决定个体位置（0–1），不再能跨越稀有度。',
+    higherEffect:'百分位高 → 卡牌在包络内偏上限。',
+    lowerEffect:'百分位低 → 卡牌在包络内偏下限。',
+    direction:'contextual',battleEffect:'只影响生成期 targetPower。',
+    interactions:['targetPower','PowerEnvelope'],aiMeaning:'AI 不读取。',
+    battlePowerMeaning:'同稀有度内个体差异的来源；不同 Seed 只移动包络内位置。',
+    examples:['q=0.1 → 偏下限','q=0.9 → 偏上限'],tuningGuidance:'若同稀有度个体差异过大/过小，调整百分位到包络的映射区间。',
+    userIntentExamples:['同稀有度强弱太悬殊'],readBy:['Generator v5'],writtenBy:['power-v5.js'],affects:['individual strength'],doesNotAffect:['battle formulas']});
+  def('StochasticInitiative',{
+    nameZh:'随机先手（Initiative）',summary:'同 Priority 层内，SPD 决定先手概率而非绝对顺序：initiative = SPD × jitter，jitter∈[0.85,1.15]，读取对局 PRNG。',
+    higherEffect:'SPD 优势提高先手概率；差距足够大时固定先手。',
+    lowerEffect:'慢速卡有爆冷先手机会，但不能跨越极大 SPD 差距。',
+    direction:'contextual',battleEffect:'每回合行动排序的第二键（Priority 之后、确定性兜底之前），全部来自对局 seed 的 PRNG，Replay 可复现。',
+    interactions:['SPD','Priority','Match Seed'],aiMeaning:'AI 按期望效用决策，不读取 initiative 本身。',
+    battlePowerMeaning:'不影响 BattlePower；它只影响单场对局的先后轨迹。',
+    examples:['同速≈50/50','85v80≈60–70%','120v50≈100%'],tuningGuidance:'调整先手随机性应改 jitter 区间，不要改 SPD 属性本身。',
+    userIntentExamples:['谁永远先手','先手太固定'],readBy:['BattleEngine orderActions'],writtenBy:['kernel.js'],affects:['action ordering'],doesNotAffect:['damage','BattlePower']});
+  def('MatchSeed',{
+    nameZh:'对局种子',summary:'每场普通对战的随机种子：固定 seed + 相同输入 = 完全相同结果（确定性保留）；普通"开始/重开"每局生成新 seed。',
+    higherEffect:'新 seed → 新的命中/暴击/波动/先后轨迹。',
+    lowerEffect:'同 seed → 精确复现同一局。',
+    direction:'contextual',battleEffect:'驱动 BattleEngine.prng 的全部单局随机（先手、命中、暴击、波动、状态）。',
+    interactions:['StochasticInitiative','Replay'],aiMeaning:'AI 计划使用 prng 克隆的预热流，不改变主随机序列。',
+    battlePowerMeaning:'BattlePower 不读取 Match Seed——卡牌实力与单局随机严格分离。',
+    examples:['普通开始=新 seed','高级"同种子重放"=固定 seed'],tuningGuidance:'若玩家抱怨"每局一样"，是旧 UI 复用固定 seed；现在普通路径每局新 seed。',
+    userIntentExamples:['每次对战都一样','重开没变化'],readBy:['BattleEngine','Replay'],writtenBy:['app.js'],affects:['single-battle randomness'],doesNotAffect:['card generation','BattlePower']});
+
   NCB.knowledgeCoverageGaps=function(card){
     const k=NCB.NUMERICAL_KNOWLEDGE();const gaps=[];
     const check=(kind,id,where)=>{if(!id)return;if(kind==='param'&&!k.params[id]&&!k.params[id+'_MAX']&&!k.params[id+'_REGEN'])gaps.push(where+': unknown param '+id);};

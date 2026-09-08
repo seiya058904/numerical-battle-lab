@@ -40,11 +40,25 @@ AI look-ahead uses a cloned planner RNG, so thinking about an action does not co
 
 Actions are normalized, then ordered deterministically by:
 
-1. action priority,
-2. effective speed,
+1. action priority (explicit rule; never overridden by randomness),
+2. **bounded stochastic initiative** = `effective SPD × jitter`, `jitter ∈ [0.85, 1.15]` drawn from the battle PRNG (so the same match seed reproduces the exact same ordering, while SPD grants a *probability* of acting first instead of an absolute tiebreak),
 3. deterministic tie information.
 
-Priority/speed can be modified through the shared event-modifier system. No UI timing, wall clock or animation state participates in resolution.
+Because the initiative rolls come from the battle PRNG, replay stays byte-exact; only a new match seed changes who goes first. A sufficiently large SPD gap makes the faster side act first with certainty (the bounded range cannot close it), so very slow units can never randomly out-run much faster ones. Priority/speed can be modified through the shared event-modifier system. No UI timing, wall clock or animation state participates in resolution.
+
+## 3a. Level × Rarity strength model (Generator v5)
+
+`src/power-v5.js` owns the authoritative strength system:
+
+- **Level** decides the overall magnitude scale: `LevelScale(L)=0.10+0.90·((L-1)/99)^0.95`.
+- **Rarity** decides the allowed comprehensive-strength min/max AT that level (12 disjoint, ascending bands; `max(lower) < min(higher)`).
+- **Seed** only decides the card's deterministic position *inside* its rarity band (quality percentile) plus its mechanic structure.
+- **BattlePower v3** (`src/battlepower-v3.js`) is a real static estimator of the card's numbers — it never reads rarity/level, never clamps, and never changes with the match seed. Generator v5 bakes the envelope target into the real numbers via bounded calibration, so measured BP lands inside the band naturally.
+- **Name Generator v2** (`src/name-generator-v2.js`) produces species proper-nouns owned by `seed + structural identity` (same seed → same name at any level/rarity).
+
+## 3b. Match randomness semantics
+
+Engine determinism (same seed + same input = same result) is preserved for replay/debug/tests. Normal player "start battle" and "restart" each roll a fresh match seed (`crypto.getRandomValues` with a deterministic-safe fallback — never `Math.random`), so ordinary play shows real per-battle variety while exact reproduction stays available through Replay and the explicit same-seed rerun. BattlePower is independent of the match seed.
 
 ## 4. Registries are the schema source of truth
 

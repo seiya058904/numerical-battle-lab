@@ -1,8 +1,9 @@
-// Frozen, curated v4 content. Kept separate from editable browser storage.
+// Canonical v5 content (frozen, curated). v4 content is kept as the legacy/compat
+// fixture (content/presets-v4.js). Kept separate from editable browser storage.
 (function(root){
  'use strict';const NCB=root.NCB;
- const content=typeof module!=='undefined'&&module.exports?require('../content/presets-v4.json'):NCB.PRESET_V4_CONTENT;
- if(!content||content.cards.length!==60)throw new Error('Missing canonical v4 presets');
+ const content=(typeof module!=='undefined'&&module.exports)?require('../content/presets-v5.json'):NCB.PRESET_V5_CONTENT;
+ if(!content||content.cards.length!==60)throw new Error('Missing canonical v5 presets');
   // Unified battle-card metadata resolver (replaces ad-hoc state.library.find).
   // ctx = { system:[...presets], library:[...userCards], deployed:Map(templateId->card) }
   NCB.resolveCardMeta=function(templateId,ctx){

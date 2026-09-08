@@ -76,8 +76,23 @@
   const powerCache=new WeakMap();
   function cardPresentationSignature(card){return JSON.stringify([card,NCB.battlePowerV2Weights]);}
   NCB.cardPresentationSignature=cardPresentationSignature;
+  function canonicalPower(card){
+    // v5 cards use the real BattlePower v3 estimator (no rarity/level read).
+    if(card?.generatorVersion===5&&typeof NCB.battlePowerV3==='function'){
+      const r=NCB.battlePowerV3(card);if(r&&Number.isFinite(r.power))return r.power;
+    }
+    if(card?.generatorVersion===4&&typeof NCB.battlePowerV2==='function'){
+      const r=NCB.battlePowerV2(card);if(r&&Number.isFinite(r.power))return r.power;
+    }
+    return null;
+  }
   function battlePowerOf(card){
     try{
+      if(card?.generatorVersion===5){
+        // v3 is a pure function of the card's real numbers; compute it directly so
+        // edits to stats/actions always refresh the displayed power (no stale cache).
+        const r=NCB.battlePowerV3?.(card);return r&&Number.isFinite(r.power)?Math.round(r.power):null;
+      }
       const cached=powerCache.get(card);
       if(cached&&cached.signature===cardPresentationSignature(card))return cached.power;
       if(card?.generatorVersion===4&&NCB.battlePowerV2){const r=NCB.battlePowerV2(card);return r&&Number.isFinite(r.power)?Math.round(r.power):null;}
@@ -241,7 +256,10 @@
   // frozen snapshot. Keeps preset renders O(1) after first compute.
   NCB.cachePresetPower=c=>{
     let canonical=null;
-    try{const r=c?.generatorVersion===4?NCB.battlePowerV2?.(c):null;if(r&&Number.isFinite(r.power))canonical=Math.round(r.power);}catch(_){}
+    try{
+      const r=c?.generatorVersion===5?NCB.battlePowerV3?.(c):(c?.generatorVersion===4?NCB.battlePowerV2?.(c):null);
+      if(r&&Number.isFinite(r.power))canonical=Math.round(r.power);
+    }catch(_){}
     if(canonical===null&&c?.presentation?.power!=null)canonical=Number(c.presentation.power)||null;
     powerCache.set(c,{signature:cardPresentationSignature(c),power:canonical});
   };

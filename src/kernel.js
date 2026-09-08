@@ -58,12 +58,26 @@
     }
   }
 
+  // Bounded stochastic initiative: within the same action Priority tier, SPD
+  // decides the chance of acting first, not an absolute ordering. Each action
+  // rolls initiative = SPD × jitter with jitter ∈ [0.85, 1.15] from the battle
+  // PRNG (fully deterministic per match seed, so replay stays byte-exact).
+  //   * SPD equal            -> ~50/50 first
+  //   * small SPD advantage  -> probabilistic edge, upsets allowed
+  //   * large SPD advantage  -> guaranteed first (bounded range cannot close it)
+  const INITIATIVE_JITTER_HALF=0.15;
+  function initiativeFor(speed, prng){
+    const spd=Number(speed)||0;
+    return spd*(1-INITIATIVE_JITTER_HALF+2*INITIATIVE_JITTER_HALF*prng.random());
+  }
   function comparePriority(a, b) {
     const aOrder = a.order || 4294967296;
     const bOrder = b.order || 4294967296;
+    const aInit = a._initiative ?? a.speed ?? 0;
+    const bInit = b._initiative ?? b.speed ?? 0;
     return -(bOrder - aOrder) ||
       ((b.priority || 0) - (a.priority || 0)) ||
-      ((b.speed || 0) - (a.speed || 0)) ||
+      (bInit - aInit) ||
       -((b.subOrder || 0) - (a.subOrder || 0)) ||
       -((b.effectOrder || 0) - (a.effectOrder || 0)) || 0;
   }
@@ -71,6 +85,9 @@
   function sortActions(actions, prng) {
     const result = actions.slice();
     prng.shuffle(result); // Showdown-style deterministic tie randomization.
+    // Roll initiative AFTER the shuffle so the PRNG consumption order is fixed
+    // (same seed => same rolls => same ordering => replay exact).
+    for (const a of result) a._initiative = initiativeFor(a.speed, prng);
     result.sort(comparePriority);
     return result;
   }
@@ -112,6 +129,8 @@
   NCB.Gen5PRNG = Gen5PRNG;
   NCB.comparePriority = comparePriority;
   NCB.sortActions = sortActions;
+  NCB.initiativeFor = initiativeFor;
+  NCB.INITIATIVE_JITTER_HALF = INITIATIVE_JITTER_HALF;
   NCB.EventKernel = EventKernel;
   if (typeof module !== 'undefined') module.exports = NCB;
 })(typeof globalThis !== 'undefined' ? globalThis : window);

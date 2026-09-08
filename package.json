@@ -1,6 +1,6 @@
 {
   "name": "numerical-card-battle",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "private": true,
   "type": "commonjs",
   "scripts": {
@@ -9,6 +9,10 @@
     "verify:release": "npm run verify && npm run diversity",
     "catalog": "node scripts/generate-catalog.js",
     "manifest": "node scripts/generate-manifest.js",
+    "migrate:presets-v5": "node scripts/migrate-presets-v5.js",
+    "audit:naming": "node scripts/audit-naming-v2.js 10000",
+    "audit:power-envelope": "node scripts/audit-v5-strength.js",
+    "audit:presets-v5": "node scripts/audit-presets-v5.js",
     "gen-mc": "node scripts/gen-mc.js",
     "diagnostics:legacy": "node scripts/health-metrics.js --n 3000 && node scripts/adjacent-rarity-matrix.js --seeds 48 --battles 8 && node scripts/matched-rarity-test.js --seeds 48 --battles 8 && node scripts/power-calibration.js --sample 600 --battles 14 --rarityN 48 && node scripts/similar-bp-test.js --battles 14 --pairs 120",
     "diversity": "node scripts/diversity-audit.js 3000",

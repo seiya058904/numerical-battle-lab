@@ -38,10 +38,32 @@
   const defaultSetup={
     opponentDifficulty:'normal',
     battleSizeA:1,battleSizeB:1,
+    // Fixed seed used ONLY by the explicit "同种子重放(复现)" advanced action.
+    // Normal "开始对战" and "重开" always roll a fresh match seed (see below).
     seedNumber:20260901,
   };
   function loadSetup(){try{const s=JSON.parse(storage.get(STORAGE_SETUP)||'null');return{...defaultSetup,...(s||{})};}catch(_){return{...defaultSetup};}}
   function saveSetup(){storage.set(STORAGE_SETUP,JSON.stringify(state.setup));}
+
+  // Fresh match seed for normal play. Engine determinism is untouched: the SAME
+  // seed always reproduces the exact same battle (fixed-seed reproduction stays
+  // available via Replay / 高级实验室 / the explicit same-seed rerun). Normal
+  // "开始对战" and "重开" must NOT replay the same RNG stream, so each gets a new
+  // seed. crypto.getRandomValues is used when available; the fallback combines
+  // Date.now + a monotonic counter + session entropy — never Math.random, so the
+  // static runtime gate stays intact.
+  let freshSeedCounter=0;
+  const sessionEntropy=(Date.now()>>>0);
+  function freshMatchSeed(){
+    try{
+      if(typeof crypto!=='undefined'&&typeof crypto.getRandomValues==='function'){
+        const b=new Uint32Array(1);crypto.getRandomValues(b);return b[0]>>>0;
+      }
+    }catch(_){/* fall through */}
+    return ((Date.now()>>>0)+((++freshSeedCounter)*0x9e3779b9>>>0)+(sessionEntropy^0x85ebca6b))>>>0;
+  }
+  // A live battle whose config we can re-run (used by restart / same-seed rerun).
+  let lastMatchConfig=null;
 
   const state={
     tab:'battle',
@@ -49,6 +71,9 @@
     library:loadLibrary(),
     // Read-only system presets (NOT part of the user's localStorage library).
     systemPresets:(NCB.SYSTEM_PRESETS||[]),
+    // Explicit per-slot team selection (card IDs, not pool indices). Each slot is
+    // independently chosen; nothing is auto-filled. Team sizes live in setup.
+    selectedTeams:{A:[],B:[]},
     engine:null,
     pending:new Map(),
     selectedActorId:null,
@@ -123,7 +148,7 @@
   }
   function stopAuto(){if(autoTimer)clearInterval(autoTimer);autoTimer=null;}
   function beginBattle(config){
-    stopAuto();state.engine=NCB.createBattle({...config,capturePresentation:true});state.display=state.engine.presentationFrames.splice(0).at(-1)?.snapshot||state.engine.presentationSnapshot();state.frameQueue=[];state.frameIndex=0;state.frameRow=null;state.stepGroup=null;state.battleMode='auto';state.autoPaused=false;
+    stopAuto();lastMatchConfig={...config};state.engine=NCB.createBattle({...config,capturePresentation:true});state.display=state.engine.presentationFrames.splice(0).at(-1)?.snapshot||state.engine.presentationSnapshot();state.frameQueue=[];state.frameIndex=0;state.frameRow=null;state.stepGroup=null;state.battleMode='auto';state.autoPaused=false;
     // Build per-entity battle-card metadata map so every entity (incl. multi-team
     // extra members) resolves its own rarity/level/BattlePower, not a shared one.
     state._deployedMeta=new Map();
@@ -137,8 +162,29 @@
   function startBattleWithCard(card){
     if(!libraryContains(card.id)&&!isSystemPreset(card.id))addToLibrary(card);
     const pool=selectableCards();const idx=pool.findIndex(c=>c.id===card.id);
-    state.selectedLeft=idx>=0?idx:0;state.selectedRight=pool[1]?1:0;
+    const bSlot=pool[1]?pool[1].id:null;
+    // A slot 1 = chosen card; B slot 1 = another pool card (or empty). Multi-slot
+    // slots are emptied — no auto-fill, the player must pick each slot explicitly.
+    state.selectedTeams={A:[idx>=0?card.id:null],B:[bSlot]};
     state.engine=null;stopAuto();setTab('battle');
+  }
+
+  // ---- Explicit team-selection helpers (no auto-fill anywhere) ----
+  function teamSize(side){return Math.max(1,Math.min(6,Number(state.setup['battleSize'+side])||1));}
+  function resizeTeam(side){
+    const size=teamSize(side),sel=state.selectedTeams[side];
+    while(sel.length<size)sel.push(null); // grow: new slots start empty
+    if(sel.length>size)sel.length=size;   // shrink: drop the trailing slots
+  }
+  function slotCard(side,index){
+    const id=state.selectedTeams[side][index];
+    if(id==null)return null;
+    return selectableCards().find(c=>c.id===id)||null;
+  }
+  function teamFilled(side){const sel=state.selectedTeams[side];const size=teamSize(side);return sel.length>=size&&sel.slice(0,size).every(id=>id!=null);}
+  function bothTeamsFilled(){return teamFilled('A')&&teamFilled('B');}
+  function explicitTeamIds(side){
+    const size=teamSize(side);return (state.selectedTeams[side]||[]).slice(0,size);
   }
 
   // ---- Card sources: system presets (read-only) + user library (editable) ----
@@ -179,24 +225,42 @@
     else if(!event.shiftKey&&(document.activeElement===last||!modal.contains(document.activeElement))){event.preventDefault();first.focus();}
   });
   function browserOptions(extra={}){return {onCopy:c=>{copyPresetToLibrary(c);closePicker();setTab('cards');},canEdit:c=>!isSystemPreset(c.id),onEdit:c=>{closePicker();openCardEditor(c);},onDelete:c=>{if(confirm(`删除「${c.displayName||c.name}」？`)){state.library=state.library.filter(x=>x.id!==c.id);saveLibrary();closePicker();renderCards();}},...extra};}
-  function openPicker(side){
+  function openPicker(side,slot){
     rememberOverlay();
-    const overlay=document.createElement('section');overlay.className='picker-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',side==='left'?'选择左方卡牌':'选择右方卡牌');document.body.appendChild(overlay);document.body.classList.add('picker-open');
-    new NCB.CardBrowser(overlay,selectableCards(),browserOptions({title:side==='left'?'选择左方卡牌':'选择右方卡牌',selectLabel:side==='left'?'选择为左方':'选择为右方',onClose:closePicker,onSelect:c=>{state[side==='left'?'selectedLeft':'selectedRight']=selectableCards().findIndex(x=>x.id===c.id);closePicker();renderBattle();}}));overlay.querySelector('[data-browser-close]')?.focus({preventScroll:true});
+    const label=(side==='A'?'左方':'右方')+(slot>0?` ${slot+1} 号位`:'');
+    const overlay=document.createElement('section');overlay.className='picker-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','选择'+label+'卡牌');document.body.appendChild(overlay);document.body.classList.add('picker-open');
+    new NCB.CardBrowser(overlay,selectableCards(),browserOptions({title:'选择'+label+'卡牌',selectLabel:'选为'+label,onClose:closePicker,onSelect:c=>{resizeTeam(side);const sel=state.selectedTeams[side];sel[slot]=c.id;state.selectedTeams[side]=sel;closePicker();renderBattle();}}));overlay.querySelector('[data-browser-close]')?.focus({preventScroll:true});
   }
-  function setupSlot(side){const index=state[side==='left'?'selectedLeft':'selectedRight'],card=index==null?null:cardAt(index);return `<div class="setup-slot"><h2>${side==='left'?'左方':'右方'}</h2>${card?NCB.selectionCard(card):'<div class="empty-slot">＋<p>选择卡牌</p></div>'}<button class="btn primary" data-open-picker="${side}">${card?'更换卡牌':'选择卡牌'}</button></div>`;}
+  function setupSlot(side,index){
+    resizeTeam(side);
+    const card=slotCard(side,index),size=teamSize(side);
+    const title=(side==='A'?'左方':'右方')+(size>1?` ${index+1} 号位`:'');
+    const id=`picker:${side}:${index}`;
+    return `<div class="setup-slot" data-team-slot="${id}"><h2>${title}</h2>${card?NCB.selectionCard(card):'<div class="empty-slot">＋<p>选择卡牌</p></div>'}<button class="btn primary" data-open-picker="${id}">${card?'更换卡牌':'选择卡牌'}</button></div>`;
+  }
+  function setupTeam(side){
+    const size=teamSize(side);resizeTeam(side);
+    const slots=[];
+    for(let i=0;i<size;i++)slots.push(setupSlot(side,i));
+    return `<div class="setup-team"><div class="setup-team-head">${side==='A'?'左方':'右方'}<span class="inline-note">${size} 人</span></div><div class="setup-slot-list">${slots.join('')}</div></div>`;
+  }
 
   function renderBattle(){
     const view=$('#view-battle');if(!view)return;view.dataset.frameIndex=state.frameIndex||0;
     const engine=state.engine;
     if(!engine){
+      const missing=(()=>{let n=0;for(const side of ['A','B']){const size=teamSize(side),sel=(state.selectedTeams[side]||[]);for(let i=0;i<size;i++)if(!sel[i])n++;}return n;})();
+      const startHint=missing?`<p class="hint warn">还需选择 ${missing} 张卡牌才能开始对战。</p>`:'';
       view.innerHTML=`<div class="battle-empty">
         <div class="big-title">让创造，自己交锋。</div>
-        <p>直接选两张系统预设卡，或从「我的卡牌」用自建卡，观察它们如何出招。</p>
+        <p>直接选两张系统预设卡，或从「我的卡牌」用自建卡，观察它们如何出招。每局对战的随机种子都是新的，重开也是一场新对局。</p>
         <div class="battle-setup-panel">
-          <div class="setup-slots">${setupSlot('left')}<b class="setup-vs">VS</b>${setupSlot('right')}</div>
-          <button class="btn big primary" data-action="battle-start" ${state.selectedLeft==null||state.selectedRight==null?'disabled':''}>开始对战</button>
-          <details class="advanced-note"><summary>高级设置</summary><div class="field-row"><label class="field"><span>左方人数</span><select data-battle-size-a>${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></label><label class="field"><span>右方人数</span><select data-battle-size-b>${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></label><label class="field"><span>最大回合</span><input data-max-rounds type="number" min="1" max="1000" value="100"></label></div><p class="hint">额外成员按可选手牌顺序循环选取，无站位规则；系统预设为只读来源。</p></details>
+          <div class="setup-slots">${setupTeam('A')}<b class="setup-vs">VS</b>${setupTeam('B')}</div>
+          ${startHint}
+          <button class="btn big primary" data-action="battle-start" ${bothTeamsFilled()?'':'disabled'}>开始对战</button>
+          <details class="advanced-note"><summary>高级设置</summary><div class="field-row"><label class="field"><span>左方人数</span><select data-battle-size-a>${[1,2,3,4,5,6].map(n=>`<option ${state.setup.battleSizeA===n?'selected':''}>${n}</option>`).join('')}</select></label><label class="field"><span>右方人数</span><select data-battle-size-b>${[1,2,3,4,5,6].map(n=>`<option ${state.setup.battleSizeB===n?'selected':''}>${n}</option>`).join('')}</select></label><label class="field"><span>最大回合</span><input data-max-rounds type="number" min="1" max="1000" value="100"></label></div>
+          <div class="field-row"><label class="field"><span>固定种子（复现用）</span><input data-fixed-seed type="number" min="1" max="4294967295" value="${state.setup.seedNumber}"></label><span class="inline-note">普通开始/重开使用新随机种子；此值仅供「同种子重放」复现。</span></div>
+          <p class="hint">每一栏的每个槽位独立选卡；未填满不能开始，系统预设为只读来源。</p></details>
         </div>
       </div>`;
       return;
@@ -221,7 +285,7 @@
         </div>
       </div>
       ${outcomeBanner()}<div class="current-event" aria-live="polite">${esc(state.frameRow?.text||'双方正在观察战场')}</div>
-      ${state.battleMode==='auto'?autoControls():commandPanel()}<details class="advanced-note"><summary>实验控制</summary><button class="btn small" data-action="manual-takeover">${state.battleMode==='auto'?'手动接管左方':'返回 AI 对战'}</button><button class="btn small" data-action="edit-battle-card">编辑左方卡牌</button></details>
+      ${state.battleMode==='auto'?autoControls():commandPanel()}<details class="advanced-note"><summary>实验控制</summary><button class="btn small" data-action="manual-takeover">${state.battleMode==='auto'?'手动接管左方':'返回 AI 对战'}</button><button class="btn small" data-action="edit-battle-card">编辑左方卡牌</button><button class="btn small" data-action="rerun-same-seed" title="用固定种子精确复现本局（普通重开是新随机局）">同种子重放(复现)</button></details>
       <div class="battle-log-panel">
         <div class="panel-head"><h3>战斗记录</h3>
           <div class="log-tools"><select data-log-filter><option value="all">全部</option><option value="damage">伤害</option><option value="heal">治疗</option><option value="status">状态</option><option value="system">系统</option></select></div>
@@ -517,7 +581,7 @@
   document.addEventListener('click',event=>{
     const kb=event.target.closest('[data-knowledge]');if(kb){knowledgeSheet(kb.dataset.knowledge);return;}
     const kbb=event.target.closest('[data-knowledge-browse]');if(kbb){closeKnowledgeSheet();const overlay=document.querySelector('.picker-overlay');if(overlay){renderKnowledgeBrowser(overlay);}else openKnowledgeBrowser();setTimeout(()=>{const hit=NCB.knowledgeLookup(kbb.dataset.knowledgeBrowse);if(hit){const input=document.querySelector('.picker-overlay [data-kb-search]');if(input){input.value=hit.entry.nameEn||kbb.dataset.knowledgeBrowse;input.dispatchEvent(new Event('input'));}}},0);return;}
-    const picker=event.target.closest('[data-open-picker]');if(picker){openPicker(picker.dataset.openPicker);return;}
+    const picker=event.target.closest('[data-open-picker]');if(picker){const spec=String(picker.dataset.openPicker||'').split(':');const side=spec[1],slot=Number(spec[2]);if(side&&Number.isInteger(slot)&&slot>=0)openPicker(side,slot);return;}
     const roster=event.target.closest('[data-editor-unit]');if(roster){state.editorUnitId=roster.dataset.editorUnit;renderEditor();return;}
     const tab=event.target.closest('[data-tab]');if(tab){$('#lab-menu').open=false;setTab(tab.dataset.tab);if(tab.dataset.tab==='battle'){renderBattle();}return;}
     const presetBtn=event.target.closest('[data-preset-action]');
@@ -525,7 +589,7 @@
       const i=Number(presetBtn.dataset.presetIndex);const card=(state.systemPresets||[])[i];
       if(!card)return;
       const act=presetBtn.dataset.presetAction;
-      if(act==='battle'){const pool=selectableCards();const idx=pool.findIndex(c=>c.id===card.id);state.selectedLeft=idx>=0?idx:0;state.selectedRight=idx>=0?((idx+1)%pool.length):1;state.engine=null;stopAuto();setTab('battle');renderBattle();}
+      if(act==='battle'){const pool=selectableCards();const idx=pool.findIndex(c=>c.id===card.id);state.selectedTeams={A:[idx>=0?card.id:null],B:[pool[1]?pool[1].id:null]};state.engine=null;stopAuto();setTab('battle');renderBattle();}
       if(act==='copy')copyPresetToLibrary(card);
       return;
     }
@@ -554,15 +618,15 @@
     const action=event.target.closest('[data-action]')?.dataset.action;if(!action)return;
     if(action==='open-knowledge'){openKnowledgeBrowser();return;}
     if(action==='battle-start'){
-      const pool=selectableCards();
-      const left=state.selectedLeft??-1,right=state.selectedRight??-1;
-      if(left<0||right<0||!pool.length)return;
-      const sizeA=Number($('[data-battle-size-a]').value),sizeB=Number($('[data-battle-size-b]').value),maxRounds=Number($('[data-max-rounds]').value);
+      const sizeA=teamSize('A'),sizeB=teamSize('B'),maxRounds=Number($('[data-max-rounds]').value);
       if(!Number.isInteger(maxRounds)||maxRounds<1||maxRounds>1000){alert('最大回合请输入 1–1000 的整数。');return;}
-      state.selectedLeft=left;state.selectedRight=right;
-      // Extra members cycle the combined selectable pool (presets + user library).
-      const team=(anchor,n)=>Array.from({length:n},(_,i)=>{const card=cardAt(anchor+i);return NCB.deployCard(card);});
-      beginBattle({seed:NCB.deriveSeed(state.setup.seedNumber),teamA:team(left,sizeA),teamB:team(right,sizeB),maxRounds});
+      if(!bothTeamsFilled()){alert('请为每一栏的每个槽位选择卡牌。');return;}
+      // Explicit selection ONLY — never auto-fill from the pool.
+      const teamA=explicitTeamIds('A').map(id=>{const c=selectableCards().find(x=>x.id===id);return c?NCB.deployCard(c):null;}).filter(Boolean);
+      const teamB=explicitTeamIds('B').map(id=>{const c=selectableCards().find(x=>x.id===id);return c?NCB.deployCard(c):null;}).filter(Boolean);
+      if(teamA.length!==sizeA||teamB.length!==sizeB){alert('编队未完整，请补全卡牌。');return;}
+      // Normal play rolls a FRESH match seed every start.
+      beginBattle({seed:NCB.deriveSeed(freshMatchSeed()),teamA,teamB,maxRounds});
     }
     if(action==='demo-cards'){for(const c of (state.systemPresets||[]).slice(0,2))copyPresetToLibrary(c);renderCards();renderBattle();}
     if(action==='manual-takeover'){state.display=null;state.frameQueue=[];state.engine.presentationFrames=[];state.battleMode=state.battleMode==='auto'?'manual':'auto';state.autoPaused=state.battleMode==='manual';if(state.battleMode==='auto')startAuto();renderBattle();}
@@ -570,6 +634,7 @@
     if(action==='edit-battle-card'){let c=resolveBattleCardMeta(state.engine?.config.teamA[0]);if(c){if(isSystemPreset(c.id)){c=copyPresetToLibrary(c);}if(c)openCardEditor(c);}}
     if(action==='save-card-edit')saveCardEdit();
     if(action==='battle-restart'){if(state.engine)createBattleWithSameCard();}
+    if(action==='rerun-same-seed'){if(lastMatchConfig)beginBattle({...lastMatchConfig,seed:NCB.deriveSeed(Number($('[data-fixed-seed]')?.value??state.setup.seedNumber))});}
     if(action==='battle-back'){stopAuto();state.engine=null;renderBattle();}
     if(action==='auto-plan')autoPlanPlayer();
     if(action==='resolve-round')resolveRound();
@@ -595,6 +660,12 @@
     if(event.target.matches('[data-gen-rarity]')){state.genRarity=event.target.value;return;}
     if(event.target.matches('[data-gen-level]')){state.genLevel=Number(event.target.value);return;}
     if(event.target.matches('[data-gen-seed]')){state.genManualSeed=true;state.genSeed=event.target.value;return;}
+    if(event.target.matches('[data-battle-size-a]')||event.target.matches('[data-battle-size-b]')){
+      const side=event.target.matches('[data-battle-size-a]')?'A':'B';
+      state.setup['battleSize'+side]=Number(event.target.value);saveSetup();
+      resizeTeam(side);renderBattle();return;
+    }
+    if(event.target.matches('[data-fixed-seed]')){state.setup.seedNumber=Number(event.target.value)||defaultSetup.seedNumber;saveSetup();return;}
     if(event.target.id==='replay-file'){const file=event.target.files[0];if(file)file.text().then(text=>{try{applyReplay(JSON.parse(text),JSON.parse(text).rounds?.length);setTab('replay');}catch(e){alert(`Replay 无效: ${e.message}`);}});}
     if(event.target.id==='content-file'){const file=event.target.files[0];if(file)file.text().then(text=>{try{importContent(JSON.parse(text));}catch(e){alert(`内容包无效: ${e.message}`);}});}
   });
@@ -603,7 +674,7 @@
     if(event.target.matches('[data-gen-seed]')){state.genSeed=event.target.value;state.genManualSeed=true;}
   });
 
-  function createBattleWithSameCard(){if(state.engine)beginBattle({...state.engine.config});}
+  function createBattleWithSameCard(){if(state.engine)beginBattle({...state.engine.config,seed:NCB.deriveSeed(freshMatchSeed())});}
   function openCardEditor(card){
     state.editCard=card;state.autoPaused=true;setTab('editor');
     $('#view-editor').innerHTML=`<h2>编辑 ${esc(card.displayName||card.name)}</h2><p>修改任意属性、行动、状态、资源或公式。保存前会验证；原始卡牌在保存成功前保持不变。</p><label class="field"><span>完整卡牌 JSON</span><textarea id="card-json-editor" spellcheck="false" rows="24">${esc(JSON.stringify(card,null,2))}</textarea></label><p id="card-edit-error" role="alert"></p><button class="btn primary" data-action="save-card-edit">验证并保存</button>`;

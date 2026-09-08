@@ -1,0 +1,90 @@
+{
+  "browser": "Installed Chrome via Playwright",
+  "checks": [
+    {
+      "name": "1v1 A slot 0 selected",
+      "pass": true
+    },
+    {
+      "name": "1v1 B slot 0 selected",
+      "pass": true
+    },
+    {
+      "name": "start enabled when 1v1 filled",
+      "pass": true
+    },
+    {
+      "name": "1v1 battle starts",
+      "pass": true
+    },
+    {
+      "name": "1v1 config has exactly 2 units",
+      "pass": true
+    },
+    {
+      "name": "restart keeps lineup",
+      "pass": true
+    },
+    {
+      "name": "restart rolls a NEW match seed",
+      "pass": true
+    },
+    {
+      "name": "return preserves A slot",
+      "pass": true
+    },
+    {
+      "name": "return preserves B slot",
+      "pass": true
+    },
+    {
+      "name": "3v2 shows 3+2 slots",
+      "pass": true
+    },
+    {
+      "name": "start disabled when incomplete",
+      "pass": true
+    },
+    {
+      "name": "no autofill: extra A slot empty",
+      "pass": true
+    },
+    {
+      "name": "3v2 all five slots filled",
+      "pass": true
+    },
+    {
+      "name": "start enabled when 3v2 filled",
+      "pass": true
+    },
+    {
+      "name": "3v2 config teamA === explicit [a,b,c]",
+      "pass": true
+    },
+    {
+      "name": "3v2 config teamB === explicit [d,e]",
+      "pass": true
+    },
+    {
+      "name": "3v2 battle shows 5 entities",
+      "pass": true
+    },
+    {
+      "name": "mobile no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "duplicate [X,X,X] allowed in A",
+      "pass": true
+    },
+    {
+      "name": "3v3 incomplete start disabled",
+      "pass": true
+    },
+    {
+      "name": "hint shows remaining count",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

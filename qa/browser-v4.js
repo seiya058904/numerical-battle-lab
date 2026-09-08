@@ -10,7 +10,7 @@ const OUT=__dirname,BASE='http://127.0.0.1:8774/';
  const p=await context.newPage();p.on('pageerror',e=>report.errors.push(e.message));p.on('console',m=>{if(m.type()==='error')report.errors.push(m.text());});
  await p.goto(BASE);check('page identity',(await p.title()).includes('数值'));check('no main card select',await p.locator('[data-battle-card]').count()===0);
  report.performance.initialLoadMs=await p.evaluate(()=>performance.getEntriesByType('navigation')[0].loadEventEnd);
- const start=Date.now();await p.locator('[data-open-picker="left"]').click();report.performance.pickerOpenMs=Date.now()-start;
+ const start=Date.now();await p.locator('[data-open-picker="picker:A:0"]').click();report.performance.pickerOpenMs=Date.now()-start;
  const overlay=p.locator('.picker-overlay');check('initial 12 cards',await overlay.locator('.selection-card').count()===12);
  check('candidate has metadata',/HP[\s\S]*ATK/.test(await overlay.locator('.selection-card').first().innerText()));
  await p.screenshot({path:path.join(OUT,'v4-mobile-presets.png')});
@@ -29,7 +29,7 @@ const OUT=__dirname,BASE='http://127.0.0.1:8774/';
  await overlay.locator('[data-browser-detail]').first().click();check('detail opened',await overlay.locator('.browser-detail').count()===1);
  await p.screenshot({path:path.join(OUT,'v4-mobile-detail.png')});await overlay.locator('[data-detail-back]').click();check('detail returns with page size',await overlay.locator('.selection-card').count()===24);
  await overlay.locator('[data-browser-detail]').first().click();await overlay.locator('[data-detail-select]').click();check('detail selects left',await p.locator('.setup-slot .selection-card').count()===1);
- await p.locator('[data-open-picker="right"]').click();await p.locator('.picker-overlay [data-browser-select]').nth(1).click();check('right selects',await p.locator('.setup-slot .selection-card').count()===2);
+ await p.locator('[data-open-picker="picker:B:0"]').click();await p.locator('.picker-overlay [data-browser-select]').nth(1).click();check('right selects',await p.locator('.setup-slot .selection-card').count()===2);
  check('picker no overflow',await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await p.locator('[data-action="battle-start"]').click();await p.locator('[data-action="auto-pause"]').click();
  await p.screenshot({path:path.join(OUT,'v4-mobile-battle-1.png')});
@@ -40,7 +40,7 @@ const OUT=__dirname,BASE='http://127.0.0.1:8774/';
   const cards=['逐事件甲','逐事件乙'].map((name,i)=>{const c=NCB.generateCardV4({seed:'browser-timeline-'+i,rarity:'C',level:60});c.displayName=name;c.stats={...c.stats,MAX_HP:300,ATK:24,DEF:10,SPD:50+i,LIFESTEAL:30,HEAL_POWER:100,HEAL_TAKEN:100,RAMP_RATE:0,FATIGUE_RATE:0,VOLATILITY:1,LUCK:0};c.actions=[{id:c.id+':test',name:'连续侵蚀',target:'enemy',cost:0,cooldown:0,effects:[{type:'repeat',times:3,effects:[{type:'damage',damageType:'physical',formula:'ATK',canMiss:false,canCrit:false}]}]},{id:c.id+':rest',name:'休整',target:'self',cost:0,cooldown:2,effects:[{type:'heal',formula:'MAX_HP * .1'}]}];c.triggers=[];c.statuses=[];c.passives=[];c.affinities={};return c;});localStorage.setItem('nbl-card-library-v1',JSON.stringify(cards));
  });await p.reload();
  await p.evaluate(()=>{const original=NCB.createBattle;NCB.createBattle=config=>{const e=original(config);window.__engine=e;window.__frames=[...e.presentationFrames||[]];const capture=e.captureFrame.bind(e);e.captureFrame=row=>{capture(row);window.__frames.push(e.presentationFrames.at(-1));};return e;};});
- for(const [side,name] of [['left','逐事件甲'],['right','逐事件乙']]){await p.locator(`[data-open-picker="${side}"]`).click();await p.locator('.picker-overlay [data-filter="search"]').fill(name);await p.locator('.picker-overlay [data-browser-select]').click();}
+ for(const [side,name] of [['picker:A:0','逐事件甲'],['picker:B:0','逐事件乙']]){await p.locator(`[data-open-picker="${side}"]`).click();await p.locator('.picker-overlay [data-filter="search"]').fill(name);await p.locator('.picker-overlay [data-browser-select]').click();}
  await p.locator('#view-battle .advanced-note summary').click();await p.locator('[data-max-rounds]').fill('3');
  const battleStart=Date.now();await p.locator('[data-action="battle-start"]').click();report.performance.battleStartMs=Date.now()-battleStart;
  await p.locator('[data-action="auto-pause"]').click();

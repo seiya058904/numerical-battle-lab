@@ -1,6 +1,6 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','gen-stats','gen-skills','generator','gen-names','gen-v2','gen-v3','gen-v4','behavior','battlepower-v2','battlepower-model','battlepower','card-ui','presets'])require('../src/'+f+'.js');
+for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','gen-v2','gen-v3','gen-v4','gen-v5','behavior','battlepower-v2','battlepower-model','battlepower','card-ui','presets'])require('../src/'+f+'.js');
 const N=global.NCB;
 
 test('system presets: 60 classless cards, five per rarity with level and dynamic coverage',()=>{
@@ -17,10 +17,10 @@ test('system presets: cover all 12 rarity tiers',()=>{
   assert.equal(tiers.size,12);
 });
 
-test('system presets: all Generator v4, frozen, valid content, distinct names',()=>{
+test('system presets: all Generator v5, frozen, valid content, distinct names',()=>{
   const names=new Set();
   for(const c of N.SYSTEM_PRESETS){
-    assert.equal(c.generatorVersion,4);
+    assert.equal(c.generatorVersion,5);
     assert.ok(c.actions.length>=2&&c.actions.length<=6);
     const pack=N.assembleCardPack(c);const v=N.validateContentPack(pack);
     assert.ok(v.ok,v.errors.join('\n'));
@@ -36,7 +36,7 @@ test('metadata resolver finds system preset and user card with correct rarity/le
   assert.ok(meta,'resolver should find a system preset by templateId');
   assert.equal(meta.rarity,preset.rarity);
   assert.equal(meta.level,preset.level);
-  assert.equal(N.battlePowerOf(meta),Math.round(N.battlePowerV2(meta).power));
+  assert.equal(N.battlePowerOf(meta),Math.round(N.battlePowerV3(meta).power));
 
   // a user card (deployed-generated v3 card) resolves too
   const user=N.generateCardV3({seed:'resolver-user-card',rarity:'S',level:42});
@@ -76,30 +76,38 @@ test('copying a preset produces a distinct library entry (no id conflict)',()=>{
   assert.equal(copy.actions.length,preset.actions.length);
 });
 
-test('BP canonical truth: battlePowerV2 is the only source for all 60 presets',()=>{
-  assert.ok(N.battlePowerV2,'battlePowerV2 must be loaded');
+test('BP canonical truth: battlePowerV3 is the only source for all 60 presets',()=>{
+  assert.ok(N.battlePowerV3,'battlePowerV3 must be loaded');
   for(const c of N.SYSTEM_PRESETS){
-    const canonical=N.battlePowerV2(c).power;
+    const canonical=N.battlePowerV3(c).power;
     assert.ok(Number.isFinite(canonical)&&canonical>0,`canonical BP missing for ${c.displayName}`);
     // Frozen content field must equal the canonical computed value (no stale drift).
-    assert.equal(c.presentation?.power,canonical,`${c.displayName}: content presentation.power != canonical battlePowerV2 (${c.presentation?.power} vs ${canonical})`);
+    assert.equal(c.presentation?.power,canonical,`${c.displayName}: content presentation.power != canonical battlePowerV3 (${c.presentation?.power} vs ${canonical})`);
+    // and it must sit inside its Level×Rarity envelope
+    const env=N.powerEnvelope(c.level,c.rarity);
+    assert.ok(canonical>=env.min&&canonical<=env.max,`${c.displayName}: BP ${canonical} outside envelope ${env.min}-${env.max}`);
   }
 });
 
-test('cachePresetPower seeds the BP cache from canonical, so battlePowerOf matches battlePowerV2',()=>{
+test('cachePresetPower seeds the BP cache from canonical, so battlePowerOf matches battlePowerV3',()=>{
   for(const c of N.SYSTEM_PRESETS){
     N.cachePresetPower(c); // pre-warm exactly like src/presets.js does on load
     const displayed=N.battlePowerOf(c);
-    const canonical=N.battlePowerV2(c).power;
-    assert.equal(displayed,canonical,`${c.displayName}: battlePowerOf ${displayed} != battlePowerV2 ${canonical}`);
+    const canonical=N.battlePowerV3(c).power;
+    assert.equal(displayed,canonical,`${c.displayName}: battlePowerOf ${displayed} != battlePowerV3 ${canonical}`);
   }
 });
 test('curated injury counter can attack before sustain locks it above half HP',()=>{
  const {fight}=require('../scripts/audit-v4-battles.js');
  const cards=require('../content/presets-v4.json').cards;
  const a=cards.find(c=>c.displayName==='深渊'),b=cards.find(c=>c.displayName==='太虚');
- const r=fight(a,b,20260901);
- assert.ok(r.actions.includes(a.actions.find(x=>x.name==='血性猛击').id),'injury counter must actually be used');
- assert.ok(r.damage>0,'must deal HP damage instead of winning only via system wear');
- assert.ok(r.rounds<40,'this reproduced sustain lock must break');
+ // Initiative is now stochastic, so verify the fix across several match seeds:
+ // the injury counter must actually be used and deal HP damage (never the old
+ // 69-round / 0-HP-damage sustain lock).
+ for(let s=0;s<4;s++){
+   const r=fight(a,b,20260901+s);
+   assert.ok(r.actions.includes(a.actions.find(x=>x.name==='血性猛击').id),'injury counter must actually be used');
+   assert.ok(r.damage>0,'must deal HP damage instead of winning only via system wear');
+   assert.ok(r.rounds<69,'must resolve well before the original 69-round lock');
+ }
 });

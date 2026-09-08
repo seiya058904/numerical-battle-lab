@@ -57,18 +57,23 @@ userIntentExamples）。
 ## 常用命令
 
 ```bash
-npm test                       # 全量 Node 行为测试（含 v1-v4、预设、数值知识）
+npm test                       # 全量 Node 行为测试（含 v1-v5、预设、数值知识、随机/先手）
 npm run verify                 # catalog + 全量测试 + 静态架构/清单门禁
 npm run verify:release         # verify + diversity
 npm run diversity:v4           # 10000 张 v4 卡多样性审计 → qa/diversity-v4.json
 npm run calibration:v4         # BattlePower v2 经验校准 → qa/power-v4-calibration.json
+npm run migrate:presets-v5     # 从 presets-v4 迁移生成 content/presets-v5.{json,js}
+npm run audit:power-envelope   # v5 强度审计：包络/等级/稀有度/跨稀有度 Monte Carlo → qa/power-envelope-v5.json
+npm run audit:presets-v5       # v5 预设审计：包络表/唯一名/结构一致性 → qa/presets-v5-audit.json
+npm run audit:naming           # Name Generator v2 审计（10k 唯一率/后缀/模板泄漏）→ qa/naming-v2-audit.json
 npm run numerical-reference    # 从 canonical registry 重新生成 docs/CARD-NUMERICAL-REFERENCE.md
 node scripts/audit-v4-battles.js 3000   # 3000 场长局统计 → qa/v4-long-battles.json
 node scripts/audit-v4-presets.js        # 60 预设实战审计 → qa/v4-preset-audit.json + docs/V4-PRESET-TABLE.md
-node scripts/audit-numerical-coverage.js  # 数值知识覆盖审计（缺口=0）
+node scripts/audit-numerical-coverage.js  # 数值知识覆盖审计（缺口=0，含 v4+v5 样本）
 node scripts/audit-numerical-semantics.js # 参数扰动验证（文档描述 == 引擎行为）
 node qa/browser-v4.js          # 真实 Chromium 移动/桌面 QA（需 playwright + 127.0.0.1:8774 静态服务）
 node qa/browser-knowledge.js   # 数值百科 UI QA（同上）
+node qa/browser-multi.js       # 多人显式编队 + 新种子/重开语义 QA（同上）
 npm run manifest               # 重新生成 RELEASE-MANIFEST.json（提交新文件后必须）
 ```
 
@@ -76,18 +81,25 @@ npm run manifest               # 重新生成 RELEASE-MANIFEST.json（提交新�
 
 ## 架构地图（最短路径）
 
-- `src/kernel.js` — Gen5PRNG + EventKernel + 行动排序
+- `src/kernel.js` — Gen5PRNG + EventKernel + 行动排序（Priority → 随机先手 Initiative → 确定性兜底）
 - `src/components.js` — 参数/效果/条件/目标/事件/修饰操作注册表（canonical 底层）
 - `src/engine.js` — BattleEngine（伤害管线/资源/旧难度 AI/模拟/replay/Battle Wear/presentation frames）
 - `src/ai.js` — 当前 canonical AI：`planAI(engine, team, "canonical")`；默认观战用它。非 canonical 难度显式保留旧 planner。不要仅修改 engine.js 内的 legacy skillScore。
 - `src/formula.js` — Acorn + 白名单表达式解释层
-- `src/gen-v4.js` — Generator v4（classless、连续预算、个体变量、时间机制）
+- `src/gen-v4.js` — Generator v4（legacy：classless、连续预算、个体变量、时间机制）
+- `src/gen-v5.js` — **Generator v5（默认）**：结构先于强度；同 seed 结构跨等级/稀有度不变；
+  先生成结构 → 算 LevelScale → 算 Rarity PowerEnvelope → targetPower → battlepower-v3 有界校准
+- `src/power-v5.js` — **Power Envelope v1**：LevelScale + 12 稀有度包络（min/target/max）+ 质量百分位
+- `src/battlepower-v2.js` — BattlePower v2（legacy v4 估算器）
+- `src/battlepower-v3.js` — **BattlePower v3（v5 canonical）**：只读真实数值、绝不读稀有度/等级/clamp
+- `src/name-generator-v2.js` — **Name Generator v2**：物种专名命名语法（seed+结构身份决定名字）
 - `src/behavior.js` — Behavior Analyzer（事后 tags/summary，Presentation only）
-- `src/battlepower-v2.js` — BattlePower v2（递归机制抽取 + generationBudget 锚定）
 - `src/numerical-knowledge.js` — **Canonical Numerical Knowledge Registry**（本文件）
-- `src/card-browser.js` / `src/card-ui.js` / `src/app.js` — 卡牌浏览/详情/玩家 UI
-- `content/presets-v4.json`(+`.js`) — 60 张冻结官方预设（curationVersion 2）
-- `scripts/select-v4-presets.js` / `apply-v4-tune.js` / `rebuild-curation-report.js` — 预设生产管线
+- `src/card-browser.js` / `src/card-ui.js` / `src/app.js` — 卡牌浏览/详情/玩家 UI（多人显式编队 selectedTeams；普通对局新 seed；重开=新局）
+- `content/presets-v4.json`(+`.js`) — 60 张 v4 冻结预设（legacy 兼容 fixture）
+- `content/presets-v5.json`(+`.js`) — **60 张 v5 官方预设**（新名字 + 全部落入 Level×Rarity 包络，mechanicFingerprint 保留）
+- `scripts/migrate-presets-v5.js` — v4→v5 预设迁移（重命名 + 数值重校准，结构不变）
+- `scripts/audit-v5-strength.js` / `audit-presets-v5.js` / `audit-naming-v2.js` — v5 强度/预设/命名审计
 - `scripts/audit-*.js` — 多样性/长局/预设/数值知识/语义审计
 - `docs/GENERATOR-V4*.md` / `docs/CARD-NUMERICAL-REFERENCE.md` / `docs/V4-PRESET-*.md` — 文档
 
