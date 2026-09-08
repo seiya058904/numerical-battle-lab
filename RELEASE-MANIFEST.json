@@ -1,12 +1,12 @@
 {
   "name": "numerical-card-battle",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "entry": "index.html",
   "runtime": "fully-offline-static-web",
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 293,
+  "verifiedTests": 305,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
@@ -25,8 +25,8 @@
     },
     {
       "path": "AGENTS.md",
-      "size": 10352,
-      "sha256": "c9408c9f0088aaf6a5cb81761a3e710c1b591f5a623cda0e2d412c5ab29c8650"
+      "size": 10276,
+      "sha256": "2a1611d6b616714ce224b40297d50b4dcbd18a6f7527563d52a5c26a61197b15"
     },
     {
       "path": "FINAL-REPORT.md",
@@ -40,13 +40,13 @@
     },
     {
       "path": "README.md",
-      "size": 13197,
-      "sha256": "c020ef1f4427efc24c55cba2801f8ce90a88089b73339d53bc784822b421ad10"
+      "size": 13282,
+      "sha256": "26233761acef7a6e53ba7650bfd2c96f5212509bd48007598b76360a7c0c27e9"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "size": 20658,
-      "sha256": "5634b4e377b3091ac5b5bdd2a52cf931cc36f150ce53bc29f28740bbe44cc7d3"
+      "size": 21832,
+      "sha256": "d93cfcb34c2d4d377ff1d9ed2238f04d081e7b959c8c090403458fb55ebad512"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -75,18 +75,18 @@
     },
     {
       "path": "content/presets-v6.js",
-      "size": 379915,
-      "sha256": "51d87f311ce0afc4dd8ce0f434e7c8e79c71c83b29f02a734410345dfe2941d2"
+      "size": 386715,
+      "sha256": "647a25fce93a91a37ad8739796b2fdc950ed9a2bf708a35aa67717d88edabc1f"
     },
     {
       "path": "content/presets-v6.json",
-      "size": 530302,
-      "sha256": "bb6cab07d3defa1ff7d84e1f474880d936f3b98f4d1b252c51f40b452b885065"
+      "size": 537908,
+      "sha256": "ac61fd9eb2cebc52190eb9c5b2c67f6a834d24939677f70c649733161bdaecc9"
     },
     {
       "path": "docs/ARCHITECTURE.md",
-      "size": 9654,
-      "sha256": "0211db72692a079f05837c39da83cc8d3874c7e5d5e92a1aa8140c60c1ed4837"
+      "size": 9552,
+      "sha256": "84cdd645d51f4696db4e82db80f8deb13be9e5dc83b0350b31756870e9109cd8"
     },
     {
       "path": "docs/BALANCE-AUDIT-v1.2.md",
@@ -145,8 +145,8 @@
     },
     {
       "path": "docs/GENERATOR-V6-DESIGN.md",
-      "size": 13757,
-      "sha256": "29b03ae818df03b6b737a9674818e4408238a945d177b7b152cdef19f4df8cfd"
+      "size": 4228,
+      "sha256": "8940ee0fae739f1e408c559b89976d5cdb461e5fd233a571cbf967c9a14dd9ca"
     },
     {
       "path": "docs/GENERATOR.md",
@@ -180,8 +180,8 @@
     },
     {
       "path": "docs/V6-DELIVERY-REPORT.md",
-      "size": 9398,
-      "sha256": "5cfa2918bc830e928519ba4b6377e001a020742881eb552bd010428d11f901f0"
+      "size": 4284,
+      "sha256": "d51a239ade46258d8b3da34ad1dd74af57db55729a7491cb72393aaed8f9d856"
     },
     {
       "path": "docs/numeric-component-catalog.json",
@@ -224,14 +224,19 @@
       "sha256": "b52a169b2f50a79475487c5747265380f73775b6775414499db3b98a650f95d2"
     },
     {
+      "path": "docs/superpowers/plans/2026-09-08-generator-v6-final-strength-contract.md",
+      "size": 9308,
+      "sha256": "8d9962c7cfbe1dd87644bc016f07b3df219796dcee59d5ae99019029793ac7c7"
+    },
+    {
       "path": "index.html",
       "size": 4403,
       "sha256": "1caa9b4c9bc088a9c9b9794bb38aac0026e4e6e31216294c0bd50c95c4f5f650"
     },
     {
       "path": "package.json",
-      "size": 1964,
-      "sha256": "87b71d305f73ee4c9b0be57bab145d5b6f7f7ded1a239f7c05cb4038b9ef5cfe"
+      "size": 2082,
+      "sha256": "41ac2b9a825fe4ca97ef23d6084e2a9c304ba1bbcee7d03972a9470ce0d52786"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
@@ -355,8 +360,8 @@
     },
     {
       "path": "qa/numerical-coverage.json",
-      "size": 263,
-      "sha256": "164ee8a3f9f40364612ff112b7170179157a418dcc51b899e219ccb588a9b78f"
+      "size": 283,
+      "sha256": "bceb2e7fcfbfc9920eaa571078e733bb8d973e8acc66d6bcb304889dce418cec"
     },
     {
       "path": "qa/numerical-semantics.json",
@@ -714,9 +719,59 @@
       "sha256": "2ce026658a07013dbdba41c0f7eb29370a0d8d8e7305738dea2279de505ec14a"
     },
     {
+      "path": "qa/v6-battlepower-correlation.json",
+      "size": 175,
+      "sha256": "18013a92437d9688e9a2e157d7c393af3d429b3e64172b821446399b3c940e1a"
+    },
+    {
+      "path": "qa/v6-budget-distribution.json",
+      "size": 7344,
+      "sha256": "544459226318657a891509ebf0fe29a3e2f4d7b5b169d89c6f5d9f8861f58af4"
+    },
+    {
+      "path": "qa/v6-expected-strength.json",
+      "size": 9218,
+      "sha256": "455b759683e137a16f6598e7c7fa7f58a31acd1d477d2b1e6a84a6eb3e189526"
+    },
+    {
+      "path": "qa/v6-level-strength.json",
+      "size": 4589,
+      "sha256": "f726ceab29491de25bcd6678a38336f47557930eb8b27db807f04c97022839af"
+    },
+    {
+      "path": "qa/v6-performance.json",
+      "size": 200,
+      "sha256": "905ea6e0c1323b98792c746d393424bdea66b81b08a845e06ec552bb04d88292"
+    },
+    {
+      "path": "qa/v6-preset-matchup-matrix.json",
+      "size": 1219205,
+      "sha256": "3395d2a113e85040031cf42b450901c9617611245d4841715891a9d5056f8cf2"
+    },
+    {
+      "path": "qa/v6-rarity-strength.json",
+      "size": 5013,
+      "sha256": "a4224bdda0b235288cb78b271ed3480e8cc35ad108af940e784fd87e9b021d46"
+    },
+    {
+      "path": "qa/v6-seed-dispersion.json",
+      "size": 1355,
+      "sha256": "fd4f7486a24ec6f2729a877df243bd90785cb2c63222e893faba45ed9f4ce8c0"
+    },
+    {
       "path": "qa/v6-strength-audit.json",
       "size": 806,
       "sha256": "fb5a54fedf5e5e3c37c092cfe9d3c556071eb2fe3f586d491308edc170013479"
+    },
+    {
+      "path": "qa/v6-strength-baseline-corrected.json",
+      "size": 9471,
+      "sha256": "bfc2e012b50bc0cda90b133b56ad221deb70597396545320a201e1ec06563042"
+    },
+    {
+      "path": "qa/v6-strength-final.json",
+      "size": 21988,
+      "sha256": "263ab25c4e22940f1d2e1f4c53b1739126dfc1b7ee837b46c137f06b500fcfda"
     },
     {
       "path": "scripts/adjacent-rarity-matrix.js",
@@ -745,8 +800,8 @@
     },
     {
       "path": "scripts/audit-numerical-coverage.js",
-      "size": 2782,
-      "sha256": "78e2677eaf77e50e0aeeb667e2946f307ecf8787d86b0f1eb1612491238b59f4"
+      "size": 3078,
+      "sha256": "6960dc4d3dd76e4693d86bf9f5f7740cf08645e052575c44dc82f13a77f5edff"
     },
     {
       "path": "scripts/audit-numerical-semantics.js",
@@ -779,9 +834,19 @@
       "sha256": "c18fc556ded4e5fba8e27d982edcba9a465a17b6b8f413f53a481f85073b0c59"
     },
     {
+      "path": "scripts/audit-v6-budget.js",
+      "size": 5420,
+      "sha256": "d1158104a019ebaecb140bc8a0c5bc0214d464aac150d39f69037aa5dbb9747b"
+    },
+    {
+      "path": "scripts/audit-v6-presets.js",
+      "size": 2486,
+      "sha256": "2c7d0a0cc9b59e552ed5e85287fe725802dc437545e55565af462f26e57c3f1c"
+    },
+    {
       "path": "scripts/audit-v6-strength.js",
-      "size": 4002,
-      "sha256": "1e754cc1e25585b96826478f635676dacc508a0f1db4e3c2f895881c58ee70c4"
+      "size": 7074,
+      "sha256": "d4ae931790bf418ec5352300f04beb90a1b7398412a5b0ad6b89035cfb47c682"
     },
     {
       "path": "scripts/diversity-audit-v4.js",
@@ -800,8 +865,8 @@
     },
     {
       "path": "scripts/gate-v6-strength.js",
-      "size": 3232,
-      "sha256": "3c76a2f7bd1eef9a2d7c0903b586720ae02d7d9737e268b296b389b614989410"
+      "size": 2224,
+      "sha256": "095b55a37278d87ea6a8672a6d05d3fe8020d4a8093d93e37d112d7e92f5b468"
     },
     {
       "path": "scripts/gen-mc.js",
@@ -840,8 +905,8 @@
     },
     {
       "path": "scripts/migrate-presets-v6.js",
-      "size": 3876,
-      "sha256": "942b63e255d3af19404370a07e6a56605ca7cf4e2a67c35d93a05c55a6d88cec"
+      "size": 4583,
+      "sha256": "1171b8a1e266c383cc47f9ba65289e04a85ab408427f6d13fc1d7b620b269559"
     },
     {
       "path": "scripts/power-calibration.js",
@@ -871,7 +936,7 @@
     {
       "path": "scripts/static-check.js",
       "size": 7589,
-      "sha256": "66915e0cd0ab394ff130aa6a5902b364f78d7bdfe4f1aeab0b785b06aff5a72b"
+      "sha256": "ae921f24623855877f3dae6f8a4d7171414ddfb7fd7ce6188f69c59d8a5d8d96"
     },
     {
       "path": "scripts/stress-check.js",
@@ -885,8 +950,8 @@
     },
     {
       "path": "src/app.js",
-      "size": 65513,
-      "sha256": "9cb38ad943c887d1befcea2b3592bdfecd43de66799c86963c8e739e035b5f10"
+      "size": 65512,
+      "sha256": "7d17cfe3e75c043c246211c0c200a4bed3e07c32dd382e178ec700e098e5f166"
     },
     {
       "path": "src/battlepower-model.js",
@@ -900,8 +965,8 @@
     },
     {
       "path": "src/battlepower-v3.js",
-      "size": 17416,
-      "sha256": "6f33396a4d05928564a1b360614482af2d44fad2d11043ad05307f48e139ce21"
+      "size": 17421,
+      "sha256": "8c5bae27a96341a0ece4694553c170bf1b38453a628cc3c7740a82b37e1eb5d6"
     },
     {
       "path": "src/battlepower.js",
@@ -915,13 +980,13 @@
     },
     {
       "path": "src/budget-price.js",
-      "size": 11676,
-      "sha256": "4ee801c367539ddadb2c7cf860087f474659a7c683444bb9d883746a60f80d06"
+      "size": 12164,
+      "sha256": "b9994e0389393ac8f91ee78f849bebbe4df5a189600a1b598215ab5007919746"
     },
     {
       "path": "src/budget-v6.js",
-      "size": 6254,
-      "sha256": "36a0f45759c9fe5e8ab40c51f46a245bb40bf026cf27e4656a58df2d8265468f"
+      "size": 6640,
+      "sha256": "ebdb5830af9047b22cca30b3c00088e9081f082597de194687e5293735d1862f"
     },
     {
       "path": "src/card-browser.js",
@@ -930,8 +995,8 @@
     },
     {
       "path": "src/card-ui.js",
-      "size": 15735,
-      "sha256": "ec91ed39664700f384619b7372ef3025b1901d3423b4e17e4d19346e7a8e56b2"
+      "size": 15822,
+      "sha256": "274fe6c333a7d4f4e6a05a3c62b23eda3816e82f081e0599f161a1cdf25403bf"
     },
     {
       "path": "src/components.js",
@@ -1000,8 +1065,8 @@
     },
     {
       "path": "src/gen-v6.js",
-      "size": 28555,
-      "sha256": "49a16e179938c6d9ef81dc428cdfceb4a99d9b236eb8a9acc2e367a1df142722"
+      "size": 13545,
+      "sha256": "14a8a8565a5c974469342ec094c6bcc27e5da032c46af647c68a5601ffac734a"
     },
     {
       "path": "src/generator.js",
@@ -1040,13 +1105,13 @@
     },
     {
       "path": "src/presets-v6.js",
-      "size": 790,
-      "sha256": "d0c18560801a1eeb093b2becd7733a7c38df50fe21ceb9ad9e8f0c0a548bdd1a"
+      "size": 637,
+      "sha256": "7e68e3134220a6c1a23fd1890b0f9132c013b47090d67cf9a12fca9f245d9dcc"
     },
     {
       "path": "src/presets.js",
-      "size": 1266,
-      "sha256": "ad8b0ad69edbab0faaabb68095860c6d1aa1180134c4f42c50dca6c281335f62"
+      "size": 1303,
+      "sha256": "97dd17f64cacf4e6275529b5bd183f89e6b120e972b2071e2fe8dd1d12657bad"
     },
     {
       "path": "src/rules.js",
@@ -1057,6 +1122,11 @@
       "path": "src/status-runtime.js",
       "size": 5010,
       "sha256": "0383f309240fbb9499d394325fc47ab93d17db66d2c04f71dfb38257d088c510"
+    },
+    {
+      "path": "src/strength-audit-v6.js",
+      "size": 1747,
+      "sha256": "aac686f9079073608c4edf154b91222bbb3b136680ee385721d7cfca91209a25"
     },
     {
       "path": "src/validator.js",
@@ -1185,8 +1255,8 @@
     },
     {
       "path": "tests/gen-v6.test.js",
-      "size": 3711,
-      "sha256": "ca3f90fa551554eb155f70a0207e382972457584a5fe46cdf0db6920e6a79352"
+      "size": 7167,
+      "sha256": "d6aff61d012916f70c913113f5d3ed5d3dcf521bcc721dab94b19bdf0065e626"
     },
     {
       "path": "tests/generator.test.js",
@@ -1235,13 +1305,18 @@
     },
     {
       "path": "tests/presets-v6.test.js",
-      "size": 2127,
-      "sha256": "3f6741539cf9768484adb929029f1898164159f4ab50537fd45dec05f001fa0f"
+      "size": 2254,
+      "sha256": "222de0f9b6b6cdd41cca51e4de1eba1d7d5af5fd54474d0584da17ef91bf135d"
     },
     {
       "path": "tests/presets.test.js",
-      "size": 6881,
-      "sha256": "face8683b5a50fcb6b82886de735b1ddc89e95fcdb132d550e9160fbebb47ac9"
+      "size": 6799,
+      "sha256": "0d11ca36118d4feefca843bc24a1fdd80e8946489dcba41cc40c4ecd1ce4f566"
+    },
+    {
+      "path": "tests/strength-audit-v6.test.js",
+      "size": 1786,
+      "sha256": "3d74967e051d29ac5e32832543877ff88bc92888a4d5dd8506b101e4b9ded100"
     },
     {
       "path": "tests/v1-fixture.test.js",
@@ -1262,6 +1337,11 @@
       "path": "tests/v4-time.test.js",
       "size": 6745,
       "sha256": "3aa57acc711891f9c69683106d5d4981f850a81a5e5fc73a394bfdf8584fa522"
+    },
+    {
+      "path": "tests/v6-audit-artifacts.test.js",
+      "size": 2129,
+      "sha256": "ff37847c84e4683842c804576af783c9222d290fe2d50dfece93ca478dd1d6bc"
     },
     {
       "path": "third_party/acorn/LICENSE",
@@ -1300,5 +1380,5 @@
     }
   ],
   "combinedDefaultCompositionWinRate": 0.595,
-  "notes": "v1.4.0: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path."
+  "notes": "v1.5.0: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path."
 }

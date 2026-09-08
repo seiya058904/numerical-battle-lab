@@ -1,7 +1,5 @@
-// Canonical v6 presets (Generator v6 Power Budget Contract), loaded from
-// content/presets-v6.js/json. Kept SEPARATE from NCB.SYSTEM_PRESETS (which stays
-// the v5 catalog so the default generator/presets behavior is unchanged). Exposed
-// as NCB.SYSTEM_PRESETS_V6 for the v6 path (lab/audit/tests).
+// Canonical v6 presets (current product default), loaded from presets-v6 content.
+// The frozen v5 catalog remains available as a legacy artifact.
 (function(root){
   'use strict';
   const NCB=root.NCB=root.NCB||{};

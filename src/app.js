@@ -603,7 +603,7 @@
       if(act==='duplicate'){let c=NCB.deepClone(card);const oldId=c.id,newId=oldId+'-copy-'+Date.now();const remap=x=>{if(typeof x==='string')return x.startsWith(oldId)?newId+x.slice(oldId.length):x;if(Array.isArray(x))return x.map(remap);if(x&&typeof x==='object')return Object.fromEntries(Object.entries(x).map(([k,v])=>[k,remap(v)]));return x;};c=remap(c);c.id=newId;c.displayName=(card.displayName||card.name)+' 副本';addToLibrary(c);renderCards();}
       if(act==='rename'){const n=prompt('输入新名称：',card.displayName||card.name||'');if(n&&n.trim()){card.displayName=n.trim();saveLibrary();renderCards();}}
       if(act==='copyseed'){const seed=card.seed??'';if(navigator.clipboard?.writeText){navigator.clipboard.writeText(seed).then(()=>alert('种子已复制：'+seed)).catch(()=>alert('种子：'+seed));}else alert('种子：'+seed);}
-      if(act==='regenerate'){const c=NCB.generateCardByVersion({rarity:card.rarity,level:card.level,...(card.generatorVersion===4?{}:{archetype:card.archetype}),seed:card.seed,generatorVersion:card.generatorVersion});state.library[i]=NCB.deepClone(c);saveLibrary();renderCards();}
+      if(act==='regenerate'){const c=NCB.generateCardByVersion({rarity:card.rarity,level:card.level,...(card.generatorVersion<=3?{archetype:card.archetype}:{}),seed:card.seed,generatorVersion:card.generatorVersion});state.library[i]=NCB.deepClone(c);saveLibrary();renderCards();}
       if(act==='delete'){if(confirm(`删除「${card.displayName||card.name}」？`)){state.library.splice(i,1);saveLibrary();renderCards();}}
       return;
     }

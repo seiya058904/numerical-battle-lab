@@ -1,6 +1,6 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','gen-v2','gen-v3','gen-v4','gen-v5','behavior','battlepower-v2','battlepower-model','battlepower','card-ui','presets'])require('../src/'+f+'.js');
+for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','name-generator-v3','gen-v2','gen-v3','gen-v4','gen-v5','budget-v6','budget-price','gen-v6','behavior','battlepower-v2','battlepower-model','battlepower','card-ui','presets','presets-v6'])require('../src/'+f+'.js');
 const N=global.NCB;
 
 test('system presets: 60 classless cards, five per rarity with level and dynamic coverage',()=>{
@@ -17,10 +17,10 @@ test('system presets: cover all 12 rarity tiers',()=>{
   assert.equal(tiers.size,12);
 });
 
-test('system presets: all Generator v5, frozen, valid content, distinct names',()=>{
+test('system presets: all Generator v6, frozen, valid content, distinct names',()=>{
   const names=new Set();
   for(const c of N.SYSTEM_PRESETS){
-    assert.equal(c.generatorVersion,5);
+    assert.equal(c.generatorVersion,6);
     assert.ok(c.actions.length>=2&&c.actions.length<=6);
     const pack=N.assembleCardPack(c);const v=N.validateContentPack(pack);
     assert.ok(v.ok,v.errors.join('\n'));
@@ -83,9 +83,7 @@ test('BP canonical truth: battlePowerV3 is the only source for all 60 presets',(
     assert.ok(Number.isFinite(canonical)&&canonical>0,`canonical BP missing for ${c.displayName}`);
     // Frozen content field must equal the canonical computed value (no stale drift).
     assert.equal(c.presentation?.power,canonical,`${c.displayName}: content presentation.power != canonical battlePowerV3 (${c.presentation?.power} vs ${canonical})`);
-    // and it must sit inside its Level×Rarity envelope
-    const env=N.powerEnvelope(c.level,c.rarity);
-    assert.ok(canonical>=env.min&&canonical<=env.max,`${c.displayName}: BP ${canonical} outside envelope ${env.min}-${env.max}`);
+    assert.equal(c.generationStrengthBudget,N.expectedStrengthV6(c.level,c.rarity));
   }
 });
 

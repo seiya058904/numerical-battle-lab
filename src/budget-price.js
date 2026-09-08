@@ -162,14 +162,18 @@
     // offense = ATK × effective coefficient throughput (product, so a card can't
     // game the budget by cutting ATK and stacking coefficients or vice versa).
     const offsetC=1;                       // tuning constant
-    const offensePrice=round(atk*dmgCoeff*0.55);           // ATK-coefficient product
-    const defensePrice=round(hp*0.45+def*0.75+res*0.75);   // durability pool (HP-dominant)
+    const critFactor=1+clamp(Number(s.CRIT||0)/100,0,.95)*Math.max(0,Number(s.CRIT_DMG||150)/100-1);
+    const penFactor=1+clamp(Number(s.PEN||0)/250,0,.5);
+    const offensePrice=round(atk*dmgCoeff*0.45*critFactor*penFactor); // real expected throughput
+    const resistanceValue=Object.values(card.resistances||{}).reduce((n,v)=>n+Math.max(0,Number(v)||0),0);
+    const defensePrice=round(hp*0.42+def*0.72+res*0.72+Number(s.EVA||0)*.35+hp*resistanceValue*.08);
     const sustainPrice=round(healCoeff*(hp*0.5)*(0.28)+shieldCoeff*hp*0.18); // heal/shield pool-output
     const controlPrice=round(control*2.2);
     const economyPrice=round(economy*1.2);
     const tempoPrice=round(spd*0.25+tempo*1.5);
-    const totals={offense:offensePrice,defense:defensePrice,sustain:sustainPrice,control:controlPrice,economy:economyPrice,tempo:tempoPrice};
-    return {...totals,total:round(offensePrice+defensePrice+sustainPrice+controlPrice+economyPrice+tempoPrice),
+    const reliabilityPrice=round(Number(s.ACC||0)*.12+Math.max(0,1-Number(s.VOLATILITY||1))*.8+Math.max(0,Number(s.LUCK||0))*.6);
+    const totals={offense:offensePrice,defense:defensePrice,sustain:sustainPrice,control:controlPrice,economy:economyPrice,tempo:tempoPrice,reliability:reliabilityPrice};
+    return {...totals,total:round(offensePrice+defensePrice+sustainPrice+controlPrice+economyPrice+tempoPrice+reliabilityPrice),
       coeff:{dmgCoeff:round(dmgCoeff),healCoeff:round(healCoeff),shieldCoeff:round(shieldCoeff)},stats:round(hp*0.45+def*0.75+res*0.75)};
   }
 
@@ -177,7 +181,7 @@
   function priceStats(card){
     const p=priceCard(card);
     return {offense:p.offense,defense:p.defense,sustain:p.sustain,control:p.control,economy:p.economy,
-      tempo:p.tempo,triggers:0,passives:0,total:p.total};
+      tempo:p.tempo,reliability:p.reliability,triggers:0,passives:0,total:p.total};
   }
   function priceMechanics(card){
     const p=priceCard(card);

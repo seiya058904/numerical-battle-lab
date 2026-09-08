@@ -28,6 +28,18 @@ for(let i=0;i<60;i++){
   // frozen canonical name (index-aligned with the presets-v5 order)
   gen.name=src.name;
   gen.displayName=src.displayName;
+  // Preserve the curated seed-individual time/randomness profile. These fields
+  // are tier-invariant expression, not free Level/Rarity strength.
+  for(const key of ['VOLATILITY','LUCK','ENDURANCE'])gen.stats[key]=src.stats[key];
+  // Measurement is deliberately outside generateCardV6: frozen product content
+  // may cache the independent estimator after generation has completed.
+  const bp=N.battlePowerV3(gen).power;
+  const priced=N.budgetPriceCardV6(gen).total;
+  gen.strengthLedger.pricedStrength=priced;
+  gen.strengthLedger.deviation=Math.round((priced-gen.expectedStrength)/gen.expectedStrength*1000)/1000;
+  gen.power=bp;
+  gen.presentation=gen.presentation||{};
+  gen.presentation.power=bp;
   // curation provenance preserved
   gen.originSeed=src.originSeed||src.seed;
   gen.curated=true;

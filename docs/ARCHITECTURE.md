@@ -46,15 +46,16 @@ Actions are normalized, then ordered deterministically by:
 
 Because the initiative rolls come from the battle PRNG, replay stays byte-exact; only a new match seed changes who goes first. A sufficiently large SPD gap makes the faster side act first with certainty (the bounded range cannot close it), so very slow units can never randomly out-run much faster ones. Priority/speed can be modified through the shared event-modifier system. No UI timing, wall clock or animation state participates in resolution.
 
-## 3a. Level × Rarity strength model (Generator v5)
+## 3a. Level × Rarity strength model (Generator v6 default)
 
-`src/power-v5.js` owns the authoritative strength system:
+`src/budget-v6.js` owns the authoritative total-strength contract:
 
 - **Level** decides the overall magnitude scale: `LevelScale(L)=0.10+0.90·((L-1)/99)^0.95`.
-- **Rarity** decides the allowed comprehensive-strength min/max AT that level (12 disjoint, ascending bands; `max(lower) < min(higher)`).
-- **Seed** only decides the card's deterministic position *inside* its rarity band (quality percentile) plus its mechanic structure.
-- **BattlePower v3** (`src/battlepower-v3.js`) is a real static estimator of the card's numbers — it never reads rarity/level, never clamps, and never changes with the match seed. Generator v5 bakes the envelope target into the real numbers via bounded calibration, so measured BP lands inside the band naturally.
-- **Name Generator v2** (`src/name-generator-v2.js`) produces species proper-nouns owned by `seed + structural identity` (same seed → same name at any level/rarity).
+- **Rarity** multiplies the same total budget from C=1.0 through XS Collector=12.0.
+- **Seed** produces a bounded allocation profile and mechanic topology, never a second total-strength multiplier.
+- **Generator v6** prices stats and mechanics and reconciles card content to ExpectedStrength within 5%; it never invokes combat, AI, opponents, Monte Carlo, or BattlePower.
+- **BattlePower v3** reads only real card content as an independent static measurement. Corrected paired canonical-AI audits are the independent reality layer.
+- **Name Generator v3** depends on seed only, so the same seed retains its name at any level or rarity.
 
 ## 3b. Match randomness semantics
 

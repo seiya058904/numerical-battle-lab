@@ -1,4 +1,4 @@
-// BattlePower v3 — canonical real-strength estimator for Generator v5.
+// BattlePower v3 — independent static estimator for Generator v5/v6 cards.
 //
 // Unlike v2 (power = generationBudget × mechanicFactor), v3 NEVER reads
 // generationBudget, rarity, level, or quality. It is a pure function of the

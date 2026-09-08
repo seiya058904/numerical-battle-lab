@@ -1,7 +1,8 @@
 {
   "presets": 60,
-  "v4Sample": 1200,
-  "v5Sample": 1200,
+  "v4Sample": 3000,
+  "v5Sample": 3000,
+  "v6Sample": 3000,
   "undocumentedActiveFields": 0,
   "gaps": [],
   "params": 111,

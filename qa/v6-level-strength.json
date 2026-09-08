@@ -1,0 +1,209 @@
+{
+  "methodology": {
+    "unit": "battle",
+    "pairedSideMirroring": true,
+    "pairedSeedPolicy": "same seed for both side assignments",
+    "confidenceInterval": "Wilson 95%",
+    "generatorHead": "working-tree-after-5d330b9"
+  },
+  "buckets": {
+    "A Lv10 vs Lv20": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 300,
+      "lowerWins": 80,
+      "draws": 20,
+      "teamAWins": 190,
+      "teamBWins": 190,
+      "higherWinRate": 0.75,
+      "lowerWinRate": 0.2,
+      "drawRate": 0.05,
+      "teamAWinRate": 0.475,
+      "teamBWinRate": 0.475,
+      "ci95": {
+        "low": 0.705,
+        "high": 0.79
+      }
+    },
+    "A Lv10 vs Lv30": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 340,
+      "lowerWins": 60,
+      "draws": 0,
+      "teamAWins": 200,
+      "teamBWins": 200,
+      "higherWinRate": 0.85,
+      "lowerWinRate": 0.15,
+      "drawRate": 0,
+      "teamAWinRate": 0.5,
+      "teamBWinRate": 0.5,
+      "ci95": {
+        "low": 0.812,
+        "high": 0.882
+      }
+    },
+    "A Lv10 vs Lv50": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 400,
+      "lowerWins": 0,
+      "draws": 0,
+      "teamAWins": 200,
+      "teamBWins": 200,
+      "higherWinRate": 1,
+      "lowerWinRate": 0,
+      "drawRate": 0,
+      "teamAWinRate": 0.5,
+      "teamBWinRate": 0.5,
+      "ci95": {
+        "low": 0.99,
+        "high": 1
+      }
+    },
+    "A Lv10 vs Lv75": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 400,
+      "lowerWins": 0,
+      "draws": 0,
+      "teamAWins": 200,
+      "teamBWins": 200,
+      "higherWinRate": 1,
+      "lowerWinRate": 0,
+      "drawRate": 0,
+      "teamAWinRate": 0.5,
+      "teamBWinRate": 0.5,
+      "ci95": {
+        "low": 0.99,
+        "high": 1
+      }
+    },
+    "A Lv10 vs Lv100": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 400,
+      "lowerWins": 0,
+      "draws": 0,
+      "teamAWins": 200,
+      "teamBWins": 200,
+      "higherWinRate": 1,
+      "lowerWinRate": 0,
+      "drawRate": 0,
+      "teamAWinRate": 0.5,
+      "teamBWinRate": 0.5,
+      "ci95": {
+        "low": 0.99,
+        "high": 1
+      }
+    },
+    "A Lv25 vs Lv50": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 340,
+      "lowerWins": 60,
+      "draws": 0,
+      "teamAWins": 200,
+      "teamBWins": 200,
+      "higherWinRate": 0.85,
+      "lowerWinRate": 0.15,
+      "drawRate": 0,
+      "teamAWinRate": 0.5,
+      "teamBWinRate": 0.5,
+      "ci95": {
+        "low": 0.812,
+        "high": 0.882
+      }
+    },
+    "A Lv25 vs Lv75": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 320,
+      "lowerWins": 80,
+      "draws": 0,
+      "teamAWins": 200,
+      "teamBWins": 200,
+      "higherWinRate": 0.8,
+      "lowerWinRate": 0.2,
+      "drawRate": 0,
+      "teamAWinRate": 0.5,
+      "teamBWinRate": 0.5,
+      "ci95": {
+        "low": 0.758,
+        "high": 0.836
+      }
+    },
+    "A Lv25 vs Lv100": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 380,
+      "lowerWins": 20,
+      "draws": 0,
+      "teamAWins": 200,
+      "teamBWins": 200,
+      "higherWinRate": 0.95,
+      "lowerWinRate": 0.05,
+      "drawRate": 0,
+      "teamAWinRate": 0.5,
+      "teamBWinRate": 0.5,
+      "ci95": {
+        "low": 0.924,
+        "high": 0.967
+      }
+    },
+    "A Lv50 vs Lv75": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 200,
+      "lowerWins": 180,
+      "draws": 20,
+      "teamAWins": 190,
+      "teamBWins": 190,
+      "higherWinRate": 0.5,
+      "lowerWinRate": 0.45,
+      "drawRate": 0.05,
+      "teamAWinRate": 0.475,
+      "teamBWinRate": 0.475,
+      "ci95": {
+        "low": 0.451,
+        "high": 0.549
+      }
+    },
+    "A Lv50 vs Lv100": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 290,
+      "lowerWins": 110,
+      "draws": 0,
+      "teamAWins": 190,
+      "teamBWins": 210,
+      "higherWinRate": 0.725,
+      "lowerWinRate": 0.275,
+      "drawRate": 0,
+      "teamAWinRate": 0.475,
+      "teamBWinRate": 0.525,
+      "ci95": {
+        "low": 0.679,
+        "high": 0.766
+      }
+    },
+    "A Lv75 vs Lv100": {
+      "pairCount": 200,
+      "battleCount": 400,
+      "higherWins": 280,
+      "lowerWins": 80,
+      "draws": 40,
+      "teamAWins": 180,
+      "teamBWins": 180,
+      "higherWinRate": 0.7,
+      "lowerWinRate": 0.2,
+      "drawRate": 0.1,
+      "teamAWinRate": 0.45,
+      "teamBWinRate": 0.45,
+      "ci95": {
+        "low": 0.653,
+        "high": 0.743
+      }
+    }
+  }
+}

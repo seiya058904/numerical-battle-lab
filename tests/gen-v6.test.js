@@ -1,6 +1,6 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','gen-v2','gen-v3','gen-v4','gen-v5','budget-v6','budget-price','gen-v6'])require('../src/'+f+'.js');
+for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','gen-v2','gen-v3','gen-v4','gen-v5','budget-v6','budget-price','gen-v6','card-ui'])require('../src/'+f+'.js');
 const N=global.NCB;
 
 // ExpectedStrength is the Level × Rarity strength anchor: strictly monotone in
@@ -51,14 +51,57 @@ test('v6 structural invariance across level and rarity',()=>{
   for(const seed of ['vi-a','vi-b']){
     const base=N.generateCardV6({seed,rarity:'C',level:25});
     const hi=N.generateCardV6({seed,rarity:'XS_COLLECTOR',level:100});
-    // structure (mechanic fingerprint) must not depend on level/rarity — but a
-    // degenerate kit that needed a viability patch can legitimately differ, so we
-    // assert the tier budget grows and the generator stays v6.
+    assert.equal(base.mechanicFingerprint,hi.mechanicFingerprint,'same seed must preserve exact mechanic topology');
+    assert.equal(base.name,hi.name,'Naming V3 must depend on seed, not tier');
     assert.equal(base.generatorVersion,6);
     assert.equal(hi.generatorVersion,6);
     assert.ok(hi.strengthLedger.totalBudget>base.strengthLedger.totalBudget, 'higher tier must have larger budget');
     assert.ok(hi.strengthLedger.totalBudget>base.strengthLedger.totalBudget*1.5,'budget gap must be material');
   }
+});
+
+test('v6 generation is pure and never invokes battle, AI, or BattlePower measurement',()=>{
+  const blocked=['createBattle','planAI','battlePowerV3'];
+  const saved=Object.fromEntries(blocked.map(key=>[key,N[key]]));
+  for(const key of blocked)N[key]=()=>{throw new Error('forbidden generation dependency: '+key);};
+  try{
+    const card=N.generateCardV6({seed:'pure-v6',rarity:'A',level:50});
+    assert.equal(card.generatorVersion,6);
+    assert.ok(card.actions.length>=2);
+  } finally {for(const key of blocked)N[key]=saved[key];}
+});
+
+test('v6 generated allocation is diverse, normalized, and reconciled within five percent',()=>{
+  const cards=Array.from({length:24},(_,i)=>N.generateCardV6({seed:'allocation-'+i,rarity:'A',level:50}));
+  const profiles=new Set();
+  const panels=new Set();
+  for(const card of cards){
+    const profile=card.allocationProfile;
+    assert.ok(profile&&Object.keys(profile).length>=7);
+    assert.ok(Math.abs(Object.values(profile).reduce((a,b)=>a+b,0)-1)<0.002);
+    for(const value of Object.values(profile))assert.ok(value>=0.02&&value<=0.55,`bounded allocation share ${value}`);
+    profiles.add(Object.values(profile).map(v=>v.toFixed(3)).join(','));
+    panels.add(['ATK','MAX_HP','DEF','RES','SPD'].map(key=>card.stats[key]).join(','));
+    const priced=N.budgetPriceCardV6(card).total;
+    const deviation=Math.abs(priced-card.expectedStrength)/card.expectedStrength;
+    assert.ok(deviation<=0.05,`priced ${priced}, expected ${card.expectedStrength}, deviation ${deviation}`);
+  }
+  assert.ok(profiles.size>=20,'seed must materially vary allocation profiles');
+  assert.ok(panels.size>=16,'same-tier primary panels must materially vary');
+});
+
+test('v6 reconciliation reaches extreme high-tier utility builds without weakening the contract',()=>{
+  const card=N.generateCardV6({seed:'nk-audit-v6-2855',rarity:'XS_COLLECTOR',level:85});
+  const priced=N.budgetPriceCardV6(card).total;
+  assert.ok(Math.abs(priced-card.expectedStrength)/card.expectedStrength<=.05,`${priced} vs ${card.expectedStrength}`);
+});
+
+test('v6 viability is a constraint, not a universal two-strike template',()=>{
+  const cards=Array.from({length:30},(_,i)=>N.generateCardV6({seed:'victory-path-'+i,rarity:'A',level:50}));
+  assert.ok(cards.some(card=>!card.actions.some(a=>a.name==='突袭')||!card.actions.some(a=>a.name==='重击')),
+    'not every card may contain both canonical fighter strikes');
+  assert.ok(cards.every(card=>JSON.stringify({actions:card.actions,statuses:card.statuses,triggers:card.triggers}).includes('damage')||JSON.stringify(card.actions).includes('consumeStatus')),
+    'every card needs a deterministic path to victory');
 });
 
 // Independent measurement: the estimator is independent of the budget model (different math).
@@ -67,4 +110,19 @@ test('v6 battlePowerV3 is an independent estimator that rises with real numbers'
   const base=N.battlePowerV3(c).power;
   const hi=JSON.parse(JSON.stringify(c));hi.stats.ATK*=3;hi.stats.MAX_HP*=2;
   assert.ok(N.battlePowerV3(hi).power>base,'stronger numbers must raise BP');
+});
+
+test('v6 is the normal generator default while v5 remains explicit legacy',()=>{
+  const normal=N.generateCard({seed:'default-v6',rarity:'A',level:50});
+  const dispatched=N.generateCardByVersion({seed:'default-v6-dispatch',rarity:'A',level:50});
+  assert.equal(normal.generatorVersion,6);
+  assert.equal(dispatched.generatorVersion,6);
+  const legacyA=N.generateCardByVersion({seed:'legacy-v5',rarity:'A',level:50,generatorVersion:5});
+  const legacyB=N.generateCardV5({seed:'legacy-v5',rarity:'A',level:50,generatorVersion:5});
+  assert.deepEqual(legacyA,legacyB);
+});
+
+test('v6 cards use BattlePower v3 only at the presentation boundary',()=>{
+  const card=N.generateCard({seed:'v6-ui-power',rarity:'A',level:50});
+  assert.equal(N.battlePowerOf(card),Math.round(N.battlePowerV3(card).power));
 });

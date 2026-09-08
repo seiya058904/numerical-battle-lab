@@ -11,7 +11,7 @@
 // by post-hoc stat-scaling of an already over-budget structure.
 //
 // ExpectedStrength(level,rarity) = LevelScale(level) × RarityStrengthScale(rarity)
-//   Lv100 anchor: C=1.00 ... XS_COLLECTOR=2.87 (WIDENED vs the narrow v5 BP band,
+//   Lv100 anchor: C=1.00 ... XS_COLLECTOR=12.00 (WIDENED vs the narrow v5 BP band,
 //   so large rarity gaps yield large real budget gaps -> real win dominance).
 //
 // Two independent layers stay separate (no self-fulfilling audit):
@@ -34,8 +34,8 @@
 
   // ---- RarityStrengthScale (v6, WIDENED) ----
   // Canonical Lv100 total-strength multiplier per rarity (entry order must match
-  // NCB.RARITY_V2_ORDER). C=1.00 ... XS_COLLECTOR=2.87. This is the total-strength
-  // currency of a card: a C and an XS_COLLECTOR at the same level differ by 2.87x
+  // NCB.RARITY_V2_ORDER). C=1.00 ... XS_COLLECTOR=12.00. This is the total-strength
+  // currency of a card: a C and an XS_COLLECTOR at the same level differ by 12x
   // REAL available strength, not just a display band.
   const RARITY_STRENGTH_LV100=[
     ['C',             1.00],
@@ -65,7 +65,7 @@
   // Positive monotone in level and rarity; the pre-generation strength tier.
   // STRENGTH_ANCHOR maps the dimensionless curve to the strength-unit currency that
   // budget-price.js prices in: Lv100 C == 1000 units (the documented reference
-  // anchor). Rarity WIDENS multiplicatively: Lv100 XS_COLLECTOR == 2870 units, so
+  // anchor). Rarity WIDENS multiplicatively: Lv100 XS_COLLECTOR == 12000 units, so
   // large rarity gaps are large REAL budget gaps (not the narrow 1840 of v5 BP).
   const STRENGTH_ANCHOR=1000;
   function expectedStrength(level,rarity){
@@ -80,7 +80,7 @@
   // Seed splits `total` across 8 spend categories with the constraint that the
   // shares always sum to `total`. Re-allocation only; the total never changes.
   // `flavor` is a code-path salt so different random aspects use different streams.
-  const CATEGORIES=['offense','defense','sustain','control','economy','tempo','triggers','passives'];
+  const CATEGORIES=['offense','durability','sustain','control','tempo','economy','reliability','triggers'];
   function seededPRNG(seed,salt){
     const h=NCB.seedHash(String(seed==null?'':seed)+':'+salt);
     return new NCB.Gen5PRNG('gen5,'+((h>>>0)&0xffff)+','+((h>>>16)&0xffff)+',6,6');
@@ -88,15 +88,19 @@
   // Returns { shares:{offense,defense,...}, total } where sum(shares)==total.
   function allocateBudget(total,seed,salt){
     const prng=seededPRNG(seed,'budget:'+(salt||'classless'));
-    // Random positive weights, then normalized to exactly `total`.
-    const weights=CATEGORIES.map(()=>0.02+Math.pow(prng.random(),1.6)); // skewed low-ish
-    const sumW=weights.reduce((a,b)=>a+b,0);
+    // A bounded heavy-tailed profile: extreme builds occur, but no category may
+    // consume the whole card and every card retains enough reliability to function.
+    // The 0.15 floor keeps normalized shares above 2%; the cubic tail still
+    // permits a dominant category around 50% without producing 99/1 builds.
+    let profile=CATEGORIES.map(()=>0.15+Math.pow(prng.random(),3));
+    const sumW=profile.reduce((a,b)=>a+b,0);
+    profile=profile.map(v=>v/sumW);
     const shares={};
     let acc=0;
     for(let i=0;i<CATEGORIES.length;i++){
       const share=i===CATEGORIES.length-1
         ? (total-acc)                       // last takes the exact remainder
-        : Math.round(total*weights[i]/sumW*10)/10;
+        : Math.round(total*profile[i]*10)/10;
       shares[CATEGORIES[i]]=share;
       acc+=share;
     }
@@ -107,7 +111,8 @@
       const need=-shares[CATEGORIES[CATEGORIES.length-1]];
       shares[rich]-=need;shares[CATEGORIES[CATEGORIES.length-1]]=0;
     }
-    return {shares,total};
+    const normalized={};for(let i=0;i<CATEGORIES.length;i++)normalized[CATEGORIES[i]]=profile[i];
+    return {shares,total,profile:normalized};
   }
 
   // ---- ledger type helpers ----

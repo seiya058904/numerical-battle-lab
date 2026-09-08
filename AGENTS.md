@@ -88,15 +88,13 @@ npm run manifest               # 重新生成 RELEASE-MANIFEST.json（提交新�
 - `src/ai.js` — 当前 canonical AI：`planAI(engine, team, "canonical")`；默认观战用它。非 canonical 难度显式保留旧 planner。不要仅修改 engine.js 内的 legacy skillScore。
 - `src/formula.js` — Acorn + 白名单表达式解释层
 - `src/gen-v4.js` — Generator v4（legacy：classless、连续预算、个体变量、时间机制）
-- `src/gen-v5.js` — **Generator v5（默认）**：结构先于强度；同 seed 结构跨等级/稀有度不变；
+- `src/gen-v5.js` — **Generator v5（legacy）**：结构先于强度；同 seed 结构跨等级/稀有度不变；
   先生成结构 → 算 LevelScale → 算 Rarity PowerEnvelope → targetPower → battlepower-v3 有界校准
 - `src/budget-v6.js` — **Budget v6**：TotalStrengthBudget = ExpectedStrength(level,rarity)
   = 1000×LevelScale×RarityStrengthScale（C=1.0…XS_COLLECTOR=12.0）；Seed 只能再分配固定总额
 - `src/budget-price.js` — **budget-price**：生成期因果机制定价（独立于 battlepower-v3）
-- `src/gen-v6.js` — **Generator v6（opt-in，`generateCardV6`）**：预算面板固定 ∝ budget
-  （MAX_HP/ATK/DEF 同档位所有 seed 相同）；2 个固定无条件打击（cd1+cd2）+ 简化 utility；
-  治疗/护盾按引擎真实 HP 价值折算后从伤害预算扣除；真实 AI 对局测量选择门（每草稿 vs 参考卡
-  净 HP 优势，选最接近档位目标实力的草稿）。默认派发器仍是 v5（gen-v5）。
+- `src/gen-v6.js` — **Generator v6（当前默认）**：Level×Rarity 决定总预算，Seed 生成受界 allocation profile；主面板与机制都消费预算，同档位面板真实多样；确定性价格调和不调用 BattlePower、AI、参考对手或战斗引擎。
+- `src/strength-audit-v6.js` — 逐场镜像计分与 Wilson 95% CI 的唯一共享实现。
 - `scripts/gate-v6-strength.js` — v6 强度回归门（verify:release 内小样本确定性检查）
 - `scripts/audit-v6-strength.js` — v6 大样本实证审计（稀有度/等级差距 + 同档位 USI）→ qa/v6-strength-audit.json
 - `src/power-v5.js` — **Power Envelope v1**：LevelScale + 12 稀有度包络（min/target/max）+ 质量百分位

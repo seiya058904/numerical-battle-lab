@@ -23,6 +23,7 @@ test('presets-v6: every card is Generator v6 with a closed budget ledger',()=>{
     assert.ok(Number.isFinite(c.stats.ATK)&&c.stats.ATK>0);
     assert.ok(Number.isFinite(c.stats.MAX_HP)&&c.stats.MAX_HP>0);
     assert.ok(c.strengthLedger&&c.strengthLedger.totalBudget===c.generationStrengthBudget,`budget ledger for ${c.id}`);
+    assert.ok(Math.abs(N.budgetPriceCardV6(c).total-c.expectedStrength)/c.expectedStrength<=.05,`priced budget for ${c.id}`);
     assert.ok(Number.isFinite(N.battlePowerV3(c).power)&&N.battlePowerV3(c).power>0);
     const v=N.validateContentPack(N.assembleCardPack(c));
     assert.ok(v.ok,`invalid pack for ${c.id}: ${v.errors.join('; ')}`);

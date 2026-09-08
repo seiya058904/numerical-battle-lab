@@ -1,4 +1,4 @@
-# Release Notes — v1.3.1
+# Release Notes — v1.5.0
 
 `数值对战实验室` is a fully offline, single-player, deterministic, multi-entity turn-based numerical combat system presented as a card-style web interface.
 
@@ -9,6 +9,18 @@ Cards are presentation only. The engine works with generic combat entities and a
 `Formula + Modifier + Effect + Condition + Target + Event + Status + Resource + Damage Component`.
 
 Ordinary content is composed from registered primitives and parameters instead of character-specific engine branches.
+
+---
+
+## v1.5.0 — Generator v6 Final Strength Contract
+
+- Generator v6 is now the default generator and the 60-card v6 catalog is the default product preset list; v1–v5 remain explicit legacy paths.
+- `ExpectedStrength(Level, Rarity)` owns total strength. Seed owns only a bounded eight-category allocation profile and mechanic identity.
+- Same-tier primary panels vary materially; every stat and effective mechanic is priced and deterministically reconciled within 5% without battle simulation or BattlePower inside generation.
+- Removed the fixed two-strike template, fixed reference opponent, canonical-AI draft selection, and 0.6–0.9 second per-card generation path.
+- Corrected empirical scoring now counts each mirrored battle independently, uses identical paired seeds for both side assignments, and reports Wilson 95% intervals plus side-bias rates.
+- Preserved the corrected pre-refactor baseline and added level, rarity, ExpectedStrength, seed dispersion, budget, preset matrix, BattlePower correlation, and performance artifacts under `qa/`.
+- The full 60-card preset matrix contains 1,770 mirrored matchups / 3,540 battles; Team A/B wins were 1,760/1,754.
 
 ---
 

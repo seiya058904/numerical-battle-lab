@@ -1,6 +1,6 @@
 {
   "name": "numerical-card-battle",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "type": "commonjs",
   "scripts": {
@@ -9,6 +9,8 @@
     "verify:release": "npm run verify && npm run gate:v6-strength && npm run diversity",
     "gate:v6-strength": "node scripts/gate-v6-strength.js",
     "audit:v6-strength": "node scripts/audit-v6-strength.js",
+    "audit:v6-budget": "node scripts/audit-v6-budget.js",
+    "audit:v6-presets": "node scripts/audit-v6-presets.js",
     "migrate:presets-v6": "node scripts/migrate-presets-v6.js",
     "catalog": "node scripts/generate-catalog.js",
     "manifest": "node scripts/generate-manifest.js",
