@@ -27,11 +27,11 @@
 
 **Interfaces:** `runSensitivityAudit({version, cards, opponents, matchSeeds}) -> artifact`; direct perturbations never regenerate the card.
 
-- [ ] Write a failing test proving central perturbations change only the requested stat and mirrored scoring counts battles independently.
-- [ ] Run the focused test and confirm failure because the sensitivity API does not exist.
-- [ ] Implement the shared sensitivity runner over ATK, MAX_HP, DEF, RES, SPD, ACC, EVA, CRIT, PEN, HEAL_POWER, and ENERGY_REGEN.
-- [ ] Generate the V6 artifact with diverse opponents, multiple Match Seeds, team-side counts, median/p25/p75 delta-theta summaries, and exact baseline commit.
-- [ ] Run focused tests and inspect the artifact against existing V6 level, rarity, seed-dispersion, and BattlePower evidence.
+- [x] Write a failing test proving central perturbations change only the requested stat and mirrored scoring counts battles independently.
+- [x] Run the focused test and confirm failure because the sensitivity API does not exist.
+- [x] Implement the shared sensitivity runner over ATK, MAX_HP, DEF, RES, SPD, ACC, EVA, CRIT, PEN, HEAL_POWER, and ENERGY_REGEN.
+- [x] Generate the V6 artifact with diverse opponents, multiple Match Seeds, team-side counts, median/p25/p75 delta-theta summaries, and exact baseline commit.
+- [x] Run focused tests and inspect the artifact against existing V6 level, rarity, seed-dispersion, and BattlePower evidence.
 
 ### Task 2: Implement canonical Strength Geometry
 
@@ -39,10 +39,10 @@
 
 **Interfaces:** `levelScoreV7(level)`, `rarityScoreV7(rarity)`, `targetThetaV7(level, rarity)`, `assertStrengthGeometryV7()`.
 
-- [ ] Write failing tests for all anchor values, strict convex increments, anchor zero, span inequalities, Lv100 C over Lv40 XC, and near parity of Lv70 XC/Lv100 C.
-- [ ] Verify red because V7 geometry is absent.
-- [ ] Implement the canonical 16/1.70 formula and fixed rarity table with strict input validation.
-- [ ] Generate the geometry artifact and run the focused tests green.
+- [x] Write failing tests for all anchor values, strict convex increments, anchor zero, span inequalities, Lv100 C over Lv40 XC, and near parity of Lv70 XC/Lv100 C.
+- [x] Verify red because V7 geometry is absent.
+- [x] Implement the canonical 16/1.70 formula and fixed rarity table with strict input validation.
+- [x] Generate the geometry artifact and run the focused tests green.
 
 ### Task 3: Build empirical battle graph and Bradley-Terry truth
 

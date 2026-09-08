@@ -1,0 +1,662 @@
+{
+  "schemaVersion": 1,
+  "generatorVersion": 6,
+  "method": "direct central perturbation; no regeneration or re-solving",
+  "baselineHead": "09fd48fb10c70f28ad65b7392457335a7d4d1afe",
+  "population": {
+    "cards": 8,
+    "opponents": 8,
+    "matchSeedsPerPair": 3,
+    "mirroredSides": true,
+    "truth": "canonical AI vs AI battles"
+  },
+  "axes": {
+    "ATK": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -4.574711,
+          "highTheta": -2.923162,
+          "deltaTheta": 1.651549
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -3.455265,
+          "deltaTheta": 1.119446
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.413976,
+          "highTheta": 0.499956,
+          "deltaTheta": 0.08598
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -0.966843,
+          "deltaTheta": 0.594393
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.413976,
+          "highTheta": -0.329479,
+          "deltaTheta": 0.084497
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -2.923162,
+          "highTheta": -1.877702,
+          "deltaTheta": 1.04546
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0.08598,
+      "p75DeltaTheta": 1.04546,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 1.651549
+    },
+    "MAX_HP": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -4.574711,
+          "highTheta": -2.564949,
+          "deltaTheta": 2.009762
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.329479,
+          "highTheta": 0.499956,
+          "deltaTheta": 0.170477
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -0.966843,
+          "deltaTheta": 0.594393
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.329479,
+          "highTheta": -0.499956,
+          "deltaTheta": -0.170477
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -2.291412,
+          "highTheta": -2.068013,
+          "deltaTheta": 0.223399
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0.170477,
+      "p75DeltaTheta": 0.223399,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 2.009762
+    },
+    "DEF": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -3.455265,
+          "highTheta": -4.574711,
+          "deltaTheta": -1.119446
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.413976,
+          "highTheta": 0.413976,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -1.299283,
+          "deltaTheta": 0.261953
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.499956,
+          "highTheta": -0.587787,
+          "deltaTheta": -0.087831
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -1.877702,
+          "highTheta": -1.877702,
+          "deltaTheta": 0
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0.087831,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 1.119446
+    },
+    "RES": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.499956,
+          "highTheta": 0.499956,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -1.299283,
+          "deltaTheta": 0.261953
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.499956,
+          "highTheta": -0.329479,
+          "deltaTheta": 0.170477
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -2.068013,
+          "highTheta": -1.877702,
+          "deltaTheta": 0.190311
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0.170477,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0.261953
+    },
+    "SPD": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.413976,
+          "highTheta": 0.413976,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -1.561236,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.499956,
+          "highTheta": -0.499956,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -1.877702,
+          "highTheta": -2.068013,
+          "deltaTheta": -0.190311
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0.190311
+    },
+    "ACC": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.413976,
+          "highTheta": 0.413976,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -1.561236,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.499956,
+          "highTheta": -0.499956,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -1.877702,
+          "highTheta": -1.877702,
+          "deltaTheta": 0
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0
+    },
+    "EVA": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -3.455265,
+          "highTheta": -4.574711,
+          "deltaTheta": -1.119446
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.413976,
+          "highTheta": 0.499956,
+          "deltaTheta": 0.08598
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -1.299283,
+          "deltaTheta": 0.261953
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.499956,
+          "highTheta": -0.329479,
+          "deltaTheta": 0.170477
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -1.877702,
+          "highTheta": -1.877702,
+          "deltaTheta": 0
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0.170477,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 1.119446
+    },
+    "CRIT": {
+      "perturbation": "plus/minus 5 percentage points",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.413976,
+          "highTheta": 0.499956,
+          "deltaTheta": 0.08598
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -1.561236,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.499956,
+          "highTheta": -0.587787,
+          "deltaTheta": -0.087831
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -2.291412,
+          "highTheta": -1.877702,
+          "deltaTheta": 0.41371
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0.08598,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0.41371
+    },
+    "PEN": {
+      "perturbation": "plus/minus 5 percentage points",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.413976,
+          "highTheta": 0.413976,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -1.561236,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.499956,
+          "highTheta": -0.499956,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -1.877702,
+          "highTheta": -1.877702,
+          "deltaTheta": 0
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0
+    },
+    "HEAL_POWER": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.329479,
+          "highTheta": 0.413976,
+          "deltaTheta": 0.084497
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -1.561236,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.499956,
+          "highTheta": -0.499956,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -1.877702,
+          "highTheta": -1.877702,
+          "deltaTheta": 0
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0.084497
+    },
+    "ENERGY_REGEN": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_851d0bf6",
+          "lowTheta": 4.574711,
+          "highTheta": 4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_267adc11",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_b7489d5c",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_c248e737",
+          "lowTheta": -4.574711,
+          "highTheta": -4.574711,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_bcc221a",
+          "lowTheta": 0.413976,
+          "highTheta": 0.413976,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_a9b59bc5",
+          "lowTheta": -1.561236,
+          "highTheta": -1.561236,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_2017c840",
+          "lowTheta": -0.499956,
+          "highTheta": -0.499956,
+          "deltaTheta": 0
+        },
+        {
+          "cardId": "gen_ca1e04b",
+          "lowTheta": -1.877702,
+          "highTheta": -1.877702,
+          "deltaTheta": 0
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0
+    }
+  },
+  "teamSide": {
+    "teamAWins": 4180,
+    "teamBWins": 4162,
+    "draws": 106,
+    "battles": 8448,
+    "teamAWinRate": 0.494792,
+    "teamBWinRate": 0.492661,
+    "drawRate": 0.012547
+  }
+}
