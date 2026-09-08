@@ -1,0 +1,14 @@
+{
+  "presets": 60,
+  "v4Sample": 10000,
+  "undocumentedActiveFields": 0,
+  "gaps": [],
+  "params": 111,
+  "effects": 18,
+  "conditions": 27,
+  "targets": 8,
+  "events": 29,
+  "formulaSymbols": 43,
+  "formulaFunctions": 14,
+  "damageTypes": 8
+}

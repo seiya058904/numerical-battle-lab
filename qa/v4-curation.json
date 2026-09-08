@@ -1,41 +1,117 @@
 {
+  "version": "v1.3.1 curation pass",
+  "curationVersion": 2,
+  "reviewedCards": 60,
+  "adjustedCards": 28,
+  "unchangedCards": 32,
+  "replacedCards": 0,
+  "totalAdjustments": 83,
+  "candidateCount": 9600,
+  "eligibleCount": 2907,
+  "rejected": 6693,
+  "process": "Generate(9600) -> auto-screen(eligible 2907) -> select(60) -> per-card design review -> schema tuning -> re-audit -> freeze. curationVersion 1 selected random samples; curationVersion 2 is the genuinely designed official set.",
+  "review": "Per-card design review (identity/coherence/AI/strength/time-profile) by agent reviewers with battle dossiers; schema-only tuning; no card-specific engine code.",
+  "adjustedByMagnitude": {
+    "0": 32,
+    "1": 3,
+    "2": 7,
+    "3": 7,
+    "4": 10,
+    "5": 1
+  },
   "cards": [
     {
       "name": "砂砾",
+      "id": "gen_e033acd8",
       "seed": "curated-v4-0-0-147",
       "rarity": "C",
       "level": 12,
-      "power": 231,
+      "power": 227,
       "tags": [
         "稳定",
-        "后期成长",
+        "长线型",
         "DoT",
         "状态压制"
       ],
+      "behaviorSummary": "第 8 回合起逐步成长；第 41 回合起逐步疲劳；随机波动较小；DoT、状态压制。",
       "volatility": 0.48,
-      "timeProfile": "ramp",
+      "luck": -0.14,
+      "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "b0321bb138ba5cf6",
-      "designNote": "砂砾：展示延后成长与低波动。行动组合：破咒、蓄能、蚀爆、坚守；机制：repeat / dispel / conditional / resource / gain / status / consumeStatus / damage / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "低稀有度状态型长线样本：坚守+破咒叠盾减伤撑到后期成长，蚀爆耗蚀层爆发。压速局：为成长峰值（约第40回合）后接轻度疲劳，让对称长局能收束而不是无限平局。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.006
+        },
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 40
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 1,
+          "after": 0.85
+        }
+      ]
     },
     {
       "name": "苔痕",
+      "id": "gen_ee7ba24d",
       "seed": "curated-v4-0-1-80",
       "rarity": "C",
       "level": 34,
-      "power": 200,
+      "power": 139,
       "tags": [
         "高波动",
+        "易疲劳",
         "低爆发",
-        "穿透",
-        "高速"
+        "穿透"
       ],
+      "behaviorSummary": "第 31 回合起逐步疲劳；发挥波动较大；低爆发、穿透。",
       "volatility": 1.79,
-      "timeProfile": "stable",
+      "luck": 0.16,
+      "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": false,
+      "sustainCapability": true,
       "fingerprint": "b807e5637ceb041f",
-      "designNote": "苔痕：展示稳定时间曲线与高波动。行动组合：转化、复苏、回转、蓄能；机制：repeat / convertResource / conditional / heal / gain / cooldownReduce / status。不强塞攻击，依靠状态、反应或长期损耗结束。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高波动低爆发纯防守/损耗卡：EVA姿态减伤拖时间，承诺的“长期损耗”此前从未开启（FATIGUE=0+ENDURANCE 98近似无敌，镜像83回合0伤害）。真正点亮损耗收尾，让磨损局有限回合内必然分胜负。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.012
+        },
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 30
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 1,
+          "after": 0.55
+        },
+        {
+          "field": "stats.ENDURANCE",
+          "before": 98,
+          "after": 35
+        }
+      ]
     },
     {
       "name": "灰雀",
+      "id": "gen_447f247c",
       "seed": "curated-v4-0-2-84",
       "rarity": "C",
       "level": 54,
@@ -46,13 +122,22 @@
         "穿透",
         "DoT"
       ],
+      "behaviorSummary": "第 11 回合起逐步成长；随机波动较小；穿透、DoT。",
       "volatility": 0.2,
+      "luck": -0.69,
       "timeProfile": "ramp",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": false,
       "fingerprint": "d8d59e37bda150bf",
-      "designNote": "灰雀：展示延后成长与低波动。行动组合：战意、蚀爆、净化、号令；机制：toggleStatus / status / consumeStatus / damage / repeat / conditional / cleanse / gain / emitEvent。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "灰雀：展示延后成长与低波动。行动组合：战意、蚀爆、净化、号令；机制：toggleStatus / status / consumeStatus / damage / repeat / conditional / cleanse / gain / emitEvent。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "雾芽",
+      "id": "gen_ffad3b97",
       "seed": "curated-v4-0-3-80",
       "rarity": "C",
       "level": 74,
@@ -63,13 +148,22 @@
         "高速",
         "穿透"
       ],
+      "behaviorSummary": "第 11 回合起逐步疲劳；随机波动较小；高速、穿透。",
       "volatility": 0.33,
+      "luck": -0.8,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "58a0006688504da3",
-      "designNote": "雾芽：展示逐步疲劳与低波动。行动组合：回转、血性猛击、坚守、净化；机制：cooldownReduce / status / repeat / selfDamagePct / damage / shield / conditional / cleanse / gain。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "雾芽：展示逐步疲劳与低波动。行动组合：回转、血性猛击、坚守、净化；机制：cooldownReduce / status / repeat / selfDamagePct / damage / shield / conditional / cleanse / gain。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "岩屑",
+      "id": "gen_a8ad1142",
       "seed": "curated-v4-0-4-24",
       "rarity": "C",
       "level": 92,
@@ -80,13 +174,22 @@
         "DoT",
         "穿透"
       ],
+      "behaviorSummary": "随机波动较小；高爆发、DoT、穿透。",
       "volatility": 0.21,
+      "luck": 0.23,
       "timeProfile": "stable",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "c12b77353c4ba642",
-      "designNote": "岩屑：展示稳定时间曲线与低波动。行动组合：蚀爆、战意、破咒、血性猛击；机制：repeat / status / consumeStatus / damage / toggleStatus / shield / dispel / gain / selfDamagePct。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "岩屑：展示稳定时间曲线与低波动。行动组合：蚀爆、战意、破咒、血性猛击；机制：repeat / status / consumeStatus / damage / toggleStatus / shield / dispel / gain / selfDamagePct。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "岩牙",
+      "id": "gen_838a7f61",
       "seed": "curated-v4-1-0-38",
       "rarity": "C_PLUS",
       "level": 23,
@@ -97,13 +200,22 @@
         "高速",
         "高暴击"
       ],
+      "behaviorSummary": "随机波动较小；DoT、高速、高暴击。",
       "volatility": 0.6,
+      "luck": -0.72,
       "timeProfile": "stable",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "c889c376a1a14395",
-      "designNote": "岩牙：展示稳定时间曲线与低波动。行动组合：蚀爆、净化、复苏、破咒；机制：status / consumeStatus / damage / conditional / cleanse / gain / heal / dispel / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "岩牙：展示稳定时间曲线与低波动。行动组合：蚀爆、净化、复苏、破咒；机制：status / consumeStatus / damage / conditional / cleanse / gain / heal / dispel / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "铁爪",
+      "id": "gen_bd0d6ec3",
       "seed": "curated-v4-1-1-19",
       "rarity": "C_PLUS",
       "level": 43,
@@ -114,30 +226,59 @@
         "吸血",
         "高速"
       ],
+      "behaviorSummary": "发挥波动较大；DoT、吸血、高速。",
       "volatility": 2.73,
+      "luck": 0.68,
       "timeProfile": "stable",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "08d7ca0b392018d5",
-      "designNote": "铁爪：展示稳定时间曲线与高波动。行动组合：号令、蓄能、蚀爆、护符；机制：conditional / emitEvent / gain / repeat / resource / status / consumeStatus / damage / ward。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "铁爪：展示稳定时间曲线与高波动。行动组合：号令、蓄能、蚀爆、护符；机制：conditional / emitEvent / gain / repeat / resource / status / consumeStatus / damage / ward。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "霜芽",
+      "id": "gen_34ccc268",
       "seed": "curated-v4-1-2-42",
       "rarity": "C_PLUS",
       "level": 63,
-      "power": 1111,
+      "power": 1037,
       "tags": [
         "稳定",
-        "后期成长",
+        "长线型",
         "护盾型",
         "高耐久"
       ],
+      "behaviorSummary": "第 7 回合起逐步成长；第 1000 回合起逐步疲劳；随机波动较小；护盾型、高耐久。",
       "volatility": 0.38,
-      "timeProfile": "ramp",
+      "luck": -0.14,
+      "timeProfile": "mixed",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "ab8835d1df4e148d",
-      "designNote": "霜芽：展示延后成长与低波动。行动组合：复苏、净化、蚀爆、护符、护符、回转；机制：heal / gain / repeat / conditional / cleanse / status / consumeStatus / damage / ward / cooldownReduce。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "后期成长护盾型卡：第7回合起ATK 161→214第40回合触顶，但唯一终结蚀爆被AI零使用，镜像72回合0伤害平局。为成长高峰加真实疲劳，让护盾僵持有尽头。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.02
+        },
+        {
+          "field": "stats.ENDURANCE",
+          "before": 55,
+          "after": 35
+        }
+      ]
     },
     {
       "name": "钝角",
+      "id": "gen_faa30fc1",
       "seed": "curated-v4-1-3-109",
       "rarity": "C_PLUS",
       "level": 83,
@@ -148,13 +289,22 @@
         "DoT",
         "穿透"
       ],
+      "behaviorSummary": "第 11 回合起逐步疲劳；随机波动较小；DoT、穿透。",
       "volatility": 0.53,
+      "luck": -0.45,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "105761c184190945",
-      "designNote": "钝角：展示逐步疲劳与低波动。行动组合：战意、蚀爆、转化、复苏；机制：repeat / toggleStatus / gain / status / consumeStatus / damage / convertResource / heal / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "钝角：展示逐步疲劳与低波动。行动组合：战意、蚀爆、转化、复苏；机制：repeat / toggleStatus / gain / status / consumeStatus / damage / convertResource / heal / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "石甲",
+      "id": "gen_49bff3b2",
       "seed": "curated-v4-1-4-17",
       "rarity": "C_PLUS",
       "level": 100,
@@ -165,13 +315,22 @@
         "高耐久",
         "DoT"
       ],
+      "behaviorSummary": "第 6 回合起逐步成长；第 18 回合起逐步疲劳；高耐久、DoT。",
       "volatility": 0.65,
+      "luck": -0.02,
       "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "96fe62e5cb5fd32a",
-      "designNote": "石甲：展示先成长后疲劳与中波动。行动组合：血性猛击、蚀爆、复苏、战意；机制：repeat / conditional / selfDamagePct / damage / gain / status / consumeStatus / heal / shield / toggleStatus。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "石甲：展示先成长后疲劳与中波动。行动组合：血性猛击、蚀爆、复苏、战意；机制：repeat / conditional / selfDamagePct / damage / gain / status / consumeStatus / heal / shield / toggleStatus。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "风隼",
+      "id": "gen_71b40788",
       "seed": "curated-v4-2-0-118",
       "rarity": "B",
       "level": 13,
@@ -182,13 +341,22 @@
         "穿透",
         "吸血"
       ],
+      "behaviorSummary": "随机波动较小；DoT、穿透、吸血。",
       "volatility": 0.46,
+      "luck": 0.37,
       "timeProfile": "stable",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "cd002b784430db66",
-      "designNote": "风隼：展示稳定时间曲线与低波动。行动组合：战意、转化、蚀爆、突袭；机制：toggleStatus / convertResource / status / consumeStatus / damage / shield / repeat / conditional / gain。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "风隼：展示稳定时间曲线与低波动。行动组合：战意、转化、蚀爆、突袭；机制：toggleStatus / convertResource / status / consumeStatus / damage / shield / repeat / conditional / gain。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "银鳍",
+      "id": "gen_81080386",
       "seed": "curated-v4-2-1-74",
       "rarity": "B",
       "level": 35,
@@ -199,30 +367,69 @@
         "高速",
         "状态引爆"
       ],
+      "behaviorSummary": "发挥波动较大；DoT、高速、状态引爆。",
       "volatility": 2.69,
+      "luck": -0.41,
       "timeProfile": "stable",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "19a7784ebf3505f8",
-      "designNote": "银鳍：展示稳定时间曲线与高波动。行动组合：蓄能、血性猛击、蚀爆、坚守、号令、蓄能；机制：conditional / resource / gain / repeat / selfDamagePct / damage / status / consumeStatus / shield / emitEvent。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "银鳍：展示稳定时间曲线与高波动。行动组合：蓄能、血性猛击、蚀爆、坚守、号令、蓄能；机制：conditional / resource / gain / repeat / selfDamagePct / damage / status / consumeStatus / shield / emitEvent。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "影足",
+      "id": "gen_172651f9",
       "seed": "curated-v4-2-2-36",
       "rarity": "B",
       "level": 55,
-      "power": 1174,
+      "power": 1055,
       "tags": [
         "稳定",
-        "后期成长",
+        "长线型",
         "DoT",
         "高耐久"
       ],
+      "behaviorSummary": "第 7 回合起逐步成长；第 11 回合起逐步疲劳；随机波动较小；DoT、高耐久。",
       "volatility": 0.28,
-      "timeProfile": "ramp",
+      "luck": -0.05,
+      "timeProfile": "mixed",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "21f88557a35098cb",
-      "designNote": "影足：展示延后成长与低波动。行动组合：蓄能、战意、蚀爆、回转、破咒、号令；机制：conditional / resource / gain / toggleStatus / shield / repeat / status / consumeStatus / damage / cooldownReduce / dispel / emitEvent。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "宣称“后期成长”的高耐久重坦，实为0伤害纯肉盾（镜像87回合、面板62-87回合互磨盾）。RAMP_START顶格使成长假化。引入真实疲劳磨损 + 后期成长放大，把无限气泡改造成有推进的后期对局。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.03
+        },
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 10
+        },
+        {
+          "field": "stats.ENDURANCE",
+          "before": 93,
+          "after": 35
+        },
+        {
+          "field": "stats.RAMP_CAP",
+          "before": 1.35,
+          "after": 1.6
+        }
+      ]
     },
     {
       "name": "棘皮",
+      "id": "gen_a4aeba08",
       "seed": "curated-v4-2-3-108",
       "rarity": "B",
       "level": 75,
@@ -233,13 +440,22 @@
         "高回复",
         "低伤控制"
       ],
+      "behaviorSummary": "第 6 回合起逐步疲劳；高耐久、高回复、低伤控制。",
       "volatility": 1.44,
+      "luck": 0.16,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "d48fa4534c43285a",
-      "designNote": "棘皮：展示逐步疲劳与中波动。行动组合：血性猛击、破咒、护符、复苏；机制：conditional / selfDamagePct / damage / gain / dispel / status / ward / heal。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "棘皮：展示逐步疲劳与中波动。行动组合：血性猛击、破咒、护符、复苏；机制：conditional / selfDamagePct / damage / gain / dispel / status / ward / heal。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "烬羽",
+      "id": "gen_5b9d61f0",
       "seed": "curated-v4-2-4-6",
       "rarity": "B",
       "level": 93,
@@ -250,13 +466,22 @@
         "DoT",
         "护盾型"
       ],
+      "behaviorSummary": "随机波动较小；高爆发、DoT、护盾型。",
       "volatility": 0.2,
+      "luck": 0.33,
       "timeProfile": "stable",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "ce4243935df65df4",
-      "designNote": "烬羽：展示稳定时间曲线与低波动。行动组合：蚀爆、回转、侵蚀、血性猛击；机制：status / consumeStatus / damage / shield / cooldownReduce / gain / selfDamagePct。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "烬羽：展示稳定时间曲线与低波动。行动组合：蚀爆、回转、侵蚀、血性猛击；机制：status / consumeStatus / damage / shield / cooldownReduce / gain / selfDamagePct。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "雷纹",
+      "id": "gen_6f2f2c86",
       "seed": "curated-v4-3-0-150",
       "rarity": "B_PLUS",
       "level": 24,
@@ -267,30 +492,64 @@
         "护盾型",
         "穿透"
       ],
+      "behaviorSummary": "随机波动较小；DoT、护盾型、穿透。",
       "volatility": 0.24,
+      "luck": -0.1,
       "timeProfile": "stable",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "0cc751e81b259e56",
-      "designNote": "雷纹：展示稳定时间曲线与低波动。行动组合：复苏、护符、侵蚀、破咒、蚀爆、号令；机制：conditional / heal / status / gain / repeat / ward / dispel / shield / consumeStatus / damage / emitEvent。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "雷纹：展示稳定时间曲线与低波动。行动组合：复苏、护符、侵蚀、破咒、蚀爆、号令；机制：conditional / heal / status / gain / repeat / ward / dispel / shield / consumeStatus / damage / emitEvent。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "暮潮",
+      "id": "gen_650773d0",
       "seed": "curated-v4-3-1-49",
       "rarity": "B_PLUS",
       "level": 44,
-      "power": 685,
+      "power": 814,
       "tags": [
         "高波动",
         "易疲劳",
         "高耐久",
         "穿透"
       ],
+      "behaviorSummary": "第 4 回合起逐步疲劳；发挥波动较大；高耐久、穿透。",
       "volatility": 2.32,
+      "luck": 0.71,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "43488ca87ca810ee",
-      "designNote": "暮潮：展示逐步疲劳与高波动。行动组合：战意、战术、蓄能、蚀爆；机制：repeat / conditional / toggleStatus / gain / status / resource / shield / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "易疲劳高耐久穿透卡，镜像69回合0伤害平局。FATIGUE_RATE过高把ATK 13回合内压到42.4平台，FATIGUE_CAP 0.53锁死爆发/DoT。放缓衰减、抬高峰值，并提升蚀爆（0.72系数过低）让DoT后期能终结。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0.05,
+          "after": 0.02
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 0.53,
+          "after": 0.75
+        },
+        {
+          "field": "actions.蚀爆.damage.coef",
+          "before": 0.72,
+          "after": 0.9
+        }
+      ]
     },
     {
       "name": "星隙",
+      "id": "gen_4319c2d5",
       "seed": "curated-v4-3-2-133",
       "rarity": "B_PLUS",
       "level": 64,
@@ -301,13 +560,33 @@
         "吸血",
         "低伤控制"
       ],
+      "behaviorSummary": "第 5 回合起逐步成长；高耐久、吸血、低伤控制。",
       "volatility": 0.82,
+      "luck": 0.66,
       "timeProfile": "ramp",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "f8420edc10ea6458",
-      "designNote": "星隙：展示延后成长与中波动。行动组合：血性猛击、护符、净化、净化；机制：conditional / selfDamagePct / damage / gain / ward / shield / cleanse。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "后期成长高耐久吸血低伤控制，镜像53回合0伤害。RAMP只把ATK 28→35、上限1.25，成长不足。强化ramp斜率与峰值让后期能击穿耐久。",
+      "adjustments": [
+        {
+          "field": "stats.RAMP_RATE",
+          "before": 0.02,
+          "after": 0.04
+        },
+        {
+          "field": "stats.RAMP_CAP",
+          "before": 1.25,
+          "after": 1.5
+        }
+      ]
     },
     {
       "name": "玄岩",
+      "id": "gen_2e1bd785",
       "seed": "curated-v4-3-3-46",
       "rarity": "B_PLUS",
       "level": 84,
@@ -318,81 +597,195 @@
         "高爆发",
         "DoT"
       ],
+      "behaviorSummary": "第 14 回合起逐步疲劳；随机波动较小；高爆发、DoT。",
       "volatility": 0.2,
+      "luck": 0.57,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "9787631184daa861",
-      "designNote": "玄岩：展示逐步疲劳与低波动。行动组合：蚀爆、护符、血性猛击、战意；机制：status / consumeStatus / damage / shield / conditional / ward / gain / repeat / selfDamagePct / toggleStatus。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "玄岩：展示逐步疲劳与低波动。行动组合：蚀爆、护符、血性猛击、战意；机制：status / consumeStatus / damage / shield / conditional / ward / gain / repeat / selfDamagePct / toggleStatus。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "羽冠",
+      "id": "gen_dce989d9",
       "seed": "curated-v4-3-4-152",
       "rarity": "B_PLUS",
       "level": 100,
-      "power": 784,
+      "power": 719,
       "tags": [
         "高波动",
         "长线型",
         "高耐久",
         "穿透"
       ],
+      "behaviorSummary": "第 6 回合起逐步成长；第 15 回合起逐步疲劳；发挥波动较大；高耐久、穿透。",
       "volatility": 2.48,
+      "luck": -0.18,
       "timeProfile": "mixed",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "945f86ea885980f6",
-      "designNote": "羽冠：展示先成长后疲劳与高波动。行动组合：复苏、净化、血性猛击、复苏、回转、破咒；机制：heal / conditional / cleanse / gain / selfDamagePct / damage / shield / cooldownReduce / repeat / dispel。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高耐久长线治愈位，镜像55回合 heal 2214>damage 1931 纯互磨。下调0.24大额治疗并加深后期疲劳，让战斗在成长/疲劳下真正分出胜负。",
+      "adjustments": [
+        {
+          "field": "actions.复苏.heal.coef",
+          "before": 0.24,
+          "after": 0.18
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0.01,
+          "after": 0.025
+        }
+      ]
     },
     {
       "name": "赤隼",
+      "id": "gen_7af84677",
       "seed": "curated-v4-4-0-70",
       "rarity": "A",
       "level": 14,
-      "power": 267,
+      "power": 277,
       "tags": [
         "稳定",
-        "高耐久",
-        "防御型",
-        "穿透"
+        "易疲劳",
+        "DoT",
+        "高耐久"
       ],
+      "behaviorSummary": "第 56 回合起逐步疲劳；随机波动较小；DoT、高耐久。",
       "volatility": 0.21,
-      "timeProfile": "stable",
+      "luck": 0.63,
+      "timeProfile": "fatigue",
+      "actionCount": 3,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "fd28b787ed0142a8",
-      "designNote": "赤隼：展示稳定时间曲线与低波动。行动组合：净化、蓄能、蚀爆；机制：repeat / cleanse / resource / conditional / status / consumeStatus / damage / shield / gain。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "纯防御坦克（HP222/DEF87），零疲劳零成长，镜像72回合0伤害、面板54-62回合0-24伤害。保留“稳定”身份，仅在60+回合僵持局施加后期疲劳时钟；同时解除蚀爆的hpPctBelow死门控（墙壁互磨时双方永不跌破50%，蚀爆永不触发），让它拥有真实伤害出口。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 55
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.03
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 1,
+          "after": 0.5
+        },
+        {
+          "field": "actions.蚀爆.unconditional(1 dead-gate removed)",
+          "before": "gated",
+          "after": "always"
+        }
+      ]
     },
     {
       "name": "苍岩",
+      "id": "gen_c30efb93",
       "seed": "curated-v4-4-1-132",
       "rarity": "A",
       "level": 36,
-      "power": 856,
+      "power": 785,
       "tags": [
         "高波动",
+        "易疲劳",
         "穿透",
-        "高速",
-        "吸血"
+        "高速"
       ],
+      "behaviorSummary": "第 51 回合起逐步疲劳；发挥波动较大；穿透、高速。",
       "volatility": 2.01,
-      "timeProfile": "stable",
+      "luck": -0.88,
+      "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "523fd70f9f581e9c",
-      "designNote": "苍岩：展示稳定时间曲线与高波动。行动组合：复苏、血性猛击、转化、破咒；机制：heal / status / conditional / selfDamagePct / damage / shield / gain / convertResource / dispel。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高爆发穿透吸血打手，但过度自续航（回血+护盾+减伤），镜像62回合0伤害、SS面板56回合4伤害。保留前40+回合高速爆发窗口，仅在50+回合僵持施加后期疲劳。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 50
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.025
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 1,
+          "after": 0.5
+        }
+      ]
     },
     {
       "name": "夜枭",
+      "id": "gen_d96a2a84",
       "seed": "curated-v4-4-2-110",
       "rarity": "A",
       "level": 56,
-      "power": 1549,
+      "power": 1528,
       "tags": [
-        "后期成长",
+        "长线型",
+        "易疲劳",
         "穿透",
-        "高耐久",
-        "DoT"
+        "高耐久"
       ],
+      "behaviorSummary": "第 10 回合起逐步成长；第 61 回合起逐步疲劳；穿透、高耐久。",
       "volatility": 1.13,
-      "timeProfile": "ramp",
+      "luck": -0.43,
+      "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "055c5529f6fa0f44",
-      "designNote": "夜枭：展示延后成长与中波动。行动组合：复苏、蚀爆、战意、破咒；机制：repeat / conditional / heal / gain / status / consumeStatus / damage / toggleStatus / dispel。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "后期成长DoT高耐坦克，但RAMP第22回合封顶后进入40-84回合零伤害平台，“后期成长”名不副实。成长窗口后加疲劳段强制收束，并提升蚀爆消耗伤害（ATK低基数下1.39系数不足）让后期有击杀能力。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 60
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.02
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 1,
+          "after": 0.5
+        },
+        {
+          "field": "actions.蚀爆.damage.coef",
+          "before": 1.39,
+          "after": 1.7
+        }
+      ]
     },
     {
       "name": "青岚",
+      "id": "gen_5d137c8",
       "seed": "curated-v4-4-3-153",
       "rarity": "A",
       "level": 76,
@@ -403,47 +796,101 @@
         "DoT",
         "高耐久"
       ],
+      "behaviorSummary": "第 5 回合起逐步疲劳；发挥波动较大；DoT、高耐久。",
       "volatility": 2.11,
+      "luck": -0.58,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "5545a03908925c47",
-      "designNote": "青岚：展示逐步疲劳与高波动。行动组合：破咒、蚀爆、血性猛击、突袭；机制：dispel / status / consumeStatus / damage / conditional / selfDamagePct / shield / gain / repeat。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "青岚：展示逐步疲劳与高波动。行动组合：破咒、蚀爆、血性猛击、突袭；机制：dispel / status / consumeStatus / damage / conditional / selfDamagePct / shield / gain / repeat。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "孤峰",
+      "id": "gen_be69c57d",
       "seed": "curated-v4-4-4-98",
       "rarity": "A",
       "level": 94,
-      "power": 983,
+      "power": 1006,
       "tags": [
         "稳定",
+        "易疲劳",
         "穿透",
-        "防御型",
         "高速"
       ],
+      "behaviorSummary": "第 31 回合起逐步疲劳；随机波动较小；穿透、高速。",
       "volatility": 0.2,
-      "timeProfile": "stable",
+      "luck": 0.85,
+      "timeProfile": "fatigue",
+      "actionCount": 3,
+      "damageCapability": true,
+      "sustainCapability": false,
       "fingerprint": "23ea035d1799cff3",
-      "designNote": "孤峰：展示稳定时间曲线与低波动。行动组合：回转、突袭、转化；机制：cooldownReduce / conditional / damage / gain / repeat / convertResource。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高速高伤脆皮玻璃炮，但突袭依赖targetHasStatus(dot)而此dot全场无人施加，永远走else只囤CHRONO。镜像55回合0伤害、对C+反输。修正死机制：移除突袭对不存在dot的依赖并以CHRONO直接伤害，配合疲劳时钟。",
+      "adjustments": [
+        {
+          "field": "actions.突袭.unconditional(1 dead-gate removed)",
+          "before": "gated",
+          "after": "always"
+        },
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 30
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.03
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 1,
+          "after": 0.5
+        }
+      ]
     },
     {
       "name": "曜甲",
+      "id": "gen_98c617",
       "seed": "curated-v4-5-0-111",
       "rarity": "A_PLUS",
       "level": 25,
-      "power": 745,
+      "power": 764,
       "tags": [
         "稳定",
         "易疲劳",
         "DoT",
         "高速"
       ],
+      "behaviorSummary": "第 6 回合起逐步疲劳；随机波动较小；DoT、高速。",
       "volatility": 0.21,
+      "luck": 0.31,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "2d48bbf0b762eab1",
-      "designNote": "曜甲：展示逐步疲劳与低波动。行动组合：护符、净化、蚀爆、战术；机制：conditional / ward / status / gain / cleanse / shield / repeat / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高速雷系DoT消耗，镜像50回合0伤害。FATIGUE_CAP 0.6把ATK压到47.4平台。抬高ATK下限(0.78)让蚀爆/DoT能收尾。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 0.6,
+          "after": 0.78
+        }
+      ]
     },
     {
       "name": "熔芯",
+      "id": "gen_8840850f",
       "seed": "curated-v4-5-1-64",
       "rarity": "A_PLUS",
       "level": 45,
@@ -454,47 +901,86 @@
         "吸血",
         "高耐久"
       ],
+      "behaviorSummary": "第 12 回合起逐步成长；发挥波动较大；吸血、高耐久。",
       "volatility": 2.61,
+      "luck": 0.42,
       "timeProfile": "ramp",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "41a3e9e9abee1139",
-      "designNote": "熔芯：展示延后成长与高波动。行动组合：复苏、净化、战意、蓄能、号令、血性猛击；机制：heal / repeat / conditional / cleanse / status / gain / toggleStatus / shield / resource / emitEvent / selfDamagePct / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "熔芯：展示延后成长与高波动。行动组合：复苏、净化、战意、蓄能、号令、血性猛击；机制：heal / repeat / conditional / cleanse / status / gain / toggleStatus / shield / resource / emitEvent / selfDamagePct / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "渊鳞",
+      "id": "gen_b17ec329",
       "seed": "curated-v4-5-2-98",
       "rarity": "A_PLUS",
       "level": 65,
-      "power": 1588,
+      "power": 1596,
       "tags": [
         "稳定",
         "后期成长",
         "高回复",
         "穿透"
       ],
+      "behaviorSummary": "第 5 回合起逐步成长；随机波动较小；高回复、穿透。",
       "volatility": 0.2,
+      "luck": -0.38,
       "timeProfile": "ramp",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "24ef472d1bf2d80b",
-      "designNote": "渊鳞：展示延后成长与低波动。行动组合：复苏、复苏、蚀爆、回转、复苏、蓄能；机制：heal / repeat / conditional / status / consumeStatus / damage / gain / cooldownReduce / resource。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高回复穿透长线坦克，镜像54回合0伤害，自疗(0.19)远超条件式输出。下调主回血系数，让成长后的攻击能终结。",
+      "adjustments": [
+        {
+          "field": "actions.复苏.heal.coef",
+          "before": 0.1,
+          "after": 0.13
+        }
+      ]
     },
     {
       "name": "月镰",
+      "id": "gen_2d49f027",
       "seed": "curated-v4-5-3-35",
       "rarity": "A_PLUS",
       "level": 85,
-      "power": 3306,
+      "power": 3496,
       "tags": [
         "高波动",
         "易疲劳",
         "DoT",
         "高速"
       ],
+      "behaviorSummary": "第 4 回合起逐步疲劳；发挥波动较大；DoT、高速。",
       "volatility": 1.85,
+      "luck": 0.12,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "2f5c92297f9c7da7",
-      "designNote": "月镰：展示逐步疲劳与高波动。行动组合：回转、蚀爆、坚守、血性猛击；机制：cooldownReduce / repeat / status / consumeStatus / damage / conditional / shield / gain / selfDamagePct。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高速高暴击冰DoT刺客，镜像54回合0伤害，FATIGUE_CAP 0.37把ATK压到48.84。抬高ATK保留下限让高速DoT能终结。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 0.37,
+          "after": 0.6
+        }
+      ]
     },
     {
       "name": "疾电",
+      "id": "gen_7f7e782f",
       "seed": "curated-v4-5-4-67",
       "rarity": "A_PLUS",
       "level": 100,
@@ -505,47 +991,111 @@
         "吸血",
         "高暴击"
       ],
+      "behaviorSummary": "第 7 回合起逐步成长；第 17 回合起逐步疲劳；吸血、高暴击。",
       "volatility": 1.16,
+      "luck": 0.54,
       "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "3550eb319148e6ff",
-      "designNote": "疾电：展示先成长后疲劳与中波动。行动组合：复苏、战意、血性猛击、战术；机制：conditional / heal / status / gain / repeat / toggleStatus / selfDamagePct / damage / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "疾电：展示先成长后疲劳与中波动。行动组合：复苏、战意、血性猛击、战术；机制：conditional / heal / status / gain / repeat / toggleStatus / selfDamagePct / damage / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "苍翼",
+      "id": "gen_722b747e",
       "seed": "curated-v4-6-0-25",
       "rarity": "S",
       "level": 15,
-      "power": 460,
+      "power": 480,
       "tags": [
         "稳定",
         "长线型",
         "穿透",
         "高耐久"
       ],
+      "behaviorSummary": "第 9 回合起逐步成长；第 17 回合起逐步疲劳；随机波动较小；穿透、高耐久。",
       "volatility": 0.2,
+      "luck": -0.71,
       "timeProfile": "mixed",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "dcaa672147ef3adb",
-      "designNote": "苍翼：展示先成长后疲劳与低波动。行动组合：号令、战意、复苏、血性猛击、护符、突袭；机制：conditional / emitEvent / gain / toggleStatus / shield / heal / status / selfDamagePct / damage / repeat / ward。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "先成长后疲劳、靠高防御墙拖长线，镜像79回合0进度。抬高终结技对DEF墙的系数并下调高低免死韧性，让疲劳后期仍能击杀。",
+      "adjustments": [
+        {
+          "field": "actions.血性猛击.damage.coef",
+          "before": 1.04,
+          "after": 1.35
+        },
+        {
+          "field": "actions.血性猛击.damage.coef",
+          "before": 1.02,
+          "after": 1.33
+        },
+        {
+          "field": "stats.ENDURANCE",
+          "before": 88,
+          "after": 62
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 0.68,
+          "after": 0.8
+        }
+      ]
     },
     {
       "name": "绝刃",
+      "id": "gen_2d9dd95a",
       "seed": "curated-v4-6-1-66",
       "rarity": "S",
       "level": 37,
-      "power": 656,
+      "power": 643,
       "tags": [
         "高波动",
         "易疲劳",
         "DoT",
         "低爆发"
       ],
+      "behaviorSummary": "第 6 回合起逐步疲劳；发挥波动较大；DoT、低爆发。",
       "volatility": 2.66,
+      "luck": 0.08,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "01cd6681f6d9dc43",
-      "designNote": "绝刃：展示逐步疲劳与高波动。行动组合：复苏、净化、号令、蚀爆；机制：heal / repeat / cleanse / conditional / emitEvent / status / gain / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "易疲劳低爆发DoT出血流，镜像81回合 heal 354>damage 177。削超越回复(0.18→0.10)、抬疲劳峰顶(0.54→0.72)并把DoT引爆转为有效DPS。",
+      "adjustments": [
+        {
+          "field": "actions.复苏.heal.coef",
+          "before": 0.18,
+          "after": 0.1
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 0.54,
+          "after": 0.72
+        },
+        {
+          "field": "actions.蚀爆.damage.coef",
+          "before": 0.73,
+          "after": 0.95
+        }
+      ]
     },
     {
       "name": "虹雉",
+      "id": "gen_54515843",
       "seed": "curated-v4-6-2-114",
       "rarity": "S",
       "level": 57,
@@ -556,13 +1106,22 @@
         "DoT",
         "高耐久"
       ],
+      "behaviorSummary": "第 6 回合起逐步成长；随机波动较小；DoT、高耐久。",
       "volatility": 0.57,
+      "luck": 0.63,
       "timeProfile": "ramp",
+      "actionCount": 3,
+      "damageCapability": true,
+      "sustainCapability": false,
       "fingerprint": "49831650fc9bf48d",
-      "designNote": "虹雉：展示延后成长与低波动。行动组合：蚀爆、血性猛击、蓄能；机制：status / consumeStatus / damage / conditional / selfDamagePct / gain / resource。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "虹雉：展示延后成长与低波动。行动组合：蚀爆、血性猛击、蓄能；机制：status / consumeStatus / damage / conditional / selfDamagePct / gain / resource。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "怒涛",
+      "id": "gen_f75938ff",
       "seed": "curated-v4-6-3-157",
       "rarity": "S",
       "level": 77,
@@ -573,30 +1132,69 @@
         "DoT",
         "状态引爆"
       ],
+      "behaviorSummary": "第 7 回合起逐步疲劳；高耐久、DoT、状态引爆。",
       "volatility": 0.99,
+      "luck": 0.8,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "86438735c88e824e",
-      "designNote": "怒涛：展示逐步疲劳与中波动。行动组合：侵蚀、蚀爆、破咒、战意；机制：conditional / status / gain / repeat / consumeStatus / damage / dispel / toggleStatus / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "怒涛：展示逐步疲劳与中波动。行动组合：侵蚀、蚀爆、破咒、战意；机制：conditional / status / gain / repeat / consumeStatus / damage / dispel / toggleStatus / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "暗星",
+      "id": "gen_da094f86",
       "seed": "curated-v4-6-4-54",
       "rarity": "S",
       "level": 95,
-      "power": 2782,
+      "power": 3048,
       "tags": [
         "稳定",
-        "穿透",
-        "高耐久",
-        "高速"
+        "易疲劳",
+        "DoT",
+        "穿透"
       ],
+      "behaviorSummary": "第 1000 回合起逐步疲劳；随机波动较小；DoT、穿透。",
       "volatility": 0.31,
-      "timeProfile": "stable",
+      "luck": -0.21,
+      "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "9526599fdaa18bbc",
-      "designNote": "暗星：展示稳定时间曲线与低波动。行动组合：号令、坚守、护符、蚀爆；机制：conditional / emitEvent / status / gain / shield / ward / repeat / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高速稳定高耐久空手，镜像88回合0伤害。蚀爆被targetHp<0.4门控锁死而自愈/护盾让双方永不跌破。解除伤害门控、削减自愈，并提升蚀爆消耗伤害，让稳定穿透身份落地终结。",
+      "adjustments": [
+        {
+          "field": "actions.蚀爆.unconditional(1 dead-gate removed)",
+          "before": "gated",
+          "after": "always"
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.02
+        },
+        {
+          "field": "stats.ENDURANCE",
+          "before": 94,
+          "after": 70
+        },
+        {
+          "field": "actions.蚀爆.damage.coef",
+          "before": 1.77,
+          "after": 2
+        }
+      ]
     },
     {
       "name": "焚天",
+      "id": "gen_34e242b4",
       "seed": "curated-v4-7-0-56",
       "rarity": "SS",
       "level": 26,
@@ -607,64 +1205,163 @@
         "穿透",
         "高耐久"
       ],
+      "behaviorSummary": "第 13 回合起逐步成长；随机波动较小；穿透、高耐久。",
       "volatility": 0.22,
+      "luck": 0.49,
       "timeProfile": "ramp",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "a680d032b97ee060",
-      "designNote": "焚天：展示延后成长与低波动。行动组合：突袭、血性猛击、破咒、战意；机制：conditional / damage / status / gain / selfDamagePct / repeat / dispel / toggleStatus / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "焚天：展示延后成长与低波动。行动组合：突袭、血性猛击、破咒、战意；机制：conditional / damage / status / gain / selfDamagePct / repeat / dispel / toggleStatus / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "渊影",
+      "id": "gen_dc4144b4",
       "seed": "curated-v4-7-1-62",
       "rarity": "SS",
       "level": 46,
-      "power": 2785,
+      "power": 2623,
       "tags": [
+        "长线型",
         "高波动",
-        "后期成长",
         "DoT",
         "慢速"
       ],
+      "behaviorSummary": "第 10 回合起逐步成长；第 51 回合起逐步疲劳；发挥波动较大；DoT、慢速。",
       "volatility": 1.69,
-      "timeProfile": "ramp",
+      "luck": 0.22,
+      "timeProfile": "mixed",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "db5b35ab27688d94",
-      "designNote": "渊影：展示延后成长与高波动。行动组合：战术、蚀爆、回转、复苏、坚守、号令；机制：status / repeat / consumeStatus / damage / cooldownReduce / heal / conditional / shield / gain / emitEvent。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "慢速DoT高血坦克，镜像86回合0伤害平局。复苏0.24两次+冷却1+ENDURANCE89锁死。加装疲劳打破互奶锁、提高蚀爆消耗伤害、拉长复苏冷却。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.02
+        },
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 50
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 1,
+          "after": 0.8
+        },
+        {
+          "field": "actions.蚀爆.damage.coef",
+          "before": 1.36,
+          "after": 1.5
+        },
+        {
+          "field": "actions.复苏.cooldown",
+          "before": 1,
+          "after": 2
+        }
+      ]
     },
     {
       "name": "棱镜",
+      "id": "gen_e4717077",
       "seed": "curated-v4-7-2-31",
       "rarity": "SS",
       "level": 66,
-      "power": 4122,
+      "power": 5274,
       "tags": [
         "高波动",
-        "后期成长",
-        "资源循环",
-        "低伤控制"
+        "长线型",
+        "DoT",
+        "状态压制"
       ],
+      "behaviorSummary": "第 11 回合起逐步成长；第 61 回合起逐步疲劳；发挥波动较大；DoT、状态压制。",
       "volatility": 1.97,
-      "timeProfile": "ramp",
+      "luck": -0.12,
+      "timeProfile": "mixed",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "9015b1f7db1696ec",
-      "designNote": "棱镜：展示延后成长与高波动。行动组合：净化、战术、蓄能、复苏、蓄能、蚀爆；机制：cleanse / status / resource / conditional / heal / shield / gain / repeat / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "资源循环低伤控制，蚀爆伤害+护盾锁在hpPctBelow<0.5，满血时永远走else，镜像50回合0伤害。解除伤害门控使其无条件耗蚀层造成伤害，并补轻度疲劳防无限刷CHRONO。",
+      "adjustments": [
+        {
+          "field": "actions.蚀爆.unconditional(1 dead-gate removed)",
+          "before": "gated",
+          "after": "always"
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.015
+        },
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 60
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 1,
+          "after": 0.8
+        }
+      ]
     },
     {
       "name": "时尘",
+      "id": "gen_1e3d7682",
       "seed": "curated-v4-7-3-79",
       "rarity": "SS",
       "level": 86,
-      "power": 4486,
+      "power": 4459,
       "tags": [
         "稳定",
         "易疲劳",
         "DoT",
         "状态压制"
       ],
+      "behaviorSummary": "第 10 回合起逐步疲劳；随机波动较小；DoT、状态压制。",
       "volatility": 0.44,
+      "luck": 0.15,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": false,
       "fingerprint": "d1dd215a2b786b0d",
-      "designNote": "时尘：展示逐步疲劳与低波动。行动组合：战意、号令、蚀爆、突袭；机制：conditional / toggleStatus / gain / emitEvent / status / repeat / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "易疲劳DoT状态压制，镜像77回合仅36伤害。斩杀突袭被targetHp<0.4锁死。加强蚀爆消耗输出、加快疲劳、放宽突袭门槛到0.6。",
+      "adjustments": [
+        {
+          "field": "actions.蚀爆.damage.coef",
+          "before": 2.78,
+          "after": 3.2
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0.02,
+          "after": 0.03
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 0.76,
+          "after": 0.7
+        }
+      ]
     },
     {
       "name": "血冕",
+      "id": "gen_7365871e",
       "seed": "curated-v4-7-4-118",
       "rarity": "SS",
       "level": 100,
@@ -675,30 +1372,59 @@
         "高爆发",
         "DoT"
       ],
+      "behaviorSummary": "第 5 回合起逐步成长；第 16 回合起逐步疲劳；发挥波动较大；高爆发、DoT。",
       "volatility": 1.61,
+      "luck": -0.04,
       "timeProfile": "mixed",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "27725a2c802af6b1",
-      "designNote": "血冕：展示先成长后疲劳与高波动。行动组合：血性猛击、战术、突袭、蚀爆、回转、蓄能；机制：selfDamagePct / damage / status / gain / consumeStatus / shield / cooldownReduce / conditional / resource。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "血冕：展示先成长后疲劳与高波动。行动组合：血性猛击、战术、突袭、蚀爆、回转、蓄能；机制：selfDamagePct / damage / status / gain / consumeStatus / shield / cooldownReduce / conditional / resource。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "穹顶",
+      "id": "gen_b1fb3d78",
       "seed": "curated-v4-8-0-145",
       "rarity": "SSS",
       "level": 16,
-      "power": 811,
+      "power": 708,
       "tags": [
-        "稳定",
         "长线型",
+        "稳定",
         "DoT",
         "高耐久"
       ],
+      "behaviorSummary": "第 4 回合起逐步成长；第 15 回合起逐步疲劳；随机波动较小；DoT、高耐久。",
       "volatility": 0.31,
+      "luck": -0.44,
       "timeProfile": "mixed",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "6d155fa3b1eb5d5c",
-      "designNote": "穹顶：展示先成长后疲劳与低波动。行动组合：蚀爆、号令、蓄能、侵蚀、复苏、战意；机制：conditional / status / consumeStatus / damage / shield / gain / emitEvent / repeat / resource / heal / toggleStatus。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高耐久护盾墙，镜像64回合伤害5 vs 治疗290 纯互磨。后期攻势归零。加速疲惫衰并降ENDURANCE，让晚局走向决定性终结。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0.02,
+          "after": 0.05
+        },
+        {
+          "field": "stats.ENDURANCE",
+          "before": 33,
+          "after": 22
+        }
+      ]
     },
     {
       "name": "极光",
+      "id": "gen_5bf41a99",
       "seed": "curated-v4-8-1-150",
       "rarity": "SSS",
       "level": 38,
@@ -709,13 +1435,22 @@
         "吸血",
         "高速"
       ],
+      "behaviorSummary": "第 8 回合起逐步成长；发挥波动较大；吸血、高速。",
       "volatility": 2.53,
+      "luck": -0.63,
       "timeProfile": "ramp",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "f4126207fb5a5780",
-      "designNote": "极光：展示延后成长与高波动。行动组合：复苏、破咒、血性猛击、转化；机制：heal / status / repeat / dispel / selfDamagePct / damage / shield / convertResource。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "极光：展示延后成长与高波动。行动组合：复苏、破咒、血性猛击、转化；机制：heal / status / repeat / dispel / selfDamagePct / damage / shield / convertResource。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "不朽",
+      "id": "gen_3ee1133a",
       "seed": "curated-v4-8-2-132",
       "rarity": "SSS",
       "level": 58,
@@ -726,30 +1461,59 @@
         "低爆发",
         "护盾型"
       ],
+      "behaviorSummary": "第 5 回合起逐步成长；随机波动较小；低爆发、护盾型。",
       "volatility": 0.3,
+      "luck": -0.32,
       "timeProfile": "ramp",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "f342849623e0390a",
-      "designNote": "不朽：展示延后成长与低波动。行动组合：护符、血性猛击、净化、血性猛击；机制：ward / selfDamagePct / damage / shield / repeat / cleanse / conditional / gain。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "不朽：展示延后成长与低波动。行动组合：护符、血性猛击、净化、血性猛击；机制：ward / selfDamagePct / damage / shield / repeat / cleanse / conditional / gain。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "湮灭",
+      "id": "gen_44bbdf3d",
       "seed": "curated-v4-8-3-101",
       "rarity": "SSS",
       "level": 78,
-      "power": 3243,
+      "power": 2851,
       "tags": [
         "易疲劳",
         "护盾型",
         "高速",
         "资源循环"
       ],
+      "behaviorSummary": "第 12 回合起逐步疲劳；护盾型、高速、资源循环。",
       "volatility": 1.36,
+      "luck": -0.87,
       "timeProfile": "fatigue",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "0132178ee0de594d",
-      "designNote": "湮灭：展示逐步疲劳与中波动。行动组合：护符、蓄能、战意、血性猛击、蓄能、转化；机制：repeat / ward / gain / resource / toggleStatus / shield / conditional / selfDamagePct / damage / status / convertResource。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "三连ward+stance减伤护盾墙，SS/SSS_COLLECTOR/镜像三场54回合且我方0伤害。加大并加深疲惫让晚局防护崩解、逼出胜负。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0.01,
+          "after": 0.04
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 0.84,
+          "after": 0.65
+        }
+      ]
     },
     {
       "name": "创世",
+      "id": "gen_2feba8a9",
       "seed": "curated-v4-8-4-23",
       "rarity": "SSS",
       "level": 96,
@@ -760,13 +1524,22 @@
         "DoT",
         "状态引爆"
       ],
+      "behaviorSummary": "随机波动较小；高耐久、DoT、状态引爆。",
       "volatility": 0.58,
+      "luck": -0.46,
       "timeProfile": "stable",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "7f00be45ec95dac2",
-      "designNote": "创世：展示稳定时间曲线与低波动。行动组合：血性猛击、蚀爆、回转、护符；机制：selfDamagePct / damage / status / consumeStatus / cooldownReduce / ward / gain。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "创世：展示稳定时间曲线与低波动。行动组合：血性猛击、蚀爆、回转、护符；机制：selfDamagePct / damage / status / consumeStatus / cooldownReduce / ward / gain。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "星冕",
+      "id": "gen_30832e13",
       "seed": "curated-v4-9-0-39",
       "rarity": "SSS_COLLECTOR",
       "level": 27,
@@ -777,13 +1550,22 @@
         "DoT",
         "穿透"
       ],
+      "behaviorSummary": "第 8 回合起逐步成长；第 26 回合起逐步疲劳；随机波动较小；DoT、穿透。",
       "volatility": 0.37,
+      "luck": 0.17,
       "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "dc07e00b97feb7eb",
-      "designNote": "星冕：展示先成长后疲劳与低波动。行动组合：回转、蓄能、蚀爆、血性猛击；机制：cooldownReduce / repeat / resource / gain / status / consumeStatus / damage / shield / selfDamagePct。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "星冕：展示先成长后疲劳与低波动。行动组合：回转、蓄能、蚀爆、血性猛击；机制：cooldownReduce / repeat / resource / gain / status / consumeStatus / damage / shield / selfDamagePct。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "晨辉",
+      "id": "gen_4999a9f8",
       "seed": "curated-v4-9-1-80",
       "rarity": "SSS_COLLECTOR",
       "level": 47,
@@ -794,64 +1576,138 @@
         "防御型",
         "吸血"
       ],
+      "behaviorSummary": "第 5 回合起逐步成长；第 20 回合起逐步疲劳；发挥波动较大；防御型、吸血。",
       "volatility": 2.33,
+      "luck": 0.89,
       "timeProfile": "mixed",
+      "actionCount": 3,
+      "damageCapability": true,
+      "sustainCapability": false,
       "fingerprint": "463460c2be284e7f",
-      "designNote": "晨辉：展示先成长后疲劳与高波动。行动组合：净化、号令、蚀爆；机制：cleanse / conditional / emitEvent / gain / status / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "晨辉：展示先成长后疲劳与高波动。行动组合：净化、号令、蚀爆；机制：cleanse / conditional / emitEvent / gain / status / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "虚影",
+      "id": "gen_6fab88ac",
       "seed": "curated-v4-9-2-3",
       "rarity": "SSS_COLLECTOR",
       "level": 67,
-      "power": 2304,
+      "power": 2154,
       "tags": [
         "稳定",
-        "后期成长",
+        "长线型",
         "DoT",
         "高速"
       ],
+      "behaviorSummary": "第 12 回合起逐步成长；第 33 回合起逐步疲劳；随机波动较小；DoT、高速。",
       "volatility": 0.21,
-      "timeProfile": "ramp",
+      "luck": -0.16,
+      "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "9ef007f6423e9ee5",
-      "designNote": "虚影：展示延后成长与低波动。行动组合：护符、蓄能、号令、蚀爆；机制：ward / repeat / conditional / gain / emitEvent / status / consumeStatus / damage / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "第12回合起发力的后期成长DoT高速卡，FATIGUE_START=999永不疲劳，配合护盾第50-69回合互磨不出结果。保留1-30回合成长身份，其后启动疲劳让极限长线收束。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 32
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.02
+        }
+      ]
     },
     {
       "name": "终焉",
+      "id": "gen_732b1a84",
       "seed": "curated-v4-9-3-86",
       "rarity": "SSS_COLLECTOR",
       "level": 87,
-      "power": 2520,
+      "power": 3059,
       "tags": [
         "易疲劳",
         "DoT",
         "穿透",
         "护盾型"
       ],
+      "behaviorSummary": "第 10 回合起逐步疲劳；DoT、穿透、护盾型。",
       "volatility": 0.67,
+      "luck": 0.75,
       "timeProfile": "fatigue",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "197c53a2c50eb688",
-      "designNote": "终焉：展示逐步疲劳与中波动。行动组合：血性猛击、蚀爆、转化、号令；机制：conditional / selfDamagePct / damage / shield / gain / status / consumeStatus / convertResource / emitEvent。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "易疲劳巨型护盾坦克（DEF475/ATK71），镜像79回合damage仅50。补足进攻转化：提升ATK与蚀爆消耗系数，让疲劳坦能兑现击杀。",
+      "adjustments": [
+        {
+          "field": "stats.ATK",
+          "before": 71,
+          "after": 95
+        },
+        {
+          "field": "actions.蚀爆.damage.coef",
+          "before": 2.29,
+          "after": 3.21
+        }
+      ]
     },
     {
       "name": "幻梦",
+      "id": "gen_3e80c227",
       "seed": "curated-v4-9-4-145",
       "rarity": "SSS_COLLECTOR",
       "level": 100,
-      "power": 2622,
+      "power": 2418,
       "tags": [
         "稳定",
         "长线型",
         "穿透",
         "高闪避"
       ],
+      "behaviorSummary": "第 8 回合起逐步成长；第 16 回合起逐步疲劳；随机波动较小；穿透、高闪避。",
       "volatility": 0.2,
+      "luck": -0.62,
       "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": false,
+      "sustainCapability": true,
       "fingerprint": "095cadc94b2f4f3c",
-      "designNote": "幻梦：展示先成长后疲劳与低波动。行动组合：回转、战术、复苏、蓄能；机制：cooldownReduce / gain / conditional / status / repeat / heal / shield / resource。不强塞攻击，依靠状态、反应或长期损耗结束。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "纯回复+护盾+反击超级高闪避耐久卡，镜像87回合DRAW、全部myDamage 0（最严重）。回收永动回复（复苏冷却2→4）、强化反击转化、加速疲劳，把无限平局变可收束消耗。",
+      "adjustments": [
+        {
+          "field": "actions.复苏.cooldown",
+          "before": 2,
+          "after": 4
+        },
+        {
+          "field": "statuses.stance.reflect",
+          "before": 0.26,
+          "after": 0.45
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0.01,
+          "after": 0.02
+        }
+      ]
     },
     {
       "name": "天陨",
+      "id": "gen_40a61847",
       "seed": "curated-v4-10-0-41",
       "rarity": "XS",
       "level": 17,
@@ -862,47 +1718,116 @@
         "穿透",
         "状态压制"
       ],
+      "behaviorSummary": "随机波动较小；DoT、穿透、状态压制。",
       "volatility": 0.28,
+      "luck": 0.76,
       "timeProfile": "stable",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "06370fb64bf0c33f",
-      "designNote": "天陨：展示稳定时间曲线与低波动。行动组合：复苏、侵蚀、号令、蚀爆；机制：conditional / heal / gain / repeat / status / emitEvent / shield / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "天陨：展示稳定时间曲线与低波动。行动组合：复苏、侵蚀、号令、蚀爆；机制：conditional / heal / gain / repeat / status / emitEvent / shield / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "深渊",
+      "id": "gen_27e23427",
       "seed": "curated-v4-10-1-11",
       "rarity": "XS",
       "level": 39,
-      "power": 2850,
+      "power": 2813,
       "tags": [
         "高波动",
-        "后期成长",
+        "长线型",
         "高耐久",
         "防御型"
       ],
+      "behaviorSummary": "第 9 回合起逐步成长；第 29 回合起逐步疲劳；发挥波动较大；高耐久、防御型。",
       "volatility": 2.53,
-      "timeProfile": "ramp",
+      "luck": 0.64,
+      "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "26a62cdc9a245642",
-      "designNote": "深渊：展示延后成长与高波动。行动组合：侵蚀、血性猛击、破咒、护符；机制：conditional / status / gain / selfDamagePct / damage / shield / repeat / dispel / ward。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "延后成长慢防御塔，镜像76回合0伤害、面板56-76回合全程0伤害。唯一输出被hp<0.5锁死。抬高输出动作优先级并绑定战斗时长（疲劳）终结僵持。",
+      "adjustments": [
+        {
+          "field": "stats.ENDURANCE",
+          "before": 65,
+          "after": 50
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.004
+        },
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 28
+        },
+        {
+          "field": "actions.血性猛击.priority",
+          "before": 2,
+          "after": 3
+        }
+      ]
     },
     {
       "name": "破晓",
+      "id": "gen_a9702692",
       "seed": "curated-v4-10-2-138",
       "rarity": "XS",
       "level": 59,
-      "power": 1745,
+      "power": 1729,
       "tags": [
         "高波动",
-        "后期成长",
+        "长线型",
         "高耐久",
         "资源循环"
       ],
+      "behaviorSummary": "第 5 回合起逐步成长；第 36 回合起逐步疲劳；发挥波动较大；高耐久、资源循环。",
       "volatility": 2.91,
-      "timeProfile": "ramp",
+      "luck": 0.17,
+      "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": false,
+      "sustainCapability": true,
       "fingerprint": "6112e48877082425",
-      "designNote": "破晓：展示延后成长与高波动。行动组合：转化、坚守、蓄能、回转；机制：repeat / convertResource / shield / gain / resource / status / conditional / cooldownReduce。不强塞攻击，依靠状态、反应或长期损耗结束。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "高耐久资源循环后期成长，镜像82回合0伤害，无任何直伤出口。降低ENDURANCE、给长期战争取损耗收尾，并提升唯一输出的反击转化。",
+      "adjustments": [
+        {
+          "field": "stats.ENDURANCE",
+          "before": 78,
+          "after": 56
+        },
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.005
+        },
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 35
+        },
+        {
+          "field": "statuses.stance.reflect",
+          "before": 0.21,
+          "after": 0.28
+        }
+      ]
     },
     {
       "name": "永夜",
+      "id": "gen_17bbf9c3",
       "seed": "curated-v4-10-3-13",
       "rarity": "XS",
       "level": 79,
@@ -913,13 +1838,22 @@
         "高耐久",
         "慢速"
       ],
+      "behaviorSummary": "第 6 回合起逐步疲劳；发挥波动较大；高耐久、慢速。",
       "volatility": 2.71,
+      "luck": -0.73,
       "timeProfile": "fatigue",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "74c4f32e03726ee0",
-      "designNote": "永夜：展示逐步疲劳与高波动。行动组合：蓄能、血性猛击、破咒、复苏、回转、转化；机制：resource / repeat / selfDamagePct / damage / conditional / dispel / shield / gain / heal / status / cooldownReduce / convertResource。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "永夜：展示逐步疲劳与高波动。行动组合：蓄能、血性猛击、破咒、复苏、回转、转化；机制：resource / repeat / selfDamagePct / damage / conditional / dispel / shield / gain / heal / status / cooldownReduce / convertResource。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "洪荒",
+      "id": "gen_65303b42",
       "seed": "curated-v4-10-4-48",
       "rarity": "XS",
       "level": 97,
@@ -930,13 +1864,22 @@
         "穿透",
         "状态压制"
       ],
+      "behaviorSummary": "DoT、高速、穿透、状态压制。",
       "volatility": 0.69,
+      "luck": -0.14,
       "timeProfile": "stable",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "e1047d5e4d337bd8",
-      "designNote": "洪荒：展示稳定时间曲线与中波动。行动组合：蚀爆、侵蚀、战意、蓄能、复苏、破咒；机制：status / consumeStatus / damage / toggleStatus / resource / shield / conditional / heal / gain / dispel。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "洪荒：展示稳定时间曲线与中波动。行动组合：蚀爆、侵蚀、战意、蓄能、复苏、破咒；机制：status / consumeStatus / damage / toggleStatus / resource / shield / conditional / heal / gain / dispel。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "泰初",
+      "id": "gen_f32f5591",
       "seed": "curated-v4-11-0-156",
       "rarity": "XS_COLLECTOR",
       "level": 28,
@@ -947,13 +1890,22 @@
         "护盾型",
         "吸血"
       ],
+      "behaviorSummary": "随机波动较小；高耐久、护盾型、吸血。",
       "volatility": 0.2,
+      "luck": -0.23,
       "timeProfile": "stable",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "52d4d3d95a333ebe",
-      "designNote": "泰初：展示稳定时间曲线与低波动。行动组合：护符、号令、转化、血性猛击、战意、坚守；机制：ward / emitEvent / shield / convertResource / status / repeat / conditional / selfDamagePct / damage / gain / toggleStatus。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "泰初：展示稳定时间曲线与低波动。行动组合：护符、号令、转化、血性猛击、战意、坚守；机制：ward / emitEvent / shield / convertResource / status / repeat / conditional / selfDamagePct / damage / gain / toggleStatus。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "太虚",
+      "id": "gen_6bbcfce6",
       "seed": "curated-v4-11-1-66",
       "rarity": "XS_COLLECTOR",
       "level": 48,
@@ -964,30 +1916,64 @@
         "穿透",
         "DoT"
       ],
+      "behaviorSummary": "第 6 回合起逐步疲劳；发挥波动较大；穿透、DoT。",
       "volatility": 1.81,
+      "luck": -0.18,
       "timeProfile": "fatigue",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": false,
       "fingerprint": "3f811dac05f3ec4e",
-      "designNote": "太虚：展示逐步疲劳与高波动。行动组合：战意、战术、净化、蓄能、蚀爆、回转；机制：repeat / conditional / toggleStatus / gain / status / cleanse / resource / consumeStatus / damage / cooldownReduce。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "太虚：展示逐步疲劳与高波动。行动组合：战意、战术、净化、蓄能、蚀爆、回转；机制：repeat / conditional / toggleStatus / gain / status / cleanse / resource / consumeStatus / damage / cooldownReduce。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "无极",
+      "id": "gen_76f9eb26",
       "seed": "curated-v4-11-2-36",
       "rarity": "XS_COLLECTOR",
       "level": 68,
-      "power": 7586,
+      "power": 6961,
       "tags": [
         "稳定",
-        "后期成长",
+        "长线型",
         "穿透",
         "DoT"
       ],
+      "behaviorSummary": "第 6 回合起逐步成长；第 31 回合起逐步疲劳；随机波动较小；穿透、DoT。",
       "volatility": 0.43,
-      "timeProfile": "ramp",
+      "luck": 0.86,
+      "timeProfile": "mixed",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "677650332b389c56",
-      "designNote": "无极：展示延后成长与低波动。行动组合：净化、蚀爆、突袭、转化、护符、血性猛击；机制：cleanse / status / repeat / consumeStatus / damage / conditional / shield / gain / convertResource / ward / selfDamagePct。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "后期成长高爆发DoT，但RAMP第1回合即满、FATIGUE无限，镜像/65回合磨活。注入第30回合起0.8封顶疲劳，让成长峰值后可收束。",
+      "adjustments": [
+        {
+          "field": "stats.FATIGUE_RATE",
+          "before": 0,
+          "after": 0.02
+        },
+        {
+          "field": "stats.FATIGUE_START",
+          "before": 999,
+          "after": 30
+        },
+        {
+          "field": "stats.FATIGUE_CAP",
+          "before": 1,
+          "after": 0.8
+        }
+      ]
     },
     {
       "name": "混沌",
+      "id": "gen_632efde5",
       "seed": "curated-v4-11-3-45",
       "rarity": "XS_COLLECTOR",
       "level": 88,
@@ -998,13 +1984,22 @@
         "DoT",
         "高爆发"
       ],
+      "behaviorSummary": "第 6 回合起逐步疲劳；发挥波动较大；DoT、高爆发。",
       "volatility": 1.86,
+      "luck": 0.36,
       "timeProfile": "fatigue",
+      "actionCount": 6,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "0b2d855049f864e6",
-      "designNote": "混沌：展示逐步疲劳与高波动。行动组合：蚀爆、号令、护符、突袭、蓄能、坚守；机制：status / consumeStatus / damage / repeat / emitEvent / ward / gain / resource / conditional / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "混沌：展示逐步疲劳与高波动。行动组合：蚀爆、号令、护符、突袭、蓄能、坚守；机制：status / consumeStatus / damage / repeat / emitEvent / ward / gain / resource / conditional / shield。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     },
     {
       "name": "涅槃",
+      "id": "gen_63cd2633",
       "seed": "curated-v4-11-4-45",
       "rarity": "XS_COLLECTOR",
       "level": 100,
@@ -1015,505 +2010,18 @@
         "高爆发",
         "DoT"
       ],
+      "behaviorSummary": "第 5 回合起逐步成长；第 25 回合起逐步疲劳；高爆发、DoT。",
       "volatility": 1.11,
+      "luck": -0.88,
       "timeProfile": "mixed",
+      "actionCount": 4,
+      "damageCapability": true,
+      "sustainCapability": true,
       "fingerprint": "2166dfc2bf4d93b1",
-      "designNote": "涅槃：展示先成长后疲劳与中波动。行动组合：坚守、突袭、回转、蚀爆；机制：conditional / shield / gain / damage / repeat / cooldownReduce / status / consumeStatus。直接伤害与其他机制共同工作。具体强弱保留生成差异。"
+      "curated": true,
+      "curationVersion": 2,
+      "designNote": "涅槃：展示先成长后疲劳与中波动。行动组合：坚守、突袭、回转、蚀爆；机制：conditional / shield / gain / damage / repeat / cooldownReduce / status / consumeStatus。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。）",
+      "adjustments": []
     }
-  ],
-  "candidateCount": 9600,
-  "rejected": {
-    "slot-low-volatility": 1128,
-    "resource-without-consumer": 293,
-    "slot-high-volatility": 1347,
-    "slot-ramp": 1346,
-    "slot-fatigue": 1198,
-    "slot-time-profile": 1588,
-    "cooldown-without-consumer": 6
-  },
-  "slots": [
-    {
-      "rarity": "C",
-      "level": 12,
-      "slot": 0,
-      "eligible": 61,
-      "selectedSeed": "curated-v4-0-0-147",
-      "score": 35
-    },
-    {
-      "rarity": "C",
-      "level": 34,
-      "slot": 1,
-      "eligible": 46,
-      "selectedSeed": "curated-v4-0-1-80",
-      "score": 17
-    },
-    {
-      "rarity": "C",
-      "level": 54,
-      "slot": 2,
-      "eligible": 52,
-      "selectedSeed": "curated-v4-0-2-84",
-      "score": 22
-    },
-    {
-      "rarity": "C",
-      "level": 74,
-      "slot": 3,
-      "eligible": 74,
-      "selectedSeed": "curated-v4-0-3-80",
-      "score": 19
-    },
-    {
-      "rarity": "C",
-      "level": 92,
-      "slot": 4,
-      "eligible": 31,
-      "selectedSeed": "curated-v4-0-4-24",
-      "score": 18.727272727272727
-    },
-    {
-      "rarity": "C_PLUS",
-      "level": 23,
-      "slot": 0,
-      "eligible": 60,
-      "selectedSeed": "curated-v4-1-0-38",
-      "score": 35
-    },
-    {
-      "rarity": "C_PLUS",
-      "level": 43,
-      "slot": 1,
-      "eligible": 48,
-      "selectedSeed": "curated-v4-1-1-19",
-      "score": 25.769230769230766
-    },
-    {
-      "rarity": "C_PLUS",
-      "level": 63,
-      "slot": 2,
-      "eligible": 40,
-      "selectedSeed": "curated-v4-1-2-42",
-      "score": 20
-    },
-    {
-      "rarity": "C_PLUS",
-      "level": 83,
-      "slot": 3,
-      "eligible": 54,
-      "selectedSeed": "curated-v4-1-3-109",
-      "score": 23
-    },
-    {
-      "rarity": "C_PLUS",
-      "level": 100,
-      "slot": 4,
-      "eligible": 24,
-      "selectedSeed": "curated-v4-1-4-17",
-      "score": 20.545454545454547
-    },
-    {
-      "rarity": "B",
-      "level": 13,
-      "slot": 0,
-      "eligible": 62,
-      "selectedSeed": "curated-v4-2-0-118",
-      "score": 35
-    },
-    {
-      "rarity": "B",
-      "level": 35,
-      "slot": 1,
-      "eligible": 46,
-      "selectedSeed": "curated-v4-2-1-74",
-      "score": 20
-    },
-    {
-      "rarity": "B",
-      "level": 55,
-      "slot": 2,
-      "eligible": 46,
-      "selectedSeed": "curated-v4-2-2-36",
-      "score": 23.384615384615387
-    },
-    {
-      "rarity": "B",
-      "level": 75,
-      "slot": 3,
-      "eligible": 64,
-      "selectedSeed": "curated-v4-2-3-108",
-      "score": 18.769230769230766
-    },
-    {
-      "rarity": "B",
-      "level": 93,
-      "slot": 4,
-      "eligible": 31,
-      "selectedSeed": "curated-v4-2-4-6",
-      "score": 14.90909090909091
-    },
-    {
-      "rarity": "B_PLUS",
-      "level": 24,
-      "slot": 0,
-      "eligible": 64,
-      "selectedSeed": "curated-v4-3-0-150",
-      "score": 36
-    },
-    {
-      "rarity": "B_PLUS",
-      "level": 44,
-      "slot": 1,
-      "eligible": 53,
-      "selectedSeed": "curated-v4-3-1-49",
-      "score": 22.076923076923077
-    },
-    {
-      "rarity": "B_PLUS",
-      "level": 64,
-      "slot": 2,
-      "eligible": 49,
-      "selectedSeed": "curated-v4-3-2-133",
-      "score": 16.769230769230766
-    },
-    {
-      "rarity": "B_PLUS",
-      "level": 84,
-      "slot": 3,
-      "eligible": 59,
-      "selectedSeed": "curated-v4-3-3-46",
-      "score": 20.545454545454547
-    },
-    {
-      "rarity": "B_PLUS",
-      "level": 100,
-      "slot": 4,
-      "eligible": 26,
-      "selectedSeed": "curated-v4-3-4-152",
-      "score": 16.90909090909091
-    },
-    {
-      "rarity": "A",
-      "level": 14,
-      "slot": 0,
-      "eligible": 56,
-      "selectedSeed": "curated-v4-4-0-70",
-      "score": 35
-    },
-    {
-      "rarity": "A",
-      "level": 36,
-      "slot": 1,
-      "eligible": 41,
-      "selectedSeed": "curated-v4-4-1-132",
-      "score": 22.769230769230766
-    },
-    {
-      "rarity": "A",
-      "level": 56,
-      "slot": 2,
-      "eligible": 52,
-      "selectedSeed": "curated-v4-4-2-110",
-      "score": 23
-    },
-    {
-      "rarity": "A",
-      "level": 76,
-      "slot": 3,
-      "eligible": 65,
-      "selectedSeed": "curated-v4-4-3-153",
-      "score": 18.727272727272727
-    },
-    {
-      "rarity": "A",
-      "level": 94,
-      "slot": 4,
-      "eligible": 29,
-      "selectedSeed": "curated-v4-4-4-98",
-      "score": 14.272727272727273
-    },
-    {
-      "rarity": "A_PLUS",
-      "level": 25,
-      "slot": 0,
-      "eligible": 69,
-      "selectedSeed": "curated-v4-5-0-111",
-      "score": 35
-    },
-    {
-      "rarity": "A_PLUS",
-      "level": 45,
-      "slot": 1,
-      "eligible": 65,
-      "selectedSeed": "curated-v4-5-1-64",
-      "score": 25
-    },
-    {
-      "rarity": "A_PLUS",
-      "level": 65,
-      "slot": 2,
-      "eligible": 42,
-      "selectedSeed": "curated-v4-5-2-98",
-      "score": 19
-    },
-    {
-      "rarity": "A_PLUS",
-      "level": 85,
-      "slot": 3,
-      "eligible": 54,
-      "selectedSeed": "curated-v4-5-3-35",
-      "score": 19.727272727272727
-    },
-    {
-      "rarity": "A_PLUS",
-      "level": 100,
-      "slot": 4,
-      "eligible": 15,
-      "selectedSeed": "curated-v4-5-4-67",
-      "score": 14
-    },
-    {
-      "rarity": "S",
-      "level": 15,
-      "slot": 0,
-      "eligible": 59,
-      "selectedSeed": "curated-v4-6-0-25",
-      "score": 34
-    },
-    {
-      "rarity": "S",
-      "level": 37,
-      "slot": 1,
-      "eligible": 38,
-      "selectedSeed": "curated-v4-6-1-66",
-      "score": 22.076923076923077
-    },
-    {
-      "rarity": "S",
-      "level": 57,
-      "slot": 2,
-      "eligible": 42,
-      "selectedSeed": "curated-v4-6-2-114",
-      "score": 17.090909090909093
-    },
-    {
-      "rarity": "S",
-      "level": 77,
-      "slot": 3,
-      "eligible": 52,
-      "selectedSeed": "curated-v4-6-3-157",
-      "score": 22.076923076923077
-    },
-    {
-      "rarity": "S",
-      "level": 95,
-      "slot": 4,
-      "eligible": 22,
-      "selectedSeed": "curated-v4-6-4-54",
-      "score": 18
-    },
-    {
-      "rarity": "SS",
-      "level": 26,
-      "slot": 0,
-      "eligible": 61,
-      "selectedSeed": "curated-v4-7-0-56",
-      "score": 32
-    },
-    {
-      "rarity": "SS",
-      "level": 46,
-      "slot": 1,
-      "eligible": 47,
-      "selectedSeed": "curated-v4-7-1-62",
-      "score": 21.923076923076923
-    },
-    {
-      "rarity": "SS",
-      "level": 66,
-      "slot": 2,
-      "eligible": 58,
-      "selectedSeed": "curated-v4-7-2-31",
-      "score": 18
-    },
-    {
-      "rarity": "SS",
-      "level": 86,
-      "slot": 3,
-      "eligible": 47,
-      "selectedSeed": "curated-v4-7-3-79",
-      "score": 15.727272727272727
-    },
-    {
-      "rarity": "SS",
-      "level": 100,
-      "slot": 4,
-      "eligible": 28,
-      "selectedSeed": "curated-v4-7-4-118",
-      "score": 16
-    },
-    {
-      "rarity": "SSS",
-      "level": 16,
-      "slot": 0,
-      "eligible": 74,
-      "selectedSeed": "curated-v4-8-0-145",
-      "score": 37
-    },
-    {
-      "rarity": "SSS",
-      "level": 38,
-      "slot": 1,
-      "eligible": 47,
-      "selectedSeed": "curated-v4-8-1-150",
-      "score": 20.42857142857143
-    },
-    {
-      "rarity": "SSS",
-      "level": 58,
-      "slot": 2,
-      "eligible": 53,
-      "selectedSeed": "curated-v4-8-2-132",
-      "score": 20.42857142857143
-    },
-    {
-      "rarity": "SSS",
-      "level": 78,
-      "slot": 3,
-      "eligible": 66,
-      "selectedSeed": "curated-v4-8-3-101",
-      "score": 20
-    },
-    {
-      "rarity": "SSS",
-      "level": 96,
-      "slot": 4,
-      "eligible": 24,
-      "selectedSeed": "curated-v4-8-4-23",
-      "score": 19.769230769230766
-    },
-    {
-      "rarity": "SSS_COLLECTOR",
-      "level": 27,
-      "slot": 0,
-      "eligible": 75,
-      "selectedSeed": "curated-v4-9-0-39",
-      "score": 35
-    },
-    {
-      "rarity": "SSS_COLLECTOR",
-      "level": 47,
-      "slot": 1,
-      "eligible": 48,
-      "selectedSeed": "curated-v4-9-1-80",
-      "score": 21
-    },
-    {
-      "rarity": "SSS_COLLECTOR",
-      "level": 67,
-      "slot": 2,
-      "eligible": 43,
-      "selectedSeed": "curated-v4-9-2-3",
-      "score": 19.6
-    },
-    {
-      "rarity": "SSS_COLLECTOR",
-      "level": 87,
-      "slot": 3,
-      "eligible": 67,
-      "selectedSeed": "curated-v4-9-3-86",
-      "score": 19.727272727272727
-    },
-    {
-      "rarity": "SSS_COLLECTOR",
-      "level": 100,
-      "slot": 4,
-      "eligible": 25,
-      "selectedSeed": "curated-v4-9-4-145",
-      "score": 14.90909090909091
-    },
-    {
-      "rarity": "XS",
-      "level": 17,
-      "slot": 0,
-      "eligible": 72,
-      "selectedSeed": "curated-v4-10-0-41",
-      "score": 34
-    },
-    {
-      "rarity": "XS",
-      "level": 39,
-      "slot": 1,
-      "eligible": 43,
-      "selectedSeed": "curated-v4-10-1-11",
-      "score": 19
-    },
-    {
-      "rarity": "XS",
-      "level": 59,
-      "slot": 2,
-      "eligible": 39,
-      "selectedSeed": "curated-v4-10-2-138",
-      "score": 18
-    },
-    {
-      "rarity": "XS",
-      "level": 79,
-      "slot": 3,
-      "eligible": 50,
-      "selectedSeed": "curated-v4-10-3-13",
-      "score": 20
-    },
-    {
-      "rarity": "XS",
-      "level": 97,
-      "slot": 4,
-      "eligible": 35,
-      "selectedSeed": "curated-v4-10-4-48",
-      "score": 19
-    },
-    {
-      "rarity": "XS_COLLECTOR",
-      "level": 28,
-      "slot": 0,
-      "eligible": 53,
-      "selectedSeed": "curated-v4-11-0-156",
-      "score": 34
-    },
-    {
-      "rarity": "XS_COLLECTOR",
-      "level": 48,
-      "slot": 1,
-      "eligible": 38,
-      "selectedSeed": "curated-v4-11-1-66",
-      "score": 23.4
-    },
-    {
-      "rarity": "XS_COLLECTOR",
-      "level": 68,
-      "slot": 2,
-      "eligible": 44,
-      "selectedSeed": "curated-v4-11-2-36",
-      "score": 20.384615384615387
-    },
-    {
-      "rarity": "XS_COLLECTOR",
-      "level": 88,
-      "slot": 3,
-      "eligible": 52,
-      "selectedSeed": "curated-v4-11-3-45",
-      "score": 19.23076923076923
-    },
-    {
-      "rarity": "XS_COLLECTOR",
-      "level": 100,
-      "slot": 4,
-      "eligible": 27,
-      "selectedSeed": "curated-v4-11-4-45",
-      "score": 16.727272727272727
-    }
-  ],
-  "eligibleCount": 2907,
-  "adjustedCards": 0,
-  "review": "Rule and source-data review by Codex; human playtest remains separate. No numerical tuning needed for selected candidates."
+  ]
 }

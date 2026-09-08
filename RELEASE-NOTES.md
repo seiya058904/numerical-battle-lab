@@ -1,4 +1,4 @@
-# Release Notes — v1.3.0
+# Release Notes — v1.3.1
 
 `数值对战实验室` is a fully offline, single-player, deterministic, multi-entity turn-based numerical combat system presented as a card-style web interface.
 
@@ -9,6 +9,45 @@ Cards are presentation only. The engine works with generic combat entities and a
 `Formula + Modifier + Effect + Condition + Target + Event + Status + Resource + Damage Component`.
 
 Ordinary content is composed from registered primitives and parameters instead of character-specific engine branches.
+
+---
+
+## v1.3.1 — Preset Quality Corrective Pass + Card Numerical Knowledge System
+
+本轮把 60 张官方预设从「随机精选样本」升级为「逐张设计的正式角色」，并让整套数值体系对
+玩家与 Coding Agent 都不再是黑箱。
+
+### 1. System Preset stale BattlePower 修复（Blocker 1）
+
+- 根因：`cachePresetPower` 把冻结的 `presentation.power` 直接写入 WeakMap 缓存，而 canonical
+  `battlePowerV2(card).power` 可能已变化（实测 1 张漂移：苔痕 200 vs canonical 139）。
+- 修复：缓存改为从 canonical `battlePowerV2` 种子化，`battlePowerOf` 永远返回唯一真源数字；
+  新增 60/60 一致性测试 + 缓存一致性测试（`tests/presets.test.js`）。
+
+### 2. 60 张预设正式逐张设计（Blocker 2）
+
+- 9600 候选 → 2907 合格 → 60 张精选后，本轮**逐张设计审查**：identity / Action 联动 /
+  AI 可用性 / 强度 / 时间曲线 / 可读性。
+- **Reviewed 60/60 · Adjusted 28 · Unchanged 32 · Replaced 0 · Total 83 schema adjustments**，
+  `curationVersion = 2`，每张带真实 `designNote` 与 `adjustments[]` 记录。
+- 典型修正：给「承诺长期损耗却永不疲劳」的卡点亮真实 FATIGUE；解除被 `hpPctBelow` /
+  `targetHasStatus` 死门控锁死的伤害（孤峰/棱镜/暗星/赤隼）；削减过量自疗（幻梦/渊鳞/绝刃）；
+  补足护盾墙的进攻转化（终焉/苍翼）。
+- 全部调整仅通过统一 Card Schema，无任何卡牌专属引擎代码。
+- 长局数据：panel P90 67→59，maxRounds rate 0%，战斗全部有胜负（对称镜像高回合平局属对称性固有结果，已如实报告）。
+
+### 3. Card Numerical Knowledge System（补充规格）
+
+- **Canonical Registry** `src/numerical-knowledge.js`：111 参数（含 VOLATILITY/LUCK/ENDURANCE/
+  RAMP/FATIGUE/BATTLE_WEAR 与动态资源）、18 效果、27 条件、8 目标、29 事件、8 修饰操作、
+  43 公式变量、14 公式函数、8 伤害类型 —— 每项含「是什么/调高调低/谁读取/AI 与 BP 如何理解/
+  调优指南/用户需求示例」。
+- **自动参考文档** `docs/CARD-NUMERICAL-REFERENCE.md`（GENERATED，`npm run numerical-reference`）。
+- **覆盖审计**：60 预设 + 10000 v4 卡 `undocumentedActiveFields = 0`（硬要求）。
+- **扰动验证**：ATK/LIFESTEAL/VOLATILITY/RAMP/FATIGUE/HEAL_POWER 的文档描述与引擎行为逐一验证通过。
+- **游戏内 UI**：「数值百科」可搜索（吸血/疲劳/暴击/ATK），分类浏览；卡牌详情每项数值 ⓘ 弹层说明；
+  特点标签显示证据（RAMP_RATE=…）；390×844 浏览器 QA 13/13 通过。
+- **AGENTS.md**：Coding Agent 入口，明确改哪些参数前先读 registry，需求→参数映射表。
 
 ---
 

@@ -88,6 +88,9 @@ min max abs floor ceil round sqrt log log2 log10 exp pow sign clamp
 
 ## 数值语言 / AI 文档
 
+- **Canonical Numerical Knowledge Registry** — `src/numerical-knowledge.js`（所有参数/效果/条件/事件/公式变量的唯一真源；游戏内「数值百科」与自动文档都从这里派生）。
+- `docs/CARD-NUMERICAL-REFERENCE.md` — **自动生成**的完整数值参考（GENERATED FROM CANONICAL，勿手改；`npm run numerical-reference` 重新生成）。
+- `AGENTS.md` — Coding Agent 入口：改卡牌生成/平衡/AI/BP/公式/预设前先读 registry，含「需求→参数」映射。
 - `docs/NUMERIC-COMPONENT-CATALOG.md` — 人类可读的全部旋钮、Effect、Condition、Target、Event 说明。
 - `docs/numeric-component-catalog.json` — AI / 工具可直接读取的机器目录。
 - `docs/PLUGIN-API.md` — 插件接口。
@@ -112,4 +115,8 @@ npm run verify
 - `node scripts/audit-v4-battles.js 3000`：3000 场随机 1v1 长局统计 → `qa/v4-long-battles.json`（maxRounds rate / 回合分位）。
 - `node scripts/audit-v4-presets.js`：60 张预设对手面板实战审计 → `qa/v4-preset-audit.json` + `docs/V4-PRESET-TABLE.md`。
 - `node qa/browser-v4.js`：Playwright 真实 Chromium 手机 390×844 + 桌面流程与截图 → `qa/browser-v4.json`。
+- `npm run numerical-reference`：从 canonical registry 重新生成 `docs/CARD-NUMERICAL-REFERENCE.md`。
+- `npm run audit:numerical-coverage`：数值知识覆盖审计（60 预设 + 10000 v4 卡，`undocumentedActiveFields` 必须为 0）。
+- `npm run audit:numerical-semantics`：参数扰动验证（ATK/LIFESTEAL/VOLATILITY/RAMP/FATIGUE/HEAL_POWER 文档描述 == 引擎行为）。
+- `node qa/browser-knowledge.js`：数值百科 UI QA（390×844，搜索/弹层/详情 ⓘ/无 overflow/无 console error）。
 - `npm run verify:release`：verify + `npm run diversity`。仓库清单按 Git 暂存区内容生成；提交新文件后先 `npm run manifest`。

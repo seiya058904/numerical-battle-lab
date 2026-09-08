@@ -1,12 +1,12 @@
 {
   "name": "numerical-card-battle",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "entry": "index.html",
   "runtime": "fully-offline-static-web",
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 243,
+  "verifiedTests": 250,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
@@ -24,24 +24,29 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
+      "path": "AGENTS.md",
+      "size": 6595,
+      "sha256": "e33d325fc2b8eb24ec231f09b797a79c8f591185787fa5520e0bdd1bd8aeec77"
+    },
+    {
       "path": "FINAL-REPORT.md",
       "size": 14218,
-      "sha256": "0831704a1c022691495eb6b54874a6705ce4b297624efe8e5cd4286a12c4c581"
+      "sha256": "b0e339380d0a3059d7cad20419aa212ff0c3b26ed851bd1663d571190e9724a8"
     },
     {
       "path": "QA-REPORT.md",
       "size": 8825,
-      "sha256": "9b4452e76bef2bcfa49cf87db4a9e977a0e811626014d8828aa7ec93559c7054"
+      "sha256": "071239bb86467b0b774a7735debcc517a0013ee8b3e2050b6c5bb98f5e6492ae"
     },
     {
       "path": "README.md",
-      "size": 9460,
-      "sha256": "9be3e479e484ec5500e00a0ed7b00969b9b0c9e117f41837039502ebb821286d"
+      "size": 10497,
+      "sha256": "9d24842e7514e3c2d15425f7bcddcc431f62172ca48362ae8d5c9fc0779afb12"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "size": 17880,
-      "sha256": "74629afbe96cfb78403f7c43007212a89a2caca508fc6403de46555be6a9160d"
+      "size": 20658,
+      "sha256": "5634b4e377b3091ac5b5bdd2a52cf931cc36f150ce53bc29f28740bbe44cc7d3"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -50,13 +55,13 @@
     },
     {
       "path": "content/presets-v4.js",
-      "size": 451210,
-      "sha256": "0635f062ad05dfad8992796f4c78f0d7990d72390935267a0d30059f4b929554"
+      "size": 455052,
+      "sha256": "5c5277e528525f27e3e1c18ca48751d831345af591c2975902f5b6e1804b38f8"
     },
     {
       "path": "content/presets-v4.json",
-      "size": 719096,
-      "sha256": "818de2e6662835b54d6c5f3f230f8b9e03966b95c11a56ff046b9ad5ceb77692"
+      "size": 726400,
+      "sha256": "4308b2b211614105fc90efd32a6560c5644766c455795c409a8ee6eb4c537b01"
     },
     {
       "path": "docs/ARCHITECTURE.md",
@@ -67,6 +72,11 @@
       "path": "docs/BALANCE-AUDIT-v1.2.md",
       "size": 10991,
       "sha256": "c97db0800139283b54017bb011a839b6f7ba5397c89ccc291d4d7c99f83d07e4"
+    },
+    {
+      "path": "docs/CARD-NUMERICAL-REFERENCE.md",
+      "size": 32348,
+      "sha256": "9f6e786fa602bf0bbbca9798f42db826ece79e2cbb518e1cf151129915eea64f"
     },
     {
       "path": "docs/CONTENT-AUTHORING.md",
@@ -90,8 +100,8 @@
     },
     {
       "path": "docs/GENERATOR-V4-REPORT.md",
-      "size": 10903,
-      "sha256": "81d85c800b61c18a5afef1753aa6bfcb16670420bae058e308e07d185239e3f0"
+      "size": 14975,
+      "sha256": "83a1b521e9fd03be14ad1d01a2a2358fe420f6d95c5bfbd3b0764364f3eb7904"
     },
     {
       "path": "docs/GENERATOR-V4.md",
@@ -114,9 +124,14 @@
       "sha256": "1eb0e8f6a7e363abb133506008fb0b45d48dc68721219a804fd6eedae43706e4"
     },
     {
+      "path": "docs/V4-PRESET-DESIGN-REPORT.md",
+      "size": 23801,
+      "sha256": "ceb6644b31b0e58028c7a0f3583f8be95ccac99283a1376639375d7c923a44f1"
+    },
+    {
       "path": "docs/V4-PRESET-TABLE.md",
-      "size": 5673,
-      "sha256": "a9ba8b86db33287b99e10a0b13d2111b3af4cc39c093bc49d7e3ea3051cb1e00"
+      "size": 5655,
+      "sha256": "0c10d4a0fe845a5f0380d891f574f04bf44e42afe8cefd5e0f4b6c69da067206"
     },
     {
       "path": "docs/numeric-component-catalog.json",
@@ -160,18 +175,28 @@
     },
     {
       "path": "index.html",
-      "size": 3849,
-      "sha256": "71167af7e6b4312265fa5cc90e3f804720e6c0c64ebc890c010bc615dd287528"
+      "size": 3902,
+      "sha256": "59c7fa8a7d2b3b5461560ae29cde376daa4db393d4ad75e05a0599afbabd4629"
     },
     {
       "path": "package.json",
-      "size": 1004,
-      "sha256": "31d38e1c3d866873047fd00029ec9e6b372d5ebc8025036cf1fbcd1f72332e41"
+      "size": 1239,
+      "sha256": "481dbb7659b937605040e864b4bc122caa737e9e1e1dfc9827611920f8d14ea0"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
       "size": 23259,
       "sha256": "20c1403992f235cb16984575707cfaa360a0a3a76ec814fa4d834b7c76cd0b39"
+    },
+    {
+      "path": "qa/browser-knowledge.js",
+      "size": 4305,
+      "sha256": "c7589717015ea82e49b541b1d5527fafd4ee7507c4a3486f6c68f28f245398b0"
+    },
+    {
+      "path": "qa/browser-knowledge.json",
+      "size": 989,
+      "sha256": "48e985f441aef8c50eb6fd72d2482ca6b75a07cccee5d9c90a246a2af9d1b683"
     },
     {
       "path": "qa/browser-results.json",
@@ -200,8 +225,8 @@
     },
     {
       "path": "qa/browser-v4.json",
-      "size": 7998,
-      "sha256": "99ea2c713b83eb8ea8a50bc1b7f00e300c31856c93ce7553c085febf6c3a209c"
+      "size": 7938,
+      "sha256": "2df1e5a71502466e1cc7dde4bacf361448b599966096a6ff3f6b41d5a1cd9454"
     },
     {
       "path": "qa/desktop.png",
@@ -232,6 +257,16 @@
       "path": "qa/mobile.png",
       "size": 133235,
       "sha256": "4055cf457d34a8e78a805583ed0c29910a96364957ae078e22a7a6cecbb0a7ff"
+    },
+    {
+      "path": "qa/numerical-coverage.json",
+      "size": 244,
+      "sha256": "1611ace4e05c4e24e36074674bf6d9bde62adf5c99b768765dbff3e1f274804b"
+    },
+    {
+      "path": "qa/numerical-semantics.json",
+      "size": 817,
+      "sha256": "3c643a3a1d65c7f1987f269bad9b4cf074347964157c267caff5cabe93f0fd16"
     },
     {
       "path": "qa/power-calibration.json",
@@ -280,13 +315,23 @@
     },
     {
       "path": "qa/v4-curation.json",
-      "size": 49197,
-      "sha256": "02aa76c1ad599d6d3ea65241cdf80c2fdf4821a5bb3dc60bbfadb1e371117280"
+      "size": 67158,
+      "sha256": "2475ed5373d95151ed254ab193481bb3a122f0cd7e1e369753ba22e403075d1a"
     },
     {
       "path": "qa/v4-desktop-battle.png",
       "size": 63693,
       "sha256": "f0ee1fbd48c2d546e56919d8eb2505516515ca3ae28ac7c151d1810648a01970"
+    },
+    {
+      "path": "qa/v4-dossiers.json",
+      "size": 717510,
+      "sha256": "7910f27052e00ae40733513fd32f80089736ab7796a68b5dbbc5066e7b5dfdff"
+    },
+    {
+      "path": "qa/v4-knowledge-mobile.png",
+      "size": 44690,
+      "sha256": "ff5c0fe9a73433fcc9ac617b468f481f849e690385bd74eff027e823fda42814"
     },
     {
       "path": "qa/v4-long-battles.json",
@@ -295,8 +340,8 @@
     },
     {
       "path": "qa/v4-mobile-battle-1.png",
-      "size": 30003,
-      "sha256": "b9def7ee8abbb6523d8085095765e5df33fe2f77ed9ef8fffa75bfe1cc1e8363"
+      "size": 29949,
+      "sha256": "6a7e5dbdf772483e85e93b68d74f4f649f1d49bc6f9fc20aa3834e34895c8ab9"
     },
     {
       "path": "qa/v4-mobile-battle-timeline.png",
@@ -305,13 +350,13 @@
     },
     {
       "path": "qa/v4-mobile-presets.png",
-      "size": 33743,
-      "sha256": "52590762eca1df02b12cd3ce5706c7d9be5f55c7198f69fb05ae3026a44ef89d"
+      "size": 33763,
+      "sha256": "903ce5227581846682fcfcb78b1bd0b5cc37ed2a6551dd14cb7f93856f121ab1"
     },
     {
       "path": "qa/v4-preset-audit.json",
-      "size": 763182,
-      "sha256": "abb68c92591a2afc8ff7cc2c4ccf16840a3adbc81b2be0f5b7b4a46355c3dfaa"
+      "size": 755025,
+      "sha256": "8bcd77a8ecee7951c1f9796870885a852c2120ecf4a98165ef5a7328964374be"
     },
     {
       "path": "scripts/adjacent-rarity-matrix.js",
@@ -319,9 +364,29 @@
       "sha256": "f5695a681f3475355a6b860587b32065552287c38eb0e4cec33ea4d5c61afbad"
     },
     {
+      "path": "scripts/apply-v4-tune.js",
+      "size": 18622,
+      "sha256": "4fbf77f7919d8cad6b4405c31969c14180e02f25139bbf2da5ac7499f3ea9841"
+    },
+    {
+      "path": "scripts/audit-numerical-coverage.js",
+      "size": 2476,
+      "sha256": "cdb5c790bf414fcb52873c5f438bb3d98a01a3722f2a4e7f5753c549d36d17ff"
+    },
+    {
+      "path": "scripts/audit-numerical-semantics.js",
+      "size": 11352,
+      "sha256": "79a5930795987155fafdc37eecb6ae621294d1fcc5bd6342ef490752c1201045"
+    },
+    {
       "path": "scripts/audit-v4-battles.js",
       "size": 2503,
       "sha256": "2c67c29acf583ca86388e0d43db0095bbf381e9a335532f1fcf47685b15ae4ee"
+    },
+    {
+      "path": "scripts/audit-v4-dossier.js",
+      "size": 5999,
+      "sha256": "434077313cb5e76908668395928d1b05e53b9a32d070deb88e0ddf8fa82e2876"
     },
     {
       "path": "scripts/audit-v4-presets.js",
@@ -349,6 +414,11 @@
       "sha256": "f51504415d6704459230d1d7cc4f7ca9156895642d96ff36bbfe8f2bb5c75f54"
     },
     {
+      "path": "scripts/generate-numerical-reference.js",
+      "size": 6002,
+      "sha256": "de54b2e845fa5e096776cea01064546eed68ebe9f05e1f32d9d885d9bd1d0ca0"
+    },
+    {
       "path": "scripts/generate-v1-fixture.js",
       "size": 6139,
       "sha256": "7f1b6259d4f59fbec53e452ca0b4a51f9d6837e238c9742e956e4fb89aeadc53"
@@ -374,6 +444,11 @@
       "sha256": "3a6dc802672e1a51449b1c641bd2225795c457fa55824e0b51ecc49f398c9a96"
     },
     {
+      "path": "scripts/rebuild-curation-report.js",
+      "size": 5267,
+      "sha256": "229b9efba16693f92081fe7d289b0998f6a2dbbf2554b22f44963747c7a5bd1f"
+    },
+    {
       "path": "scripts/select-v4-presets.js",
       "size": 7022,
       "sha256": "d08cad5a0715a188f1d9428c77351e9bbdc7d1ceeae0b2f8a2631ae676efcc4c"
@@ -386,7 +461,7 @@
     {
       "path": "scripts/static-check.js",
       "size": 7234,
-      "sha256": "5360eba2ee9932b985e526d59bb483afd444fd52db4a93885fceadd78c1a6b07"
+      "sha256": "b7c2e15bdf1a6171c963c75eb8dd87d79fa854bbc11d00c5b6d71fb6c0af0937"
     },
     {
       "path": "scripts/stress-check.js",
@@ -400,8 +475,8 @@
     },
     {
       "path": "src/app.js",
-      "size": 51218,
-      "sha256": "1799f28bbe596f5583b23f8e617dc23a7071190cf530391ebba1333397023111"
+      "size": 57923,
+      "sha256": "e1899c4aea6394b93a66dc9afc511f52ff60dba1348d1413bb3cb85de2c04d9e"
     },
     {
       "path": "src/battlepower-model.js",
@@ -425,13 +500,13 @@
     },
     {
       "path": "src/card-browser.js",
-      "size": 9606,
-      "sha256": "97678d13b81682eeb508097dab606505fb3135aac908cc8841f92a1c9f913b67"
+      "size": 11385,
+      "sha256": "1d44ec7177d8abe0ff57a172a52178883785087cc657e9d2ddabb1b4fcd051d6"
     },
     {
       "path": "src/card-ui.js",
-      "size": 14172,
-      "sha256": "f981fa2216f4a6228cf3c7f175474fa0386e9e1793b9edaab9a02a0f9c73cb4a"
+      "size": 14832,
+      "sha256": "77ca645e8130f2b7b3ffe5f819fc4af2c79ce60fa9195b43167152eeb7a41439"
     },
     {
       "path": "src/components.js",
@@ -504,6 +579,11 @@
       "sha256": "8d21019af63dbd2194f06956832dd9f1cb159a890a2eff745ac23f2ecad3588c"
     },
     {
+      "path": "src/numerical-knowledge.js",
+      "size": 49882,
+      "sha256": "584faf4359b074bcd6dbd8b811ba13a12a5880c76c3a62d901d64792ed2c2b6c"
+    },
+    {
       "path": "src/power.js",
       "size": 5695,
       "sha256": "63f9e5bf60a447d87aef255ac5ae2f3100532f348dac5d093faaf1677a89e550"
@@ -530,8 +610,8 @@
     },
     {
       "path": "styles.css",
-      "size": 23311,
-      "sha256": "d34d21d7b69406611c3e4e3dbc2e562bac6e0591b52abed46b56d3acee5c1b84"
+      "size": 25879,
+      "sha256": "b5283b0eadf3d63a512ca36af9972d474355ca0585d7b9f8935c328c5167b42f"
     },
     {
       "path": "tests/actions-v3.test.js",
@@ -654,6 +734,11 @@
       "sha256": "289ea845560ed618c299cc3653cc09a1bbfc758be21eeb7f606abf44e73b4375"
     },
     {
+      "path": "tests/numerical-knowledge.test.js",
+      "size": 3449,
+      "sha256": "cf39d57c5b45623d4db07b91cb43bad8794677187fe5ea41b1c14559166e917b"
+    },
+    {
       "path": "tests/power-v12.test.js",
       "size": 2345,
       "sha256": "1b51c6303ac003b1a4980c390216f1a3864fdd97b77bc27afc08dac8f58f2af3"
@@ -675,8 +760,8 @@
     },
     {
       "path": "tests/presets.test.js",
-      "size": 4718,
-      "sha256": "ae9ea724a8936c26d48bf7a1d95ef84d39a8d0b806850e6786d8604c688852be"
+      "size": 5740,
+      "sha256": "6a72e6952527d57c9305867d952b2828cb8f368f809c810ea4dba4ce31ef037b"
     },
     {
       "path": "tests/v1-fixture.test.js",
@@ -735,5 +820,5 @@
     }
   ],
   "combinedDefaultCompositionWinRate": 0.595,
-  "notes": "v1.3.0: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path."
+  "notes": "v1.3.1: Simple Outside, Deep Inside. Minimal black-and-white cards + high-dimension numerical kernel + AI-vs-AI auto spectate + free-creation sandbox. Default 1v1 with both sides controlled by one canonical utility AI (pause/step/speed/restart). Generator v3 composes 2-6 variable Actions (attack is just one Action), keeps deterministic seeds, mechanic fingerprints and v1/v2 explicit legacy reproduction; rare/level budget scales monotonically across the 12 rarity tiers. No economy, levels, gacha or unlocks. Legacy v2 composition/pressure/sustain repair stays only on the explicit v2 path."
 }

@@ -75,3 +75,22 @@ test('copying a preset produces a distinct library entry (no id conflict)',()=>{
   assert.deepEqual(copy.stats,preset.stats);
   assert.equal(copy.actions.length,preset.actions.length);
 });
+
+test('BP canonical truth: battlePowerV2 is the only source for all 60 presets',()=>{
+  assert.ok(N.battlePowerV2,'battlePowerV2 must be loaded');
+  for(const c of N.SYSTEM_PRESETS){
+    const canonical=N.battlePowerV2(c).power;
+    assert.ok(Number.isFinite(canonical)&&canonical>0,`canonical BP missing for ${c.displayName}`);
+    // Frozen content field must equal the canonical computed value (no stale drift).
+    assert.equal(c.presentation?.power,canonical,`${c.displayName}: content presentation.power != canonical battlePowerV2 (${c.presentation?.power} vs ${canonical})`);
+  }
+});
+
+test('cachePresetPower seeds the BP cache from canonical, so battlePowerOf matches battlePowerV2',()=>{
+  for(const c of N.SYSTEM_PRESETS){
+    N.cachePresetPower(c); // pre-warm exactly like src/presets.js does on load
+    const displayed=N.battlePowerOf(c);
+    const canonical=N.battlePowerV2(c).power;
+    assert.equal(displayed,canonical,`${c.displayName}: battlePowerOf ${displayed} != battlePowerV2 ${canonical}`);
+  }
+});

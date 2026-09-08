@@ -299,3 +299,20 @@ input,select,textarea{min-width:0;max-width:100%}select{min-height:44px}
 .current-event{min-height:40px;overflow-wrap:anywhere}.entity-card{position:relative}.entity-card .meter i{transition:none}
 @media(max-width:650px){.selection-grid{grid-template-columns:1fr}.picker-overlay{padding:14px 18px}.selection-card{padding:20px}.setup-slots{grid-template-columns:1fr}.setup-vs{text-align:center}.setup-slot .selection-card .card-art{height:72px}.card-browser{min-width:0}.browser-heading h2{font-size:18px}.filter-row{gap:8px}.combat-float-slot{font-size:18px}.browser-detail .card{max-width:100%}.card-filters{padding-top:8px}}
 @media(prefers-reduced-motion:reduce){.combat-float-slot{animation:none}}
+
+/* Numerical Knowledge — 数值百科 (v1.3.1) */
+.knowledge-sheet{position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.35);display:flex;align-items:flex-end;justify-content:center}
+.knowledge-sheet-card{width:min(560px,100%);max-height:78vh;overflow:auto;background:#fff;border-top:2px solid #111;padding:20px 22px;border-radius:14px 14px 0 0;animation:kb-up .22s ease-out}
+@keyframes kb-up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
+.knowledge-sheet-card h2{font-size:20px;margin:6px 0 10px}.knowledge-sheet-card h4{font-size:13px;margin:14px 0 4px;border-top:1px solid #ddd;padding-top:10px}
+.knowledge-sheet-card p{font-size:13px;line-height:1.7;color:#222;margin:4px 0}
+.knowledge-kind{display:inline-block;font:11px monospace;border:1px solid #999;border-radius:10px;padding:2px 8px;color:#444}
+.knowledge-updown{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}.knowledge-updown div{border:1px solid #ccc;border-radius:8px;padding:8px 10px;font-size:12px}.knowledge-updown b{display:block;margin-bottom:2px}
+.knowledge-sheet-card ul{margin:4px 0 0;padding-left:18px;font-size:13px;line-height:1.8}
+.knowledge-more{display:inline-block;margin-top:14px;font-size:12px;color:#333;border-bottom:1px solid #999}
+.btn.tiny{font-size:11px;padding:2px 8px;margin:2px}
+.kb{max-width:680px;margin:auto}.kb-head h2{font-size:22px}.kb input[type=search]{display:block;width:100%;min-height:46px;margin:12px 0 8px;font-size:14px}.kb select{min-height:40px;width:100%}
+.kb-results{display:flex;flex-direction:column;gap:8px;margin-top:12px}.kb-row{text-align:left;border:1px solid #c0c0c0;border-radius:10px;background:#fff;padding:10px 12px;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}.kb-row b{display:block;font-size:14px}.kb-row span{font:11px monospace;color:#555}.kb-row small{display:block;color:#333;font-size:12px;line-height:1.5;margin-top:3px}
+.detail-row .detail-stat{display:flex;width:100%;gap:10px;align-items:center;border:none;background:transparent;padding:4px 0;font:inherit;cursor:pointer;text-align:left}.detail-row .detail-stat span{flex:1;font-size:12px}.detail-row .detail-stat b{min-width:70px;text-align:right;font-size:12px}.detail-row .detail-stat i{font-style:normal;color:#777;font-size:12px}
+.behavior-evidence{display:flex;flex-direction:column;gap:6px}.behavior-evidence-row{display:flex;gap:8px;align-items:baseline;font-size:12px}.tag-evidence{color:#555}
+@media(max-width:650px){.knowledge-sheet-card{padding:16px}.kb-results{max-height:60vh}}

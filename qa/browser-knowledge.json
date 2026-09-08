@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "name": "encyclopedia opens",
+      "pass": true
+    },
+    {
+      "name": "search 吸血 -> LIFESTEAL",
+      "pass": true
+    },
+    {
+      "name": "sheet opens",
+      "pass": true
+    },
+    {
+      "name": "sheet explains 吸血",
+      "pass": true
+    },
+    {
+      "name": "sheet closes",
+      "pass": true
+    },
+    {
+      "name": "search 疲劳 -> FATIGUE_RATE",
+      "pass": true
+    },
+    {
+      "name": "search 疲劳 -> BATTLE_WEAR",
+      "pass": true
+    },
+    {
+      "name": "search 攻击 -> ATK",
+      "pass": true
+    },
+    {
+      "name": "category 成长与疲劳 lists BATTLE_WEAR",
+      "pass": true
+    },
+    {
+      "name": "detail stat rows have knowledge buttons",
+      "pass": true
+    },
+    {
+      "name": "stat ⓘ opens sheet",
+      "pass": true
+    },
+    {
+      "name": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "console healthy",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

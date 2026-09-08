@@ -355,14 +355,77 @@
   // HELP (玩法说明)
   // ===========================================================================
   function renderHelp(){
-    $('#view-help').innerHTML=`<div class="help-layout"><h2>创造、组合、观察。</h2><ol class="help-steps"><li>可直接选两张「系统预设」开战，无需先建卡；或选择稀有度和等级自建卡。</li><li>保存到我的卡牌，选择左右双方。</li><li>开始对战，看 AI 自动决策。随时暂停、单步或调速。</li><li>结束后重开、换卡，或打开高级编辑修改数值。</li></ol><h3>同时决策，顺序结算</h3><p>每轮所有存活角色先选择一个行动与合法目标，再按行动优先级、速度和确定性规则统一排序。状态与反击会即时触发。达到最大回合则平局。</p><h3>稀有度 · 等级 · 战力</h3><p>内置 60 张经过筛选的系统预设（每档稀有度 5 张），覆盖 12 档稀有度、Lv.10–100，方便第一眼对比。卡面上「战力」是综合实力的<b>参考数值</b>，<b>不参与</b>战斗计算。</p><p>等级可输入 1–100 的任意整数；12 档稀有度代表逐步增加的数值预算；强弱与克制都可以存在。特点由最终数值与行动分析而来。没有升级、奖励或解锁。</p><p>数据保存在当前浏览器。高级实验室可编辑完整行动、资源、状态、公式，查看回放与计算详情。</p></div>`;
+    $('#view-help').innerHTML=`<div class="help-layout"><h2>创造、组合、观察。</h2><ol class="help-steps"><li>可直接选两张「系统预设」开战，无需先建卡；或选择稀有度和等级自建卡。</li><li>保存到我的卡牌，选择左右双方。</li><li>开始对战，看 AI 自动决策。随时暂停、单步或调速。</li><li>结束后重开、换卡，或打开高级编辑修改数值。</li></ol>
+    <button class="btn primary" data-action="open-knowledge">打开「数值百科」</button>
+    <h3>快速入门</h3><p><b>生命</b>决定能承受多少伤害；<b>攻击</b>决定很多进攻行动的基础威力；<b>防御</b>主要抵抗物理伤害；<b>抗性</b>处理元素/奥术伤害；<b>速度</b>影响行动顺序。</p>
+    <p>暴击、穿透、命中、闪避、治疗、护盾决定攻防细节；资源、状态、DoT、消费把战斗组合成循环。最后，<b>波动性</b>让同一个行动在不同回合结果不同，<b>成长/疲劳</b>让同一张卡第 3 回合与第 30 回合不是同一个状态，<b>战斗损耗</b>让治疗型卡在超长局中最终也会结束战斗。</p>
+    <h3>同时决策，顺序结算</h3><p>每轮所有存活角色先选择一个行动与合法目标，再按行动优先级、速度和确定性规则统一排序。状态与反击会即时触发。达到最大回合则平局。</p><h3>稀有度 · 等级 · 战力</h3><p>内置 60 张经过筛选的系统预设（每档稀有度 5 张），覆盖 12 档稀有度、Lv.10–100，方便第一眼对比。卡面上「战力」是综合实力的<b>参考数值</b>，<b>不参与</b>战斗计算——高战力也可能因机制克制而输。</p><p>等级可输入 1–100 的任意整数；12 档稀有度代表逐步增加的数值预算；同等级下更高稀有度通常总体更强。特点由最终数值与行动分析而来。没有升级、奖励或解锁。</p><p>在「卡牌详情 → 详细数值」里点击任意字段可查看它的含义；「数值百科」可搜索全部参数、效果、条件、公式变量。数据保存在当前浏览器。高级实验室可编辑完整行动、资源、状态、公式，查看回放与计算详情。</p></div>`;
   }
 
   // ===========================================================================
   // ADVANCED LAB (preserved from v1: editor / simulation / guide / replay / trace / json)
   // ===========================================================================
-  function unitOptions(selected){return Object.keys(NCB.UNIT_DEFS).map(id=>`<option value="${esc(id)}" ${id===selected?'selected':''}>${esc(NCB.UNIT_DEFS[id].name)} / ${esc(NCB.UNIT_DEFS[id].role)}</option>`).join('');}
   function currentPack(){return{units:NCB.UNIT_DEFS,skills:NCB.SKILL_DEFS,statuses:NCB.STATUS_DEFS};}
+  function unitOptions(selected){return Object.keys(NCB.UNIT_DEFS).map(id=>`<option value="${esc(id)}" ${id===selected?'selected':''}>${esc(NCB.UNIT_DEFS[id].name)} / ${esc(NCB.UNIT_DEFS[id].role)}</option>`).join('');}
+
+  // ===========================================================================
+  // NUMERICAL KNOWLEDGE — 数值百科 (game encyclopedia; spec NKS §27-31)
+  // ===========================================================================
+  const KNOW_CATEGORIES=[
+    ['params','基础/战斗属性',k=>Object.entries(k.params).filter(([,e])=>['实体基础','防御','资源'].includes(e.category))],
+    ['random','随机性',k=>Object.entries(k.params).filter(([,e])=>['VOLATILITY','LUCK'].includes(e.id))],
+    ['time','成长与疲劳',k=>Object.entries(k.params).filter(([,e])=>['ENDURANCE','RAMP_START','RAMP_RATE','RAMP_CAP','FATIGUE_START','FATIGUE_RATE','FATIGUE_CAP','BATTLE_WEAR'].includes(e.id))],
+    ['effects','行动效果',k=>Object.entries(k.effects)],
+    ['conditions','条件',k=>Object.entries(k.conditions)],
+    ['events','事件',k=>Object.entries(k.events)],
+    ['formula','公式变量',k=>Object.entries(k.formulaSymbols)],
+    ['types','伤害类型',k=>Object.entries(k.damageTypes)]
+  ];
+  function knowledgeSheet(id){
+    document.querySelectorAll('.knowledge-sheet').forEach(s=>s.remove());
+    const hit=NCB.knowledgeLookup(id);if(!hit)return;
+    const e=hit.entry;
+    const lines=[];lines.push(`<span class="knowledge-kind">${esc(hit.kind)}</span>`);
+    lines.push(`<h2>${esc(e.nameZh||e.nameEn||id)}${e.nameEn&&e.nameEn!==(e.nameZh||e.nameEn)?` · <code>${esc(e.nameEn)}</code>`:''}</h2>`);
+    if(e.summary)lines.push(`<p>${esc(e.summary)}</p>`);
+    if(e.higherEffect||e.lowerEffect){lines.push('<div class="knowledge-updown"><div><b>调高</b><p>'+esc(e.higherEffect||'—')+'</p></div><div><b>调低</b><p>'+esc(e.lowerEffect||'—')+'</p></div></div>');}
+    if(e.battleEffect)lines.push(`<h4>进入战斗计算</h4><p>${esc(e.battleEffect)}</p>`);
+    if((e.interactions||[]).length)lines.push(`<h4>相关</h4><p>${e.interactions.map(x=>`<button class="btn tiny" data-knowledge="${esc(x)}">${esc(x)}</button>`).join(' ')}</p>`);
+    if((e.examples||[]).length)lines.push(`<h4>示例</h4><ul>${e.examples.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`);
+    if(e.aiMeaning)lines.push(`<h4>AI 如何理解</h4><p>${esc(e.aiMeaning)}</p>`);
+    if(e.battlePowerMeaning)lines.push(`<h4>战力如何理解</h4><p>${esc(e.battlePowerMeaning)}</p>`);
+    if(e.tuningGuidance)lines.push(`<h4>调优指南</h4><p>${esc(e.tuningGuidance)}</p>`);
+    if((e.readBy||[]).length)lines.push(`<h4>读取方</h4><p>${esc(e.readBy.join(' / '))}</p>`);
+    const sheet=document.createElement('section');
+    sheet.className='knowledge-sheet';sheet.setAttribute('role','dialog');sheet.setAttribute('aria-modal','true');
+    sheet.innerHTML=`<div class="knowledge-sheet-card"><button class="btn ghost" data-knowledge-close>关闭</button>${lines.join('')}<a class="knowledge-more" data-knowledge-browse="${esc(id)}">在完整百科中查看</a></div>`;
+    document.body.appendChild(sheet);document.body.classList.add('picker-open');
+    sheet.querySelector('[data-knowledge-close]').onclick=()=>sheet.remove();
+  }
+  function renderKnowledgeBrowser(root){
+    const k=NCB.NUMERICAL_KNOWLEDGE();
+    const render=()=>{
+      const q=(root.querySelector('[data-kb-search]')?.value||'').trim().toLowerCase();
+      let results=q?NCB.knowledgeSearch(q):[];
+      const cat=root.querySelector('[data-kb-cat]')?.value||'';
+      if(!q&&cat){const entry=KNOW_CATEGORIES.find(c=>c[0]===cat);if(entry)results=entry[2](k).map(([id,e])=>({kind:'参数',id,nameZh:e.nameZh||e.human||id,nameEn:e.nameEn||id,summary:e.summary||e.human||''}));}
+      root.querySelector('[data-kb-results]').innerHTML=results.length
+        ?`<div class="kb-results">${results.map(r=>`<button class="kb-row" data-knowledge="${esc(r.id)}"><b>${esc(r.nameZh)}</b><span>${esc(r.kind)} · <code>${esc(r.nameEn||r.id)}</code></span><small>${esc(r.summary)}</small></button>`).join('')}</div>`
+        :`<p class="empty">输入关键词，例如「吸血」「疲劳」「暴击」「ATK」。</p>`;
+    };
+    root.innerHTML=`<div class="kb"><div class="kb-head"><h2>数值百科</h2></div><input type="search" data-kb-search placeholder="搜索：攻击 / 暴击 / 疲劳 / 吸血 …"><select data-kb-cat><option value="">按分类浏览</option>${KNOW_CATEGORIES.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select><div data-kb-results></div></div>`;
+    root.oninput=render;root.onchange=render;
+    // pointerup fallback: some mobile/touch emulation suppresses the click event
+    const open=e=>{const row=e.target.closest('[data-knowledge]');if(row)knowledgeSheet(row.dataset.knowledge);};
+    root.onclick=open;root.onpointerup=open;
+    render();
+  }
+  function openKnowledgeBrowser(){
+    const overlay=document.createElement('section');overlay.className='picker-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','数值百科');
+    document.body.appendChild(overlay);document.body.classList.add('picker-open');
+    renderKnowledgeBrowser(overlay);
+    overlay.querySelector('[data-kb-search]')?.focus({preventScroll:true});
+  }
 
   function renderEditor(){ const view=$('#view-editor');if(!view)return;
     const unit=NCB.UNIT_DEFS[state.editorUnitId]||NCB.UNIT_DEFS[Object.keys(NCB.UNIT_DEFS)[0]];state.editorUnitId=unit.id;
@@ -426,6 +489,8 @@
   // EVENTS
   // ===========================================================================
   document.addEventListener('click',event=>{
+    const kb=event.target.closest('[data-knowledge]');if(kb){knowledgeSheet(kb.dataset.knowledge);return;}
+    const kbb=event.target.closest('[data-knowledge-browse]');if(kbb){document.querySelector('.picker-overlay')?.remove();document.body.classList.remove('picker-open');openKnowledgeBrowser();setTimeout(()=>{const hit=NCB.knowledgeLookup(kbb.dataset.knowledgeBrowse);if(hit){const input=document.querySelector('.picker-overlay [data-kb-search]');if(input){input.value=hit.entry.nameEn||kbb.dataset.knowledgeBrowse;input.dispatchEvent(new Event('input'));}}},0);return;}
     const picker=event.target.closest('[data-open-picker]');if(picker){openPicker(picker.dataset.openPicker);return;}
     const roster=event.target.closest('[data-editor-unit]');if(roster){state.editorUnitId=roster.dataset.editorUnit;renderEditor();return;}
     const tab=event.target.closest('[data-tab]');if(tab){$('#lab-menu').open=false;setTab(tab.dataset.tab);if(tab.dataset.tab==='battle'){renderBattle();}return;}
@@ -461,6 +526,7 @@
     const skill=event.target.closest('[data-skill-id]');if(skill){handleSkill(skill.dataset.skillId);return;}
     const remove=event.target.closest('[data-remove-action]');if(remove){state.pending.delete(remove.dataset.removeAction);ensureActor();renderBattle();return;}
     const action=event.target.closest('[data-action]')?.dataset.action;if(!action)return;
+    if(action==='open-knowledge'){openKnowledgeBrowser();return;}
     if(action==='battle-start'){
       const pool=selectableCards();
       const left=state.selectedLeft??-1,right=state.selectedRight??-1;

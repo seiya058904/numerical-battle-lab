@@ -21,6 +21,29 @@
     if(key!=='recommended')rows.sort((a,b)=>sign*((key==='power'?cardInfo(a).power:key==='level'?a.level:N.RARITY_V2_ORDER.indexOf(a.rarity))-(key==='power'?cardInfo(b).power:key==='level'?b.level:N.RARITY_V2_ORDER.indexOf(b.rarity))));
     return rows;
   }
+  function tagEvidence(card,tag){
+    const s=card.stats||{};
+    const E=[];
+    const f=(k,fmt)=>s[k]!=null?`${k} = ${fmt?fmt(s[k]):s[k]}`:null;
+    const add=(x)=>x&&E.push(x);
+    if(tag==='高波动')add(f('VOLATILITY',v=>v>=1.6?v.toFixed(2)+'（≥1.6）':v.toFixed(2)));
+    if(tag==='稳定')add(f('VOLATILITY',v=>v<=0.6?v.toFixed(2)+'（≤0.6）':v.toFixed(2)));
+    if(tag==='赌徒型')add(f('LUCK'));
+    if(tag==='后期成长'){add(f('RAMP_RATE',v=>v.toFixed(3)));add(f('RAMP_START'));}
+    if(tag==='易疲劳'){add(f('FATIGUE_RATE',v=>v.toFixed(3)));add(f('FATIGUE_START'));}
+    if(tag==='高耐力')add(f('ENDURANCE'));
+    if(tag==='高爆发'){add(f('ATK'));}
+    if(tag==='低爆发')add(f('ATK'));
+    if(tag==='吸血')add(f('LIFESTEAL',v=>v+'%'));
+    if(tag==='穿透')add(f('PEN',v=>v+'%'));
+    if(tag==='高速')add(f('SPD'));
+    if(tag==='慢速')add(f('SPD'));
+    if(tag==='高暴击')add(f('CRIT',v=>v+'%'));
+    if(tag==='高回复'||tag==='护盾型'){const k=tag==='高回复'?'HEAL_POWER':'DEF';add(f(k));}
+    if(tag==='DoT'||tag==='状态压制'||tag==='状态引爆'){add((card.statuses||[]).length?'状态 '+card.statuses.map(x=>x.id.split(':').pop()).join('、'):null);}
+    if(tag==='资源循环'){add(f('ENERGY_REGEN'));}
+    return E.length?`<span class="tag-evidence">因为：${esc(E.join(' · '))}</span>`:'';
+  }
   function selectionCard(card){
     const i=cardInfo(card),r=N.rarityUI(card.rarity);
     return `<article class="selection-card ${r.frame}" data-card-id="${esc(card.id)}"><div class="selection-head"><h3>${esc(card.displayName||card.name)}</h3><span class="rarity-badge">${esc(r.badge)}</span></div><div class="selection-meta">Lv.${card.level} · ${esc(N.formatBattlePower(i.power))}</div>${N.artPlaceholder(card.rarity,card.seed)}<div class="selection-stats">${N.CORE_STATS.map(x=>`<span>${x.abbr} <b>${Math.round(card.stats[x.key]||0)}</b></span>`).join('')}</div><p class="card-tags">${i.behavior.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</p><p class="selection-summary">${esc(i.behavior.summary)}</p><p class="selection-actions">${(card.actions||card.skills||[]).map(a=>esc(a.name)).join(' · ')}</p><button class="btn" data-browser-detail="${esc(card.id)}">查看详情</button></article>`;
@@ -55,7 +78,8 @@
     }
     detail(card){
       if(!card)return;const previousScroll=this.container.scrollTop;
-      this.container.innerHTML=`<div class="browser-detail"><button class="btn" data-detail-back>返回卡牌</button>${N.renderCard(card)}<p>${esc(cardInfo(card).behavior.summary)}</p><details><summary>详细数值</summary><div class="detail-grid">${Object.entries(card.stats||{}).map(([k,v])=>`<div class="detail-row"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div></details><details><summary>高级：行动公式</summary><pre>${esc(JSON.stringify(card.actions||card.skills,null,2))}</pre></details><div class="detail-footer">${this.options.onSelect?`<button class="btn primary" data-detail-select>${esc(this.options.selectLabel||'立即对战')}</button>`:''}<button class="btn" data-detail-copy>复制</button>${this.options.canEdit?.(card)?'<button class="btn" data-detail-edit>编辑</button><button class="btn" data-detail-delete>删除</button>':''}</div></div>`;
+      const statRows=Object.entries(card.stats||{}).map(([k,v])=>`<div class="detail-row"><button class="detail-stat" data-knowledge="${esc(k)}"><span>${esc(k)}</span><b>${esc(v)}</b><i aria-label="查看说明">ⓘ</i></button></div>`).join('');
+      this.container.innerHTML=`<div class="browser-detail"><button class="btn" data-detail-back>返回卡牌</button>${N.renderCard(card)}<p>${esc(cardInfo(card).behavior.summary)}</p><details><summary>详细数值 <small>（点击字段查看说明）</small></summary><div class="detail-grid">${statRows}</div></details><details><summary>为什么它有这些特点</summary><div class="behavior-evidence">${(cardInfo(card).behavior.tags||[]).map(t=>`<div class="behavior-evidence-row"><b>${esc(t)}</b>${tagEvidence(card,t)}</div>`).join('')}</div></details><details><summary>高级：行动公式</summary><pre>${esc(JSON.stringify(card.actions||card.skills,null,2))}</pre></details><div class="detail-footer">${this.options.onSelect?`<button class="btn primary" data-detail-select>${esc(this.options.selectLabel||'立即对战')}</button>`:''}<button class="btn" data-detail-copy>复制</button>${this.options.canEdit?.(card)?'<button class="btn" data-detail-edit>编辑</button><button class="btn" data-detail-delete>删除</button>':''}</div></div>`;
       this.container.scrollTop=0;
       this.container.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.hasAttribute('data-detail-back')){this.render();this.restoreControls();this.results();this.container.scrollTop=previousScroll;}if(b.hasAttribute('data-detail-select'))this.options.onSelect?.(card);if(b.hasAttribute('data-detail-copy'))this.options.onCopy?.(card);if(b.hasAttribute('data-detail-edit'))this.options.onEdit?.(card);if(b.hasAttribute('data-detail-delete'))this.options.onDelete?.(card);};
     }

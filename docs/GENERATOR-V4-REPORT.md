@@ -159,3 +159,79 @@ battle seed 随机 + canonical AI 取舍 +  matchup 机制克制，天然含噪�
 4. 60 张预设 `adjustedCards=0` —— 说明精选已足够，但也意味着本轮没有针对极端卡做过
    进一步"雕琢式"手调；若未来要更强表达某些极端原型，可在保持 Schema 的前提下继续微调。
 5. 「相似卡牌」（补充 §AA）本轮未实现（optional，判 clean）。
+---
+
+# v1.3.1 附录 — Preset Quality Corrective Pass + Card Numerical Knowledge System
+
+> OLD HEAD `9c84c68` · NEW HEAD 见 §Git（本轮新增提交）· fast-forward push · worktree clean · 0/0。
+
+## Git
+
+- **Baseline / OLD HEAD**: `9c84c68`（v1.3.0）
+- **NEW HEAD**: 本轮新增提交后 tip（见最终 Git 输出），本地/远端 0/0。
+- 无 force push；无 HEAD 自引用提交链。
+
+## BattlePower consistency（Blocker 1）
+
+- **根因**：`cachePresetPower` 把冻结 `presentation.power` 直接写入 WeakMap；`battlePowerV2` 变化后 UI 显示旧战力（实测 1/60 漂移：苔痕 200 vs 139）。
+- **修复**：`cachePresetPower` 改为从 canonical `battlePowerV2` 种子化；新增 `BP canonical truth`（60/60）与 `cachePresetPower seeds canonical` 测试。
+- **结果**：60/60 张 UI BP = Card Detail BP = Battle BP = content cached BP = audit BP = docs BP = `battlePowerV2(card).power`。
+
+## Curation（Blocker 2）
+
+| 指标 | 值 |
+|---|---|
+| Reviewed | 60 / 60 |
+| Adjusted | 28 |
+| Unchanged | 32 |
+| Replaced | 0 |
+| Total field-level adjustments | 83 |
+| curationVersion | 2 |
+
+- 流程：9600 候选 → 2907 合格 → 60 精选 → **逐张设计审查**（identity/联动/AI/强度/时间/可读性）→ schema tuning → 复测 → 冻结。
+- 每张 `designNote` 与 `adjustments[]` 均为真实记录；无卡牌专属引擎代码。
+
+### 调整最大的 10 张（before/after 见 `docs/V4-PRESET-DESIGN-REPORT.md`）
+
+渊影(5)、苔痕/影足/赤隼/夜枭/孤峰/苍翼/暗星/棱镜/深渊(各 4)。典型：
+
+- **孤峰**：突袭被 `targetHasStatus(dot)` 死门控锁死（dot 无人施加）→ 无条件造成伤害；+后期疲劳。
+- **幻梦**：复苏 repeat 0.4×2 冷却 2 → 4；stance 反击 0.26 → 0.45；+疲劳（87 回合 0 伤害平局可收束）。
+- **棱镜**：蚀爆伤害/护盾锁在 `hpPctBelow 0.5` → 无条件 dot→consume→damage→shield；+轻度疲劳。
+
+## Long battle（官方预设 420 场面板 + 60 镜像）
+
+| 指标 | v1.3.0 | v1.3.1（panel-only） |
+|---|---|---|
+| median | 5 | 5 |
+| P90 | 67 | 59 |
+| P95 | 77 | 69 |
+| max | 88 | 86 |
+| panel draws | — | 8/360（2.2%） |
+| hardCap | 0 | 0 |
+
+- 对称镜像（同一张卡打自己）高回合平局是**对称性固有结果**，panel 对局全部有胜负；最拖沓卡及判定见
+  `docs/V4-PRESET-DESIGN-REPORT.md`（intentional / improved）。
+
+## Numerical Knowledge System（补充规格）
+
+- Canonical registry：`src/numerical-knowledge.js`（111 参数 / 18 效果 / 27 条件 / 8 目标 / 29 事件 / 8 修饰操作 / 43 公式变量 / 14 公式函数 / 8 伤害类型；含 VOLATILITY/LUCK/ENDURANCE/RAMP/FATIGUE/BATTLE_WEAR 与动态资源）。
+- 自动参考：`docs/CARD-NUMERICAL-REFERENCE.md`（GENERATED FROM CANONICAL，`npm run numerical-reference`）。
+- 覆盖审计：60 预设 + 10000 v4 卡 **undocumentedActiveFields = 0**。
+- 扰动验证：ATK / LIFESTEAL / VOLATILITY / RAMP / FATIGUE / HEAL_POWER 全部通过（文档描述 == 引擎行为）。
+- 游戏内：数值百科（搜索/分类/弹层）+ 卡牌详情 ⓘ + 特点证据；390×844 浏览器 QA 13/13。
+- `AGENTS.md`：Agent 入口 + 需求→参数映射。
+
+## Tests
+
+- `npm test`：**250 passed / 0 failed**。
+- `npm run verify`：catalog + 全量测试 + 静态门禁 PASS（v1.3.1 manifest）。
+- 预设审计 / diversity 10000 / 3000 长局 / BP 校准 / 浏览器 QA：全部通过（数值见正文与 §5-§9）。
+
+## Known limitations（真实）
+
+1. 对称镜像的高回合平局仍存在（对称自给卡固有）；已按 §25/§54 判定并记录，未破坏个体多样性。
+2. BP 经验校准 Spearman 0.765 / pairwise 0.807 未达建议 0.80/0.85（同 v1.3.0 报告；为保护严格单调梯子未强行改写）。
+3. `playwright` 未纳入 devDependencies（浏览器 QA 依赖全局安装）。
+4. 「相似卡牌」（补充 §AA）仍未实现（optional）。
+5. 数值百科为极简实现（单层搜索 + 弹层），未做分页/高亮等增强（够用即可）。

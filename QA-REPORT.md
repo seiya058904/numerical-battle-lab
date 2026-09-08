@@ -1,6 +1,6 @@
 # QA 报告 — v1.2.3
 
-> **v1.3.0 更新**：本文档为历史 v1.2.3 报告。Generator v4（Classless）+ Mobile Storyboard 的
+> **v1.3.1 更新**：本文档为历史 v1.2.3 报告。Generator v4（Classless）+ Mobile Storyboard 的
 > QA 见 **[docs/GENERATOR-V4-REPORT.md](docs/GENERATOR-V4-REPORT.md)**（含 243 测试、10000 卡多样性、
 > 3000 场长局 maxRounds 0%、BP v2 经验校准、60 张预设 audit、Playwright 30/30 项）。
 

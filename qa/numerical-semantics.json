@@ -1,0 +1,57 @@
+{
+  "atk": {
+    "low": {
+      "total": 2280
+    },
+    "high": {
+      "total": 4590
+    },
+    "ok": true
+  },
+  "lifesteal": {
+    "zero": 0,
+    "fifty": 300,
+    "healsZero": 0,
+    "healsFifty": 300,
+    "ok": true
+  },
+  "volatility": {
+    "lowStd": 158.5091129521861,
+    "highStd": 190.33741968759935,
+    "lowHits": [
+      2981,
+      3022,
+      2982,
+      2982,
+      3005,
+      2571
+    ],
+    "highHits": [
+      2983,
+      3466,
+      2993,
+      2961,
+      3235,
+      2956
+    ],
+    "ok": true
+  },
+  "ramp": {
+    "controlLast": 100,
+    "rampFirst": 85,
+    "rampLast": 124,
+    "ok": true
+  },
+  "fatigue": {
+    "controlLast": 100,
+    "fatigueFirst": 85,
+    "fatigueLast": 42,
+    "ok": true
+  },
+  "healPower": {
+    "p100": 100,
+    "p200": 200,
+    "ok": true
+  },
+  "allOk": true
+}

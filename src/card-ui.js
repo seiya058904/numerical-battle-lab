@@ -232,7 +232,17 @@
   NCB.RARITY_UI=RARITY_UI;
   NCB.rarityUI=rarityUI;
   NCB.artPlaceholder=artPlaceholder;
-  NCB.cachePresetPower=c=>powerCache.set(c,{signature:JSON.stringify([c.stats,c.actions,c.statuses,c.triggers,c.generationBudget]),power:c.presentation.power});
+  // Pre-warm the BP cache for a preset with the CANONICAL BattlePower v2 value.
+  // The frozen `presentation.power` in content is documentation/artifact field,
+  // NOT an authoritative source: battlePowerV2(card).power is the single source of
+  // truth (§4), so the cache is seeded from it, never from the possibly-stale
+  // frozen snapshot. Keeps preset renders O(1) after first compute.
+  NCB.cachePresetPower=c=>{
+    let canonical=null;
+    try{const r=c?.generatorVersion===4?NCB.battlePowerV2?.(c):null;if(r&&Number.isFinite(r.power))canonical=Math.round(r.power);}catch(_){}
+    if(canonical===null&&c?.presentation?.power!=null)canonical=Number(c.presentation.power)||null;
+    powerCache.set(c,{signature:JSON.stringify([c.stats,c.actions,c.statuses,c.triggers,c.generationBudget]),power:canonical});
+  };
   NCB.battlePowerOf=battlePowerOf;
   NCB.formatBattlePower=formatBattlePower;
   NCB.bpRelation=bpRelation;
