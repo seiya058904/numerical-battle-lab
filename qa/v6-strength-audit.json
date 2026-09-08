@@ -1,0 +1,52 @@
+{
+  "poolPerTier": 3,
+  "battlesPerPair": 6,
+  "roundCap": 100,
+  "rarityGap": {
+    "C vs A (Lv50)": {
+      "win": 1,
+      "n": 36
+    },
+    "A vs SSS (Lv50)": {
+      "win": 0.667,
+      "n": 36
+    },
+    "A vs XS_COLLECTOR (Lv50)": {
+      "win": 1,
+      "n": 36
+    }
+  },
+  "levelGap": {
+    "A Lv10 vs Lv30": {
+      "win": 0.667,
+      "n": 36
+    },
+    "A Lv10 vs Lv60": {
+      "win": 1,
+      "n": 36
+    },
+    "A Lv30 vs Lv60": {
+      "win": 1,
+      "n": 36
+    },
+    "A Lv60 vs Lv100": {
+      "win": 1,
+      "n": 36
+    },
+    "A Lv30 vs Lv100": {
+      "win": 1,
+      "n": 36
+    }
+  },
+  "intraTier": {
+    "pool": 9,
+    "opponents": 12,
+    "min": 0.083,
+    "p25": 0.583,
+    "median": 0.667,
+    "p75": 0.667,
+    "max": 0.75,
+    "mean": 0.597,
+    "spread": 0.667
+  }
+}

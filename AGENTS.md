@@ -90,6 +90,15 @@ npm run manifest               # 重新生成 RELEASE-MANIFEST.json（提交新�
 - `src/gen-v4.js` — Generator v4（legacy：classless、连续预算、个体变量、时间机制）
 - `src/gen-v5.js` — **Generator v5（默认）**：结构先于强度；同 seed 结构跨等级/稀有度不变；
   先生成结构 → 算 LevelScale → 算 Rarity PowerEnvelope → targetPower → battlepower-v3 有界校准
+- `src/budget-v6.js` — **Budget v6**：TotalStrengthBudget = ExpectedStrength(level,rarity)
+  = 1000×LevelScale×RarityStrengthScale（C=1.0…XS_COLLECTOR=12.0）；Seed 只能再分配固定总额
+- `src/budget-price.js` — **budget-price**：生成期因果机制定价（独立于 battlepower-v3）
+- `src/gen-v6.js` — **Generator v6（opt-in，`generateCardV6`）**：预算面板固定 ∝ budget
+  （MAX_HP/ATK/DEF 同档位所有 seed 相同）；2 个固定无条件打击（cd1+cd2）+ 简化 utility；
+  治疗/护盾按引擎真实 HP 价值折算后从伤害预算扣除；真实 AI 对局测量选择门（每草稿 vs 参考卡
+  净 HP 优势，选最接近档位目标实力的草稿）。默认派发器仍是 v5（gen-v5）。
+- `scripts/gate-v6-strength.js` — v6 强度回归门（verify:release 内小样本确定性检查）
+- `scripts/audit-v6-strength.js` — v6 大样本实证审计（稀有度/等级差距 + 同档位 USI）→ qa/v6-strength-audit.json
 - `src/power-v5.js` — **Power Envelope v1**：LevelScale + 12 稀有度包络（min/target/max）+ 质量百分位
 - `src/battlepower-v2.js` — BattlePower v2（legacy v4 估算器）
 - `src/battlepower-v3.js` — **BattlePower v3（v5 canonical）**：只读真实数值、绝不读稀有度/等级/clamp

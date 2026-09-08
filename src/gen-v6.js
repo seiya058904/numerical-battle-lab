@@ -33,18 +33,16 @@
   const FAM=['damage','heal','shield','ward','status','dot','consume','cleanse','dispel','resource','convert','cooldown','recoil','event','toggle'];
 
   // ---- Level × Rarity physical panel anchors (∝ budget) ----
-  // These map TotalStrengthBudget -> the real physical panel. Both ATK and MAX_HP
-  // scale ∝ budget so a larger budget means both more output and more tankiness.
-  // HP is sized ~10x the per-round damage target so a same-tier fight lasts a real
-  // number of rounds (not a first-strike coin-flip), letting the consistent DPS/HP
-  // advantage of a higher budget PREVAIL reliably across rounds.
+  // The physical panel is a FIXED function of budget (identical for every seed at
+  // the same level/rarity) so that real strength is pinned to the tier; the seed
+  // expresses style ONLY through the kit (actions/statuses/triggers), never by
+  // silently changing ATK/HP/DEF. Only SPD jitters mildly for turn-order flavor.
   function panelFor(budget,seed){
     const r=rng(seed+'|v6panel');
-    const style=r.random();                     // 0..1 picks the attacker/tank lean (style only)
-    const hp=Math.round(budget*1.55*(1.18-style*0.26));   // pool ∝ budget
-    const atk=Math.round(budget*0.16*(0.92+style*0.22));  // raw attack ∝ budget
-    const def=Math.round(budget*0.055*(1+style*0.4));
-    const res=Math.round(budget*0.055*(1+style*0.2));
+    const atk=Math.round(budget*0.16);
+    const hp=Math.round(budget*1.55);
+    const def=Math.round(budget*0.055);
+    const res=Math.round(budget*0.055);
     const spd=Math.round(40+budget*0.015*(1+r.random()));
     return {atk,hp,def,res,spd};
   }
@@ -101,10 +99,16 @@
   }
 
   // rescale leading ATK/MAX_HP/+literal coefficients in a subtree by factor r
-  function rescale(action,r){
+  // mode: 'atk' scales only ATK literals (damage), 'hp' only MAX_HP literals
+  // (heal/shield), any other scales both.
+  function rescale(action,r,mode){
+    const atkPat=/ATK\s*\*\s*([0-9]+(?:\.[0-9]+)?)/g;
+    const hpPat=/MAX_HP\s*\*\s*([0-9]+(?:\.[0-9]+)?)/g;
     const sc=f=>{if(typeof f!=='string')return f;
-      return f.replace(/(ATK\s*\*\s*)([0-9]+(?:\.[0-9]+)?)/g,(_,p,x)=>p+round(Number(x)*r))
-              .replace(/(MAX_HP\s*\*\s*)([0-9]+(?:\.[0-9]+)?)/g,(_,p,x)=>p+round(Number(x)*r));
+      let out=f;
+      if(mode!=='hp')out=out.replace(atkPat,(m_,x)=>'ATK * '+round(Number(x)*r));
+      if(mode!=='atk')out=out.replace(hpPat,(m_,x)=>'MAX_HP * '+round(Number(x)*r));
+      return out;
     };
     const walk=eff=>{for(const e of eff||[]){if(e.formula)e.formula=sc(e.formula);
       for(const c of e.components||[])if(c.formula)c.formula=sc(c.formula);
@@ -138,40 +142,50 @@
     const actions=[];let hasCommand=false;
     const weight={damage:1.0,heal:0.42,shield:0.32,ward:0.26,status:0.46,dot:0.42,consume:0.36,cleanse:0.3,dispel:0.3,resource:0.38,convert:0.3,cooldown:0.36,recoil:0.32,event:0.34,toggle:0.3};
     const wf=[];for(const fam of FAM){const w=weight[fam]||0.3;for(let i=0;i<Math.round(w*10);i++)wf.push(fam);}
+    // UTILITY-ONLY families for the non-core slots (never damage/recoil/consume):
+    // the damage engine is canonical (2 fixed strikes); utility adds style that is
+    // PRICED against the same budget (more utility => lower strike coefficients).
+    const UTIL=['heal','shield','ward','status','dot','cleanse','dispel','resource','convert','cooldown','event','toggle'];
+    const uwf=[];for(const fam of UTIL){const w=weight[fam]||0.3;for(let i=0;i<Math.round(w*10);i++)uwf.push(fam);}
     const condC=()=>pick([{type:'hpPctBelow',value:.5},{type:'targetHpPctBelow',value:.4},{type:'resourceAtLeast',resource,value:3},{type:'targetHasStatus',status:dotId},{type:'missingStatus',status:buffId}]);
     for(let i=0;i<st.count;i++){
-      const family=pick(wf),share=.65+r.random(101)/100,c=round(share);
-      const dmg=()=>({type:'damage',damageType:pick(damageTypes),formula:'ATK * '+round(c*(.7+r.random(81)/100))});
+      // ---- canonical damage engine: slots 0..1 are fixed unconditional strikes ----
+      // slot0: fast cd1 strike (fires every other round), slot1: heavy cd2 strike.
+      // Their coefficients are normalized later so real DPS == budget target; the
+      // UNCONDITIONAL topology guarantees the damage is actually delivered in combat.
+      let family,coreDamage=null;
+      if(i===0){family='damage';coreDamage={cd:1,coeff:1.0,name:'突袭'};}
+      else if(i===1){family='damage';coreDamage={cd:2,coeff:1.4,name:'重击'};}
+      else family=pick(uwf);
+      const share=.65+r.random(101)/100,c=round(share);
       const a={id:id+':a'+i,name:'',kind:'utility',target:'self',cost:roll(40)?1:0,cooldown:r.random(4),priority:r.random(4)-1,accuracy:round(.8+r.random(21)/100),effects:[]};
-      const formula='MAX_HP * '+round(.12*c);
-      switch(family){
-        case 'damage':a.kind='damage';a.target='enemy';a.effects=[dmg()];break;
-        case 'recoil':a.kind='damage';a.target='enemy';a.effects=[{type:'selfDamagePct',pct:.06},dmg(),dmg()];break;
-        case 'heal':a.kind='heal';a.target='ally';a.effects=[{type:'heal',formula}];break;
-        case 'shield':a.kind='shield';a.effects=[{type:'shield',formula}];break;
-        case 'ward':a.kind='shield';a.effects=[{type:'ward',damageType:type,formula}];break;
-        case 'status':a.kind='status';a.target=roll(50)?'self':'enemy';a.effects=[{type:'status',status:a.target==='self'?buffId:pick(['weak','slow','vulnerable','silence']),stacks:1+r.random(2),duration}];break;
-        case 'dot':a.kind='status';a.target='enemy';a.effects=[{type:'status',status:dotId,stacks:1+r.random(2),duration}];break;
-        case 'consume':a.kind='damage';a.target='enemy';a.effects=[{type:'status',status:dotId,stacks:1,duration},{type:'consumeStatus',status:dotId,stacks:'all'},{type:'damage',damageType:type,formula:'ATK * '+c+' * CONSUMED_STACKS'}];break;
-        case 'cleanse':a.target='ally';a.effects=[{type:'cleanse',count:1+r.random(3)}];break;
-        case 'dispel':a.target='enemy';a.effects=[{type:'dispel',count:1+r.random(2),...(roll(50)?{transfer:'actor'}:{})}];break;
-        case 'resource':a.effects=[{type:pick(['gain','resource']),resource,amount:2+r.random(3)}];break;
-        case 'convert':a.effects=[{type:'convertResource',from:'ENERGY',to:resource,amount:2,ratio:2}];break;
-        case 'cooldown':a.target='ally';a.effects=[{type:'cooldownReduce',amount:1+r.random(2)}];break;
-        case 'event':hasCommand=true;a.effects=[{type:'emitEvent',event:'command',eventSubject:'actor'}];break;
-        case 'toggle':a.kind='status';a.effects=[{type:'toggleStatus',status:buffId,duration}];break;
+      if(coreDamage){
+        // deterministic fast/heavy strike topology (reliable real damage)
+        a.name=coreDamage.name;a.kind='damage';a.target='enemy';a.cooldown=coreDamage.cd;a.cost=0;a.accuracy=i===0?0.95:0.90;
+        a.effects=[{type:'damage',damageType:pick(damageTypes),formula:'ATK * '+round(coreDamage.coeff),varianceMin:0.9,varianceMax:1.1}];
+      } else {
+        const formula='MAX_HP * '+round(.12*c);
+        switch(family){
+          case 'heal':a.kind='heal';a.target='ally';a.effects=[{type:'heal',formula}];break;
+          case 'shield':a.kind='shield';a.effects=[{type:'shield',formula}];break;
+          case 'ward':a.kind='shield';a.effects=[{type:'ward',damageType:type,formula}];break;
+          case 'status':a.kind='status';a.target=roll(50)?'self':'enemy';a.effects=[{type:'status',status:a.target==='self'?buffId:pick(['weak','slow','vulnerable','silence']),stacks:1+r.random(2),duration}];break;
+          case 'dot':a.kind='status';a.target='enemy';a.effects=[{type:'status',status:dotId,stacks:1+r.random(2),duration}];break;
+          case 'cleanse':a.target='ally';a.effects=[{type:'cleanse',count:1+r.random(3)}];break;
+          case 'dispel':a.target='enemy';a.effects=[{type:'dispel',count:1+r.random(2),...(roll(50)?{transfer:'actor'}:{})}];break;
+          case 'resource':a.effects=[{type:pick(['gain','resource']),resource,amount:2+r.random(3)}];break;
+          case 'convert':a.effects=[{type:'convertResource',from:'ENERGY',to:resource,amount:2,ratio:2}];break;
+          case 'cooldown':a.target='ally';a.effects=[{type:'cooldownReduce',amount:1+r.random(2)}];break;
+          case 'event':hasCommand=true;a.effects=[{type:'emitEvent',event:'command',eventSubject:'actor'}];break;
+          case 'toggle':a.kind='status';a.effects=[{type:'toggleStatus',status:buffId,duration}];break;
+        }
+        // NOTE: utility actions are kept SIMPLE (no random conditional/repeat/query/
+        // cost wrappers). Those wrappers create the degenerate, hard-to-price kit
+        // topologies that leak real strength across tiers; a simple utility still
+        // gives strong style diversity (12 families) but with bounded real value.
+        if(a.target!=='self'&&roll(25)){const relation=a.target==='enemy'?'enemy':'ally';a.target='query';a.targetQuery={relation,sortBy:{kind:pick(['hpPct','shield','stat']),key:'SPD'},order:pick(['asc','desc']),limit:1+r.random(3),mode:pick(['first','all'])};}
+        a.name=({heal:'复苏',shield:'坚守',ward:'护符',status:'战术',dot:'侵蚀',cleanse:'净化',dispel:'破咒',resource:'蓄能',convert:'转化',cooldown:'回转',event:'号令',toggle:'战意'})[family]||'战术';
       }
-      if(roll(45))a.effects.push(pick([{type:'gain',resource,amount:2},{type:'shield',effectTarget:'actor',formula},{type:'status',status:buffId,effectTarget:'actor',duration}]));
-      if(roll(30))a.effects=[{type:'conditional',condition:condC(),then:a.effects,else:[{type:'gain',resource,amount:1}]}];
-      if(roll(22))a.effects=[{type:'repeat',times:2+r.random(2),effects:a.effects}];
-      if(a.target!=='self'&&roll(35)){const relation=a.target==='enemy'?'enemy':'ally';a.target='query';a.targetQuery={relation,sortBy:{kind:pick(['hpPct','shield','stat']),key:'SPD'},order:pick(['asc','desc']),limit:1+r.random(3),mode:pick(['first','all'])};}
-      if(roll(25))a.costs=[{resource,amount:2+r.random(2)},{resource:'HP',amount:round(0.06)}];
-      const wk=e2=>{for(const e of e2){if(e.type==='damage'){
-        e.varianceMin=roll(50)?.8:.9;e.varianceMax=e.varianceMin===.9?1.1:1.3;e.penetration=r.random(51)/100;
-        if(roll(35))e.components=[{type:e.damageType,formula:e.formula,multiplier:.6},{type:pick(damageTypes),formula:'ATK * '+round(c*.4)}];
-        if(roll(25))e.formula='('+e.formula+') + '+resource+' * '+round(3*c);
-      }if(e.effects)wk(e.effects);if(e.then)wk(e.then);if(e.else)wk(e.else);}};wk(a.effects);
-      a.name=({damage:'突袭',recoil:'血性猛击',heal:'复苏',shield:'坚守',ward:'护符',status:'战术',dot:'侵蚀',consume:'蚀爆',cleanse:'净化',dispel:'破咒',resource:'蓄能',convert:'转化',cooldown:'回转',event:'号令',toggle:'战意'})[family];
       actions.push(a);
     }
     const triggers=[{event:pick(['roundStart','roundEnd','afterDamageTaken','afterDamageDealt','afterKill']),target:'self',effects:[{type:pick(['heal','shield']),formula:'MAX_HP * '+round(.025)}]},
@@ -310,28 +324,55 @@
     // Higher budget => the card should beat REF more (monotone edge target).
     const refBudget=round(N.expectedStrengthV6(50,'B'));
     const targetEdge=Math.max(-0.3,Math.min(0.75,0.05+ (total-refBudget)/refBudget*0.18));
-    const K=2, RMAX=18, DBASE=770000, NTRY=8;
+    const K=4, RMAX=44, DBASE=770000, NTRY=6;
     let best=null,bestErr=Infinity,card;
     for(let attempt=0;attempt<NTRY;attempt++){
       const s=attempt===0?seed:(seed+'#'+attempt);
       const built=buildCard(seed,s,rarity,level,total);
       card=built.card;
-      // ---- normalize heuristic real DPS to the tier target (fast pre-filter) ----
+      // ---- budget-faithful normalization: damage pays for sustain/control ----
+      // The engine's decisive quantities are damage-per-round (ATK × Σ coeffs) and
+      // sustain-per-round (MAX_HP × Σ heal/shield coeffs). A kit may NOT get both at
+      // full strength: heal/shield/control utility is priced OUT of the damage
+      // engine (strikes are scaled down), so a heal fortress genuinely trades
+      // damage for survival. This keeps same-tier aggregate strength pinned to the
+      // budget while allowing diverse builds.
       const kDPS=0.15;
       const targetDPS=kDPS*total;
-      const sumCE=card.actions.reduce((n,a)=>n+effectiveCoeffs(card,a).dmg,0);
-      const curDPS=(card.stats.ATK||1)*sumCE;
-      if(sumCE>0&&curDPS>0){
-        const rFac=Math.max(0.01,Math.min(14,targetDPS/curDPS));
-        card.actions.forEach(a=>rescale(a,rFac));
-      } else {
+      const atk=Math.max(1,card.stats.ATK||1),hp=Math.max(1,card.stats.MAX_HP||1);
+      const targetCE=targetDPS/atk;                       // damage-coefficient budget
+      const ceSum=()=>{const list=card.actions.map(a=>effectiveCoeffs(card,a));
+        return {dmg:list.reduce((n,x)=>n+x.dmg,0),heal:list.reduce((n,x)=>n+x.heal,0),shield:list.reduce((n,x)=>n+x.shield,0)};};
+      const eq=(c)=>{ // sustain in ATK-coefficient units (real HP-value conversion):
+        // heal uses MAX_HP (~10x ATK) and bypasses mitigation, so 1.0 heal-coeff is
+        // worth ~25x a 1.0 damage-coeff in real HP/round; shields ~15x (1:1 absorb).
+        const r=hp/atk;
+        const healVal=(c.heal)*(r*2.5)+(c.shield)*(r*1.5);
+        return {dmg:c.dmg,heal:healVal,total:c.dmg+healVal};
+      };
+      let ce=eq(ceSum());
+      if(ce.total>0&&targetCE>0){
+        // pay sustain from the damage budget: scale strikes down so total==targetCE
+        let s=(targetCE-ce.heal)/ce.dmg;                  // s×dmg + heal == targetCE
+        s=Number.isFinite(s)?Math.max(0.02,Math.min(8,s)):0.02;
+        if(s<1&&ce.heal>0)card.actions.forEach(a=>rescale(a,s,'atk'));
+        else if(s>=1&&ce.dmg>0)card.actions.forEach(a=>rescale(a,Math.min(s,8),'atk'));
+        ce=eq(ceSum());
+        // hard sustain cap: sustain may be at most 85% of the damage-coeff budget
+        const healCap=0.85*targetCE;
+        if(ce.heal>healCap&&ce.heal>0){
+          const s2=Math.max(0.01,healCap/ce.heal);
+          card.actions.forEach(a=>rescale(a,s2,'hp'));
+        }
+        ce=eq(ceSum());
+      } else if(ce.dmg===0){
+        // no damage at all (should not happen after viability): force a strike
         card.actions.push({id:card.id+':d',name:'突袭',kind:'damage',target:'enemy',cost:0,cooldown:0,priority:0,accuracy:0.95,
           effects:[{type:'damage',damageType:'physical',formula:'ATK * 1.0',varianceMin:0.9,varianceMax:1.1}]});
-        const s2=card.actions.reduce((n,a)=>n+effectiveCoeffs(card,a).dmg,0);
-        const d2=(card.stats.ATK||1)*s2;
-        if(d2>0){const f=Math.max(0.01,Math.min(14,targetDPS/d2));card.actions.forEach(a=>rescale(a,f));}
+        ce=eq(ceSum());
       }
-      // ---- measure real edge vs reference and score ----
+      card._dmgCE=round(ce.dmg);card._healCE=round(ce.heal);
+      // ---- measure real edge vs reference and score (closest to tier target) ----
       const edge=measureNetAdv(card,K,DBASE+attempt*1000,RMAX);
       card._measuredEdge=edge;
       card.realDPS=Math.round((card.stats.ATK||1)*card.actions.reduce((n,a)=>n+effectiveCoeffs(card,a).dmg,0));
@@ -340,6 +381,12 @@
     }
     if(!best)throw new Error('v6 could not generate for seed '+seed+' budget='+total);
     card=best;
+    // NOTE: no post-hoc magnitude calibration here. Battle measurement noise at
+    // feasible sample sizes makes fine calibration unreliable; the real hierarchy
+    // is carried robustly by the budget-proportional PANEL (MAX_HP/ATK/DEF ∝
+    // budget) plus the canonical damage engine and sustain-compensated kit.
+    // `_measuredEdge` is the draft's measured real edge vs the reference (recorded
+    // in the ledger for diagnostics).
     // ---- ledger (real measured strength) ----
     const ledger=N.budgetLedgerV6(total);
     ledger.measuredEdge=round(card._measuredEdge*1000)/1000;

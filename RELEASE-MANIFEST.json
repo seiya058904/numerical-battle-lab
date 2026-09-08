@@ -25,8 +25,8 @@
     },
     {
       "path": "AGENTS.md",
-      "size": 9360,
-      "sha256": "6019456a05255c22c4debfdd7991e3021780be535e42002576ae43f547141757"
+      "size": 10352,
+      "sha256": "c9408c9f0088aaf6a5cb81761a3e710c1b591f5a623cda0e2d412c5ab29c8650"
     },
     {
       "path": "FINAL-REPORT.md",
@@ -135,8 +135,8 @@
     },
     {
       "path": "docs/GENERATOR-V6-DESIGN.md",
-      "size": 11359,
-      "sha256": "819714dfed1bdf4a3b54fc22ef827683a73cef1171da333f4cd9f4bfed2a6c12"
+      "size": 13757,
+      "sha256": "29b03ae818df03b6b737a9674818e4408238a945d177b7b152cdef19f4df8cfd"
     },
     {
       "path": "docs/GENERATOR.md",
@@ -215,8 +215,8 @@
     },
     {
       "path": "package.json",
-      "size": 1750,
-      "sha256": "6e582238630e5aaea1378a1ab1463185369d8d9f0b6954d31574f93cffe8228b"
+      "size": 1900,
+      "sha256": "0205f3a3915f1da6d4d33c20bbac997fba89f16bc5dec0342470e71631770efb"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
@@ -699,6 +699,11 @@
       "sha256": "2ce026658a07013dbdba41c0f7eb29370a0d8d8e7305738dea2279de505ec14a"
     },
     {
+      "path": "qa/v6-strength-audit.json",
+      "size": 803,
+      "sha256": "22f0319573ab5b6a0e6a267eff09b85b9b3cbd21787f11b8e559a23ca47ac9ce"
+    },
+    {
       "path": "scripts/adjacent-rarity-matrix.js",
       "size": 6571,
       "sha256": "f5695a681f3475355a6b860587b32065552287c38eb0e4cec33ea4d5c61afbad"
@@ -760,8 +765,8 @@
     },
     {
       "path": "scripts/audit-v6-strength.js",
-      "size": 4114,
-      "sha256": "96cd8b3bc42799fe0b29152a64d14d884d7e066f52c059bc4f176a0c2e361a77"
+      "size": 4002,
+      "sha256": "1e754cc1e25585b96826478f635676dacc508a0f1db4e3c2f895881c58ee70c4"
     },
     {
       "path": "scripts/diversity-audit-v4.js",
@@ -777,6 +782,11 @@
       "path": "scripts/empirical-strength-audit.js",
       "size": 3491,
       "sha256": "3516a02e09cdeab2daaaf1290ac07d1e10f5ebb83eda412038660dff7178ec2b"
+    },
+    {
+      "path": "scripts/gate-v6-strength.js",
+      "size": 3232,
+      "sha256": "3c76a2f7bd1eef9a2d7c0903b586720ae02d7d9737e268b296b389b614989410"
     },
     {
       "path": "scripts/gen-mc.js",
@@ -970,8 +980,8 @@
     },
     {
       "path": "src/gen-v6.js",
-      "size": 26186,
-      "sha256": "8f800143347043579bee9d071ff3d2c19fd1f075cc636f7d35e5aa916050bf7a"
+      "size": 28554,
+      "sha256": "22b7f978708eef70934f1c5766dff92bccb3e7eeda6fbe763c4c00a7be232f08"
     },
     {
       "path": "src/generator.js",

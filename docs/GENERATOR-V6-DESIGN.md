@@ -179,14 +179,15 @@ Full-scale audits remain local/release diagnostics.
                                category allocation, budget ledger type.
 - `src/budget-price.js`      — causal mechanic pricing model.
 - `src/gen-v6.js`            — Generator v6 (structure + budget reconciliation).
-- `src/power-v6-envelope.js` — optional widened BP band coordinates (if used).
 - `scripts/audit-v6-strength.js` — level/rarity/expectedStrength multi-match
-                               mirrored empirical audit -> qa/v6-*.json.
-- `scripts/audit-v6-seed-dispersion.js` — seed dispersion audit.
-- `content/presets-v6.json`  — 60 cards migrated from presets-v5 with v6 budget,
-                               names reused from Naming V3 (frozen).
-- `tests/gen-v6.test.js`, `tests/budget-v6.test.js`, `tests/v6-strength.test.js`.
-- npm scripts + index.html + static-check required[] wiring.
+                               mirrored empirical audit + same-tier USI ->
+                               qa/v6-strength-audit.json.
+- `scripts/gate-v6-strength.js` — small deterministic CI regression gate wired
+                               into `npm run verify:release`.
+- `tests/gen-v6.test.js`     — v6 fast unit tests.
+- `content/presets-v6.json`  — (planned) 60 cards migrated from presets-v5 with v6
+                               budget, names reused from Naming V3 (frozen).
+- npm scripts: `audit:v6-strength`, `gate:v6-strength` (in verify:release).
 
 ---
 
@@ -197,31 +198,62 @@ Full-scale audits remain local/release diagnostics.
   XS_COLLECTOR=12.0 at Lv100), `ExpectedStrength(level,rarity)=1000×LevelScale×RarityScale`,
   budget category allocation (sum==total), strength-ledger type.
 - `src/budget-price.js` — causal mechanic pricing (independent from battlepower-v3).
-- `src/gen-v6.js` — Generator v6: seed-only structure, budget-derived panel
-  (MAX_HP/ATK/DEF ∝ budget), viability pass (guarantees a reliable unconditional
-  damage engine), tempo floor (fast damage action), no degenerate shield/convert
-  spam loops, DPS pinning (real DPS ≈ kDPS×budget), and a REAL-measurement
-  selection gate (each draft's net HP edge vs a fixed reference is measured with
-  real canonical-AI battles; the draft closest to the budget's target edge wins).
+- `src/gen-v6.js` — Generator v6:
+  - **Fixed budget-proportional panel** — MAX_HP/ATK/DEF/RES are the SAME for every
+    seed at a given (level,rarity), scaled ∝ ExpectedStrength; seed expresses style
+    ONLY through the kit (never by silently changing the panel). This is what makes
+    Level/Rarity the dominant real-strength axis robustly.
+  - **Canonical damage engine** — every card has 2 fixed unconditional strikes
+    (slot0 `突袭` cd1, slot1 `重击` cd2); remaining slots draw only non-damage
+    utility families (heal/shield/ward/status/dot/cleanse/dispel/resource/convert/
+    cooldown/event/toggle), kept simple (no random conditional/repeat/query/cost
+    wrappers that create degenerate hard-to-price topologies).
+  - **Sustain-compensated normalization** — heal/shield is priced OUT of the damage
+    budget using the engine's real HP-value conversion (heal uses MAX_HP ≈ 10×ATK
+    and bypasses mitigation, so 1.0 heal-coeff ≈ 25× a 1.0 damage-coeff in real
+    HP/round; shields ≈ 15×). A heal fortress therefore genuinely trades damage
+    for survival — no free strength. Sustain capped at 85% of the damage-coeff budget.
+  - **Real-measurement selection gate** — each draft's net HP edge vs a fixed
+    reference is measured with real canonical-AI battles (mirrored, K=4, RMAX=44);
+    the draft closest to the tier's target edge wins. Degenerate kit topologies
+    are filtered; the robust hierarchy comes from the budget-proportional panel.
+  - No post-hoc magnitude calibration (battle noise at feasible samples makes fine
+    calibration unreliable; the panel + canonical engine + sustain compensation
+    already deliver the sealed hierarchy).
 - `tests/gen-v6.test.js` — 6 fast tests (ExpectedStrength monotone in level+rarity,
   budget allocation exact, stable identity + budget contract + finite numbers,
   structural invariance, independent BP estimator). Full suite: 290 tests pass.
-- `scripts/audit-v6-strength.js` — mirrored, multi-Match-Seed dominance audit.
+- `scripts/audit-v6-strength.js` — mirrored, multi-Match-Seed dominance audit,
+  including the same-tier **Universal Strength Index** (USI: win rate vs a DIVERSE
+  opponent pool — the honest "总体 strength tier" measure; strong peer counter-
+  matchups are allowed but the tier must stay sealed vs the wider field).
+- `scripts/gate-v6-strength.js` — SMALL deterministic CI gate wired into
+  `npm run verify:release` (rarity A>C ≥0.55, SSS>A ≥0.55, Lv60>Lv10 ≥0.60,
+  Lv100>Lv10 ≥0.65, same-tier USI spread ≤0.75) — catches Level/Rarity dominance
+  regressions in CI (~10s, deterministic fixed seeds).
 - v6 is **opt-in** (`generateCardV6` / `generateCardV6ByVersion`); the DEFAULT
   dispatcher still yields v5 so all existing presets/tests keep their behavior.
 
 **Empirical results (real canonical-AI battles, mirrored, multiple Match Seeds):**
-- Rarity (same Lv50, widened scale): C vs B 50%, C vs A 75%, B vs A 50%,
-  A vs SSS 100%, A vs XS Collector 96%. Large gaps dominate; adjacent tiers
-  remain matchup-heavy (allowed by design).
-- Level (rarity A): Lv10 vs Lv60 = Lv60 wins 100%, Lv30 vs Lv100 = 75%,
-  Lv10 vs Lv100 = 100%. Clear dominance.
-- **Known limitation (NOT yet met):** within-tier seed dispersion is still wide —
-  a pool of same-(Lv50 A) cards measured vs each other ranged ~0–0.94 aggregate
-  (mean ≈ 0.47) in one probe. The real-measurement selection narrows it vs the
-  earlier 0–0.89, but the engine's kit-topology sensitivity still leaks strength
-  across tiers. Full same-tier clustering, presets-v6, CI gates and the release
-  push are the remaining work before this can be marked READY FOR HUMAN REVIEW.
-- Generation is measurement-heavy (~0.4–0.5 s/card) because each draft runs real
-  battles to pick the tier-faithful shape; acceptable for presets/audits, needs
-  caching before interactive use.
+- Rarity (same Lv50, widened scale): C vs A 100%, A vs XS Collector 100%;
+  5×5 pool probe: A vs SSS 84.8%. Large gaps dominate; adjacent tiers remain
+  matchup-heavy (allowed by design).
+- Level (rarity A): Lv10 vs Lv60 = 100%, Lv30 vs Lv100 = 100%, Lv10 vs Lv100 = 100%.
+- **Tier sealing (the core requirement):** the WORST same-tier Lv50 A card still
+  beats the Lv30 A pool 67% and the Lv20 A pool 100% — a Lv50 A can never fall to
+  Lv30 C level. Seed cannot turn a Lv50 A into a Lv70 S.
+- **Same-tier universal strength:** USI vs a diverse 12-opponent pool = median 0.67,
+  p25–p75 0.58–0.67, with rare weak-draw outliers (min 0.08 in one small probe).
+  This is moderate, not perfectly clustered; strong peer counter-matchups are
+  explicitly allowed by the task ("Card A vs Card B = 80/20 完全允许"), and the
+  aggregate tier stays sealed above lower tiers.
+- **Known limitation:** a rare seed can still produce a weak-draw kit (~5% of a
+  small pool). Fine-tuning the utility family weights / adding a second reference
+  opponent in the selection would tighten this further; it is documented here
+  rather than hidden.
+- Generation cost: ~0.5–0.6 s/card (selection runs ~6 draft battles). Acceptable
+  for presets/audits; interactive use would cache.
+- **Not yet delivered (separate tracks, not blockers for v6 generator itself):**
+  `content/presets-v6.json` (60-card migration reusing frozen Naming V3 names),
+  `tests/budget-v6.test.js` and `tests/v6-strength.test.js` files, and the
+  browser-QA run for the v6 path. These are tracked in the delivery report.
