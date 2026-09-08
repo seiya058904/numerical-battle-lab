@@ -324,7 +324,7 @@
     // Higher budget => the card should beat REF more (monotone edge target).
     const refBudget=round(N.expectedStrengthV6(50,'B'));
     const targetEdge=Math.max(-0.3,Math.min(0.75,0.05+ (total-refBudget)/refBudget*0.18));
-    const K=4, RMAX=44, DBASE=770000, NTRY=6;
+    const K=4, RMAX=44, DBASE=770000, NTRY=10;
     let best=null,bestErr=Infinity,card;
     for(let attempt=0;attempt<NTRY;attempt++){
       const s=attempt===0?seed:(seed+'#'+attempt);

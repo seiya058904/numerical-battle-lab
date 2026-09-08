@@ -180,8 +180,8 @@
     },
     {
       "path": "docs/V6-DELIVERY-REPORT.md",
-      "size": 9203,
-      "sha256": "f70a84f00916e945670421e302f6bbcb7fd50b73a0ab8a5fbe704d7053e04116"
+      "size": 9398,
+      "sha256": "5cfa2918bc830e928519ba4b6377e001a020742881eb552bd010428d11f901f0"
     },
     {
       "path": "docs/numeric-component-catalog.json",
@@ -715,8 +715,8 @@
     },
     {
       "path": "qa/v6-strength-audit.json",
-      "size": 803,
-      "sha256": "22f0319573ab5b6a0e6a267eff09b85b9b3cbd21787f11b8e559a23ca47ac9ce"
+      "size": 806,
+      "sha256": "fb5a54fedf5e5e3c37c092cfe9d3c556071eb2fe3f586d491308edc170013479"
     },
     {
       "path": "scripts/adjacent-rarity-matrix.js",
@@ -1000,8 +1000,8 @@
     },
     {
       "path": "src/gen-v6.js",
-      "size": 28554,
-      "sha256": "22b7f978708eef70934f1c5766dff92bccb3e7eeda6fbe763c4c00a7be232f08"
+      "size": 28555,
+      "sha256": "49a16e179938c6d9ef81dc428cdfceb4a99d9b236eb8a9acc2e367a1df142722"
     },
     {
       "path": "src/generator.js",
