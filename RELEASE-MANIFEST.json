@@ -75,13 +75,13 @@
     },
     {
       "path": "content/presets-v6.js",
-      "size": 359895,
-      "sha256": "8259df10f0584e8b11f90150b526cc13f418b1f689633c563a489f2f02fc898e"
+      "size": 379915,
+      "sha256": "51d87f311ce0afc4dd8ce0f434e7c8e79c71c83b29f02a734410345dfe2941d2"
     },
     {
       "path": "content/presets-v6.json",
-      "size": 503300,
-      "sha256": "4146b6181a50eb251768b6b4d449d493f76d6a4f83bd63e7a14e6868007f5060"
+      "size": 530302,
+      "sha256": "bb6cab07d3defa1ff7d84e1f474880d936f3b98f4d1b252c51f40b452b885065"
     },
     {
       "path": "docs/ARCHITECTURE.md",
