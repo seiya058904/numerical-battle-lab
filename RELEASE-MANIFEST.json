@@ -179,6 +179,11 @@
       "sha256": "51520fbbe17dddd2b07b929900b92547a29ffae94b516ae57fb953277d70ac1f"
     },
     {
+      "path": "docs/V6-DELIVERY-REPORT.md",
+      "size": 9203,
+      "sha256": "f70a84f00916e945670421e302f6bbcb7fd50b73a0ab8a5fbe704d7053e04116"
+    },
+    {
       "path": "docs/numeric-component-catalog.json",
       "size": 63282,
       "sha256": "e29e60db9204ac9b69f569a00982849b48a47fad1aee4b0d83d70b9b8e739b6f"
