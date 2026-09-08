@@ -27,9 +27,20 @@
   const round=v=>Math.round(Number(v||0)*100)/100;
   const st=(card,k,d=0)=>{const v=Number(card.stats?.[k]);return Number.isFinite(v)?v:d;};
 
-  // Recursive feature extraction -> per-action + aggregate magnitude buckets.
-  // All weights are absolute (no reference card division), so the sum really is
-  // the card's own magnitude, not a ratio against an arbitrary reference.
+  // Recursive feature extraction -> usable strength buckets.
+  //
+  // v3.1 refinements (empirical-strength audit):
+  //   * AI-usability discount: the canonical AI mostly plays its BEST action and
+  //     only occasionally cycles the rest. Each action contributes
+  //       bestAction (full) + 0.35 x every other action
+  //     so "dead" actions the AI would never pick stop inflating BP.
+  //   * Realistic condition probabilities (hpPctBelow etc.) instead of fixed 0.6/0.4.
+  //   * Resource-affordability cap on frequency: an action whose cost the card's
+  //     economy can barely pay is used less often than its cooldown implies.
+  //   * Durability is de-weighted: Battle Wear is maxHp-proportional, so raw HP
+  //     gives less of a real edge than output-per-round does in this engine.
+  // All weights are absolute magnitudes (no reference-card division), no rarity/
+  // level/seed/opponent term anywhere.
   function extract(card){
     const s=card.stats||{};
     const actions=card.actions||card.skills||[];
@@ -53,18 +64,44 @@
     const outlook=[3,12,25,45].reduce((n,r)=>n+Math.max(0.4,Math.min(1.6,timeFactor(r))),0)/4;
     const scope={...s,ATK:atk,MAX_HP:hp,SPD:spd,HP:hp*.6,HP_PCT:.6,MISSING_HP:hp*.4,ENERGY:4,ROUND:18,BATTLE_TURN:18,STACKS:2,CONSUMED_STACKS:2,TARGET_HP:hp*.6,TARGET_MAX_HP:hp,TARGET_HP_PCT:.6,EVENT_DAMAGE:atk,EVENT_HP_DAMAGE:atk};
     const evaluate=f=>{try{return Math.max(0,Number(NCB.evaluateExpression(String(f??'0'),scope))||0);}catch(_){return 0;}};
-
-    // mitigation multiplier the estimator assumes (own-perspective strength).
     const mitigation=100/(100+Math.max(0,50*(1-pen)));
 
-    function damageActionValue(){
-      const agg={dmg:0,selfHarm:0,heal:0,shield:0,status:0,consume:0,resource:0,cost:0,cd:0,priority:0,branches:0};
-      const walk=(effs,mult,tgt,depth=0,seen=new Set())=>{
+    // Estimated probability that a condition is live on a random round of a real
+    // fight (self/opponent HP distributions + resource economy).
+    function conditionProb(cond){
+      if(!cond)return 1;
+      switch(cond.type){
+        case 'hpPctBelow':{const v=Number(cond.value)||0.5;return clamp(0.2+0.9*(1-v),0.12,0.8);}
+        case 'targetHpPctBelow':{const v=Number(cond.value)||0.4;return clamp(0.15+0.75*(1-v),0.12,0.7);}
+        case 'resourceAtLeast':{const eco=economyScore(cond.resource,Number(cond.value)||3);return clamp(0.2+eco*0.6,0.15,0.85);}
+        case 'targetHasStatus':{const applies=card.statuses?.some(d=>d.id===cond.status)||actions.some(a=>(a.effects||[]).some(e=>e.status===cond.status));return applies?0.5:0.12;}
+        case 'missingStatus':return 0.5;
+        default:return 0.5;
+      }
+    }
+    // Rough per-round resource income relative to a needed amount (0..1).
+    function economyScore(resource,need){
+      const id=String(resource||'ENERGY').toUpperCase();
+      if(id==='ENERGY')return clamp(regen/(Math.max(1,need)*0.8),0,1);
+      if(id==='HP')return 1; // HP costs are small/relative
+      const start=st(card,id,0),gain=(card.actions||[]).reduce((n,a)=>n+(a.effects||[]).reduce((m,e)=>m+((e.type==='gain'||e.type==='resource')&&e.resource===id?Number(e.amount||0):0),0),0);
+      const reg=st(card,id+'_REGEN',0);
+      return clamp((start+reg*4+gain)/(Math.max(1,need)*3),0,1);
+    }
+
+    function actionValue(a){
+      const aggA={dmg:0,selfHarm:0,heal:0,shield:0,status:0,consume:0,resource:0,cost:0,priority:0};
+      const walk=(effs,mult,tgt,depth=0,seen=new Set(),chain=1)=>{
         if(depth>6)return;
         for(const e of effs||[]){
-          const w=Number(mult||1);
-          if(e.type==='conditional'){tgt.branches+=w;walk(e.then,w*.6,tgt,depth+1,seen);walk(e.else,w*.4,tgt,depth+1,seen);continue;}
-          if(e.type==='repeat'){walk(e.effects,w*clamp(Number(e.times||1),1,16),tgt,depth+1,seen);continue;}
+          const w=Number(mult||1)*chain;
+          if(e.type==='conditional'){
+            const p=conditionProb(e.condition);
+            walk(e.then,w*p,tgt,depth+1,seen,1);
+            walk(e.else,w*(1-p),tgt,depth+1,seen,1);
+            continue;
+          }
+          if(e.type==='repeat'){walk(e.effects,w*clamp(Number(e.times||1),1,16),tgt,depth+1,seen,1);continue;}
           if(e.type==='damage'){
             const components=e.components||[{formula:e.formula||'0',multiplier:1}];
             const vmin=Number(e.varianceMin??1),vmax=Number(e.varianceMax??1);
@@ -85,11 +122,11 @@
             if(def&&!seen.has(e.status)){
               const next=new Set(seen);next.add(e.status);
               const duration=Math.min(4,Number(e.duration??def.duration??3));
-              walk(def.periodic?.effects,w*duration*Number(e.chance??1),tgt,depth+1,next);
+              walk(def.periodic?.effects,w*duration*Number(e.chance??1),tgt,depth+1,next,1);
               if(def.turnEnd?.type==='damagePctMaxHp')tgt.dmg+=hp*Number(def.turnEnd.pct||0)*duration*w;
               if(def.turnEnd?.type==='healPctMaxHp')tgt.heal+=hp*Number(def.turnEnd.pct||0)*duration*w;
               tgt.shield+=hp*Number(def.reflectPerStack||0)*.4*w;
-              for(const t of def.triggers||[])walk(t.effects,w*.7,tgt,depth+1,next);
+              for(const t of def.triggers||[])walk(t.effects,w*.7,tgt,depth+1,next,1);
               tgt.status+=(def.modifiers||[]).reduce((n,m)=>n+Math.abs(Number(m.value)||0)*.2,0)*w;
               tgt.status+=(def.eventModifiers||[]).reduce((n,m)=>n+Math.abs(1-Number(m.value??1))*8,0)*w;
             }
@@ -99,45 +136,67 @@
           else if(e.type==='gain'||e.type==='resource'){tgt.resource+=Number(e.amount||1)*w;}
           else if(e.type==='convertResource'){tgt.resource+=Number(e.amount||1)*w;}
           else if(e.type==='cooldownReduce'){tgt.resource+=1*w;}
-          else if(e.type==='emitEvent'){for(const t of card.triggers||[])if(t.event===e.event)walk(t.effects,w,tgt,depth+1,seen);}
-          if(e.then)walk(e.then,w*.6,tgt,depth+1,seen);
-          if(e.else)walk(e.else,w*.4,tgt,depth+1,seen);
-          if(e.effects)walk(e.effects,w,tgt,depth+1,seen);
+          else if(e.type==='emitEvent'){for(const t of card.triggers||[])if(t.event===e.event)walk(t.effects,w,tgt,depth+1,seen,1);}
+          if(e.effects)walk(e.effects,w,tgt,depth+1,seen,1);
         }
       };
-      for(const a of actions){
-        const aggA={dmg:0,selfHarm:0,heal:0,shield:0,status:0,consume:0,resource:0,cost:0,cd:0,priority:0,branches:0};
-        walk(a.effects,1,aggA);
-        aggA.priority=Number(a.priority||0);aggA.cd=Number(a.cooldown||0);
-        aggA.cost=Number(a.cost||0)+(a.costs||[]).reduce((n,c)=>n+Number(c.amount||0)*(c.resource==='HP'?.12:1),0);
-        const freq=1/(1+Number(a.cooldown||0));
-        for(const k of ['dmg','selfHarm','heal','shield','status','consume','resource'])aggA[k]=Math.max(0,aggA[k])*freq;
-        for(const k of Object.keys(agg))agg[k]+=aggA[k]||0;
-      }
-      for(const t of card.triggers||[])if(t.event!=='command')walk(t.effects,t.event==='afterKill'?.1:.6,agg);
-      return agg;
+      walk(a.effects,1,aggA);
+      aggA.priority=Number(a.priority||0);
+      aggA.cost=Number(a.cost||0)+(a.costs||[]).reduce((n,c)=>n+Number(c.amount||0)*(c.resource==='HP'?.12:1),0);
+      return aggA;
     }
-    const agg=damageActionValue();
 
-    // Sub-scores are ABSOLUTE magnitudes (no reference-card denominator).
-    const offense=Math.max(0,agg.dmg*outlook/Math.max(1,actions.length*.5)+atk*.22-agg.selfHarm*0.6);
-    const durability=Math.max(0,hp+def*0.7+res*0.7)*(Math.max(0.5,Math.min(1.5,1+end/100*0.3-Math.max(0,fatigueRate)*6)));
-    const sustain=Math.max(0,agg.heal*1.1+agg.shield+agg.dmg*lifesteal);
-    const utility=Math.max(0,agg.status+agg.consume*1.6+agg.branches*0.4);
-    const economy=Math.max(0,regen*2+agg.resource*.3)/(1+Math.max(0,agg.cost)*.02);
-    const tempo=Math.max(0,spd*.5+agg.priority*6);
-    const reliability=Math.max(0,1/(1+Math.max(0,vol-1)*0.4));
+    // frequency = cooldown-limited AND resource-affordability-limited
+    function usableFrequency(a,raw){
+      const cdFreq=1/(1+Number(a.cooldown||0));
+      let afford=1;
+      for(const c of a.costs||[]){if(c.resource!=='HP'&&Number(c.amount||0)>0){const eco=economyScore(c.resource,Number(c.amount||0));afford=Math.min(afford,clamp(eco*1.6,0,1));}}
+      if(Number(a.cost||0)>0)afford=Math.min(afford,clamp(regen/(Math.max(1,Number(a.cost))*1.4),0,1));
+      return cdFreq*afford;
+    }
+
+    // Aggregate with AI-usability: best action full, others discounted 0.35.
+    const perAction=actions.map(a=>({raw:actionValue(a),freq:0}));
+    for(let i=0;i<perAction.length;i++)perAction[i].freq=usableFrequency(actions[i],perAction[i].raw);
+    perAction.sort((x,y)=>(x.raw.dmg+x.raw.heal+x.raw.shield+x.raw.status*2+x.raw.consume*2+x.raw.resource*2)*y.freq-(y.raw.dmg+y.raw.heal+y.raw.shield+y.raw.status*2+y.raw.consume*2+y.raw.resource*2)*x.freq);
+    const agg={dmg:0,selfHarm:0,heal:0,shield:0,status:0,consume:0,resource:0,cost:0,priority:0};
+    perAction.forEach((pa,i)=>{
+      const wgt=i===0?1:0.35;
+      for(const k of ['dmg','selfHarm','heal','shield','status','consume','resource'])agg[k]+=pa.raw[k]*pa.freq*wgt;
+    });
+    agg.priority=Math.max(0,...perAction.map(pa=>pa.raw.priority*pa.freq));
+    agg.cost=perAction.reduce((n,pa)=>n+pa.raw.cost*pa.freq*0.35,0);
+    // Triggers/passives contribute a bounded share (AI cannot choose them freely).
+    for(const t of card.triggers||[])if(t.event!=='command'){
+      const tmp={dmg:0,selfHarm:0,heal:0,shield:0,status:0,consume:0,resource:0,priority:0};
+      (function walk(effs,mult,depth=0,seen=new Set()){for(const e of effs||[]){const w=Number(mult||1);
+        if(e.type==='damage'){const vmin=Number(e.varianceMin??1),vmax=Number(e.varianceMax??1),mid=(vmin+vmax)/2,half=(vmax-vmin)/2*clamp(vol,0.1,3),meanU=luck>=0?(1+luck)/(2+luck):1/(2-luck),evMid=Math.max(0.3,mid-half+2*half*meanU);const perHit=evaluate(e.formula)*evMid*mitigation*hitEV;tmp.dmg+=perHit*w;}
+        else if(e.type==='heal'){tmp.heal+=evaluate(e.formula)*healPow*taken*w;}
+        else if(e.type==='shield'||e.type==='ward'){tmp.shield+=evaluate(e.formula)*w;}
+        else if(e.type==='gain'||e.type==='resource'){tmp.resource+=Number(e.amount||1)*w;}
+        if(e.effects)walk(e.effects,w,depth+1,seen);if(e.then)walk(e.then,w*.5,depth+1,seen);if(e.else)walk(e.else,w*.5,depth+1,seen);}})(t.effects,1);
+      const mul=t.event==='afterKill'?0.12:0.5;
+      for(const k of ['dmg','heal','shield','resource'])agg[k]+=tmp[k]*mul;
+    }
+
+    // Sub-scores (absolute magnitudes; no rarity/level anywhere).
+    const offense=Math.max(0,agg.dmg*outlook/Math.max(1,actions.length*.4)+atk*.18-agg.selfHarm*0.5);
+    const durability=Math.max(0,hp+def*0.5+res*0.5)*(Math.max(0.6,Math.min(1.4,1+end/100*0.2-Math.max(0,fatigueRate)*4)));
+    const sustain=Math.max(0,agg.heal*1.15+agg.shield+agg.dmg*lifesteal);
+    const utility=Math.max(0,agg.status+agg.consume*1.8);
+    const economy=Math.max(0,regen*1.8+agg.resource*.25)/(1+Math.max(0,agg.cost)*.02);
+    const tempo=Math.max(0,spd*.4+agg.priority*5);
+    const reliability=Math.max(0,1/(1+Math.max(0,vol-1)*0.35));
     return {offense,durability,sustain,utility,economy,tempo,reliability,raw:{hp,atk,def,res,agg}};
   }
 
   // Absolute power = weighted sum of magnitude buckets, scaled so that a C Lv100
   // canonical reference scores near 1000 (the envelope anchor). The weights are
-  // the "canonical currency" — no rarity term anywhere.
+  // the "canonical currency" — no rarity term anywhere. Empirically re-tuned so
+  // that usable output (offense/sustain/control) dominates raw HP/DEF: Battle Wear
+  // is maxHp-proportional, so raw durability contributes less real edge here.
   const NORM=(()=>{
-    // Reference: a well-rounded C Lv100 v5 card at exactly the envelope C band ~1020.
-    // We normalise so measured buckets ≈ envelope anchor after weighting.
-    // This constant is the estimator's global scale; it does NOT depend on rarity.
-    return {offense:0.44,durability:0.22,sustain:0.13,utility:0.10,economy:0.04,tempo:0.05,reliability:0.02};
+    return {offense:0.50,sustain:0.17,utility:0.11,durability:0.10,economy:0.04,tempo:0.06,reliability:0.02};
   })();
 
   function battlePowerV3(card){

@@ -1,0 +1,80 @@
+{
+  "nCards": 1000,
+  "nPairs": 2400,
+  "byBpRatio": {
+    "medium": {
+      "count": 442,
+      "higherWinRate": 0.568,
+      "lowerWinRate": 0.414,
+      "drawRate": 0.018
+    },
+    "very-large": {
+      "count": 163,
+      "higherWinRate": 0.577,
+      "lowerWinRate": 0.399,
+      "drawRate": 0.025
+    },
+    "tiny": {
+      "count": 343,
+      "higherWinRate": 0.504,
+      "lowerWinRate": 0.487,
+      "drawRate": 0.009
+    },
+    "small": {
+      "count": 596,
+      "higherWinRate": 0.529,
+      "lowerWinRate": 0.461,
+      "drawRate": 0.01
+    },
+    "large": {
+      "count": 415,
+      "higherWinRate": 0.552,
+      "lowerWinRate": 0.434,
+      "drawRate": 0.014
+    },
+    "medium-large": {
+      "count": 441,
+      "higherWinRate": 0.592,
+      "lowerWinRate": 0.399,
+      "drawRate": 0.009
+    }
+  },
+  "byRarityGap": {
+    "1": {
+      "count": 355,
+      "higherWinRate": 0.496,
+      "lowerWinRate": 0.493,
+      "drawRate": 0.011
+    },
+    "2": {
+      "count": 349,
+      "higherWinRate": 0.544,
+      "lowerWinRate": 0.45,
+      "drawRate": 0.006
+    },
+    "3-4": {
+      "count": 576,
+      "higherWinRate": 0.556,
+      "lowerWinRate": 0.425,
+      "drawRate": 0.019
+    },
+    "8+": {
+      "count": 352,
+      "higherWinRate": 0.557,
+      "lowerWinRate": 0.42,
+      "drawRate": 0.023
+    },
+    "5-7": {
+      "count": 583,
+      "higherWinRate": 0.592,
+      "lowerWinRate": 0.4,
+      "drawRate": 0.009
+    },
+    "same": {
+      "count": 185,
+      "higherWinRate": 0.519,
+      "lowerWinRate": 0.476,
+      "drawRate": 0.005
+    }
+  }
+}

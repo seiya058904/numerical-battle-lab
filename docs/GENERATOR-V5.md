@@ -84,13 +84,20 @@ BattlePower v3 测量
 - 分层特征：offense / durability / sustain / utility / economy / tempo / reliability。
 - v4 旧卡继续用 BattlePower v2（legacy）；v5 卡显示/诊断一律用 v3。
 
-## 6. Name Generator v2（name-generator-v2.js）
+## 6. Name Generator v3（name-generator-v3.js）
 
-- 物种专名语法：`speciesStem(onset+rime) + 0–3 个 world-harmonic 音节`。
-- 名字 = `seed + mechanicFingerprint`（结构身份）决定；**不读 Lv/Rarity/BP**。
-- 形态：2 字 ≈8–10%、3 字 ≈50%、4 字 ≈32%、5 字 ≈8%（无固定模板）。
-- 通用后缀（兽/龙/灵/王/刃/魂…）不构成模板；10k 采样唯一率 ≥99%，模板泄漏为 0。
-- 名称碰撞用确定性消歧（registrar），从不随机重试。
+- 名字是 **Presentation Identity**：只由 `seed` 决定（`originSeed ?? seed ?? id`），
+  绝不读稀有度/等级/BP/stats/Action/status/resource/role/机制指纹。
+- 六个纯语音家族（ROUND / AGILE / HEAVY / SLEEK / WILD / ANCIENT）只提供不同发音轮廓，
+  由 Seed PRNG 决定，与战斗机制无关，不出现在 UI。
+- 长度：2 字 10% / 3 字 70% / 4 字 20% / 5 字禁止；全部字符来自 canonical 常用字符池。
+- 校验：2–4 字、只允许 canonical 字符、字符互不重复、禁用泛化怪物后缀（兽/龙/王…）、
+  禁用已知名称（皮卡丘/妙蛙/安娜…）；失败整体重 roll（≤64 次），绝不拼接修补。
+- `generateSpeciesNameV3` 是纯确定性 base name；`createNameRegistrarV3` 处理批量碰撞
+  （整体重新生成，不追加数字/字符）。
+- 官方 60 预设使用**人工定稿名称**（scripts/apply-preset-names-v3.js），只改 name/displayName，
+  其余字段与 fingerprint 逐字节不变。
+- v1（gen-names.js）与 v2（name-generator-v2.js）保留为 legacy 兼容。
 
 ## 7. 对局随机语义（app.js / kernel.js）
 

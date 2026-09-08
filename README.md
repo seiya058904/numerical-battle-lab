@@ -17,7 +17,9 @@
 **Generator v5 是当前默认生成器（v4 保留为 legacy 兼容）**。强度体系是权威的 Level × Rarity 规则：
 **Level 决定整体数值尺度，Rarity 决定该尺度内允许的实力 min–max（同等级下低稀有度上限 < 高稀有度下限），Seed 只决定卡牌在稀有度区间内的个体位置，机制决定打法和爆冷可能，BattlePower 是真实实力的静态估算。**
 同 seed 的卡无论 Lv/Rarity 怎么变，**机制指纹与物种专名都不变**——只是数值强度按包络校准。
-**命名体系全面重做（Name Generator v2）**：卡名是原创物种专名（如 珀岚、蜃环、沧溟…），不再是「火狼/雷刃」式的两字拼词。
+**命名体系（Name Generator v3）**：卡名是可直接朗读、好记的原创物种专名（如 米洛、咕拉奇、维洛恩、莫里亚姆…），
+由 6 个纯语音家族（ROUND/AGILE/HEAVY/SLEEK/WILD/ANCIENT）以 2/3/4 字 = 10/70/20 生成，
+5 字禁止；名字只由 Seed 决定，绝不读稀有度/等级/BP/机制。官方 60 预设使用人工定稿名称。
 **对局随机**：同 Priority 层内，SPD 决定先手概率（initiative = SPD × jitter∈[0.85,1.15]，读取对局 PRNG），
 小速度优势是概率优势、大速度差距固定先手；命中/暴击/波动照旧全部来自对局 seed，Replay 精确可复现。
 
@@ -46,7 +48,7 @@ python -m http.server 8765
 - 20 个示例实体、63 个示例技能、33 个状态；它们只是组件语言的示范组合，不是引擎上限。
 - **生成卡牌（Generator v5，Classless，默认）**：12 档稀有度、任意整数等级 1..100、无职业先验、
   连续随机预算分配、2–6 个可变行动、个体级随机（VOLATILITY/LUCK）、时间成长/疲劳（RAMP/FATIGUE/ENDURANCE）、
-  Battle Wear 长局收敛、物种专名（Name Generator v2）、复合效果、条件、资源循环与状态事件程序。
+  Battle Wear 长局收敛、物种专名（Name Generator v3）、复合效果、条件、资源循环与状态事件程序。
   强度由 **LevelScale × Rarity PowerEnvelope → targetPower → BattlePower v3 有界校准** 决定：
   同 seed 结构跨 Lv/Rarity 不变，实测 BP 严格落在对应包络内（C+ Lv100 永远 < A+ Lv100）。
   显式 `generatorVersion: 1|2|3|4` 仍逐字节复现历史版本。
@@ -136,5 +138,5 @@ npm run verify
 - `node qa/browser-multi.js`：多人显式编队 + 新种子/重开语义 QA（无自动补卡、未填满禁止开始、返回保留阵容）。
 - `npm run audit:power-envelope`：v5 强度审计（包络/等级梯子/稀有度梯子/C+ vs A+ 跨种子回归/跨稀有度 Monte Carlo）→ `qa/power-envelope-v5.json`。
 - `npm run audit:presets-v5`：v5 预设审计（60 张全部落入包络、名字唯一、结构自洽）→ `qa/presets-v5-audit.json`。
-- `npm run audit:naming`：Name Generator v2 审计（10k 唯一率 ≥99%、通用后缀/模板泄漏为零）→ `qa/naming-v2-audit.json`。
+- `npm run audit:naming`：Name Generator v3 审计（10k 唯一率、生僻字=0、禁用后缀=0、长度分布）→ `qa/naming-v3-audit.json`。
 - `npm run verify:release`：verify + `npm run diversity`。仓库清单按 Git 暂存区内容生成；提交新文件后先 `npm run manifest`。

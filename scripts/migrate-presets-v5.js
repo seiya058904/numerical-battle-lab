@@ -14,7 +14,7 @@
 // as the legacy/compat fixture.
 const fs=require('node:fs'),path=require('node:path');
 const ROOT=path.resolve(__dirname,'..');
-for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','gen-v2','gen-v3','gen-v4','behavior','battlepower-v2','card-ui'])require(path.join(ROOT,'src',f+'.js'));
+for(const f of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','name-generator-v3','gen-v2','gen-v3','gen-v4','gen-v5','behavior','battlepower-v2','card-ui'])require(path.join(ROOT,'src',f+'.js'));
 const N=global.NCB;
 
 const src=require(path.join(ROOT,'content/presets-v4.json'));

@@ -1,0 +1,104 @@
+{
+  "samples": 10000,
+  "baseUniqueCount": 8481,
+  "baseCollisionCount": 1519,
+  "registeredUniqueCount": 10000,
+  "lenDistributionPct": {
+    "2": 7.3,
+    "3": 68.8,
+    "4": 23.9
+  },
+  "commonCharacterRate": 100,
+  "rareCharacterCount": 0,
+  "forbiddenSuffixCount": 0,
+  "bannedSubstringCount": 0,
+  "repeatedCharacterCount": 0,
+  "fiveCharNames": 0,
+  "firstCharacterFrequency": [
+    [
+      "维",
+      312
+    ],
+    [
+      "赛",
+      309
+    ],
+    [
+      "帕",
+      306
+    ],
+    [
+      "科",
+      293
+    ],
+    [
+      "鲁",
+      235
+    ]
+  ],
+  "lastCharacterFrequency": [
+    [
+      "洛",
+      636
+    ],
+    [
+      "安",
+      633
+    ],
+    [
+      "诺",
+      507
+    ],
+    [
+      "米",
+      447
+    ],
+    [
+      "姆",
+      428
+    ]
+  ],
+  "topBigrams": [
+    [
+      "帕米",
+      24
+    ],
+    [
+      "帕奇",
+      22
+    ],
+    [
+      "维米",
+      22
+    ],
+    [
+      "赛米",
+      21
+    ],
+    [
+      "维赛",
+      21
+    ],
+    [
+      "赛洛",
+      21
+    ],
+    [
+      "帕迪",
+      20
+    ],
+    [
+      "科奇",
+      20
+    ]
+  ],
+  "familyDistribution": {
+    "HEAVY": 31,
+    "ROUND": 31,
+    "SLEEK": 38,
+    "WILD": 35,
+    "AGILE": 34,
+    "ANCIENT": 31
+  },
+  "sampleCount": 100
+}

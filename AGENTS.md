@@ -65,7 +65,8 @@ npm run calibration:v4         # BattlePower v2 经验校准 → qa/power-v4-cal
 npm run migrate:presets-v5     # 从 presets-v4 迁移生成 content/presets-v5.{json,js}
 npm run audit:power-envelope   # v5 强度审计：包络/等级/稀有度/跨稀有度 Monte Carlo → qa/power-envelope-v5.json
 npm run audit:presets-v5       # v5 预设审计：包络表/唯一名/结构一致性 → qa/presets-v5-audit.json
-npm run audit:naming           # Name Generator v2 审计（10k 唯一率/后缀/模板泄漏）→ qa/naming-v2-audit.json
+npm run audit:naming           # Name Generator v3 审计（10k 唯一率/生僻字/禁用后缀/长度分布）→ qa/naming-v3-audit.json
+npm run audit:empirical-strength # BP/稀有度 vs 真实胜率的大样本实证审计 → qa/empirical-strength.json
 npm run numerical-reference    # 从 canonical registry 重新生成 docs/CARD-NUMERICAL-REFERENCE.md
 node scripts/audit-v4-battles.js 3000   # 3000 场长局统计 → qa/v4-long-battles.json
 node scripts/audit-v4-presets.js        # 60 预设实战审计 → qa/v4-preset-audit.json + docs/V4-PRESET-TABLE.md
@@ -92,14 +93,17 @@ npm run manifest               # 重新生成 RELEASE-MANIFEST.json（提交新�
 - `src/power-v5.js` — **Power Envelope v1**：LevelScale + 12 稀有度包络（min/target/max）+ 质量百分位
 - `src/battlepower-v2.js` — BattlePower v2（legacy v4 估算器）
 - `src/battlepower-v3.js` — **BattlePower v3（v5 canonical）**：只读真实数值、绝不读稀有度/等级/clamp
-- `src/name-generator-v2.js` — **Name Generator v2**：物种专名命名语法（seed+结构身份决定名字）
+- `src/name-generator-v2.js` — **Name Generator v2（legacy）**：旧物种命名语法（保留兼容）
+- `src/name-generator-v3.js` — **Name Generator v3（默认）**：可读音节语素命名；6 个纯语音家族
+  （ROUND/AGILE/HEAVY/SLEEK/WILD/ANCIENT），2/3/4 字 = 10/70/20，5 字禁止；名字只由
+  `seed` 决定（不看稀有度/等级/BP/机制指纹）；官方 60 预设为人工定稿名称（apply-preset-names-v3）
 - `src/behavior.js` — Behavior Analyzer（事后 tags/summary，Presentation only）
 - `src/numerical-knowledge.js` — **Canonical Numerical Knowledge Registry**（本文件）
 - `src/card-browser.js` / `src/card-ui.js` / `src/app.js` — 卡牌浏览/详情/玩家 UI（多人显式编队 selectedTeams；普通对局新 seed；重开=新局）
 - `content/presets-v4.json`(+`.js`) — 60 张 v4 冻结预设（legacy 兼容 fixture）
 - `content/presets-v5.json`(+`.js`) — **60 张 v5 官方预设**（新名字 + 全部落入 Level×Rarity 包络，mechanicFingerprint 保留）
 - `scripts/migrate-presets-v5.js` — v4→v5 预设迁移（重命名 + 数值重校准，结构不变）
-- `scripts/audit-v5-strength.js` / `audit-presets-v5.js` / `audit-naming-v2.js` — v5 强度/预设/命名审计
+- `scripts/audit-v5-strength.js` / `audit-presets-v5.js` / `audit-naming-v3.js` / `apply-preset-names-v3.js` — v5 强度/预设/命名审计
 - `scripts/audit-*.js` — 多样性/长局/预设/数值知识/语义审计
 - `docs/GENERATOR-V4*.md` / `docs/CARD-NUMERICAL-REFERENCE.md` / `docs/V4-PRESET-*.md` — 文档
 
