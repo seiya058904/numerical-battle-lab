@@ -6,7 +6,7 @@
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 290,
+  "verifiedTests": 293,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
@@ -72,6 +72,16 @@
       "path": "content/presets-v5.json",
       "size": 944518,
       "sha256": "2aa161e359c546eef6dd9426e2c3eb237302343479e34bb0af6bf59389d0ad77"
+    },
+    {
+      "path": "content/presets-v6.js",
+      "size": 359895,
+      "sha256": "8259df10f0584e8b11f90150b526cc13f418b1f689633c563a489f2f02fc898e"
+    },
+    {
+      "path": "content/presets-v6.json",
+      "size": 503300,
+      "sha256": "4146b6181a50eb251768b6b4d449d493f76d6a4f83bd63e7a14e6868007f5060"
     },
     {
       "path": "docs/ARCHITECTURE.md",
@@ -210,13 +220,13 @@
     },
     {
       "path": "index.html",
-      "size": 4182,
-      "sha256": "80579aa49daa264efafc2350526e3f42114a7da49600f09050dd8b680e01a1c0"
+      "size": 4403,
+      "sha256": "1caa9b4c9bc088a9c9b9794bb38aac0026e4e6e31216294c0bd50c95c4f5f650"
     },
     {
       "path": "package.json",
-      "size": 1900,
-      "sha256": "0205f3a3915f1da6d4d33c20bbac997fba89f16bc5dec0342470e71631770efb"
+      "size": 1964,
+      "sha256": "87b71d305f73ee4c9b0be57bab145d5b6f7f7ded1a239f7c05cb4038b9ef5cfe"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
@@ -824,6 +834,11 @@
       "sha256": "714cae1879d920d6a68459ba3b37a0f38a5ba56222ffad6904034617cac7b503"
     },
     {
+      "path": "scripts/migrate-presets-v6.js",
+      "size": 3876,
+      "sha256": "942b63e255d3af19404370a07e6a56605ca7cf4e2a67c35d93a05c55a6d88cec"
+    },
+    {
       "path": "scripts/power-calibration.js",
       "size": 19509,
       "sha256": "58fe82b28936005d1577e132446df90c90cbcd0fa4e2253cfb438b0d45c8318a"
@@ -850,8 +865,8 @@
     },
     {
       "path": "scripts/static-check.js",
-      "size": 7234,
-      "sha256": "e6514679919b5931582c7882d893cb36845c81b1ae8f4d51e074ce26dfca5995"
+      "size": 7589,
+      "sha256": "66915e0cd0ab394ff130aa6a5902b364f78d7bdfe4f1aeab0b785b06aff5a72b"
     },
     {
       "path": "scripts/stress-check.js",
@@ -1017,6 +1032,11 @@
       "path": "src/power.js",
       "size": 5695,
       "sha256": "63f9e5bf60a447d87aef255ac5ae2f3100532f348dac5d093faaf1677a89e550"
+    },
+    {
+      "path": "src/presets-v6.js",
+      "size": 790,
+      "sha256": "d0c18560801a1eeb093b2becd7733a7c38df50fe21ceb9ad9e8f0c0a548bdd1a"
     },
     {
       "path": "src/presets.js",
@@ -1207,6 +1227,11 @@
       "path": "tests/presentation.test.js",
       "size": 1354,
       "sha256": "c91334e2d6049c63e18068606361ebacd8ec5e97379ce930739966d06ef35fdb"
+    },
+    {
+      "path": "tests/presets-v6.test.js",
+      "size": 2127,
+      "sha256": "3f6741539cf9768484adb929029f1898164159f4ab50537fd45dec05f001fa0f"
     },
     {
       "path": "tests/presets.test.js",

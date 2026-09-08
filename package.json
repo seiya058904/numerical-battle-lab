@@ -9,6 +9,7 @@
     "verify:release": "npm run verify && npm run gate:v6-strength && npm run diversity",
     "gate:v6-strength": "node scripts/gate-v6-strength.js",
     "audit:v6-strength": "node scripts/audit-v6-strength.js",
+    "migrate:presets-v6": "node scripts/migrate-presets-v6.js",
     "catalog": "node scripts/generate-catalog.js",
     "manifest": "node scripts/generate-manifest.js",
     "migrate:presets-v5": "node scripts/migrate-presets-v5.js && node scripts/apply-preset-names-v3.js",
