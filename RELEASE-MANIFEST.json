@@ -6,7 +6,7 @@
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 284,
+  "verifiedTests": 290,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
@@ -132,6 +132,11 @@
       "path": "docs/GENERATOR-V5.md",
       "size": 6255,
       "sha256": "14549a68802bae5bd567ca014f828c1fee7a22121b6b446c554931b962d1eb3e"
+    },
+    {
+      "path": "docs/GENERATOR-V6-DESIGN.md",
+      "size": 11359,
+      "sha256": "819714dfed1bdf4a3b54fc22ef827683a73cef1171da333f4cd9f4bfed2a6c12"
     },
     {
       "path": "docs/GENERATOR.md",
@@ -754,6 +759,11 @@
       "sha256": "c18fc556ded4e5fba8e27d982edcba9a465a17b6b8f413f53a481f85073b0c59"
     },
     {
+      "path": "scripts/audit-v6-strength.js",
+      "size": 4114,
+      "sha256": "96cd8b3bc42799fe0b29152a64d14d884d7e066f52c059bc4f176a0c2e361a77"
+    },
+    {
       "path": "scripts/diversity-audit-v4.js",
       "size": 4414,
       "sha256": "f8d99201fd265f92da1bb339f80196b1ac3ab22548744fb694e36e3d1152ac61"
@@ -874,6 +884,16 @@
       "sha256": "f675dbe7674a8b459c0ac46a646210e31fb003b8e1047b32e5a26da2f084afdf"
     },
     {
+      "path": "src/budget-price.js",
+      "size": 11676,
+      "sha256": "4ee801c367539ddadb2c7cf860087f474659a7c683444bb9d883746a60f80d06"
+    },
+    {
+      "path": "src/budget-v6.js",
+      "size": 6254,
+      "sha256": "36a0f45759c9fe5e8ab40c51f46a245bb40bf026cf27e4656a58df2d8265468f"
+    },
+    {
       "path": "src/card-browser.js",
       "size": 11668,
       "sha256": "5951a558696929e530237c49b98ce40e8a6d42c1b3fc6c154f3f3f172691b210"
@@ -947,6 +967,11 @@
       "path": "src/gen-v5.js",
       "size": 13492,
       "sha256": "a9b19b1f22a30936d3c0c412c6a803ac1b86b8a504e0c326a93d38356b5ffa7d"
+    },
+    {
+      "path": "src/gen-v6.js",
+      "size": 26186,
+      "sha256": "8f800143347043579bee9d071ff3d2c19fd1f075cc636f7d35e5aa916050bf7a"
     },
     {
       "path": "src/generator.js",
@@ -1122,6 +1147,11 @@
       "path": "tests/gen-v4.test.js",
       "size": 4830,
       "sha256": "130fed3bc065be13b07b90a4f7920441d0b03624e424258235d73c75cc288b1d"
+    },
+    {
+      "path": "tests/gen-v6.test.js",
+      "size": 3711,
+      "sha256": "ca3f90fa551554eb155f70a0207e382972457584a5fe46cdf0db6920e6a79352"
     },
     {
       "path": "tests/generator.test.js",
