@@ -14,3 +14,23 @@ test('card rendering is read only and legacy classes are absent',()=>{
  N.renderCard(c);assert.deepEqual(c,before);
  assert.ok(!/坦克|Tank/.test(N.renderCompactCard(c)));
 });
+
+test('browser metadata invalidates after legacy skill and name edits',()=>{
+ const c=N.generateCardV3({seed:'metadata-edit',rarity:'A',level:60,archetype:'Tank'});
+ c.skills=c.actions;delete c.actions;c.name='old';delete c.displayName;
+ N.cardInfo(c);
+ c.name='renamed';
+ assert.equal(N.filterCards([c],{search:'renamed'}).length,1);
+ N.cachePresetPower(c);
+ c.skills[0].effects=[{type:'damage',formula:'ATK * 100'}];
+ assert.equal(N.battlePowerOf(c),Math.round(N.battlePower(c).power));
+});
+
+test('preset metadata cache follows canonical model weight changes',()=>{
+ const c=N.generateCardV4({seed:'weight-edit',rarity:'S',level:60});N.cachePresetPower(c);N.cardInfo(c);
+ try{
+  N.setBattlePowerV2Weights({offense:.1,durability:.7});
+  assert.equal(N.cardInfo(c).power,N.battlePowerV2(c).power);
+  assert.equal(N.battlePowerOf(c),N.battlePowerV2(c).power);
+ }finally{N.setBattlePowerV2Weights();}
+});

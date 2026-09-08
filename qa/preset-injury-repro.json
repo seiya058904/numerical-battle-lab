@@ -1,0 +1,28 @@
+{
+  "seed": 20260901,
+  "card": "深渊",
+  "opponent": "太虚",
+  "before": {
+    "rounds": 69,
+    "damage": 0,
+    "healing": 300,
+    "winner": "A",
+    "actions": [
+      "gen_6bbcfce6:a4",
+      "gen_27e23427:a2",
+      "gen_27e23427:a3"
+    ]
+  },
+  "after": {
+    "rounds": 37,
+    "damage": 689,
+    "healing": 128,
+    "winner": "A",
+    "actions": [
+      "gen_6bbcfce6:a4",
+      "gen_27e23427:a2",
+      "gen_27e23427:a1",
+      "gen_27e23427:a3"
+    ]
+  }
+}

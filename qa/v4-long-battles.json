@@ -7,13 +7,13 @@
   "p95": 69,
   "max": 88,
   "maxRoundsRate": 0,
-  "drawRate": 0.011666666666666667,
-  "atMost3RoundRate": 0.4126666666666667,
-  "over40RoundRate": 0.265,
+  "drawRate": 0.011333333333333334,
+  "atMost3RoundRate": 0.4136666666666667,
+  "over40RoundRate": 0.26166666666666666,
   "counts": {
     "hardCap": 0,
-    "draws": 35,
-    "early": 1238,
-    "long": 795
+    "draws": 34,
+    "early": 1241,
+    "long": 785
   }
 }

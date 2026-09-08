@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "name": "create rarity and arbitrary level",
+      "pass": true
+    },
+    {
+      "name": "tutorial contains BP, randomness and growth",
+      "pass": true
+    },
+    {
+      "name": "close returns to help with scroll enabled",
+      "pass": true
+    },
+    {
+      "name": "mobile no overflow",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

@@ -154,7 +154,7 @@
 | cooldownReduce | 减少目标全部已存在冷却。只在有冷却技能时才真正有价值。 | contextual | amount |
 | selfDamagePct | 按施法者最大生命造成不可反射的自伤（自残/血法）。 | negative | pct |
 | conditional | 根据通用 Condition 树执行 then 或 else 分支。 | contextual | condition / then / else |
-| repeat | 重复执行子效果块 N 次（多段/连击）。 | positive | times / effects |
+| repeat | 重复执行子效果块 N 次（多段/连击）；引擎和 canonical AI 均按从 0 起的 REPEAT_INDEX 逐次求值，子效果局部上下文与实际结算保持一致。 | positive | times / effects |
 | emitEvent | 发射已注册 Trigger Event，让状态/被动通过统一事件链响应。 | contextual | event / eventSubject / tags / payload |
 
 ## 3. 条件组件（Conditions）
@@ -258,7 +258,7 @@
 | RES | 当前有效抗性 | 施法者 | `ATK * 100 / (100 + RES)` |
 | SPD | 当前有效速度 | 施法者 | `SPD * 0.5` |
 | ACC | 命中值（配合 EVA 计算命中率） | 施法者 | `100 + ACC` |
-| EVA | 闪避值（作为命中公式的防守输入） | 目标 | `100 / (100 + EVA)` |
+| EVA | 闪避值（作为命中公式的防守输入） | 施法者（目标用 TARGET_EVA） | `100 / (100 + EVA)` |
 | CRIT | 暴击率（%） | 施法者 | `CRIT / 100` |
 | CRIT_DMG | 暴击倍率（%） | 施法者 | `CRIT_DMG / 100` |
 | PEN | 通用穿透（%） | 施法者 | `PEN / 100` |

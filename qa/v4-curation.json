@@ -5,7 +5,7 @@
   "adjustedCards": 28,
   "unchangedCards": 32,
   "replacedCards": 0,
-  "totalAdjustments": 83,
+  "totalAdjustments": 84,
   "candidateCount": 9600,
   "eligibleCount": 2907,
   "rejected": 6693,
@@ -16,8 +16,8 @@
     "1": 3,
     "2": 7,
     "3": 7,
-    "4": 10,
-    "5": 1
+    "4": 9,
+    "5": 2
   },
   "cards": [
     {
@@ -1754,7 +1754,7 @@
       "fingerprint": "26a62cdc9a245642",
       "curated": true,
       "curationVersion": 2,
-      "designNote": "延后成长慢防御塔，镜像76回合0伤害、面板56-76回合全程0伤害。唯一输出被hp<0.5锁死。抬高输出动作优先级并绑定战斗时长（疲劳）终结僵持。",
+      "designNote": "延后成长的慢速防御反击个体：先承受伤害，受伤后用血性猛击反击；侵蚀仍需半血。最终观战发现半血攻击门槛被补盾和被动回复锁住，69回合零HP伤害，因此只将血性猛击改为受伤即可用，保留自伤、伤害、冷却、稀有度与等级。",
       "adjustments": [
         {
           "field": "stats.ENDURANCE",
@@ -1775,6 +1775,11 @@
           "field": "actions.血性猛击.priority",
           "before": 2,
           "after": 3
+        },
+        {
+          "field": "actions.血性猛击.hpPctBelow",
+          "before": 0.5,
+          "after": 1
         }
       ]
     },

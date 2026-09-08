@@ -240,7 +240,7 @@
     lowerEffect:'成长开始得越早，前期就越接近后期强度。',
     direction:'negative',battleEffect:'回合 r 时 RAMP 因子 = 1 + max(0, r - RAMP_START) × RAMP_RATE，之后受 RAMP_CAP 封顶。',
     interactions:['RAMP_RATE','RAMP_CAP','ROUND','BATTLE_TURN'],
-    aiMeaning:'AI 将 RAMP 纳入长期价值：后期才强的卡会倾向拖长战线。',
+    aiMeaning:'AI 读取当前回合已成长的有效属性；没有搜索未来回合，不能保证主动等待成长。',
     battlePowerMeaning:'BattlePower v2 的 outlook 在几个时间点采样 timeFactor，RAMP_START 越早评分越高。',
     examples:['RAMP_START=7：约第 8 回合起成长明显','RAMP_START=999：永不成长'],
     tuningGuidance:'如果"后期卡不够明显"，优先检查 RAMP_START/RAMP_RATE/RAMP_CAP，不要先改基础 ATK 或 rarity budget。',
@@ -341,7 +341,7 @@
     RES:{what:'当前有效抗性',context:'施法者',example:'ATK * 100 / (100 + RES)'},
     SPD:{what:'当前有效速度',context:'施法者',example:'SPD * 0.5'},
     ACC:{what:'命中值（配合 EVA 计算命中率）',context:'施法者',example:'100 + ACC'},
-    EVA:{what:'闪避值（作为命中公式的防守输入）',context:'目标',example:'100 / (100 + EVA)'},
+    EVA:{what:'闪避值（作为命中公式的防守输入）',context:'施法者（目标用 TARGET_EVA）',example:'100 / (100 + EVA)'},
     CRIT:{what:'暴击率（%）',context:'施法者',example:'CRIT / 100'},
     CRIT_DMG:{what:'暴击倍率（%）',context:'施法者',example:'CRIT_DMG / 100'},
     PEN:{what:'通用穿透（%）',context:'施法者',example:'PEN / 100'},
@@ -425,7 +425,7 @@
     cooldownReduce:{summary:'减少目标全部已存在冷却。只在有冷却技能时才真正有价值。',direction:'contextual'},
     selfDamagePct:{summary:'按施法者最大生命造成不可反射的自伤（自残/血法）。',direction:'negative',higherEffect:'自伤更多（更危险）',lowerEffect:'更少'},
     conditional:{summary:'根据通用 Condition 树执行 then 或 else 分支。',direction:'contextual'},
-    repeat:{summary:'重复执行子效果块 N 次（多段/连击）。',direction:'positive'},
+    repeat:{summary:'重复执行子效果块 N 次（多段/连击）；引擎和 canonical AI 均按从 0 起的 REPEAT_INDEX 逐次求值，子效果局部上下文与实际结算保持一致。',direction:'positive'},
     emitEvent:{summary:'发射已注册 Trigger Event，让状态/被动通过统一事件链响应。',direction:'contextual'}
   };
   const KNOWN_CONDITIONS={

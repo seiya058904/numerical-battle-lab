@@ -1,6 +1,6 @@
 # V4 Preset Design Report — v1.3.1 curation pass
 
-> Reviewed **60/60** · Adjusted **28** · Unchanged **32** · Replaced **0** · Total schema adjustments **83**.
+> Reviewed **60/60** · Adjusted **28** · Unchanged **32** · Replaced **0** · Total schema adjustments **84**.
 > curationVersion **2**：从「随机精选样本」升级为「逐张设计的正式角色」。全部改动仅通过统一 Card Schema（stats / action 参数 / status / trigger / time vars / resist / affinity），无任何卡牌专属引擎代码。
 
 ## 调整统计
@@ -11,14 +11,15 @@
 | 1 | 3 |
 | 2 | 7 |
 | 3 | 7 |
-| 4 | 10 |
-| 5 | 1 |
+| 4 | 9 |
+| 5 | 2 |
 
 ## 调整最大的卡（Top 10 by adjustment count）
 
 | 名称 | 稀有度 | Lv | BP | 调整数 | 主要调整 |
 |---|---|---:|---:|---:|---|
 | 渊影 | SS | 46 | 2623 | 5 | FATIGUE_RATE / FATIGUE_START / FATIGUE_CAP / 蚀爆.damage.coef |
+| 深渊 | XS | 39 | 2813 | 5 | ENDURANCE / FATIGUE_RATE / FATIGUE_START / 血性猛击.priority |
 | 苔痕 | C | 34 | 139 | 4 | FATIGUE_RATE / FATIGUE_START / FATIGUE_CAP / ENDURANCE |
 | 影足 | B | 55 | 1055 | 4 | FATIGUE_RATE / FATIGUE_START / ENDURANCE / RAMP_CAP |
 | 赤隼 | A | 14 | 277 | 4 | FATIGUE_START / FATIGUE_RATE / FATIGUE_CAP / 蚀爆.unconditional(1 dead-gate removed) |
@@ -27,7 +28,6 @@
 | 苍翼 | S | 15 | 480 | 4 | 血性猛击.damage.coef / 血性猛击.damage.coef / ENDURANCE / FATIGUE_CAP |
 | 暗星 | S | 95 | 3048 | 4 | 蚀爆.unconditional(1 dead-gate removed) / FATIGUE_RATE / ENDURANCE / 蚀爆.damage.coef |
 | 棱镜 | SS | 66 | 5274 | 4 | 蚀爆.unconditional(1 dead-gate removed) / FATIGUE_RATE / FATIGUE_START / FATIGUE_CAP |
-| 深渊 | XS | 39 | 2813 | 4 | ENDURANCE / FATIGUE_RATE / FATIGUE_START / 血性猛击.priority |
 
 ## 每张卡设计记录
 
@@ -84,7 +84,7 @@
 | 终焉 | SSS_COLLECTOR | 87 | 3059 | 易疲劳 / DoT / 穿透 / 护盾型 | fatigue | 2 | 易疲劳巨型护盾坦克（DEF475/ATK71），镜像79回合damage仅50。补足进攻转化：提升ATK与蚀爆消耗系数，让疲劳坦能兑现击杀。 |
 | 幻梦 | SSS_COLLECTOR | 100 | 2418 | 稳定 / 长线型 / 穿透 / 高闪避 | mixed | 3 | 纯回复+护盾+反击超级高闪避耐久卡，镜像87回合DRAW、全部myDamage 0（最严重）。回收永动回复（复苏冷却2→4）、强化反击转化、加速疲劳，把无限平局变可收束消耗。 |
 | 天陨 | XS | 17 | 2049 | 稳定 / DoT / 穿透 / 状态压制 | stable | 0 | 天陨：展示稳定时间曲线与低波动。行动组合：复苏、侵蚀、号令、蚀爆；机制：conditional / heal / gain / repeat / status / emitEvent / shield / consumeStatus / damage。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。） |
-| 深渊 | XS | 39 | 2813 | 高波动 / 长线型 / 高耐久 / 防御型 | mixed | 4 | 延后成长慢防御塔，镜像76回合0伤害、面板56-76回合全程0伤害。唯一输出被hp<0.5锁死。抬高输出动作优先级并绑定战斗时长（疲劳）终结僵持。 |
+| 深渊 | XS | 39 | 2813 | 高波动 / 长线型 / 高耐久 / 防御型 | mixed | 5 | 延后成长的慢速防御反击个体：先承受伤害，受伤后用血性猛击反击；侵蚀仍需半血。最终观战发现半血攻击门槛被补盾和被动回复锁住，69回合零HP伤害，因此只将血性猛击改为受伤即可用，保留自伤、伤害、冷却、稀有度与等级。 |
 | 破晓 | XS | 59 | 1729 | 高波动 / 长线型 / 高耐久 / 资源循环 | mixed | 4 | 高耐久资源循环后期成长，镜像82回合0伤害，无任何直伤出口。降低ENDURANCE、给长期战争取损耗收尾，并提升唯一输出的反击转化。 |
 | 永夜 | XS | 79 | 2839 | 高波动 / 易疲劳 / 高耐久 / 慢速 | fatigue | 0 | 永夜：展示逐步疲劳与高波动。行动组合：蓄能、血性猛击、破咒、复苏、回转、转化；机制：resource / repeat / selfDamagePct / damage / conditional / dispel / shield / gain / heal / status / cooldownReduce / convertResource。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。） |
 | 洪荒 | XS | 97 | 6043 | DoT / 高速 / 穿透 / 状态压制 | stable | 0 | 洪荒：展示稳定时间曲线与中波动。行动组合：蚀爆、侵蚀、战意、蓄能、复苏、破咒；机制：status / consumeStatus / damage / toggleStatus / resource / shield / conditional / heal / gain / dispel。直接伤害与其他机制共同工作。具体强弱保留生成差异。（本轮逐张复审通过，无需调整。） |

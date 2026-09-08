@@ -2,7 +2,7 @@
   "nCards": 72,
   "pairs": 1256,
   "spearman": 0.765,
-  "pairwiseOrdering": 0.807,
+  "pairwiseOrdering": 0.806,
   "trend": {
     "C": {
       "median": 351,

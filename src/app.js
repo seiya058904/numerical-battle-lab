@@ -158,11 +158,31 @@
     const pool=selectableCards();
     return pool.length?pool[((poolIndex%pool.length)+pool.length)%pool.length]:null;
   }
-  function closePicker(){document.querySelector('.picker-overlay')?.remove();document.body.classList.remove('picker-open');}
+  let overlayReturnFocus=null;
+  const overlayHistoryKey='nbl-overlay';
+  function rememberOverlay(){
+    if(document.querySelector('.picker-overlay'))return;
+    overlayReturnFocus=document.activeElement;
+    root.history.pushState({...root.history.state,[overlayHistoryKey]:true},'');
+  }
+  root.addEventListener('popstate',()=>{if(document.querySelector('.picker-overlay')&&!root.history.state?.[overlayHistoryKey])closePicker();});
+  function syncOverlayLock(){document.body.classList.toggle('picker-open',!!document.querySelector('.picker-overlay,.knowledge-sheet'));}
+  function closeKnowledgeSheet(){const sheet=document.querySelector('.knowledge-sheet');const focus=sheet?._returnFocus;sheet?.remove();syncOverlayLock();if(focus?.isConnected)focus.focus({preventScroll:true});}
+  function closePicker(){closeKnowledgeSheet();document.querySelector('.picker-overlay')?.remove();syncOverlayLock();if(root.history.state?.[overlayHistoryKey])root.history.back();if(overlayReturnFocus?.isConnected)overlayReturnFocus.focus({preventScroll:true});}
+  document.addEventListener('keydown',event=>{
+    const modal=document.querySelector('.knowledge-sheet')||document.querySelector('.picker-overlay');if(!modal)return;
+    if(event.key==='Escape'){event.preventDefault();if(modal.classList.contains('knowledge-sheet'))closeKnowledgeSheet();else closePicker();return;}
+    if(event.key!=='Tab')return;
+    const controls=[...modal.querySelectorAll('button,input,select,textarea,a[href],summary')].filter(el=>!el.disabled&&el.getClientRects().length);
+    const first=controls[0],last=controls.at(-1);if(!first)return;
+    if(event.shiftKey&&(document.activeElement===first||!modal.contains(document.activeElement))){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&(document.activeElement===last||!modal.contains(document.activeElement))){event.preventDefault();first.focus();}
+  });
   function browserOptions(extra={}){return {onCopy:c=>{copyPresetToLibrary(c);closePicker();setTab('cards');},canEdit:c=>!isSystemPreset(c.id),onEdit:c=>{closePicker();openCardEditor(c);},onDelete:c=>{if(confirm(`删除「${c.displayName||c.name}」？`)){state.library=state.library.filter(x=>x.id!==c.id);saveLibrary();closePicker();renderCards();}},...extra};}
   function openPicker(side){
+    rememberOverlay();
     const overlay=document.createElement('section');overlay.className='picker-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',side==='left'?'选择左方卡牌':'选择右方卡牌');document.body.appendChild(overlay);document.body.classList.add('picker-open');
-    new NCB.CardBrowser(overlay,selectableCards(),browserOptions({title:side==='left'?'选择左方卡牌':'选择右方卡牌',selectLabel:side==='left'?'选择为左方':'选择为右方',onClose:closePicker,onSelect:c=>{state[side==='left'?'selectedLeft':'selectedRight']=selectableCards().findIndex(x=>x.id===c.id);closePicker();renderBattle();}}));overlay.querySelector('input')?.focus({preventScroll:true});
+    new NCB.CardBrowser(overlay,selectableCards(),browserOptions({title:side==='left'?'选择左方卡牌':'选择右方卡牌',selectLabel:side==='left'?'选择为左方':'选择为右方',onClose:closePicker,onSelect:c=>{state[side==='left'?'selectedLeft':'selectedRight']=selectableCards().findIndex(x=>x.id===c.id);closePicker();renderBattle();}}));overlay.querySelector('[data-browser-close]')?.focus({preventScroll:true});
   }
   function setupSlot(side){const index=state[side==='left'?'selectedLeft':'selectedRight'],card=index==null?null:cardAt(index);return `<div class="setup-slot"><h2>${side==='left'?'左方':'右方'}</h2>${card?NCB.selectionCard(card):'<div class="empty-slot">＋<p>选择卡牌</p></div>'}<button class="btn primary" data-open-picker="${side}">${card?'更换卡牌':'选择卡牌'}</button></div>`;}
 
@@ -234,10 +254,11 @@
     const ui=meta?NCB.rarityUI(meta.rarity):null;
     const bp=meta?NCB.battlePowerOf(meta):null;
     const lv=meta?meta.level:null;
-    return `<article class="entity-card ${entity.hp>0?'selectable':''} ${selected?'is-selected':''} ${target?'is-target':''} ${entity.hp<=0?'is-dead':''}" data-entity-id="${entity.id}">
+    return `<article class="entity-card ${entity.hp>0?'selectable':''} ${selected?'is-selected':''} ${target?'is-target':''} ${entity.hp<=0?'is-dead':''} ${state.frameRow?.sourceId===entity.id?'is-acting':''}" data-entity-id="${entity.id}">
       <div class="entity-top"><div><div class="entity-name">${esc(entity.name)}</div>${meta&&ui?`<div class="entity-meta">${esc(ui.badge)} · Lv.${lv??''}${bp?` · ${esc(NCB.formatBattlePower(bp))}`:''}</div>`:''}</div></div>
       ${NCB.artPlaceholder(meta?meta.rarity:'C',entity.templateId)}<div class="meter-group">${meter('生命',entity.hp,entity.maxHp)}${meter('护盾',entity.shield,entity.maxHp)}</div>
       <div class="stat-line"><span class="stat-chip">攻击<b>${derived('ATK')}</b></span><span class="stat-chip">防御<b>${derived('DEF')}</b></span><span class="stat-chip">速度<b>${derived('SPD')}</b></span><span class="stat-chip">暴击<b>${derived('CRIT')}%</b></span></div>
+      <div class="battle-resources">${resourceIds(entity).map(id=>`<span data-resource="${esc(id)}">${esc(({ENERGY:'能量',RAGE:'怒气',SOUL:'魂力',CHRONO:'时能'})[id]||id)} <b>${Math.round(engine.getResource(entity,id))}/${Math.round(engine.resourceMax(entity,id))}</b></span>`).join('')}${Object.entries(entity.wards||{}).filter(([,v])=>v>0).map(([id,v])=>`<span data-ward="${esc(id)}">${esc(NCB.DAMAGE_TYPES[id]?.name||id)}护符 <b>${Math.round(v)}</b></span>`).join('')}</div>
       <div class="status-line">${statusLine(entity)}</div><div class="battle-actions">${entity.skills.map(id=>`<span title="${esc(NCB.describeAction(NCB.SKILL_DEFS[id]))}">${esc(NCB.SKILL_DEFS[id].name)}</span>`).join('')}</div>
       ${state.frameRow?.targetId===entity.id?floatHtml(state.frameRow):''}${planned?`<span class="action-marker">已选择行动</span>`:''}
     </article>`;
@@ -382,6 +403,7 @@
     ['types','伤害类型',k=>Object.entries(k.damageTypes)]
   ];
   function knowledgeSheet(id){
+    const returnFocus=document.querySelector('.knowledge-sheet')?._returnFocus||document.activeElement;
     document.querySelectorAll('.knowledge-sheet').forEach(s=>s.remove());
     const hit=NCB.knowledgeLookup(id);if(!hit)return;
     const e=hit.entry;
@@ -397,10 +419,12 @@
     if(e.tuningGuidance)lines.push(`<h4>调优指南</h4><p>${esc(e.tuningGuidance)}</p>`);
     if((e.readBy||[]).length)lines.push(`<h4>读取方</h4><p>${esc(e.readBy.join(' / '))}</p>`);
     const sheet=document.createElement('section');
+    sheet._returnFocus=returnFocus;
     sheet.className='knowledge-sheet';sheet.setAttribute('role','dialog');sheet.setAttribute('aria-modal','true');
-    sheet.innerHTML=`<div class="knowledge-sheet-card"><button class="btn ghost" data-knowledge-close>关闭</button>${lines.join('')}<a class="knowledge-more" data-knowledge-browse="${esc(id)}">在完整百科中查看</a></div>`;
+    sheet.innerHTML=`<div class="knowledge-sheet-card"><button class="btn ghost" data-knowledge-close>关闭</button>${lines.join('')}<button class="btn knowledge-more" data-knowledge-browse="${esc(id)}">在完整百科中查看</button></div>`;
     document.body.appendChild(sheet);document.body.classList.add('picker-open');
-    sheet.querySelector('[data-knowledge-close]').onclick=()=>sheet.remove();
+    sheet.querySelector('[data-knowledge-close]').onclick=closeKnowledgeSheet;
+    sheet.querySelector('[data-knowledge-close]').focus({preventScroll:true});
   }
   function renderKnowledgeBrowser(root){
     const k=NCB.NUMERICAL_KNOWLEDGE();
@@ -413,18 +437,20 @@
         ?`<div class="kb-results">${results.map(r=>`<button class="kb-row" data-knowledge="${esc(r.id)}"><b>${esc(r.nameZh)}</b><span>${esc(r.kind)} · <code>${esc(r.nameEn||r.id)}</code></span><small>${esc(r.summary)}</small></button>`).join('')}</div>`
         :`<p class="empty">输入关键词，例如「吸血」「疲劳」「暴击」「ATK」。</p>`;
     };
-    root.innerHTML=`<div class="kb"><div class="kb-head"><h2>数值百科</h2></div><input type="search" data-kb-search placeholder="搜索：攻击 / 暴击 / 疲劳 / 吸血 …"><select data-kb-cat><option value="">按分类浏览</option>${KNOW_CATEGORIES.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select><div data-kb-results></div></div>`;
-    root.oninput=render;root.onchange=render;
-    // pointerup fallback: some mobile/touch emulation suppresses the click event
-    const open=e=>{const row=e.target.closest('[data-knowledge]');if(row)knowledgeSheet(row.dataset.knowledge);};
-    root.onclick=open;root.onpointerup=open;
+    root.innerHTML=`<div class="kb"><div class="kb-head"><h2>数值百科</h2><button class="btn" data-kb-close>返回</button></div><input type="search" data-kb-search placeholder="搜索：攻击 / 暴击 / 疲劳 / 吸血 …"><select data-kb-cat><option value="">按分类浏览</option>${KNOW_CATEGORIES.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select><div data-kb-results></div></div>`;
+    root.oninput=e=>{if(e.target.matches('[data-kb-search]'))render();};
+    root.onchange=e=>{if(e.target.matches('[data-kb-cat]'))render();};
+    // Search blur must not rebuild a row between pointer-down and click.
+    const open=e=>{if(e.target.closest('[data-kb-close]'))closePicker();};
+    root.onclick=open;
     render();
   }
   function openKnowledgeBrowser(){
+    rememberOverlay();
     const overlay=document.createElement('section');overlay.className='picker-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','数值百科');
     document.body.appendChild(overlay);document.body.classList.add('picker-open');
     renderKnowledgeBrowser(overlay);
-    overlay.querySelector('[data-kb-search]')?.focus({preventScroll:true});
+    overlay.querySelector('[data-kb-close]')?.focus({preventScroll:true});
   }
 
   function renderEditor(){ const view=$('#view-editor');if(!view)return;
@@ -490,7 +516,7 @@
   // ===========================================================================
   document.addEventListener('click',event=>{
     const kb=event.target.closest('[data-knowledge]');if(kb){knowledgeSheet(kb.dataset.knowledge);return;}
-    const kbb=event.target.closest('[data-knowledge-browse]');if(kbb){document.querySelector('.picker-overlay')?.remove();document.body.classList.remove('picker-open');openKnowledgeBrowser();setTimeout(()=>{const hit=NCB.knowledgeLookup(kbb.dataset.knowledgeBrowse);if(hit){const input=document.querySelector('.picker-overlay [data-kb-search]');if(input){input.value=hit.entry.nameEn||kbb.dataset.knowledgeBrowse;input.dispatchEvent(new Event('input'));}}},0);return;}
+    const kbb=event.target.closest('[data-knowledge-browse]');if(kbb){closeKnowledgeSheet();const overlay=document.querySelector('.picker-overlay');if(overlay){renderKnowledgeBrowser(overlay);}else openKnowledgeBrowser();setTimeout(()=>{const hit=NCB.knowledgeLookup(kbb.dataset.knowledgeBrowse);if(hit){const input=document.querySelector('.picker-overlay [data-kb-search]');if(input){input.value=hit.entry.nameEn||kbb.dataset.knowledgeBrowse;input.dispatchEvent(new Event('input'));}}},0);return;}
     const picker=event.target.closest('[data-open-picker]');if(picker){openPicker(picker.dataset.openPicker);return;}
     const roster=event.target.closest('[data-editor-unit]');if(roster){state.editorUnitId=roster.dataset.editorUnit;renderEditor();return;}
     const tab=event.target.closest('[data-tab]');if(tab){$('#lab-menu').open=false;setTab(tab.dataset.tab);if(tab.dataset.tab==='battle'){renderBattle();}return;}

@@ -94,3 +94,12 @@ test('cachePresetPower seeds the BP cache from canonical, so battlePowerOf match
     assert.equal(displayed,canonical,`${c.displayName}: battlePowerOf ${displayed} != battlePowerV2 ${canonical}`);
   }
 });
+test('curated injury counter can attack before sustain locks it above half HP',()=>{
+ const {fight}=require('../scripts/audit-v4-battles.js');
+ const cards=require('../content/presets-v4.json').cards;
+ const a=cards.find(c=>c.displayName==='深渊'),b=cards.find(c=>c.displayName==='太虚');
+ const r=fight(a,b,20260901);
+ assert.ok(r.actions.includes(a.actions.find(x=>x.name==='血性猛击').id),'injury counter must actually be used');
+ assert.ok(r.damage>0,'must deal HP damage instead of winning only via system wear');
+ assert.ok(r.rounds<40,'this reproduced sustain lock must break');
+});

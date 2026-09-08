@@ -78,7 +78,8 @@ npm run manifest               # 重新生成 RELEASE-MANIFEST.json（提交新�
 
 - `src/kernel.js` — Gen5PRNG + EventKernel + 行动排序
 - `src/components.js` — 参数/效果/条件/目标/事件/修饰操作注册表（canonical 底层）
-- `src/engine.js` — BattleEngine（伤害管线/资源/AI/模拟/replay/Battle Wear/presentation frames）
+- `src/engine.js` — BattleEngine（伤害管线/资源/旧难度 AI/模拟/replay/Battle Wear/presentation frames）
+- `src/ai.js` — 当前 canonical AI：`planAI(engine, team, "canonical")`；默认观战用它。非 canonical 难度显式保留旧 planner。不要仅修改 engine.js 内的 legacy skillScore。
 - `src/formula.js` — Acorn + 白名单表达式解释层
 - `src/gen-v4.js` — Generator v4（classless、连续预算、个体变量、时间机制）
 - `src/behavior.js` — Behavior Analyzer（事后 tags/summary，Presentation only）
@@ -89,3 +90,9 @@ npm run manifest               # 重新生成 RELEASE-MANIFEST.json（提交新�
 - `scripts/select-v4-presets.js` / `apply-v4-tune.js` / `rebuild-curation-report.js` — 预设生产管线
 - `scripts/audit-*.js` — 多样性/长局/预设/数值知识/语义审计
 - `docs/GENERATOR-V4*.md` / `docs/CARD-NUMERICAL-REFERENCE.md` / `docs/V4-PRESET-*.md` — 文档
+
+## 审计证据的边界
+
+- 数值 coverage 零缺口只证明字段可查，不能证明所有参数都有扰动测试；当前语义审计覆盖 ATK、LIFESTEAL、VOLATILITY、RAMP、FATIGUE、HEAL_POWER 六条。
+- AI 的当前状态效用不是多回合搜索。长局、条件链、资源与伤害 EV 的近似局限见 `docs/FINAL-VISION-AUDIT.md`。
+- 卡面缓存由 `cardPresentationSignature` 统一失效；修改 schema / 战力权重后，验证 metadata 与 canonical 计算一致。

@@ -74,10 +74,12 @@
   // BattlePower display number (v2 for v4 cards, legacy model otherwise).
   // Both are display/diagnostic only — never read by the engine.
   const powerCache=new WeakMap();
+  function cardPresentationSignature(card){return JSON.stringify([card,NCB.battlePowerV2Weights]);}
+  NCB.cardPresentationSignature=cardPresentationSignature;
   function battlePowerOf(card){
     try{
       const cached=powerCache.get(card);
-      if(cached&&cached.signature===JSON.stringify([card.stats,card.actions,card.statuses,card.triggers,card.generationBudget]))return cached.power;
+      if(cached&&cached.signature===cardPresentationSignature(card))return cached.power;
       if(card?.generatorVersion===4&&NCB.battlePowerV2){const r=NCB.battlePowerV2(card);return r&&Number.isFinite(r.power)?Math.round(r.power):null;}
       const bp=NCB.battlePower?.(card);return bp&&Number.isFinite(bp.power)?Math.round(bp.power):null;
     }catch(_){return null;}
@@ -241,7 +243,7 @@
     let canonical=null;
     try{const r=c?.generatorVersion===4?NCB.battlePowerV2?.(c):null;if(r&&Number.isFinite(r.power))canonical=Math.round(r.power);}catch(_){}
     if(canonical===null&&c?.presentation?.power!=null)canonical=Number(c.presentation.power)||null;
-    powerCache.set(c,{signature:JSON.stringify([c.stats,c.actions,c.statuses,c.triggers,c.generationBudget]),power:canonical});
+    powerCache.set(c,{signature:cardPresentationSignature(c),power:canonical});
   };
   NCB.battlePowerOf=battlePowerOf;
   NCB.formatBattlePower=formatBattlePower;

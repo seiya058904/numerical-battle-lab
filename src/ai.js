@@ -9,13 +9,20 @@
   }
   function value(engine,actor,target,skill,e,ctx={},depth=0){
     if(depth>5||!target)return 0;
+    // Virtual status state persists across effects; formula locals remain scoped.
+    const predicted=ctx._statuses||(ctx._statuses={});
     target=e.effectTarget==='actor'?actor:target;
     const condition=()=>N.conditionMatches(e.condition,{battle:engine,source:actor,actor,target,skill,...ctx});
     if(e.type!=='conditional'&&e.condition&&!condition())return 0;
     const sum=xs=>(xs||[]).reduce((n,x)=>n+value(engine,actor,target,skill,x,ctx,depth+1),0);
     const friendly=target.teamId===actor.teamId;
     if(e.type==='conditional')return sum(condition()?e.then:e.else);
-    if(e.type==='repeat'){let n=0;for(let i=0;i<Math.min(32,e.times||1);i++)n+=sum(e.effects);return n;}
+    if(e.type==='repeat'){
+      let n=0;const times=Math.max(0,Math.min(32,Math.floor(Number(e.times||1))));
+      // Match resolver scope: each child receives its own repeat context.
+      for(let i=0;i<times;i++)for(const child of e.effects||[])n+=value(engine,actor,target,skill,child,{...ctx,REPEAT_INDEX:i},depth+1);
+      return n;
+    }
     if(e.type==='gain'||e.type==='resource'){
       const who=e.type==='gain'||e.resourceTarget==='actor'?actor:target;
       return resourceValue(engine,who,e.resource,e.amount)*(who.teamId===actor.teamId?1:-1);
@@ -32,22 +39,22 @@
     if(e.type==='status'||e.type==='toggleStatus'){
       const def=N.STATUS_DEFS[e.status];if(!def)return 0;
       const existing=engine.status(target,e.status),key=target.id+':'+e.status;
-      const stacks=ctx[key]??existing?.stacks??0;
+      const stacks=predicted[key]?.stacks??existing?.stacks??0;
       if(e.type==='toggleStatus'&&stacks)return def.kind==='buff'?-15:15;
       const added=Math.max(0,Math.min(e.stacks||1,(def.maxStacks||1)-stacks));
-      const remaining=existing?.duration??0;
+      const remaining=predicted[key]?.duration??existing?.duration??0;
       const duration=e.duration??def.duration??3;
       if(!added&&remaining>=duration-1)return 0;
-      ctx[key]=Math.min(def.maxStacks||1,stacks+(e.stacks||1));
+      predicted[key]={stacks:Math.min(def.maxStacks||1,stacks+(e.stacks||1)),duration};
       let score=N.statusUtility(engine,actor,target,e)*(added||.25);
-      if(def.periodic)score+=Math.min(3,duration)*(def.periodic.effects||[]).reduce((n,x)=>n+value(engine,actor,target,{...skill,formula:'0'},x,{STACKS:ctx[key]},depth+1),0);
+      if(def.periodic)score+=Math.min(3,duration)*(def.periodic.effects||[]).reduce((n,x)=>n+value(engine,actor,target,{...skill,formula:'0'},x,{STACKS:predicted[key].stacks},depth+1),0);
       if(def.eventModifiers?.length)score+=12;
       if(def.triggers?.length)score+=12;
       return score*((def.kind==='debuff')!==friendly?1:-1);
     }
     if(e.type==='consumeStatus'){
-      const key=target.id+':'+e.status,available=ctx[key]??engine.status(target,e.status)?.stacks??0;
-      const consumed=e.stacks==='all'?available:Math.min(available,e.stacks||1);ctx.CONSUMED_STACKS=consumed;ctx[key]=available-consumed;
+      const key=target.id+':'+e.status,available=predicted[key]?.stacks??engine.status(target,e.status)?.stacks??0;
+      const consumed=e.stacks==='all'?available:Math.min(available,e.stacks||1);ctx.CONSUMED_STACKS=consumed;predicted[key]={...predicted[key],stacks:available-consumed};
       return -consumed*3;
     }
     let score=N.effectUtility(engine,actor,target,skill,e,ctx);
@@ -69,13 +76,13 @@
         // bounded expected self-harm from the actor's OWN afterDamageTaken triggers
         // (prevents the 'action repeatedly self-damages via its own counter' blindness)
         let selfHarm=0;
-        for(const inst of actor.statuses||[]){
+        for(const inst of recoilCost>0?(actor.statuses||[]):[]){
           const def=N.STATUS_DEFS[inst.id];if(!def||!def.triggers)continue;
           for(const t of def.triggers){
             if(t.event!=='afterDamageTaken'||t.target!=='source')continue;
             for(const te of t.effects||[])if(te.type==='damage'){
               const counter=Math.max(0,engine.evaluateFormula(te.formula||'0',actor,actor,{}));
-              selfHarm+=Math.min(counter,Math.max(0,damageEV)*1.0); // bounded: at most the incoming damage
+              selfHarm+=Math.min(counter,Math.max(0,recoilCost)); // bounded: at most the incoming damage
             }
           }
         }

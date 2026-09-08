@@ -37,11 +37,31 @@
       "pass": true
     },
     {
+      "name": "encyclopedia closes with real control",
+      "pass": true
+    },
+    {
+      "name": "scroll unlocks",
+      "pass": true
+    },
+    {
+      "name": "browser back closes overlay",
+      "pass": true
+    },
+    {
       "name": "detail stat rows have knowledge buttons",
       "pass": true
     },
     {
       "name": "stat ⓘ opens sheet",
+      "pass": true
+    },
+    {
+      "name": "escape closes top sheet only",
+      "pass": true
+    },
+    {
+      "name": "focus returns to stat",
       "pass": true
     },
     {

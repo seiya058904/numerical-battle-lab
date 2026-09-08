@@ -15,22 +15,25 @@ const OUT=__dirname,BASE='http://127.0.0.1:8774/';
  check('candidate has metadata',/HP[\s\S]*ATK/.test(await overlay.locator('.selection-card').first().innerText()));
  await p.screenshot({path:path.join(OUT,'v4-mobile-presets.png')});
  await overlay.locator('[data-rarity="A_PLUS"]').click();check('rarity filter',await overlay.locator('.selection-card').count()===5);
- await overlay.locator('[data-level-bucket]').selectOption('40-49');check('combined rarity and level',await overlay.locator('.selection-card').count()===1);
+ await overlay.locator('.browser-options > summary').click();await overlay.locator('[data-level-bucket]').selectOption('40-49');check('combined rarity and level',await overlay.locator('.selection-card').count()===1);
  const target=await overlay.locator('.selection-card').first().getAttribute('data-card-id');
  const data=await p.evaluate(id=>{const c=NCB.SYSTEM_PRESETS.find(c=>c.id===id);return{name:c.displayName,action:c.actions[0].name,tag:NCB.cardInfo(c).behavior.allTags[0]};},target);
  await overlay.locator('[data-filter="search"]').fill(data.name);check('name search',await overlay.locator('.selection-card').count()===1);
  await overlay.locator('[data-filter="search"]').fill(data.action);check('action search',await overlay.locator('.selection-card').count()===1);
- const tag=overlay.locator('[data-tag]').filter({hasText:data.tag}).first();if(!await tag.isVisible())await overlay.locator('.behavior-filters summary').click();await tag.click();check('behavior intersection',await overlay.locator('.selection-card').count()===1);
+ await overlay.locator('[data-browser-detail]').first().click();await overlay.locator('[data-detail-back]').click();
+ check('filtered detail back restores results',await overlay.locator('.selection-card').count()===1);
+ check('filtered detail back restores level control',await overlay.locator('[data-level-bucket]').inputValue()==='40-49');
+ await overlay.locator('.browser-options > summary').click();await overlay.locator('.behavior-filter-group > summary').click();const tag=overlay.locator('[data-tag]').filter({hasText:data.tag}).first();if(!await tag.isVisible())await overlay.locator('.behavior-filters summary').click();await tag.click();check('behavior intersection',await overlay.locator('.selection-card').count()===1);
  await overlay.locator('[data-clear-filter="all"]').click();check('clear all',await overlay.locator('.result-count').innerText()==='找到 60 张');
  await overlay.locator('[data-browser-more]').click();check('load next batch',await overlay.locator('.selection-card').count()===24);
  await overlay.locator('[data-browser-detail]').first().click();check('detail opened',await overlay.locator('.browser-detail').count()===1);
- await overlay.locator('[data-detail-back]').click();check('detail returns with page size',await overlay.locator('.selection-card').count()===24);
+ await p.screenshot({path:path.join(OUT,'v4-mobile-detail.png')});await overlay.locator('[data-detail-back]').click();check('detail returns with page size',await overlay.locator('.selection-card').count()===24);
  await overlay.locator('[data-browser-detail]').first().click();await overlay.locator('[data-detail-select]').click();check('detail selects left',await p.locator('.setup-slot .selection-card').count()===1);
  await p.locator('[data-open-picker="right"]').click();await p.locator('.picker-overlay [data-browser-select]').nth(1).click();check('right selects',await p.locator('.setup-slot .selection-card').count()===2);
  check('picker no overflow',await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await p.locator('[data-action="battle-start"]').click();await p.locator('[data-action="auto-pause"]').click();
  await p.screenshot({path:path.join(OUT,'v4-mobile-battle-1.png')});
- check('battle starts',await p.locator('.entity-card').count()===2);
+ check('battle starts',await p.locator('.entity-card').count()===2);check('resources visible',await p.locator('.battle-resources [data-resource]').count()>=2);
  // Replace only this isolated context's user library with deterministic test cards.
  // The repeated damage and lifesteal fixture guarantees atomic HP changes are observed.
  await p.evaluate(()=>{
@@ -45,7 +48,9 @@ const OUT=__dirname,BASE='http://127.0.0.1:8774/';
   window.__observed=[];window.__mismatch=[];new MutationObserver(()=>{
    const idx=Number(document.querySelector('#view-battle').dataset.frameIndex),f=window.__frames.find(f=>f?.index===idx);if(!f)return;
    const counts=[...document.querySelectorAll('.entity-card')].map(el=>el.querySelectorAll('.combat-float-slot').length);if(counts.some(n=>n>1))window.__mismatch.push('overlap');
-   for(const t of ['A','B'])for(const e of f.snapshot.teams[t].entities){const el=document.querySelector(`[data-entity-id="${e.id}"] .meter-group .meter-row:last-child`);const hp=document.querySelector(`[data-entity-id="${e.id}"] .meter-group .meter-row:first-child`);if(hp&&!hp.textContent.endsWith(Math.round(e.hp)+'/'+Math.round(e.maxHp)))window.__mismatch.push('HP '+idx);}
+   for(const t of ['A','B'])for(const e of f.snapshot.teams[t].entities){const el=document.querySelector(`[data-entity-id="${e.id}"] .meter-group .meter-row:last-child`);const hp=document.querySelector(`[data-entity-id="${e.id}"] .meter-group .meter-row:first-child`);if(hp&&!hp.textContent.endsWith(Math.round(e.hp)+'/'+Math.round(e.maxHp)))window.__mismatch.push('HP '+idx);
+   const card=document.querySelector(`[data-entity-id="${e.id}"]`);for(const resource of card?.querySelectorAll('[data-resource]')||[]){const key=resource.dataset.resource;if(resource.querySelector('b').textContent!==Math.round(window.__engine.getResource(e,key))+'/'+Math.round(window.__engine.resourceMax(e,key)))window.__mismatch.push('resource '+idx);}
+   for(const ward of card?.querySelectorAll('[data-ward]')||[])if(Number(ward.querySelector('b').textContent)!==Math.round(e.wards[ward.dataset.ward]))window.__mismatch.push('ward '+idx);}
    if(!window.__observed.some(x=>x.index===idx))window.__observed.push({index:idx,time:performance.now(),kind:f.row?.kind});
   }).observe(document.querySelector('#view-battle'),{childList:true,subtree:true});
  });

@@ -164,6 +164,7 @@
 
   function setBattlePowerV2Weights(w){
     activeWeights={...DEFAULT_WEIGHTS,...(w||{})};
+    NCB.battlePowerV2Weights=activeWeights;
     return activeWeights;
   }
 

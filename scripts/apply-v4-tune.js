@@ -98,8 +98,8 @@ const PLAN=[
  {cardName:'幻梦',designNote:'纯回复+护盾+反击超级高闪避耐久卡，镜像87回合DRAW、全部myDamage 0（最严重）。回收永动回复（复苏冷却2→4）、强化反击转化、加速疲劳，把无限平局变可收束消耗。',ops:[
   {k:'cooldown',action:'复苏',after:4},{k:'reflect',after:0.45},{k:'stat',key:'FATIGUE_RATE',after:0.02}]},
  // ---- XS ----
- {cardName:'深渊',designNote:'延后成长慢防御塔，镜像76回合0伤害、面板56-76回合全程0伤害。唯一输出被hp<0.5锁死。抬高输出动作优先级并绑定战斗时长（疲劳）终结僵持。',ops:[
-  {k:'stat',key:'ENDURANCE',after:50},{k:'stat',key:'FATIGUE_RATE',after:0.004},{k:'stat',key:'FATIGUE_START',after:28},{k:'priority',action:'血性猛击',after:3}]},
+ {cardName:'深渊',designNote:'延后成长的慢速防御反击个体：先承受伤害，受伤后用血性猛击反击；侵蚀仍需半血。最终观战发现半血攻击门槛被补盾和被动回复锁住，69回合零HP伤害，因此只将血性猛击改为受伤即可用，保留自伤、伤害、冷却、稀有度与等级。',ops:[
+  {k:'stat',key:'ENDURANCE',after:50},{k:'stat',key:'FATIGUE_RATE',after:0.004},{k:'stat',key:'FATIGUE_START',after:28},{k:'priority',action:'血性猛击',after:3},{k:'hpThreshold',action:'血性猛击',after:1}]},
  {cardName:'破晓',designNote:'高耐久资源循环后期成长，镜像82回合0伤害，无任何直伤出口。降低ENDURANCE、给长期战争取损耗收尾，并提升唯一输出的反击转化。',ops:[
   {k:'stat',key:'ENDURANCE',after:56},{k:'stat',key:'FATIGUE_RATE',after:0.005},{k:'stat',key:'FATIGUE_START',after:35},{k:'reflect',after:0.28}]},
  // ---- XS_COLLECTOR ----
@@ -123,6 +123,11 @@ function applyCard(entry){
       let changed=false;
       for(const st of c.statuses||[]){for(const t of st.triggers||[]){if(t.event==='afterDamageTaken'){for(const e of t.effects||[]){if(e.type==='damage'){const m=e.formula.match(/(\d+\.?\d*)/);if(m){const old=Number(m[1]);e.formula=e.formula.replace(m[1],String(op.after));changed=true;local.push({field:'statuses.'+st.id.split(':').pop()+'.reflect',before:old,after:op.after});}}}}}}
       if(!changed)console.warn(entry.cardName+' reflect not found');
+      continue;
+    }
+    if(op.k==='hpThreshold'){
+      const action=c.actions.find(a=>a.name===op.action);
+      eachEffect(action?.effects,e=>{if(e.condition?.type==='hpPctBelow'){local.push({field:'actions.'+op.action+'.hpPctBelow',before:e.condition.value,after:op.after});e.condition.value=op.after;}});
       continue;
     }
     if(op.k==='unconditional'){

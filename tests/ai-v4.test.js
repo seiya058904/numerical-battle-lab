@@ -78,3 +78,32 @@ test('AI still deterministic and legal-only with v4 cards in real battles',()=>{
     }
   }
 });
+test('canonical repeat evaluates each REPEAT_INDEX without mutating battle state',()=>{
+ deployUnit('repeat_probe',{},['indexed','flat']);
+ addSkill('indexed',[{type:'repeat',times:3,effects:[{type:'damage',formula:'10 + REPEAT_INDEX * 50',canMiss:false,canCrit:false}]}]);
+ addSkill('flat',[{type:'damage',formula:'100',canMiss:false,canCrit:false}]);
+ const e=N.createBattle({teamA:['repeat_probe'],teamB:['warden']}),before=JSON.stringify(e.teams);
+ assert.doesNotThrow(()=>N.planAI(e,'A','canonical'));
+ assert.equal(N.planAI(e,'A','canonical')[0].skillId,'indexed');
+ assert.equal(JSON.stringify(e.teams),before);
+});
+
+test('own counter does not penalize an attack that causes no self damage',()=>{
+ deployUnit('counter_probe',{},['counter_hit']);
+ addSkill('counter_hit',[{type:'damage',formula:'ATK',canMiss:false,canCrit:false}]);
+ N.STATUS_DEFS.counter_probe={id:'counter_probe',name:'counter',kind:'buff',duration:3,maxStacks:1,triggers:[{event:'afterDamageTaken',target:'source',effects:[{type:'damage',formula:'ATK'}]}]};
+ const e=N.createBattle({teamA:['counter_probe'],teamB:['warden']}),a=e.entity('A1'),b=e.entity('B1');
+ const before=N.scoreAction(e,a,N.SKILL_DEFS.counter_hit,b);
+ e.applyStatus(a.id,'counter_probe');
+ assert.equal(N.scoreAction(e,a,N.SKILL_DEFS.counter_hit,b),before);
+});
+
+test('canonical repeat retains predicted status caps between child effects',()=>{
+ deployUnit('repeat_cap',{},['one_buff','three_buffs']);
+ N.STATUS_DEFS.repeat_cap={id:'repeat_cap',name:'cap',kind:'buff',maxStacks:1,duration:4,stacking:'stack'};
+ const effect={type:'status',status:'repeat_cap'};
+ addSkill('one_buff',[effect],'self');addSkill('three_buffs',[{type:'repeat',times:3,effects:[effect]}],'self');
+ const e=N.createBattle({teamA:['repeat_cap'],teamB:['warden']}),a=e.entity('A1');
+ assert.equal(N.scoreAction(e,a,N.SKILL_DEFS.three_buffs,a),N.scoreAction(e,a,N.SKILL_DEFS.one_buff,a));
+ assert.equal(a.statuses.length,0,'planner must not apply the predicted buff');
+});

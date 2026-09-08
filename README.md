@@ -97,6 +97,8 @@ min max abs floor ceil round sqrt log log2 log10 exp pow sign clamp
 - `docs/ARCHITECTURE.md` — 内核边界与 canonical pipeline。
 - `docs/CONTENT-AUTHORING.md` — 如何只拼组件、不改引擎地创建新内容。
 
+最新产品审计、已修问题、真实浏览器证据与剩余局限：[最终愿景审计报告](docs/FINAL-VISION-REPORT.md)。
+
 ## 验证
 
 ```bash
