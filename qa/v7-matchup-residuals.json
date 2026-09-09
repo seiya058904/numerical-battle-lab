@@ -1,0 +1,6126 @@
+{
+  "schemaVersion": 1,
+  "methodology": "actual pair score minus Bradley-Terry expectation",
+  "residuals": [
+    {
+      "a": "gen_52492b2e",
+      "b": "gen_584b7337",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.9166666666666666,
+      "expectedA": 0.6461422725424462,
+      "residual": 0.27052439412422047,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3d546968",
+      "b": "gen_52492b2e",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.7341953892219869,
+      "residual": 0.2658046107780131,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a17a01b6",
+      "b": "gen_a77c49bf",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.08333333333333333,
+      "expectedA": 0.30518762508060027,
+      "residual": -0.22185429174726695,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4a36fbb6",
+      "b": "gen_ad17fc7c",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.25,
+      "expectedA": 0.03270622395996881,
+      "residual": 0.2172937760400312,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_c7b2265c",
+      "b": "gen_d3fd8104",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.25,
+      "expectedA": 0.45928090818011336,
+      "residual": -0.20928090818011336,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5bb97fbb",
+      "b": "gen_e5ad4d89",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.7417003111109607,
+      "residual": -0.20003364444429406,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_356941f9",
+      "b": "gen_a77c49bf",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.875,
+      "expectedA": 0.6769815053681246,
+      "residual": 0.19801849463187537,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_139608bc",
+      "b": "gen_de154d81",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 0.9583333333333334,
+      "expectedA": 0.7680694724261234,
+      "residual": 0.19026386090720993,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_708a34d8",
+      "b": "gen_7ac66c62",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.08333333333333333,
+      "expectedA": 0.2659400990145957,
+      "residual": -0.18260676568126238,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_16587b08",
+      "b": "gen_8de51718",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.16666666666666666,
+      "expectedA": 0.3465094647534755,
+      "residual": -0.17984279808680884,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1c6c8d2b",
+      "b": "gen_fa6982cc",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.7916666666666666,
+      "expectedA": 0.9681475623033017,
+      "residual": -0.17648089563663505,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3205a1b1",
+      "b": "gen_c3572307",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.9583333333333334,
+      "expectedA": 0.7819442736127857,
+      "residual": 0.17638905972054764,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d8130578",
+      "b": "gen_de154d81",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.67549159355679,
+      "residual": -0.17549159355679,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_63450c3e",
+      "b": "gen_de31d484",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6718849440632836,
+      "residual": -0.17188494406328358,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_139608bc",
+      "b": "gen_3df6df27",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.6278119256848624,
+      "residual": -0.16947859235152912,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1f2d5594",
+      "b": "gen_2147e05",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6654701622759555,
+      "residual": -0.16547016227595546,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e9ccb57d",
+      "b": "gen_fd22a587",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4791666666666667,
+      "expectedA": 0.3146502871160306,
+      "residual": 0.16451637955063608,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3889b3a2",
+      "b": "gen_53849c5",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6591107557537625,
+      "residual": -0.15911075575376254,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_17108112",
+      "b": "gen_77871354",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.34092579755738084,
+      "residual": 0.15907420244261916,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_750b81b3",
+      "b": "gen_f08a28a",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.341456136702326,
+      "residual": 0.158543863297674,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_26dc0433",
+      "b": "gen_4a36fbb6",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.3434832033763401,
+      "residual": 0.15651679662365992,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_423a692d",
+      "b": "gen_45f9afdf",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6531305113214516,
+      "residual": -0.1531305113214516,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3205a1b1",
+      "b": "gen_5bb97fbb",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.2916666666666667,
+      "expectedA": 0.4439676580047036,
+      "residual": -0.15230099133803693,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_194dc157",
+      "b": "gen_e35573d5",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.7755201180566242,
+      "residual": -0.15052011805662424,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_c46ea044",
+      "b": "gen_ef5a03e7",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.350438856281374,
+      "residual": 0.149561143718626,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_866edc5e",
+      "b": "gen_c3572307",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.7324650069136067,
+      "residual": -0.14913167358027335,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_6a307a99",
+      "b": "gen_6df5e9a",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6485079207784774,
+      "residual": -0.1485079207784774,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_2b4897ba",
+      "b": "gen_485cc0fa",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.125,
+      "expectedA": 0.2724809544980556,
+      "residual": -0.1474809544980556,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ce992d2",
+      "b": "gen_e9ccb57d",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6451900980558498,
+      "residual": -0.14519009805584981,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_142de0d9",
+      "b": "gen_e19767ef",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.9166666666666666,
+      "expectedA": 0.7748837095498177,
+      "residual": 0.14178295711684896,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_199850c5",
+      "b": "gen_3f6ea849",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.25,
+      "expectedA": 0.39064740821171573,
+      "residual": -0.14064740821171573,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_85f58a40",
+      "b": "gen_f715775b",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.125,
+      "expectedA": 0.2653923394614654,
+      "residual": -0.1403923394614654,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3889b3a2",
+      "b": "gen_63450c3e",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5970093604925265,
+      "residual": -0.1386760271591932,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_203270eb",
+      "b": "gen_53849c5",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.36237605435534653,
+      "residual": 0.13762394564465347,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_708a34d8",
+      "b": "gen_8de51718",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.48773887595213056,
+      "residual": 0.13726112404786944,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_96e0087c",
+      "b": "gen_dc761256",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.363096865566865,
+      "residual": 0.136903134433135,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a17a01b6",
+      "b": "gen_d3fd8104",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.363277415774073,
+      "residual": 0.13672258422592698,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4765c247",
+      "b": "gen_584b7337",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.3333333333333333,
+      "expectedA": 0.46950251394088655,
+      "residual": -0.13616918060755323,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_c3572307",
+      "b": "gen_e35573d5",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.3638379800343951,
+      "residual": 0.1361620199656049,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_96dcd78a",
+      "b": "gen_ce992d2",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6355629580775876,
+      "residual": -0.13556295807758756,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_c7b2265c",
+      "b": "gen_e9ccb57d",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.8333333333333334,
+      "expectedA": 0.6978440492204349,
+      "residual": 0.1354892841128985,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_6a307a99",
+      "b": "gen_fa9a61eb",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.16666666666666666,
+      "expectedA": 0.032258333313306645,
+      "residual": 0.13440833335336,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_866edc5e",
+      "b": "gen_891f8a30",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.36691037793379233,
+      "residual": 0.13308962206620767,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_356941f9",
+      "b": "gen_f08a28a",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.5495117720581496,
+      "residual": -0.13284510539148292,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_443383ff",
+      "b": "gen_468112fc",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.6666666666666666,
+      "expectedA": 0.5339871218012232,
+      "residual": 0.13267954486544342,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3205a1b1",
+      "b": "gen_3889b3a2",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.20833333333333334,
+      "expectedA": 0.3389615124344877,
+      "residual": -0.13062817910115435,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_96dcd78a",
+      "b": "gen_a17a01b6",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.6715044186858797,
+      "residual": -0.1298377520192131,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_85f58a40",
+      "b": "gen_951c83d5",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.3711815653496531,
+      "residual": 0.12881843465034692,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_194dc157",
+      "b": "gen_3205a1b1",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.627489014054641,
+      "residual": -0.12748901405464097,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_b73a26c4",
+      "b": "gen_bd3c6ecd",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.372661103727824,
+      "residual": 0.12733889627217598,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_50c08baf",
+      "b": "gen_55b9882a",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.16666666666666666,
+      "expectedA": 0.2938413766364999,
+      "residual": -0.12717470996983324,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_96dcd78a",
+      "b": "gen_fcdfb6b3",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.3736855199936212,
+      "residual": 0.1263144800063788,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1f745793",
+      "b": "gen_2b4897ba",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6260498946044631,
+      "residual": -0.12604989460446314,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_22e5620e",
+      "b": "gen_5bc946fb",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6255976833120729,
+      "residual": -0.12559768331207288,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_2147e05",
+      "b": "gen_76350aab",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6251406299806617,
+      "residual": -0.12514062998066167,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_806c9455",
+      "b": "gen_c4a7eb1e",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.5373290432681268,
+      "residual": -0.12066237660146012,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1e053f66",
+      "b": "gen_1f745793",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.6621944375636122,
+      "residual": -0.12052777089694555,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3df6df27",
+      "b": "gen_d886abca",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.620023743336172,
+      "residual": -0.12002374333617205,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_22e5620e",
+      "b": "gen_eaf0f684",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.7024154172975448,
+      "residual": -0.11908208396421138,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_241754c4",
+      "b": "gen_fcdfb6b3",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6174250236308431,
+      "residual": -0.11742502363084306,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_9378677",
+      "b": "gen_a93cd064",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.3828890575339853,
+      "residual": 0.11711094246601472,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7b9437ee",
+      "b": "gen_852a2302",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6161206879199317,
+      "residual": -0.11612068791993169,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_110e3909",
+      "b": "gen_3bbb9dd3",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6155452372373084,
+      "residual": -0.11554523723730836,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_b7d499b1",
+      "b": "gen_c7b2265c",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.3125,
+      "expectedA": 0.4279625687784226,
+      "residual": -0.11546256877842259,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_194dc157",
+      "b": "gen_eb10e749",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 0.9166666666666666,
+      "expectedA": 0.8016179224743075,
+      "residual": 0.11504874419235911,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_22e5620e",
+      "b": "gen_55b9882a",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.468719844797327,
+      "residual": 0.11461348853600639,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_8ff9043c",
+      "b": "gen_9378677",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.6530837506271935,
+      "residual": -0.11141708396052685,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_35e098fe",
+      "b": "gen_3d546968",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.38863084804908027,
+      "residual": 0.11136915195091973,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_2b4897ba",
+      "b": "gen_614b743d",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.3891546120753941,
+      "residual": 0.11084538792460591,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_64acb68d",
+      "b": "gen_f830362f",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.39017006531443077,
+      "residual": 0.10982993468556923,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_2147e05",
+      "b": "gen_eb10e749",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.6919916018699607,
+      "residual": -0.1086582685366273,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d3fd8104",
+      "b": "gen_d9ffc90d",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.20833333333333334,
+      "expectedA": 0.3168105631251914,
+      "residual": -0.10847722979185806,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_142de0d9",
+      "b": "gen_58aabbda",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.6916359533142433,
+      "residual": -0.10830261998090995,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3f6ea849",
+      "b": "gen_584b7337",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6068757275692745,
+      "residual": -0.10687572756927455,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_199850c5",
+      "b": "gen_37f4971e",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.39336962814333215,
+      "residual": 0.10663037185666785,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_de31d484",
+      "b": "gen_eb10e749",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6066281978137595,
+      "residual": -0.10662819781375954,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7b9437ee",
+      "b": "gen_9378677",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.8333333333333334,
+      "expectedA": 0.7271006605632674,
+      "residual": 0.10623267277006598,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_58aabbda",
+      "b": "gen_7c3d3bce",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.6060298873119656,
+      "residual": -0.10602988731196561,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3bbb9dd3",
+      "b": "gen_50c08baf",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.48034813597963977,
+      "residual": -0.10534813597963977,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_37f4971e",
+      "b": "gen_3df6df27",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.39504682323821544,
+      "residual": 0.10495317676178456,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_241754c4",
+      "b": "gen_3d546968",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.4784953800380105,
+      "residual": 0.10483795329532286,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_642e3290",
+      "b": "gen_806c9455",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.2916666666666667,
+      "expectedA": 0.3963208621394312,
+      "residual": -0.1046541954727645,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_139608bc",
+      "b": "gen_d3fd8104",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.7288110456510088,
+      "residual": -0.10381104565100885,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_7ac66c62",
+      "b": "gen_891f8a30",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5581863714957694,
+      "residual": -0.09985303816243613,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4aacc6e",
+      "b": "gen_aad1477",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5978908009211044,
+      "residual": -0.09789080092110436,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_96e0087c",
+      "b": "gen_c9b42e98",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5975935708086146,
+      "residual": -0.09759357080861464,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_642e3290",
+      "b": "gen_6df5e9a",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4028421386204373,
+      "residual": 0.09715786137956273,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1c6c8d2b",
+      "b": "gen_45f9afdf",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.7916666666666666,
+      "expectedA": 0.695255096868766,
+      "residual": 0.09641156979790066,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_8b0b2780",
+      "b": "gen_fc15d801",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.596104982591358,
+      "residual": -0.09610498259135802,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_bd3c6ecd",
+      "b": "gen_f08a28a",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.40423994416503867,
+      "residual": 0.09576005583496133,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3e898af3",
+      "b": "gen_f43bebad",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.40454116938232465,
+      "residual": 0.09545883061767535,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_e5ad4d89",
+      "b": "gen_eb10e749",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.5113049657182815,
+      "residual": -0.09463829905161486,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e19767ef",
+      "b": "gen_eaf0f684",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.44732136791144245,
+      "residual": 0.09434529875522418,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_c46ea044",
+      "b": "gen_e19767ef",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5518716019980481,
+      "residual": -0.09353826866471476,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ef5a03e7",
+      "b": "gen_fa6982cc",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.40651135210903827,
+      "residual": 0.09348864789096173,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3e313bf6",
+      "b": "gen_4c835b05",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.46847313819529673,
+      "residual": -0.09347313819529673,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3df6df27",
+      "b": "gen_5b2f9301",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.40752894336620976,
+      "residual": 0.09247105663379024,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_17108112",
+      "b": "gen_66b873d2",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5924023473879448,
+      "residual": -0.09240234738794484,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_bdfa61c2",
+      "b": "gen_dab31a40",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.875,
+      "expectedA": 0.9673222527618972,
+      "residual": -0.0923222527618972,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_39edff44",
+      "b": "gen_423a692d",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5894587193944466,
+      "residual": -0.0894587193944466,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_584b7337",
+      "b": "gen_750b81b3",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.3707179593916199,
+      "residual": 0.08761537394171343,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_485cc0fa",
+      "b": "gen_655404c9",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5875969874846001,
+      "residual": -0.0875969874846001,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_6be3602e",
+      "b": "gen_bdfa61c2",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.586109960956068,
+      "residual": -0.08610996095606804,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_f1b1dd9b",
+      "b": "gen_f715775b",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.41424118921580916,
+      "residual": 0.08575881078419084,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_241754c4",
+      "b": "gen_f08a28a",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5856756474243817,
+      "residual": -0.08567564742438172,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_49cdd490",
+      "b": "gen_4fd01c99",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.41502675403510036,
+      "residual": 0.08497324596489964,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3e898af3",
+      "b": "gen_443383ff",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.41547421772983817,
+      "residual": 0.08452578227016183,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4658f4c1",
+      "b": "gen_dab31a40",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.3740792865176152,
+      "residual": 0.08425404681571813,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_142de0d9",
+      "b": "gen_22e5620e",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.541347842519401,
+      "residual": -0.08301450918606773,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_db404180",
+      "b": "gen_e19767ef",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5412080094748497,
+      "residual": -0.08287467614151639,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4765c247",
+      "b": "gen_62344a12",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.4588605735732062,
+      "residual": 0.08280609309346043,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4e29e27c",
+      "b": "gen_614b743d",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5824612870595268,
+      "residual": -0.08246128705952682,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_db404180",
+      "b": "gen_fc15d801",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.3348972440759228,
+      "residual": 0.08176942259074388,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7120a2e5",
+      "b": "gen_cd05a579",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.6666666666666666,
+      "expectedA": 0.5852155782274243,
+      "residual": 0.08145108843924231,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d71b05fb",
+      "b": "gen_dc761256",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5396599309865744,
+      "residual": -0.08132659765324107,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_f1b1dd9b",
+      "b": "gen_fc8f8e6a",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4187839968242542,
+      "residual": 0.08121600317574579,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_16587b08",
+      "b": "gen_1c6c8d2b",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4189990234889191,
+      "residual": 0.0810009765110809,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_77871354",
+      "b": "gen_7ac66c62",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.4609090538416677,
+      "residual": 0.08075761282499894,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_aad1477",
+      "b": "gen_fd22a587",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5803019163125737,
+      "residual": -0.08030191631257366,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_ad17fc7c",
+      "b": "gen_bdfa61c2",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.6666666666666666,
+      "expectedA": 0.5874414014452718,
+      "residual": 0.07922526522139484,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3d546968",
+      "b": "gen_57c513e2",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.578976886839367,
+      "residual": -0.07897688683936699,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3e313bf6",
+      "b": "gen_3f6ea849",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.42105084924268243,
+      "residual": 0.07894915075731757,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e19767ef",
+      "b": "gen_e291a413",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.4630112011755215,
+      "residual": 0.0786554654911451,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_62344a12",
+      "b": "gen_d886abca",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.42153254466680656,
+      "residual": 0.07846745533319344,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_7ac66c62",
+      "b": "gen_dc761256",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5768895454130561,
+      "residual": -0.07688954541305615,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_951c83d5",
+      "b": "gen_fa6982cc",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.38156535804887265,
+      "residual": 0.07676797528446067,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_6d41a15f",
+      "b": "gen_efe3b793",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5765162783480304,
+      "residual": -0.07651627834803043,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4fd01c99",
+      "b": "gen_b96b96c0",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4241120485942672,
+      "residual": 0.07588795140573279,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_423a692d",
+      "b": "gen_7936f2e6",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4242840502135488,
+      "residual": 0.07571594978645119,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3e313bf6",
+      "b": "gen_443383ff",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.3423765315083682,
+      "residual": 0.07429013515829846,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_25e3f458",
+      "b": "gen_fa9a61eb",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5738434789050594,
+      "residual": -0.07384347890505938,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1e053f66",
+      "b": "gen_485cc0fa",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.5513990379879783,
+      "residual": 0.07360096201202171,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4765c247",
+      "b": "gen_593c5bce",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4266085947880004,
+      "residual": 0.0733914052119996,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_806c9455",
+      "b": "gen_951c83d5",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4266298356879429,
+      "residual": 0.07337016431205712,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_ccc1aa19",
+      "b": "gen_ce992d2",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5719882146710659,
+      "residual": -0.07198821467106586,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_9378677",
+      "b": "gen_a120df5a",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.34506903220661006,
+      "residual": 0.07159763446005663,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3d546968",
+      "b": "gen_41af14d3",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5708664524474022,
+      "residual": -0.0708664524474022,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_203270eb",
+      "b": "gen_708a34d8",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.48735603962918744,
+      "residual": -0.07068937296252076,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_c7b2265c",
+      "b": "gen_ccc1aa19",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.48728321266571256,
+      "residual": -0.07061654599904588,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_5beb9839",
+      "b": "gen_e89bf022",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.48689327617143124,
+      "residual": -0.07022660950476456,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4acda966",
+      "b": "gen_5beb9839",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5699676843491827,
+      "residual": -0.06996768434918266,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1e150cbb",
+      "b": "gen_593c5bce",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5278971544792037,
+      "residual": -0.0695638211458704,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_41af14d3",
+      "b": "gen_5b2f9301",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5273820726233833,
+      "residual": -0.06904873929005001,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_806c9455",
+      "b": "gen_e291a413",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5688111825961221,
+      "residual": -0.06881118259612207,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_6be3602e",
+      "b": "gen_8de51718",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.43196906335297786,
+      "residual": 0.06803093664702214,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_b73a26c4",
+      "b": "gen_de154d81",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5257224551758125,
+      "residual": -0.0673891218424792,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e89bf022",
+      "b": "gen_f43bebad",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.567005754487843,
+      "residual": -0.06700575448784296,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e19767ef",
+      "b": "gen_fc8f8e6a",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.16666666666666666,
+      "expectedA": 0.23270018190761724,
+      "residual": -0.06603351524095058,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_866edc5e",
+      "b": "gen_a120df5a",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5660033119633319,
+      "residual": -0.06600331196333187,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_7b9437ee",
+      "b": "gen_8de51718",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.564778768107117,
+      "residual": -0.06477876810711702,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1f2d5594",
+      "b": "gen_e5ad4d89",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.875,
+      "expectedA": 0.8103040352832069,
+      "residual": 0.06469596471679306,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_35e098fe",
+      "b": "gen_d8130578",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5640501232513953,
+      "residual": -0.06405012325139525,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a93cd064",
+      "b": "gen_de31d484",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.43607777883208415,
+      "residual": 0.06392222116791585,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_b96b96c0",
+      "b": "gen_d9ffc90d",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4362828136483638,
+      "residual": 0.0637171863516362,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_8de51718",
+      "b": "gen_8ff9043c",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5216764861297214,
+      "residual": -0.06334315279638808,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_139608bc",
+      "b": "gen_443383ff",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.6464123004137169,
+      "residual": -0.06307896708038352,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_891f8a30",
+      "b": "gen_f830362f",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5629080513337562,
+      "residual": -0.06290805133375621,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3e898af3",
+      "b": "gen_de154d81",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5628547273831287,
+      "residual": -0.0628547273831287,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_891f8a30",
+      "b": "gen_d71b05fb",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.4793215759255451,
+      "residual": 0.062345090741121545,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_a77c49bf",
+      "b": "gen_b96b96c0",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.43766145739470985,
+      "residual": 0.06233854260529015,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_468112fc",
+      "b": "gen_4aacc6e",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4378874271368411,
+      "residual": 0.06211257286315891,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_37f4971e",
+      "b": "gen_593c5bce",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5619836441929764,
+      "residual": -0.06198364419297642,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_76350aab",
+      "b": "gen_a787865b",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5618732633654407,
+      "residual": -0.061873263365440745,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4acda966",
+      "b": "gen_b96b96c0",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.6028155130065875,
+      "residual": -0.061148846339920904,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_b7d499b1",
+      "b": "gen_de154d81",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4391621944271547,
+      "residual": 0.060837805572845294,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d8130578",
+      "b": "gen_d9ffc90d",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.43925588749903727,
+      "residual": 0.06074411250096273,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1e150cbb",
+      "b": "gen_750b81b3",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4393320529550749,
+      "residual": 0.06066794704492512,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_96dcd78a",
+      "b": "gen_b73a26c4",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.5645607805414024,
+      "residual": 0.06043921945859765,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_26dc0433",
+      "b": "gen_503943bf",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5604332675874976,
+      "residual": -0.06043326758749756,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_17108112",
+      "b": "gen_e706c8c9",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.560390844883885,
+      "residual": -0.06039084488388502,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4c835b05",
+      "b": "gen_584b7337",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5602094621926396,
+      "residual": -0.06020946219263956,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_45f9afdf",
+      "b": "gen_9378677",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.3982036502071292,
+      "residual": 0.06012968312620409,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_6be3602e",
+      "b": "gen_fa9a61eb",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5597168619374523,
+      "residual": -0.05971686193745229,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_852a2302",
+      "b": "gen_bdfa61c2",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.6008945885291657,
+      "residual": -0.05922792186249903,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d71b05fb",
+      "b": "gen_eb10e749",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.8333333333333334,
+      "expectedA": 0.7744070296154291,
+      "residual": 0.058926303717904305,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_aaf2baed",
+      "b": "gen_ad17fc7c",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.4750778838993208,
+      "residual": -0.05841121723265413,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_6a307a99",
+      "b": "gen_8b0b2780",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.44273910667946714,
+      "residual": 0.05726089332053286,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_6df5e9a",
+      "b": "gen_7c3d3bce",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5987798144522157,
+      "residual": -0.0571131477855491,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_55b9882a",
+      "b": "gen_caaa3327",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5568607773158024,
+      "residual": -0.05686077731580241,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_aaf2baed",
+      "b": "gen_cd05a579",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5566955459875137,
+      "residual": -0.056695545987513696,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_caaa3327",
+      "b": "gen_eaf0f684",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.6804149654168345,
+      "residual": -0.05541496541683455,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3e898af3",
+      "b": "gen_4aacc6e",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.3333333333333333,
+      "expectedA": 0.38818161981962407,
+      "residual": -0.054848286486290754,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_593c5bce",
+      "b": "gen_59f86106",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5548429062397894,
+      "residual": -0.05484290623978938,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_356941f9",
+      "b": "gen_35e098fe",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5546756670459478,
+      "residual": -0.05467566704594784,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_110e3909",
+      "b": "gen_28e7aa17",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.5707013013816341,
+      "residual": 0.05429869861836589,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3df6df27",
+      "b": "gen_468112fc",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5539449916999857,
+      "residual": -0.05394499169998568,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_53849c5",
+      "b": "gen_5bb97fbb",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.446089576500567,
+      "residual": 0.05391042349943298,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_852a2302",
+      "b": "gen_8b0b2780",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.9166666666666666,
+      "expectedA": 0.9698932270334562,
+      "residual": -0.05322656036678952,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_423a692d",
+      "b": "gen_caaa3327",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.9166666666666666,
+      "expectedA": 0.9694945320765728,
+      "residual": -0.05282786540990614,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_60b62bc9",
+      "b": "gen_642e3290",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5526680293864825,
+      "residual": -0.05266802938648252,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_aad1477",
+      "b": "gen_b73a26c4",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5518264303120773,
+      "residual": -0.05182643031207734,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e706c8c9",
+      "b": "gen_f0ccfed1",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5513821424922569,
+      "residual": -0.05138214249225692,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_aaf2baed",
+      "b": "gen_fc5c4c11",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4494439835242896,
+      "residual": 0.0505560164757104,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_314f816c",
+      "b": "gen_60b62bc9",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.40808557651248295,
+      "residual": 0.050247756820850364,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_655404c9",
+      "b": "gen_68d37737",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.4669002815007047,
+      "residual": -0.05023361483403799,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_9ef1346d",
+      "b": "gen_f3114ca8",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5501094693278773,
+      "residual": -0.0501094693278773,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_423a692d",
+      "b": "gen_f0ccfed1",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.44993959731885375,
+      "residual": 0.050060402681146254,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_203270eb",
+      "b": "gen_f0ccfed1",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5495750231770238,
+      "residual": -0.04957502317702378,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_485cc0fa",
+      "b": "gen_4e29e27c",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5494178490609704,
+      "residual": -0.049417849060970354,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_64acb68d",
+      "b": "gen_fc5c4c11",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.549357415947694,
+      "residual": -0.04935741594769405,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_139608bc",
+      "b": "gen_199850c5",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.75,
+      "expectedA": 0.799337371261645,
+      "residual": -0.04933737126164495,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4a36fbb6",
+      "b": "gen_8b0b2780",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.5074252700553143,
+      "residual": -0.04909193672198103,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_52492b2e",
+      "b": "gen_bd3c6ecd",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4511573194003482,
+      "residual": 0.0488426805996518,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7aa391bd",
+      "b": "gen_b7d499b1",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5488265332946389,
+      "residual": -0.04882653329463893,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_26dc0433",
+      "b": "gen_58aabbda",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5483886799012402,
+      "residual": -0.048388679901240184,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_45f9afdf",
+      "b": "gen_852a2302",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.3333333333333333,
+      "expectedA": 0.28499807548781764,
+      "residual": 0.04833525784551568,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_5bc946fb",
+      "b": "gen_85f58a40",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5898287197443102,
+      "residual": -0.04816205307764354,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_bdfa61c2",
+      "b": "gen_cd05a579",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.49353401145631975,
+      "residual": 0.048132655210346875,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_6be3602e",
+      "b": "gen_7120a2e5",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.49445530747305394,
+      "residual": 0.04721135919361269,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_33760ac6",
+      "b": "gen_59f86106",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.4947522296511684,
+      "residual": 0.046914437015498245,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_241754c4",
+      "b": "gen_356941f9",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5367880887587012,
+      "residual": 0.04654524457463216,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_35e098fe",
+      "b": "gen_4acda966",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.46318797261174166,
+      "residual": -0.046521305945074976,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4658f4c1",
+      "b": "gen_60b62bc9",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5462099235781561,
+      "residual": -0.04620992357815612,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d886abca",
+      "b": "gen_de154d81",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5461066354120926,
+      "residual": -0.04610663541209259,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_59f86106",
+      "b": "gen_75e6c91c",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4540300147830229,
+      "residual": 0.045969985216977094,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ca34beec",
+      "b": "gen_d0b1ddbf",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.3294085021316699,
+      "residual": 0.04559149786833011,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_26dc0433",
+      "b": "gen_e957bbde",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5870814377976282,
+      "residual": -0.045414771130961595,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_8ff9043c",
+      "b": "gen_96e0087c",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4548582418408995,
+      "residual": 0.04514175815910049,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d0b1ddbf",
+      "b": "gen_f1b1dd9b",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5382753983204217,
+      "residual": 0.045057935012911665,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_f3114ca8",
+      "b": "gen_f43bebad",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5449651971913427,
+      "residual": -0.04496519719134273,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d2c78225",
+      "b": "gen_eb10e749",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5447111771332186,
+      "residual": -0.044711177133218594,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_443383ff",
+      "b": "gen_4fd01c99",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5446313731842309,
+      "residual": -0.04463137318423094,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_584b7337",
+      "b": "gen_a17a01b6",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5443832032035527,
+      "residual": -0.04438320320355271,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_63304880",
+      "b": "gen_b7d499b1",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5442826240350501,
+      "residual": -0.04428262403505012,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_dc761256",
+      "b": "gen_f830362f",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5440752844028742,
+      "residual": -0.044075284402874226,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_16587b08",
+      "b": "gen_f715775b",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9560316107273434,
+      "residual": 0.04396838927265656,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_c3572307",
+      "b": "gen_c9b42e98",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.3730742675052004,
+      "residual": 0.04359239916146629,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_db404180",
+      "b": "gen_f1b1dd9b",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.331778350458192,
+      "residual": 0.043221649541808016,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_cd05a579",
+      "b": "gen_d72c2515",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4153114672380484,
+      "residual": 0.04302186609528491,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3e313bf6",
+      "b": "gen_59f86106",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5405196850312841,
+      "residual": 0.042813648302049256,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_7120a2e5",
+      "b": "gen_7b9437ee",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.3746728181545035,
+      "residual": 0.0419938485121632,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d72c2515",
+      "b": "gen_f6410c8",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5831655187876442,
+      "residual": -0.04149885212097759,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_951c83d5",
+      "b": "gen_c46ea044",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.6666666666666666,
+      "expectedA": 0.6254175573038175,
+      "residual": 0.04124910936284909,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_503943bf",
+      "b": "gen_60b62bc9",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5408320290000993,
+      "residual": -0.0408320290000993,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3f6ea849",
+      "b": "gen_ccc1aa19",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5407573793918977,
+      "residual": -0.04075737939189772,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_c4a7eb1e",
+      "b": "gen_caaf95b6",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.49865059927827565,
+      "residual": -0.04031726594494234,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d72c2515",
+      "b": "gen_e706c8c9",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4597187265714319,
+      "residual": 0.040281273428568076,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_53849c5",
+      "b": "gen_77871354",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.4148001831208108,
+      "residual": -0.039800183120810795,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_5bc946fb",
+      "b": "gen_6df5e9a",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5396423382224286,
+      "residual": -0.039642338222428575,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_199850c5",
+      "b": "gen_ce992d2",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5021919928031103,
+      "residual": 0.0394746738635563,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_85f58a40",
+      "b": "gen_f1132f52",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46052549302885804,
+      "residual": 0.039474506971141965,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_68d37737",
+      "b": "gen_738d06bc",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5390392726718745,
+      "residual": -0.03903927267187446,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_852a2302",
+      "b": "gen_aaf2baed",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5388134676239185,
+      "residual": -0.03881346762391846,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_c4a7eb1e",
+      "b": "gen_e2b98d0",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4969865774503011,
+      "residual": -0.0386532441169678,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4acda966",
+      "b": "gen_57c513e2",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5032546587437391,
+      "residual": 0.03841200792292754,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_314f816c",
+      "b": "gen_7c3d3bce",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46165499009459127,
+      "residual": 0.03834500990540873,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_614b743d",
+      "b": "gen_738d06bc",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46175453936683675,
+      "residual": 0.03824546063316325,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_47a45e39",
+      "b": "gen_aaf2baed",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5378196583335759,
+      "residual": -0.03781965833357592,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_dbb44811",
+      "b": "gen_e619a309",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5789292986674545,
+      "residual": -0.03726263200078783,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_c9b42e98",
+      "b": "gen_de31d484",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4216105284475659,
+      "residual": 0.0367228048857674,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_17108112",
+      "b": "gen_fc5c4c11",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5782502992503648,
+      "residual": -0.03658363258369812,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d2c78225",
+      "b": "gen_e706c8c9",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46344480073017796,
+      "residual": 0.036555199269822036,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3f6ea849",
+      "b": "gen_49cdd490",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5468533009324067,
+      "residual": 0.036480032400926676,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d8130578",
+      "b": "gen_fcdfb6b3",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46356909686427444,
+      "residual": 0.036430903135725556,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1f2d5594",
+      "b": "gen_66b873d2",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.75,
+      "expectedA": 0.7862664693233469,
+      "residual": -0.03626646932334687,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_7aa391bd",
+      "b": "gen_ccc1aa19",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4637844612100471,
+      "residual": 0.03621553878995287,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_a787865b",
+      "b": "gen_fa9a61eb",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5361727002141062,
+      "residual": -0.036172700214106235,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_47a45e39",
+      "b": "gen_7936f2e6",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.49444134700427256,
+      "residual": -0.03610801367093924,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4e29e27c",
+      "b": "gen_68d37737",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5057818981737057,
+      "residual": 0.03588476849296096,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_708a34d8",
+      "b": "gen_96e0087c",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46422273435816597,
+      "residual": 0.03577726564183403,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_22e5620e",
+      "b": "gen_3751c975",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5475612216404977,
+      "residual": 0.03577211169283567,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ca34beec",
+      "b": "gen_db404180",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5356128395685935,
+      "residual": -0.03561283956859351,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_203270eb",
+      "b": "gen_2f0e991b",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5354720756970587,
+      "residual": -0.03547207569705868,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_caaa3327",
+      "b": "gen_ef5a03e7",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5353988126936231,
+      "residual": -0.035398812693623105,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_bea5a315",
+      "b": "gen_f87b8817",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.3812970446178842,
+      "residual": 0.03536962204878247,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_58aabbda",
+      "b": "gen_e2b98d0",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5350995269344361,
+      "residual": -0.035099526934436076,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_110e3909",
+      "b": "gen_fc15d801",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46493767216713117,
+      "residual": 0.035062327832868834,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a17a01b6",
+      "b": "gen_aad1477",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.3399858329367275,
+      "residual": 0.03501416706327248,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_75e6c91c",
+      "b": "gen_b73a26c4",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4651565413328396,
+      "residual": 0.034843458667160376,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_e291a413",
+      "b": "gen_e2b98d0",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46519095934463,
+      "residual": 0.034809040655369994,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_49cdd490",
+      "b": "gen_63304880",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5346639014034874,
+      "residual": -0.03466390140348741,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_76350aab",
+      "b": "gen_bea5a315",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5345898741595674,
+      "residual": -0.03458987415956738,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7c3d3bce",
+      "b": "gen_85f58a40",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.4511490632771471,
+      "residual": -0.034482396610480415,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_468112fc",
+      "b": "gen_52492b2e",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5075432808534498,
+      "residual": 0.03412338581321683,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_16587b08",
+      "b": "gen_423a692d",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4663239493502744,
+      "residual": 0.03367605064972562,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_caaf95b6",
+      "b": "gen_e291a413",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5331526730957433,
+      "residual": -0.033152673095743324,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d9ffc90d",
+      "b": "gen_f08a28a",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4914219034820603,
+      "residual": -0.03308857014872696,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_203270eb",
+      "b": "gen_64acb68d",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46691559341970196,
+      "residual": 0.03308440658029804,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_f08a28a",
+      "b": "gen_fcdfb6b3",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5330806011151152,
+      "residual": -0.03308060111511524,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_142de0d9",
+      "b": "gen_1c6c8d2b",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.03286507955376686,
+      "residual": -0.03286507955376686,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_25e3f458",
+      "b": "gen_7120a2e5",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5088383940420481,
+      "residual": 0.032828272624618515,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_25e3f458",
+      "b": "gen_f6410c8",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.5922585356298621,
+      "residual": 0.03274146437013792,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3751c975",
+      "b": "gen_6a307a99",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4672894277653549,
+      "residual": 0.032710572234645074,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_28e7aa17",
+      "b": "gen_5bc946fb",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46734213807153674,
+      "residual": 0.03265786192846326,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_58aabbda",
+      "b": "gen_5bc946fb",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.46788622018878867,
+      "residual": 0.03211377981121133,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3751c975",
+      "b": "gen_45f9afdf",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.08333333333333333,
+      "expectedA": 0.051479716207324604,
+      "residual": 0.031853617126008725,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_dab31a40",
+      "b": "gen_f715775b",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.42657757872340174,
+      "residual": 0.031755754609931575,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_64acb68d",
+      "b": "gen_e706c8c9",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5312662391221536,
+      "residual": -0.03126623912215365,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4aacc6e",
+      "b": "gen_4fd01c99",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5726285595892272,
+      "residual": -0.030961892922560574,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_37f4971e",
+      "b": "gen_e9ccb57d",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.7083333333333334,
+      "expectedA": 0.7388308709796105,
+      "residual": -0.030497537646277162,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a120df5a",
+      "b": "gen_a787865b",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5720680973532493,
+      "residual": -0.03040143068658263,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_cd05a579",
+      "b": "gen_f1b1dd9b",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9696557502327332,
+      "residual": 0.030344249767266795,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_7120a2e5",
+      "b": "gen_e5ad4d89",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5302814220563897,
+      "residual": -0.03028142205638973,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3e313bf6",
+      "b": "gen_fd22a587",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.48860049939468203,
+      "residual": -0.030267166061348716,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_28e7aa17",
+      "b": "gen_503943bf",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5116410783130704,
+      "residual": 0.030025588353596255,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_eaf0f684",
+      "b": "gen_fc15d801",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.3452860657091515,
+      "residual": 0.02971393429084851,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4c835b05",
+      "b": "gen_7aa391bd",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5290478210120725,
+      "residual": -0.029047821012072483,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5bb97fbb",
+      "b": "gen_7ac66c62",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.42938597966345415,
+      "residual": 0.02894735366987916,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7936f2e6",
+      "b": "gen_a120df5a",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.471106906422659,
+      "residual": 0.02889309357734099,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_49cdd490",
+      "b": "gen_750b81b3",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4297418680075345,
+      "residual": 0.028591465325798815,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_8ff9043c",
+      "b": "gen_a787865b",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5700684896890219,
+      "residual": -0.028401823022355277,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4aacc6e",
+      "b": "gen_f3114ca8",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4720380501421529,
+      "residual": 0.027961949857847113,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_35e098fe",
+      "b": "gen_fcdfb6b3",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5278794360477472,
+      "residual": -0.02787943604774723,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_e35573d5",
+      "b": "gen_e5ad4d89",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5278366433703897,
+      "residual": -0.027836643370389713,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_33760ac6",
+      "b": "gen_a17a01b6",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5275500005980372,
+      "residual": -0.02755000059803725,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_468112fc",
+      "b": "gen_e89bf022",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.3891225862436064,
+      "residual": 0.02754408042306028,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a93cd064",
+      "b": "gen_f0ccfed1",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5141252279931865,
+      "residual": 0.027541438673480134,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_17108112",
+      "b": "gen_7b9437ee",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.47248551833306246,
+      "residual": 0.02751448166693754,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_50c08baf",
+      "b": "gen_58aabbda",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.47265061946527154,
+      "residual": 0.027349380534728462,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ccc1aa19",
+      "b": "gen_fd22a587",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.527338478006094,
+      "residual": -0.027338478006094014,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_bd3c6ecd",
+      "b": "gen_d8130578",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.47269442494765557,
+      "residual": 0.027305575052344433,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_314f816c",
+      "b": "gen_3bbb9dd3",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.40223017804824246,
+      "residual": -0.02723017804824246,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_8eeb8077",
+      "b": "gen_9d167d7d",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.43120175102023406,
+      "residual": 0.027131582313099256,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3889b3a2",
+      "b": "gen_c9b42e98",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.8333333333333334,
+      "expectedA": 0.8062628934684655,
+      "residual": 0.0270704398648679,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_642e3290",
+      "b": "gen_caaf95b6",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.43128218617376585,
+      "residual": 0.027051147159567468,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_de31d484",
+      "b": "gen_e35573d5",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5686809424775691,
+      "residual": -0.027014275810902433,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_bd3c6ecd",
+      "b": "gen_efe3b793",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4733117600686232,
+      "residual": 0.02668823993137681,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_b73a26c4",
+      "b": "gen_d3fd8104",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.47355896348437054,
+      "residual": 0.026441036515629457,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_738d06bc",
+      "b": "gen_8eeb8077",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5152310195811961,
+      "residual": 0.026435647085470526,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e291a413",
+      "b": "gen_ebaf9592",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.48404649448259335,
+      "residual": -0.025713161149260033,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d0b1ddbf",
+      "b": "gen_dab31a40",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5256700068750196,
+      "residual": -0.025670006875019635,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e2b98d0",
+      "b": "gen_f1132f52",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4839476277940228,
+      "residual": -0.02561429446068947,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_26dc0433",
+      "b": "gen_f1132f52",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5672304425043355,
+      "residual": -0.02556377583766889,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_9378677",
+      "b": "gen_c3572307",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5251828788079489,
+      "residual": -0.025182878807948894,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_194dc157",
+      "b": "gen_1f2d5594",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4748269855883802,
+      "residual": 0.025173014411619787,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1f745793",
+      "b": "gen_4e29e27c",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.43328890443832635,
+      "residual": 0.025044428895006965,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_c46ea044",
+      "b": "gen_ca34beec",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.47510457067028605,
+      "residual": 0.024895429329713947,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_b96b96c0",
+      "b": "gen_bd3c6ecd",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5242937617995441,
+      "residual": -0.024293761799544122,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4aacc6e",
+      "b": "gen_a77c49bf",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5590547509072973,
+      "residual": 0.02427858242603609,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e35573d5",
+      "b": "gen_fc5c4c11",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4759510474489527,
+      "residual": 0.024048952551047276,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_66b873d2",
+      "b": "gen_866edc5e",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.3988015448351717,
+      "residual": -0.023801544835171717,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_22e5620e",
+      "b": "gen_39edff44",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.023719555089037052,
+      "residual": -0.023719555089037052,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_866edc5e",
+      "b": "gen_96e0087c",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5231500211786625,
+      "residual": -0.023150021178662494,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_dab31a40",
+      "b": "gen_ef5a03e7",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5226456333144571,
+      "residual": -0.022645633314457125,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_59f86106",
+      "b": "gen_62344a12",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4776432336969528,
+      "residual": 0.022356766303047226,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_64acb68d",
+      "b": "gen_66b873d2",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5637475431879129,
+      "residual": -0.02208087652124624,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_f830362f",
+      "b": "gen_f87b8817",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.563196425170875,
+      "residual": -0.02152975850420835,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_57c513e2",
+      "b": "gen_6d41a15f",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5215117414248959,
+      "residual": -0.02151174142489587,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_25e3f458",
+      "b": "gen_c9b42e98",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5212031716526674,
+      "residual": -0.021203171652667385,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_655404c9",
+      "b": "gen_8eeb8077",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5211937243175488,
+      "residual": -0.021193724317548845,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_62344a12",
+      "b": "gen_7aa391bd",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4792866302348371,
+      "residual": 0.020713369765162915,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4658f4c1",
+      "b": "gen_50c08baf",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5205944949909312,
+      "residual": -0.020594494990931245,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3df6df27",
+      "b": "gen_3e898af3",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.6039246537724295,
+      "residual": -0.020591320439096172,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_75e6c91c",
+      "b": "gen_c7b2265c",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.47945529221528976,
+      "residual": 0.020544707784710237,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_17108112",
+      "b": "gen_203270eb",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5621891395089897,
+      "residual": -0.020522472842323114,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_cd05a579",
+      "b": "gen_fa9a61eb",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.47950432776239293,
+      "residual": 0.020495672237607065,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_50c08baf",
+      "b": "gen_6df5e9a",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4802013217222509,
+      "residual": 0.019798678277749115,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_39edff44",
+      "b": "gen_47a45e39",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5196779553685975,
+      "residual": -0.01967795536859751,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_8de51718",
+      "b": "gen_a120df5a",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5196391313114707,
+      "residual": -0.01963913131147066,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_199850c5",
+      "b": "gen_e9ccb57d",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.6666666666666666,
+      "expectedA": 0.6471947086682125,
+      "residual": 0.019471957998454137,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_63450c3e",
+      "b": "gen_77871354",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.48054933630273167,
+      "residual": 0.019450663697268333,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_efe3b793",
+      "b": "gen_f3114ca8",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.47775717728364403,
+      "residual": -0.019423843950310715,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_57c513e2",
+      "b": "gen_5b2f9301",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5191032684499165,
+      "residual": -0.0191032684499165,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_f6410c8",
+      "b": "gen_fa9a61eb",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.481069060698611,
+      "residual": 0.018930939301389005,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4a36fbb6",
+      "b": "gen_55b9882a",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5186612007573138,
+      "residual": -0.01866120075731381,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_2147e05",
+      "b": "gen_53849c5",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.48147788797775026,
+      "residual": 0.018522112022249737,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7936f2e6",
+      "b": "gen_ad17fc7c",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5184996800901347,
+      "residual": -0.018499680090134696,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d2c78225",
+      "b": "gen_fc5c4c11",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4815993682715275,
+      "residual": 0.018400631728472505,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d71b05fb",
+      "b": "gen_f87b8817",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.6433372594568122,
+      "residual": -0.018337259456812194,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_aaf2baed",
+      "b": "gen_ef5a03e7",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.9583333333333334,
+      "expectedA": 0.9766175414047868,
+      "residual": -0.018284208071453478,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_9d167d7d",
+      "b": "gen_f090f30e",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4818786630959462,
+      "residual": 0.01812133690405382,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_443383ff",
+      "b": "gen_5beb9839",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.4347727161070002,
+      "residual": -0.018106049440333505,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_139608bc",
+      "b": "gen_57c513e2",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5180424089609361,
+      "residual": -0.018042408960936118,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a77c49bf",
+      "b": "gen_d8130578",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.434690809501039,
+      "residual": -0.018024142834372314,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_c9b42e98",
+      "b": "gen_e5ad4d89",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5179342488913182,
+      "residual": -0.017934248891318227,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_708a34d8",
+      "b": "gen_76350aab",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5177596498045286,
+      "residual": -0.0177596498045286,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ca34beec",
+      "b": "gen_eaf0f684",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.524081437542833,
+      "residual": 0.017585229123833646,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3bbb9dd3",
+      "b": "gen_642e3290",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5586666850766567,
+      "residual": -0.017000018409990103,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3e898af3",
+      "b": "gen_d886abca",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5169445141344012,
+      "residual": -0.016944514134401234,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_28e7aa17",
+      "b": "gen_314f816c",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.6415620988511291,
+      "residual": -0.016562098851129137,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_593c5bce",
+      "b": "gen_63304880",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5165451673225135,
+      "residual": -0.016545167322513543,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1c6c8d2b",
+      "b": "gen_2f0e991b",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.48356441293901453,
+      "residual": 0.016435587060985468,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d0b1ddbf",
+      "b": "gen_d72c2515",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.041666666666666664,
+      "expectedA": 0.025259157052928548,
+      "residual": 0.016407509613738117,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_2147e05",
+      "b": "gen_3205a1b1",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4836231529165942,
+      "residual": 0.01637684708340581,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_738d06bc",
+      "b": "gen_dbb44811",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.432988135748198,
+      "residual": -0.016321469081531315,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_62344a12",
+      "b": "gen_63304880",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.48386405326673304,
+      "residual": 0.01613594673326696,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_c4a7eb1e",
+      "b": "gen_eaf0f684",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5160281312391634,
+      "residual": -0.016028131239163357,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_c46ea044",
+      "b": "gen_e957bbde",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.48442234414803415,
+      "residual": 0.015577655851965855,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4fd01c99",
+      "b": "gen_6d41a15f",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.3333333333333333,
+      "expectedA": 0.3488707126686771,
+      "residual": -0.01553737933534377,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_8b0b2780",
+      "b": "gen_caaa3327",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.567929247234014,
+      "residual": 0.015404086099319425,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_bea5a315",
+      "b": "gen_de31d484",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.43199391543028404,
+      "residual": -0.015327248763617352,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_60b62bc9",
+      "b": "gen_c4a7eb1e",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4850625385234301,
+      "residual": 0.01493746147656988,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_39edff44",
+      "b": "gen_fc8f8e6a",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.9583333333333334,
+      "expectedA": 0.9732641252132259,
+      "residual": -0.014930791879892547,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_68d37737",
+      "b": "gen_9d167d7d",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4851215925083268,
+      "residual": 0.014878407491673185,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_a787865b",
+      "b": "gen_e706c8c9",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.4312990846770999,
+      "residual": -0.01463241801043319,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e957bbde",
+      "b": "gen_ebaf9592",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5146220135707501,
+      "residual": -0.014622013570750103,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_9ef1346d",
+      "b": "gen_e89bf022",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.527924915921768,
+      "residual": 0.013741750744898584,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_33760ac6",
+      "b": "gen_4765c247",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5136096315919528,
+      "residual": -0.013609631591952831,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_26dc0433",
+      "b": "gen_4658f4c1",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5550866333785853,
+      "residual": -0.013419966711918696,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_9d167d7d",
+      "b": "gen_dbb44811",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4865874399748336,
+      "residual": 0.013412560025166387,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_85f58a40",
+      "b": "gen_ca34beec",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4714790557440078,
+      "residual": -0.013145722410674465,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3751c975",
+      "b": "gen_4a36fbb6",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.4035282106555519,
+      "residual": 0.013138456011114796,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7936f2e6",
+      "b": "gen_fa6982cc",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.9583333333333334,
+      "expectedA": 0.9714603590528231,
+      "residual": -0.01312702571948976,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_468112fc",
+      "b": "gen_4c835b05",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5963520288978403,
+      "residual": -0.013018695564506966,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_356941f9",
+      "b": "gen_41af14d3",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5129712878259706,
+      "residual": -0.012971287825970568,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_caaa3327",
+      "b": "gen_d0b1ddbf",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4871072599889558,
+      "residual": 0.01289274001104418,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_b7d499b1",
+      "b": "gen_ce992d2",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4872329862108387,
+      "residual": 0.012767013789161286,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_39edff44",
+      "b": "gen_8ff9043c",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.48724753151052536,
+      "residual": 0.012752468489474644,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_66b873d2",
+      "b": "gen_6be3602e",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5125790449276664,
+      "residual": -0.012579044927666372,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5bb97fbb",
+      "b": "gen_63450c3e",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4875447537230988,
+      "residual": 0.0124552462769012,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_47a45e39",
+      "b": "gen_f715775b",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.9583333333333334,
+      "expectedA": 0.9706081149699475,
+      "residual": -0.012274781636614107,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_bea5a315",
+      "b": "gen_c3572307",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.6367984872598981,
+      "residual": -0.011798487259898072,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_db404180",
+      "b": "gen_ebaf9592",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4882884145779162,
+      "residual": 0.011711585422083781,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3f6ea849",
+      "b": "gen_b96b96c0",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.38670738192047455,
+      "residual": -0.011707381920474547,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_142de0d9",
+      "b": "gen_fc15d801",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5950233613702979,
+      "residual": -0.011690028036964506,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1f2d5594",
+      "b": "gen_3889b3a2",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.48857983654549914,
+      "residual": 0.011420163454500865,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_503943bf",
+      "b": "gen_806c9455",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4885846086282804,
+      "residual": 0.011415391371719597,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_750b81b3",
+      "b": "gen_aad1477",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5109437424966549,
+      "residual": -0.010943742496654862,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7c3d3bce",
+      "b": "gen_c46ea044",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4475504850888941,
+      "residual": 0.010782848244439203,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_52492b2e",
+      "b": "gen_a77c49bf",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.48935436107507935,
+      "residual": 0.010645638924920653,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_241754c4",
+      "b": "gen_d9ffc90d",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5939774749861241,
+      "residual": -0.010644141652790706,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_951c83d5",
+      "b": "gen_db404180",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.625,
+      "expectedA": 0.6354422993327583,
+      "residual": -0.010442299332758309,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_aad1477",
+      "b": "gen_d886abca",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.531478744146462,
+      "residual": 0.010187922520204618,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4c835b05",
+      "b": "gen_96dcd78a",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.42678421468893235,
+      "residual": -0.010117548022265666,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_a787865b",
+      "b": "gen_a93cd064",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.46833938018235044,
+      "residual": -0.010006046849017125,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ef5a03e7",
+      "b": "gen_f1b1dd9b",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4899980286928314,
+      "residual": 0.010001971307168622,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_bea5a315",
+      "b": "gen_f0ccfed1",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5099714376533284,
+      "residual": -0.009971437653328419,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_25e3f458",
+      "b": "gen_d72c2515",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5093809260549564,
+      "residual": -0.00938092605495644,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_142de0d9",
+      "b": "gen_4a36fbb6",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4914523853336324,
+      "residual": 0.008547614666367609,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_f0ccfed1",
+      "b": "gen_fc5c4c11",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4666968038225809,
+      "residual": -0.00836347048924757,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_50c08baf",
+      "b": "gen_f1132f52",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.49172351339683135,
+      "residual": 0.008276486603168653,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_f1132f52",
+      "b": "gen_f87b8817",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.008170826570253484,
+      "residual": -0.008170826570253484,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_bdfa61c2",
+      "b": "gen_f6410c8",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.49196717186047273,
+      "residual": 0.00803282813952727,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_2f0e991b",
+      "b": "gen_6be3602e",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.508012785008773,
+      "residual": -0.008012785008773005,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_63304880",
+      "b": "gen_75e6c91c",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4924136440984109,
+      "residual": 0.007586355901589126,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_37f4971e",
+      "b": "gen_3e313bf6",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.57616242908746,
+      "residual": 0.007170904245873411,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_76350aab",
+      "b": "gen_866edc5e",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.4238254657174607,
+      "residual": -0.007158799050794029,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3751c975",
+      "b": "gen_fc15d801",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5070444158098955,
+      "residual": -0.007044415809895455,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5b2f9301",
+      "b": "gen_9ef1346d",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5069983609741895,
+      "residual": -0.006998360974189488,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3bbb9dd3",
+      "b": "gen_503943bf",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4652071796600576,
+      "residual": -0.0068738463267242755,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ebaf9592",
+      "b": "gen_f1132f52",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4650924722999212,
+      "residual": -0.006759138966587863,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ca34beec",
+      "b": "gen_caaf95b6",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5067166508976727,
+      "residual": -0.006716650897672705,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a93cd064",
+      "b": "gen_ad17fc7c",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5065626178957936,
+      "residual": -0.006562617895793599,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_25e3f458",
+      "b": "gen_2f0e991b",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.506370418823772,
+      "residual": -0.006370418823771984,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_9ef1346d",
+      "b": "gen_fcdfb6b3",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5353619100825427,
+      "residual": 0.006304756584123883,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5b2f9301",
+      "b": "gen_5beb9839",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5479150619431344,
+      "residual": -0.006248395276467811,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d3fd8104",
+      "b": "gen_d886abca",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5059726326383422,
+      "residual": -0.005972632638342246,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_45f9afdf",
+      "b": "gen_47a45e39",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.2916666666666667,
+      "expectedA": 0.28581361171811687,
+      "residual": 0.0058530549485498184,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3205a1b1",
+      "b": "gen_3bbb9dd3",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.994189311433945,
+      "residual": 0.0058106885660550445,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_53849c5",
+      "b": "gen_60b62bc9",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9943762457268608,
+      "residual": 0.005623754273139214,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_47a45e39",
+      "b": "gen_d2c78225",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5055713776389213,
+      "residual": -0.005571377638921349,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_ebaf9592",
+      "b": "gen_f830362f",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.005524716573153885,
+      "residual": -0.005524716573153885,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_110e3909",
+      "b": "gen_194dc157",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.005524592454908631,
+      "residual": -0.005524592454908631,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4658f4c1",
+      "b": "gen_ebaf9592",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5471527837745656,
+      "residual": -0.005486117107898925,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_63450c3e",
+      "b": "gen_806c9455",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9946859274434315,
+      "residual": 0.005314072556568461,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_41af14d3",
+      "b": "gen_4acda966",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5050420484568114,
+      "residual": -0.005042048456811443,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_dc761256",
+      "b": "gen_e957bbde",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9950884325876392,
+      "residual": 0.004911567412360762,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_6d41a15f",
+      "b": "gen_9ef1346d",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5045862322047578,
+      "residual": -0.004586232204757845,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_7936f2e6",
+      "b": "gen_852a2302",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5045590752782644,
+      "residual": -0.0045590752782643795,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_55b9882a",
+      "b": "gen_6a307a99",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5461375331682097,
+      "residual": -0.004470866501543047,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e2b98d0",
+      "b": "gen_e957bbde",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5042802295502652,
+      "residual": -0.004280229550265191,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_d71b05fb",
+      "b": "gen_e2b98d0",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9957352202519221,
+      "residual": 0.004264779748077929,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_77871354",
+      "b": "gen_c4a7eb1e",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9957623721264922,
+      "residual": 0.004237627873507788,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_2147e05",
+      "b": "gen_314f816c",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9958184334479512,
+      "residual": 0.004181566552048821,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_891f8a30",
+      "b": "gen_e291a413",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9959693615272838,
+      "residual": 0.00403063847271623,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_96e0087c",
+      "b": "gen_bea5a315",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5873457077156584,
+      "residual": -0.004012374382325046,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1e150cbb",
+      "b": "gen_33760ac6",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5873337957597392,
+      "residual": -0.0040004624264058375,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_5beb9839",
+      "b": "gen_6d41a15f",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.4544763278311672,
+      "residual": 0.003857005502166111,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1f2d5594",
+      "b": "gen_28e7aa17",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.996235978287902,
+      "residual": 0.003764021712097998,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5bb97fbb",
+      "b": "gen_642e3290",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9963269603971383,
+      "residual": 0.003673039602861694,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_7ac66c62",
+      "b": "gen_caaf95b6",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9963551586018683,
+      "residual": 0.003644841398131704,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_ad17fc7c",
+      "b": "gen_d72c2515",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.49637064606892867,
+      "residual": 0.003629353931071333,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_41af14d3",
+      "b": "gen_d9ffc90d",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.545155930382435,
+      "residual": -0.003489263715768409,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_64acb68d",
+      "b": "gen_76350aab",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5381788248719733,
+      "residual": 0.0034878417946933027,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3889b3a2",
+      "b": "gen_503943bf",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9965665744998743,
+      "residual": 0.0034334255001257086,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_6df5e9a",
+      "b": "gen_951c83d5",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.41999431469898707,
+      "residual": -0.003327648032320385,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4fd01c99",
+      "b": "gen_52492b2e",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.496833027143679,
+      "residual": 0.0031669728563210042,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_f090f30e",
+      "b": "gen_f4cdb2a8",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5031535504185067,
+      "residual": -0.0031535504185067342,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_8eeb8077",
+      "b": "gen_e619a309",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4969417307691759,
+      "residual": 0.0030582692308240844,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_75e6c91c",
+      "b": "gen_7aa391bd",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5030032227495893,
+      "residual": -0.003003222749589307,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_8b0b2780",
+      "b": "gen_dab31a40",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5804437963839542,
+      "residual": 0.0028895369493792122,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_4658f4c1",
+      "b": "gen_5bc946fb",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.46114986797801155,
+      "residual": -0.002816534644678237,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_e89bf022",
+      "b": "gen_efe3b793",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5444639901765753,
+      "residual": -0.002797323509908689,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_2f0e991b",
+      "b": "gen_f6410c8",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5833333333333334,
+      "expectedA": 0.5860905071556862,
+      "residual": -0.002757173822352854,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_fa6982cc",
+      "b": "gen_fc8f8e6a",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5026564271724284,
+      "residual": -0.0026564271724284216,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_caaf95b6",
+      "b": "gen_e957bbde",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5026162551933339,
+      "residual": -0.0026162551933338607,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_614b743d",
+      "b": "gen_655404c9",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.45582447395870473,
+      "residual": 0.0025088593746285803,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_3d546968",
+      "b": "gen_60b62bc9",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0024391967749355426,
+      "residual": -0.0024391967749355426,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_314f816c",
+      "b": "gen_6d41a15f",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9976393011199198,
+      "residual": 0.00236069888008017,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_37f4971e",
+      "b": "gen_49cdd490",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5440214592893808,
+      "residual": -0.002354792622714208,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_6a307a99",
+      "b": "gen_d0b1ddbf",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.4979430740317467,
+      "residual": 0.002056925968253298,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_f715775b",
+      "b": "gen_fa6982cc",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5020166700430821,
+      "residual": -0.002016670043082147,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_2f0e991b",
+      "b": "gen_7b9437ee",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.375,
+      "expectedA": 0.37698912383376043,
+      "residual": -0.001989123833760431,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_750b81b3",
+      "b": "gen_96dcd78a",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.49803553608468804,
+      "residual": 0.0019644639153119647,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_66b873d2",
+      "b": "gen_708a34d8",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.45650005613758,
+      "residual": 0.0018332771957533245,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_356941f9",
+      "b": "gen_e957bbde",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.001829585148767683,
+      "residual": -0.001829585148767683,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_241754c4",
+      "b": "gen_806c9455",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0018164048313140083,
+      "residual": -0.0018164048313140083,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3bbb9dd3",
+      "b": "gen_57c513e2",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9982676027248691,
+      "residual": 0.0017323972751308592,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_41af14d3",
+      "b": "gen_e2b98d0",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0017077780457148322,
+      "residual": -0.0017077780457148322,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a120df5a",
+      "b": "gen_d2c78225",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5416666666666666,
+      "expectedA": 0.5399703371849605,
+      "residual": 0.0016963294817061714,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_2b4897ba",
+      "b": "gen_7ac66c62",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9983963294981434,
+      "residual": 0.0016036705018566133,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_314f816c",
+      "b": "gen_f43bebad",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9984160376803644,
+      "residual": 0.0015839623196356456,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_dbb44811",
+      "b": "gen_f4cdb2a8",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.49844009840102743,
+      "residual": 0.0015599015989725684,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_5b2f9301",
+      "b": "gen_caaf95b6",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0015409182496373324,
+      "residual": -0.0015409182496373324,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_e291a413",
+      "b": "gen_e89bf022",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9984698228488235,
+      "residual": 0.0015301771511765372,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_16587b08",
+      "b": "gen_fc8f8e6a",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.9583333333333334,
+      "expectedA": 0.9568106906499173,
+      "residual": 0.0015226426834160645,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_642e3290",
+      "b": "gen_efe3b793",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9985216529301112,
+      "residual": 0.001478347069888808,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_28e7aa17",
+      "b": "gen_4acda966",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9985423422610551,
+      "residual": 0.0014576577389449064,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_77871354",
+      "b": "gen_d71b05fb",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.49859008390077175,
+      "residual": 0.0014099160992282478,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_9ef1346d",
+      "b": "gen_f1132f52",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.00139604123164452,
+      "residual": -0.00139604123164452,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_35e098fe",
+      "b": "gen_503943bf",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.00131788545493596,
+      "residual": -0.00131788545493596,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5beb9839",
+      "b": "gen_c4a7eb1e",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0012786292169138815,
+      "residual": -0.0012786292169138815,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_199850c5",
+      "b": "gen_fd22a587",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.45717107580225624,
+      "residual": 0.001162257531077071,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3751c975",
+      "b": "gen_7c3d3bce",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.7083333333333334,
+      "expectedA": 0.7072036135386965,
+      "residual": 0.0011297197946368298,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_ebaf9592",
+      "b": "gen_f43bebad",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9989032658364744,
+      "residual": 0.0010967341635256256,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_28e7aa17",
+      "b": "gen_f3114ca8",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9989395946632049,
+      "residual": 0.0010604053367950783,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_49cdd490",
+      "b": "gen_4c835b05",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.5010553496667807,
+      "residual": -0.0010553496667806694,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_1f2d5594",
+      "b": "gen_738d06bc",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000981743473418311,
+      "residual": -0.000981743473418311,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_194dc157",
+      "b": "gen_e619a309",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0009319808776471031,
+      "residual": -0.0009319808776471031,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a93cd064",
+      "b": "gen_d2c78225",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.49918535700523176,
+      "residual": 0.0008146429947682443,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_110e3909",
+      "b": "gen_f3114ca8",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9992021215526631,
+      "residual": 0.0007978784473369194,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5bb97fbb",
+      "b": "gen_614b743d",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0007694389684063679,
+      "residual": -0.0007694389684063679,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_2b4897ba",
+      "b": "gen_f87b8817",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9992349297888172,
+      "residual": 0.0007650702111827723,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_110e3909",
+      "b": "gen_efe3b793",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9992700367575218,
+      "residual": 0.0007299632424782043,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3889b3a2",
+      "b": "gen_485cc0fa",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0007044188616965784,
+      "residual": -0.0007044188616965784,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1c6c8d2b",
+      "b": "gen_39edff44",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.45766341489307893,
+      "residual": 0.0006699184402543801,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_110e3909",
+      "b": "gen_f43bebad",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9993337000726136,
+      "residual": 0.0006662999273864267,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4e29e27c",
+      "b": "gen_77871354",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9993732221503071,
+      "residual": 0.0006267778496928944,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_9d167d7d",
+      "b": "gen_d71b05fb",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9993921985554512,
+      "residual": 0.0006078014445487501,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1f745793",
+      "b": "gen_f830362f",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9994106733409976,
+      "residual": 0.0005893266590023538,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1f745793",
+      "b": "gen_3205a1b1",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9994238662772403,
+      "residual": 0.0005761337227596641,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_7120a2e5",
+      "b": "gen_8ff9043c",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.4583333333333333,
+      "expectedA": 0.45887265589844334,
+      "residual": -0.0005393225651100231,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_891f8a30",
+      "b": "gen_f4cdb2a8",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0005270341920666659,
+      "residual": -0.0005270341920666659,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_2147e05",
+      "b": "gen_8eeb8077",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0005247713113810638,
+      "residual": -0.0005247713113810638,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_dc761256",
+      "b": "gen_f090f30e",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.00048225984696713273,
+      "residual": -0.00048225984696713273,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_53849c5",
+      "b": "gen_68d37737",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0004547448454772853,
+      "residual": -0.0004547448454772853,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_dbb44811",
+      "b": "gen_f830362f",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9995881547867066,
+      "residual": 0.00041184521329340473,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_655404c9",
+      "b": "gen_f87b8817",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9995915811373127,
+      "residual": 0.00040841886268727645,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1e053f66",
+      "b": "gen_63450c3e",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.999613030325091,
+      "residual": 0.00038696967490903234,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1e053f66",
+      "b": "gen_dc761256",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9996411579217996,
+      "residual": 0.00035884207820036096,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_ccc1aa19",
+      "b": "gen_f1b1dd9b",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0003318585338428343,
+      "residual": -0.0003318585338428343,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_c7b2265c",
+      "b": "gen_ef5a03e7",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0003282736182585051,
+      "residual": -0.0003282736182585051,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_75e6c91c",
+      "b": "gen_caaa3327",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0002623962314823533,
+      "residual": -0.0002623962314823533,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_7aa391bd",
+      "b": "gen_d0b1ddbf",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0002462325545968158,
+      "residual": -0.0002462325545968158,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1e053f66",
+      "b": "gen_f87b8817",
+      "kind": "near-tier",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9997667517700649,
+      "residual": 0.0002332482299350902,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_142de0d9",
+      "b": "gen_1e150cbb",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9997675836370061,
+      "residual": 0.00023241636299387025,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_62344a12",
+      "b": "gen_6a307a99",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0002285193697761619,
+      "residual": -0.0002285193697761619,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_b7d499b1",
+      "b": "gen_dab31a40",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.00022433448861504404,
+      "residual": -0.00022433448861504404,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3751c975",
+      "b": "gen_4765c247",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9997790961662785,
+      "residual": 0.00022090383372153077,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_fc8f8e6a",
+      "b": "gen_fd22a587",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9997856530342121,
+      "residual": 0.000214346965787926,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4a36fbb6",
+      "b": "gen_593c5bce",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9997991288682773,
+      "residual": 0.00020087113172273519,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_63304880",
+      "b": "gen_8b0b2780",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.00019367261657541563,
+      "residual": -0.00019367261657541563,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_55b9882a",
+      "b": "gen_f6410c8",
+      "kind": "same-seed-level",
+      "games": 24,
+      "actualA": 0.041666666666666664,
+      "expectedA": 0.041473116860068125,
+      "residual": 0.00019354980659853915,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_22e5620e",
+      "b": "gen_33760ac6",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9998072515858483,
+      "residual": 0.00019274841415173327,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_e619a309",
+      "b": "gen_f090f30e",
+      "kind": "same-tier",
+      "games": 24,
+      "actualA": 0.4166666666666667,
+      "expectedA": 0.41648162479871476,
+      "residual": 0.00018504186795192945,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_63450c3e",
+      "b": "gen_891f8a30",
+      "kind": "cross-tier",
+      "games": 24,
+      "actualA": 0.5,
+      "expectedA": 0.49981982147681336,
+      "residual": 0.00018017852318663596,
+      "sameTarget": true
+    },
+    {
+      "a": "gen_ce992d2",
+      "b": "gen_f715775b",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0001756402105495533,
+      "residual": -0.0001756402105495533,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_55b9882a",
+      "b": "gen_59f86106",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9998263377207167,
+      "residual": 0.00017366227928328204,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_e9ccb57d",
+      "b": "gen_fa6982cc",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.00009737989756957558,
+      "residual": -0.00009737989756957558,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_6d41a15f",
+      "b": "gen_c3572307",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0000333702940628808,
+      "residual": -0.0000333702940628808,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3d546968",
+      "b": "gen_66b873d2",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.00002754009267524371,
+      "residual": -0.00002754009267524371,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_139608bc",
+      "b": "gen_25e3f458",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.00002137164508974056,
+      "residual": -0.00002137164508974056,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_9ef1346d",
+      "b": "gen_c9b42e98",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000019497455279592726,
+      "residual": -0.000019497455279592726,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_f08a28a",
+      "b": "gen_f0ccfed1",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000019270244202696808,
+      "residual": -0.000019270244202696808,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_203270eb",
+      "b": "gen_356941f9",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999807346788743,
+      "residual": 0.000019265321125727652,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4acda966",
+      "b": "gen_76350aab",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000018296756653792877,
+      "residual": -0.000018296756653792877,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_41af14d3",
+      "b": "gen_708a34d8",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000017388778791715914,
+      "residual": -0.000017388778791715914,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_17108112",
+      "b": "gen_241754c4",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999826138148791,
+      "residual": 0.00001738618512092671,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_45f9afdf",
+      "b": "gen_49cdd490",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.999982667368862,
+      "residual": 0.000017332631138011756,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_e5ad4d89",
+      "b": "gen_f3114ca8",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999828681191938,
+      "residual": 0.00001713188080620931,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_52492b2e",
+      "b": "gen_9378677",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000016371262755319323,
+      "residual": -0.000016371262755319323,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5beb9839",
+      "b": "gen_bea5a315",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000015856631442443237,
+      "residual": -0.000015856631442443237,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a787865b",
+      "b": "gen_b96b96c0",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999845395613575,
+      "residual": 0.00001546043864253388,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d9ffc90d",
+      "b": "gen_e706c8c9",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000015149898594827422,
+      "residual": -0.000015149898594827422,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_eb10e749",
+      "b": "gen_f43bebad",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999850333736857,
+      "residual": 0.00001496662631428336,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_fc5c4c11",
+      "b": "gen_fcdfb6b3",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999852293757048,
+      "residual": 0.000014770624295223911,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_e35573d5",
+      "b": "gen_efe3b793",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999859804562892,
+      "residual": 0.000014019543710830362,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d2c78225",
+      "b": "gen_d8130578",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.999986260225647,
+      "residual": 0.000013739774353038747,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_35e098fe",
+      "b": "gen_64acb68d",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000013547477756338057,
+      "residual": -0.000013547477756338057,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_5b2f9301",
+      "b": "gen_96e0087c",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000013501988172841607,
+      "residual": -0.000013501988172841607,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_57c513e2",
+      "b": "gen_866edc5e",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000013284807812531753,
+      "residual": -0.000013284807812531753,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_aad1477",
+      "b": "gen_bdfa61c2",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000013211776939640703,
+      "residual": -0.000013211776939640703,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_2f0e991b",
+      "b": "gen_3df6df27",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.999987003044482,
+      "residual": 0.00001299695551804092,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_de31d484",
+      "b": "gen_e89bf022",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999872910149297,
+      "residual": 0.000012708985070331025,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a93cd064",
+      "b": "gen_bd3c6ecd",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999876429871251,
+      "residual": 0.00001235701287494173,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_443383ff",
+      "b": "gen_7120a2e5",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000012111138607624735,
+      "residual": -0.000012111138607624735,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d886abca",
+      "b": "gen_f6410c8",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000011278460384734594,
+      "residual": -0.000011278460384734594,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3f6ea849",
+      "b": "gen_423a692d",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000011108753822118313,
+      "residual": -0.000011108753822118313,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_96dcd78a",
+      "b": "gen_aaf2baed",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000010795439728064412,
+      "residual": -0.000010795439728064412,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4aacc6e",
+      "b": "gen_8de51718",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000010549376188949424,
+      "residual": -0.000010549376188949424,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_b73a26c4",
+      "b": "gen_cd05a579",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.00001045617815239515,
+      "residual": -0.00001045617815239515,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_750b81b3",
+      "b": "gen_852a2302",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000009167830540297012,
+      "residual": -0.000009167830540297012,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1c6c8d2b",
+      "b": "gen_37f4971e",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999909357477752,
+      "residual": 0.000009064252224799674,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a120df5a",
+      "b": "gen_a77c49bf",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999909989742592,
+      "residual": 0.000009001025740751345,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_3e898af3",
+      "b": "gen_6be3602e",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000008801553460102748,
+      "residual": -0.000008801553460102748,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_de154d81",
+      "b": "gen_fa9a61eb",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000008690108225546912,
+      "residual": -0.000008690108225546912,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4fd01c99",
+      "b": "gen_8ff9043c",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000008586964252190229,
+      "residual": -0.000008586964252190229,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_d3fd8104",
+      "b": "gen_d72c2515",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000008256556364691316,
+      "residual": -0.000008256556364691316,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_16587b08",
+      "b": "gen_199850c5",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999918497129365,
+      "residual": 0.000008150287063468653,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_47a45e39",
+      "b": "gen_4c835b05",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.999993092720516,
+      "residual": 0.000006907279484047457,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_468112fc",
+      "b": "gen_7b9437ee",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000006332854340877339,
+      "residual": -0.000006332854340877339,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_2b4897ba",
+      "b": "gen_50c08baf",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999938978749087,
+      "residual": 0.00000610212509133401,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_39edff44",
+      "b": "gen_3e313bf6",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999943731506697,
+      "residual": 0.0000056268493302535916,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_584b7337",
+      "b": "gen_7936f2e6",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000005303302495058085,
+      "residual": -0.000005303302495058085,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_738d06bc",
+      "b": "gen_951c83d5",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999950145549881,
+      "residual": 0.000004985445011929102,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_a17a01b6",
+      "b": "gen_ad17fc7c",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000004779621978066669,
+      "residual": -0.000004779621978066669,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_f4cdb2a8",
+      "b": "gen_fc15d801",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999956893221551,
+      "residual": 0.0000043106778448986915,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_614b743d",
+      "b": "gen_6df5e9a",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.999995791913763,
+      "residual": 0.000004208086237023068,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1f745793",
+      "b": "gen_4658f4c1",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.999996041931507,
+      "residual": 0.000003958068492959654,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_4e29e27c",
+      "b": "gen_5bc946fb",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999964638942406,
+      "residual": 0.0000035361057594274214,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_8eeb8077",
+      "b": "gen_c46ea044",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999968264214988,
+      "residual": 0.000003173578501214358,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_9d167d7d",
+      "b": "gen_ca34beec",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999973419979173,
+      "residual": 0.000002658002082656097,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_485cc0fa",
+      "b": "gen_58aabbda",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999974500442587,
+      "residual": 0.0000025499557413377616,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_e19767ef",
+      "b": "gen_e619a309",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0000025456641898578555,
+      "residual": -0.0000025456641898578555,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1e053f66",
+      "b": "gen_26dc0433",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.99999748087038,
+      "residual": 0.0000025191296200155477,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_68d37737",
+      "b": "gen_85f58a40",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999974834262917,
+      "residual": 0.000002516573708311043,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_655404c9",
+      "b": "gen_7c3d3bce",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 1,
+      "expectedA": 0.9999976381098777,
+      "residual": 0.0000023618901222599575,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_eaf0f684",
+      "b": "gen_f090f30e",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.000002244892670806179,
+      "residual": -0.000002244892670806179,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_db404180",
+      "b": "gen_dbb44811",
+      "kind": "cross-style",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 0.0000021841333622592176,
+      "residual": -0.0000021841333622592176,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1e150cbb",
+      "b": "gen_f4cdb2a8",
+      "kind": "extreme-gap",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 1.4723773712097695e-9,
+      "residual": -1.4723773712097695e-9,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_1e150cbb",
+      "b": "gen_f090f30e",
+      "kind": "extreme-gap",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 1.4539209128798405e-9,
+      "residual": -1.4539209128798405e-9,
+      "sameTarget": false
+    },
+    {
+      "a": "gen_33760ac6",
+      "b": "gen_f4cdb2a8",
+      "kind": "extreme-gap",
+      "games": 24,
+      "actualA": 0,
+      "expectedA": 1.0345060775303845e-9,
+      "residual": -1.0345060775303845e-9,
+      "sameTarget": false
+    }
+  ]
+}

@@ -1,0 +1,480 @@
+{
+  "schemaVersion": 1,
+  "methodology": {
+    "source": "regularized Bradley-Terry over canonical AI graph",
+    "populationStatistic": "p95-p5",
+    "initialGate": 1,
+    "maxException": 1.2
+  },
+  "pass": true,
+  "maxP95MinusP5": 0.7606887490390202,
+  "tiers": [
+    {
+      "level": 20,
+      "rarity": "A",
+      "cards": 15,
+      "p5": -2.9597024184494685,
+      "p50": -2.5817108301585305,
+      "p95": -2.413922289409324,
+      "p95MinusP5": 0.5457801290401445,
+      "maxMinusMin": 0.9023889631247854
+    },
+    {
+      "level": 40,
+      "rarity": "C",
+      "cards": 15,
+      "p5": -2.7497418267166363,
+      "p50": -2.411762971115623,
+      "p95": -2.1575706707134383,
+      "p95MinusP5": 0.5921711560031979,
+      "maxMinusMin": 0.7149972095275006
+    },
+    {
+      "level": 40,
+      "rarity": "XS_COLLECTOR",
+      "cards": 15,
+      "p5": 4.68313163215223,
+      "p50": 5.002484385748278,
+      "p95": 5.238396043442081,
+      "p95MinusP5": 0.5552644112898513,
+      "maxMinusMin": 0.8668635695047104
+    },
+    {
+      "level": 50,
+      "rarity": "C",
+      "cards": 15,
+      "p5": -2.1483228330904205,
+      "p50": -1.840142731258025,
+      "p95": -1.447371714258001,
+      "p95MinusP5": 0.7009511188324196,
+      "maxMinusMin": 0.9446863209289571
+    },
+    {
+      "level": 50,
+      "rarity": "A",
+      "cards": 15,
+      "p5": -1.811486387983962,
+      "p50": -1.4756024946665836,
+      "p95": -1.131177657837373,
+      "p95MinusP5": 0.6803087301465891,
+      "maxMinusMin": 0.8044814186075326
+    },
+    {
+      "level": 50,
+      "rarity": "XS_COLLECTOR",
+      "cards": 15,
+      "p5": 5.580206072950754,
+      "p50": 5.797176381833733,
+      "p95": 5.976347825476293,
+      "p95MinusP5": 0.39614175252553885,
+      "maxMinusMin": 0.44494329336921723
+    },
+    {
+      "level": 70,
+      "rarity": "XS",
+      "cards": 15,
+      "p5": 8.868613820479487,
+      "p50": 9.284305821461547,
+      "p95": 9.475064572043376,
+      "p95MinusP5": 0.6064507515638891,
+      "maxMinusMin": 0.9945565830732424
+    },
+    {
+      "level": 70,
+      "rarity": "XS_COLLECTOR",
+      "cards": 15,
+      "p5": 9.11364724269532,
+      "p50": 9.532284889413775,
+      "p95": 9.81378481036573,
+      "p95MinusP5": 0.70013756767041,
+      "maxMinusMin": 1.007165194561777
+    },
+    {
+      "level": 75,
+      "rarity": "A",
+      "cards": 15,
+      "p5": 4.726149343660114,
+      "p50": 5.045660814324947,
+      "p95": 5.486838092699134,
+      "p95MinusP5": 0.7606887490390202,
+      "maxMinusMin": 0.8536616524234839
+    },
+    {
+      "level": 100,
+      "rarity": "C",
+      "cards": 15,
+      "p5": 9.178369380032576,
+      "p50": 9.413587520073168,
+      "p95": 9.730581600227893,
+      "p95MinusP5": 0.552212220195317,
+      "maxMinusMin": 0.9799619209668045
+    },
+    {
+      "level": 100,
+      "rarity": "A",
+      "cards": 15,
+      "p5": 9.993922585027455,
+      "p50": 10.384147446715247,
+      "p95": 10.745184884641333,
+      "p95MinusP5": 0.7512622996138774,
+      "maxMinusMin": 0.8994163065240812
+    },
+    {
+      "level": 100,
+      "rarity": "XS_COLLECTOR",
+      "cards": 15,
+      "p5": 17.36813519222212,
+      "p50": 17.81315217257847,
+      "p95": 18.096497138411507,
+      "p95MinusP5": 0.7283619461893878,
+      "maxMinusMin": 1.1883964455329732
+    }
+  ],
+  "lv50A": {
+    "level": 50,
+    "rarity": "A",
+    "cards": 15,
+    "p5": -1.811486387983962,
+    "p50": -1.4756024946665836,
+    "p95": -1.131177657837373,
+    "p95MinusP5": 0.6803087301465891,
+    "maxMinusMin": 0.8044814186075326
+  },
+  "matchupDiversity": {
+    "sameTargetEightyTwentyExamples": 3,
+    "worstResiduals": [
+      {
+        "a": "gen_52492b2e",
+        "b": "gen_584b7337",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.9166666666666666,
+        "expectedA": 0.6461422725424462,
+        "residual": 0.27052439412422047,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_3d546968",
+        "b": "gen_52492b2e",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 1,
+        "expectedA": 0.7341953892219869,
+        "residual": 0.2658046107780131,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_a17a01b6",
+        "b": "gen_a77c49bf",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.08333333333333333,
+        "expectedA": 0.30518762508060027,
+        "residual": -0.22185429174726695,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_4a36fbb6",
+        "b": "gen_ad17fc7c",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.25,
+        "expectedA": 0.03270622395996881,
+        "residual": 0.2172937760400312,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_c7b2265c",
+        "b": "gen_d3fd8104",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.25,
+        "expectedA": 0.45928090818011336,
+        "residual": -0.20928090818011336,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_5bb97fbb",
+        "b": "gen_e5ad4d89",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.5416666666666666,
+        "expectedA": 0.7417003111109607,
+        "residual": -0.20003364444429406,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_356941f9",
+        "b": "gen_a77c49bf",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.875,
+        "expectedA": 0.6769815053681246,
+        "residual": 0.19801849463187537,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_139608bc",
+        "b": "gen_de154d81",
+        "kind": "near-tier",
+        "games": 24,
+        "actualA": 0.9583333333333334,
+        "expectedA": 0.7680694724261234,
+        "residual": 0.19026386090720993,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_708a34d8",
+        "b": "gen_7ac66c62",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.08333333333333333,
+        "expectedA": 0.2659400990145957,
+        "residual": -0.18260676568126238,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_16587b08",
+        "b": "gen_8de51718",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.16666666666666666,
+        "expectedA": 0.3465094647534755,
+        "residual": -0.17984279808680884,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_1c6c8d2b",
+        "b": "gen_fa6982cc",
+        "kind": "cross-tier",
+        "games": 24,
+        "actualA": 0.7916666666666666,
+        "expectedA": 0.9681475623033017,
+        "residual": -0.17648089563663505,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_3205a1b1",
+        "b": "gen_c3572307",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.9583333333333334,
+        "expectedA": 0.7819442736127857,
+        "residual": 0.17638905972054764,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_d8130578",
+        "b": "gen_de154d81",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.67549159355679,
+        "residual": -0.17549159355679,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_63450c3e",
+        "b": "gen_de31d484",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.6718849440632836,
+        "residual": -0.17188494406328358,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_139608bc",
+        "b": "gen_3df6df27",
+        "kind": "same-tier",
+        "games": 24,
+        "actualA": 0.4583333333333333,
+        "expectedA": 0.6278119256848624,
+        "residual": -0.16947859235152912,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_1f2d5594",
+        "b": "gen_2147e05",
+        "kind": "same-tier",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.6654701622759555,
+        "residual": -0.16547016227595546,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_e9ccb57d",
+        "b": "gen_fd22a587",
+        "kind": "same-tier",
+        "games": 24,
+        "actualA": 0.4791666666666667,
+        "expectedA": 0.3146502871160306,
+        "residual": 0.16451637955063608,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_3889b3a2",
+        "b": "gen_53849c5",
+        "kind": "same-tier",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.6591107557537625,
+        "residual": -0.15911075575376254,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_17108112",
+        "b": "gen_77871354",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.34092579755738084,
+        "residual": 0.15907420244261916,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_750b81b3",
+        "b": "gen_f08a28a",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.341456136702326,
+        "residual": 0.158543863297674,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_26dc0433",
+        "b": "gen_4a36fbb6",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.3434832033763401,
+        "residual": 0.15651679662365992,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_423a692d",
+        "b": "gen_45f9afdf",
+        "kind": "same-tier",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.6531305113214516,
+        "residual": -0.1531305113214516,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_3205a1b1",
+        "b": "gen_5bb97fbb",
+        "kind": "cross-tier",
+        "games": 24,
+        "actualA": 0.2916666666666667,
+        "expectedA": 0.4439676580047036,
+        "residual": -0.15230099133803693,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_194dc157",
+        "b": "gen_e35573d5",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.625,
+        "expectedA": 0.7755201180566242,
+        "residual": -0.15052011805662424,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_c46ea044",
+        "b": "gen_ef5a03e7",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.350438856281374,
+        "residual": 0.149561143718626,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_866edc5e",
+        "b": "gen_c3572307",
+        "kind": "cross-tier",
+        "games": 24,
+        "actualA": 0.5833333333333334,
+        "expectedA": 0.7324650069136067,
+        "residual": -0.14913167358027335,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_6a307a99",
+        "b": "gen_6df5e9a",
+        "kind": "same-seed-level",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.6485079207784774,
+        "residual": -0.1485079207784774,
+        "sameTarget": false
+      },
+      {
+        "a": "gen_2b4897ba",
+        "b": "gen_485cc0fa",
+        "kind": "same-tier",
+        "games": 24,
+        "actualA": 0.125,
+        "expectedA": 0.2724809544980556,
+        "residual": -0.1474809544980556,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_ce992d2",
+        "b": "gen_e9ccb57d",
+        "kind": "same-tier",
+        "games": 24,
+        "actualA": 0.5,
+        "expectedA": 0.6451900980558498,
+        "residual": -0.14519009805584981,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_142de0d9",
+        "b": "gen_e19767ef",
+        "kind": "cross-tier",
+        "games": 24,
+        "actualA": 0.9166666666666666,
+        "expectedA": 0.7748837095498177,
+        "residual": 0.14178295711684896,
+        "sameTarget": false
+      }
+    ],
+    "examples": [
+      {
+        "a": "gen_2b4897ba",
+        "b": "gen_485cc0fa",
+        "kind": "same-tier",
+        "games": 24,
+        "actualA": 0.125,
+        "expectedA": 0.2724809544980556,
+        "residual": -0.1474809544980556,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_c7b2265c",
+        "b": "gen_e9ccb57d",
+        "kind": "cross-tier",
+        "games": 24,
+        "actualA": 0.8333333333333334,
+        "expectedA": 0.6978440492204349,
+        "residual": 0.1354892841128985,
+        "sameTarget": true
+      },
+      {
+        "a": "gen_7b9437ee",
+        "b": "gen_9378677",
+        "kind": "cross-tier",
+        "games": 24,
+        "actualA": 0.8333333333333334,
+        "expectedA": 0.7271006605632674,
+        "residual": 0.10623267277006598,
+        "sameTarget": true
+      }
+    ]
+  }
+}

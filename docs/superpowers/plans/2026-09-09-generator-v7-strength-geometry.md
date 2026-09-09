@@ -50,10 +50,10 @@
 
 **Interfaces:** `fitBradleyTerryV7(nodes, edges) -> {cards, metrics}`; graph edges store independent mirrored battle outcomes and card-family split.
 
-- [ ] Write failing synthetic-graph tests for ordering, additive shift invariance, draws, standard errors, connectedness, and seed-family split isolation.
-- [ ] Verify red, then implement deterministic sparse graph construction and regularized Bradley-Terry fitting.
-- [ ] Prove the fitter on synthetic known-theta data before connecting real canonical AI battles.
-- [ ] Emit per-card id/seed/level/rarity/targetTheta/empiricalTheta/error/games/W/L/D and graph methodology.
+- [x] Write failing synthetic-graph tests for ordering, additive shift invariance, draws, standard errors, connectedness, and seed-family split isolation.
+- [x] Verify red, then implement deterministic sparse graph construction and regularized Bradley-Terry fitting.
+- [x] Prove the fitter on synthetic known-theta data before connecting real canonical AI battles.
+- [x] Emit per-card id/seed/level/rarity/targetTheta/empiricalTheta/error/games/W/L/D and graph methodology.
 
 ### Task 4: Implement content-only model, style genome, skeleton, and solver
 
@@ -61,11 +61,11 @@
 
 **Interfaces:** `styleGenomeV7(seed)`, `mechanicSkeletonV7(seed)`, `predictThetaV7(card)`, `marginalValueV7(card, knob)`, `solveCardV7(skeleton, genome, targetTheta)`, `generateCardV7(opts)`.
 
-- [ ] Write failing tests for seed-only structure/fingerprint invariance, content-only model invariance under metadata edits, contextual marginal values, and forbidden dependency absence.
-- [ ] Implement seed-only skeleton construction with deterministic scalability retries and no level/rarity input.
-- [ ] Implement interacting model terms for throughput, mitigation, sustain, reliability, control, economy, cooldown, periodic, and trigger value using the reference world.
-- [ ] Implement per-knob finite-difference coordinate solving with strength error as first priority and style/legality/degeneracy tie-breakers.
-- [ ] Verify deterministic valid cards, no universal scalar, convergence median <=0.06/p95 <=0.12, and no runtime battle/AI/BP call.
+- [x] Write failing tests for seed-only structure/fingerprint invariance, content-only model invariance under metadata edits, contextual marginal values, and forbidden dependency absence.
+- [x] Implement seed-only skeleton construction with deterministic scalability retries and no level/rarity input.
+- [x] Implement interacting model terms for throughput, mitigation, sustain, reliability, control, economy, cooldown, periodic, and trigger value using the reference world.
+- [x] Implement per-knob finite-difference coordinate solving with strength error as first priority and style/legality/degeneracy tie-breakers.
+- [x] Verify deterministic valid cards, no universal scalar, convergence median <=0.06/p95 <=0.12, and no runtime battle/AI/BP call.
 
 ### Task 5: Calibrate reality and seed dispersion
 
@@ -73,8 +73,8 @@
 
 **Interfaces:** audits consume generated cards and canonical AI battles; runtime source consumes only committed content-only coefficients.
 
-- [ ] Build train/validation/test card-family splits and a connected mixed-style graph.
-- [ ] Fit model coefficients on train, choose on validation, and report final metrics on untouched test.
+- [x] Build train/validation/test card-family splits and a connected mixed-style graph.
+- [x] Fit model coefficients on train, choose on validation, and report final metrics on untouched test.
 - [ ] Measure every specified product scenario with 40-100 cards per side population, 8-20 paired seeds, mirroring, Wilson intervals, and side counts.
 - [ ] Record gap buckets and matchup residuals; retain 80/20 and 90/10 same-tier examples.
 - [ ] Iterate only model/solver within permitted geometry bounds until every hard reality and dispersion gate passes.

@@ -1,0 +1,19 @@
+'use strict';
+const fs=require('node:fs');
+const path=require('node:path');
+const ROOT=path.resolve(__dirname,'..');
+const graph=JSON.parse(fs.readFileSync(path.join(ROOT,'qa/v7-battle-graph.json'),'utf8'));
+const empirical=JSON.parse(fs.readFileSync(path.join(ROOT,'qa/v7-empirical-strength.json'),'utf8'));
+const quantile=(values,q)=>{const sorted=values.slice().sort((a,b)=>a-b),position=(sorted.length-1)*q,lower=Math.floor(position),upper=Math.ceil(position);return sorted[lower]+(sorted[upper]-sorted[lower])*(position-lower);};
+const groups=new Map();
+for(const card of empirical.cards){const key=`${card.level}|${card.rarity}`;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(card.empiricalTheta);}
+const tiers=[...groups].map(([key,values])=>{const [level,rarity]=key.split('|');const p5=quantile(values,.05),p50=quantile(values,.5),p95=quantile(values,.95);return {level:Number(level),rarity,cards:values.length,p5,p50,p95,p95MinusP5:p95-p5,maxMinusMin:Math.max(...values)-Math.min(...values)};});
+const byId=new Map(empirical.cards.map(card=>[card.id,card]));
+const sigmoid=value=>1/(1+Math.exp(-value));
+const residuals=graph.edges.map(edge=>{const games=edge.winsA+edge.winsB+edge.draws,actual=(edge.winsA+.5*edge.draws)/games,expected=sigmoid(byId.get(edge.a).empiricalTheta-byId.get(edge.b).empiricalTheta);return {a:edge.a,b:edge.b,kind:edge.kind,games,actualA:actual,expectedA:expected,residual:actual-expected,sameTarget:Math.abs(byId.get(edge.a).targetTheta-byId.get(edge.b).targetTheta)<1e-9};}).sort((a,b)=>Math.abs(b.residual)-Math.abs(a.residual));
+const sameTargetExamples=residuals.filter(row=>row.sameTarget&&(row.actualA<=.2||row.actualA>=.8)).slice(0,20);
+const artifact={schemaVersion:1,methodology:{source:'regularized Bradley-Terry over canonical AI graph',populationStatistic:'p95-p5',initialGate:1,maxException:1.2},pass:tiers.every(row=>row.p95MinusP5<=1.2),maxP95MinusP5:Math.max(...tiers.map(row=>row.p95MinusP5)),tiers,lv50A:tiers.find(row=>row.level===50&&row.rarity==='A'),matchupDiversity:{sameTargetEightyTwentyExamples:sameTargetExamples.length,worstResiduals:residuals.slice(0,30),examples:sameTargetExamples}};
+const output=path.join(ROOT,'qa/v7-seed-dispersion.json'),residualOutput=path.join(ROOT,'qa/v7-matchup-residuals.json');
+fs.writeFileSync(output,JSON.stringify(artifact,null,2)+'\n');
+fs.writeFileSync(residualOutput,JSON.stringify({schemaVersion:1,methodology:artifact.methodology.matchup||'actual pair score minus Bradley-Terry expectation',residuals},null,2)+'\n');
+console.log(JSON.stringify({output:path.relative(ROOT,output),pass:artifact.pass,maxP95MinusP5:artifact.maxP95MinusP5,lv50A:artifact.lv50A,eightyTwentyExamples:sameTargetExamples.length},null,2));
