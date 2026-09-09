@@ -68,7 +68,12 @@
     const total={direct:0,periodic:0,heal:0,barrier:0,control:0,economy:0};
     for(const action of actions){const value=actionValue(card,action);for(const key of Object.keys(total))total[key]+=value[key];}
     for(const trigger of card.triggers||[]){const value=effectTotals(card,trigger.effects);const frequency={roundStart:1,roundEnd:1,afterDamageTaken:.7,afterDamageDealt:.7,afterKill:.1,command:.4}[trigger.event]??.35;total.periodic+=(value.direct+value.periodic)*frequency;total.heal+=value.heal*frequency;total.barrier+=value.barrier*frequency;total.control+=value.control*frequency;}
-    const attack=Math.max(0.25,total.direct+total.periodic+total.control*(WORLD.actionValue||100)*.32+total.economy*2);
+    const actionCount=Math.max(1,actions.length);
+    const anchorValues=actions.flatMap(action=>(action.effects||[]).filter(effect=>effect.strengthAnchor===true).map(effect=>evaluate(effect.formula,card)));
+    const anchorThroughput=anchorValues.length?Math.max(...anchorValues):0;
+    const perRoundAttack=(total.direct+total.periodic+total.control*(WORLD.actionValue||100)*.32+total.economy*2)/actionCount;
+    const tacticalAttack=Math.max(0,perRoundAttack-anchorThroughput);
+    const attack=Math.max(.25,anchorValues.length?anchorThroughput:perRoundAttack);
     const defenseMix=((WORLD.damageTypeMix?.physical||0)+(WORLD.damageTypeMix?.bleed||0));
     const mitigation=defenseMix*(1+num(s.DEF,0)/100)+(1-defenseMix)*(1+num(s.RES,0)/100);
     const incomingHit=clamp((WORLD.acc||100)/(WORLD.acc||100+num(s.EVA,0)*.85),.25,1);
@@ -76,8 +81,8 @@
     const endurance=Math.max(1,num(s.MAX_HP,1)*mitigation*(1-resistance)/incomingHit);
     const sustain=total.heal*(WORLD.battleRounds||12)*.55+total.barrier*(WORLD.battleRounds||12)*.35;
     const tempo=1+Math.tanh((num(s.SPD,100)-100)/250)*.08;
-    const generalPower=Math.sqrt(Math.max(.01,attack*tempo)*Math.max(1,endurance+sustain));
-    return {...total,attack,endurance,sustain,tempo,generalPower};
+    const generalPower=Math.sqrt(Math.max(.01,attack*tempo)*Math.max(1,endurance));
+    return {...total,anchorThroughput,tacticalAttack,attack,endurance,sustain,tempo,generalPower};
   }
   const SHAPE_FEATURE_NAMES=['directShare','periodicShare','controlShare','sustainShare','barrierShare','damageActionShare','statusActionShare','supportActionShare','triggerDensity','retaliationDamageShare','roundTriggerShare','drainActionShare','cleanseDispelShare','actionCount','averageCooldown','averagePriority','logGeneralPower','logGeneralPowerSquared','attackEnduranceBalance','defenseBalance','speedLog'];
   function shapeVector(card){
@@ -106,7 +111,8 @@
     for(let i=0;i<vector.length;i++)value+=((vector[i]-num(means[i],0))/Math.max(1e-9,num(scales[i],1)))*num(coefficients[i],0);
     return value;
   }
-  function predictTheta(card){const value=features(card).generalPower;return 2*Math.log(Math.max(1e-9,value)/Math.max(1e-9,WORLD.referenceGeneralPower||300))+calibrationCorrection(card);}
+  function predictTheta(card){const value=features(card).generalPower,gain=Math.max(.1,num(WORLD.thetaRealizationGain,1));return 2*gain*Math.log(Math.max(1e-9,value)/Math.max(1e-9,WORLD.referenceGeneralPower||300));}
+  function predictRealityThetaV7(card){return predictTheta(card)+calibrationCorrection(card);}
   function marginalValue(card,knob){
     if(knob.kind!=='stat')throw new Error('unsupported V7 marginal knob: '+knob.kind);
     const key=knob.key,step=Math.max(1e-6,num(knob.relativeStep,.05)),base=Math.max(1e-6,num(card.stats?.[key],0));
@@ -120,6 +126,7 @@
   N.strengthShapeVectorV7=shapeVector;
   N.strengthCalibrationCorrectionV7=calibrationCorrection;
   N.predictThetaV7=predictTheta;
+  N.predictRealityThetaV7=predictRealityThetaV7;
   N.marginalValueV7=marginalValue;
   if(typeof module!=='undefined')module.exports=N;
 })(typeof globalThis!=='undefined'?globalThis:window);

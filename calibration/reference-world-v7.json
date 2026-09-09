@@ -21,5 +21,6 @@
     "toxic": 0.08,
     "true": 0.05
   },
-  "referenceGeneralPower": 300
+  "referenceGeneralPower": 300,
+  "thetaRealizationGain": 3.2
 }

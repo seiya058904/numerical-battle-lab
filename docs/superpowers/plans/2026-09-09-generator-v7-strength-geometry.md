@@ -75,9 +75,9 @@
 
 - [x] Build train/validation/test card-family splits and a connected mixed-style graph.
 - [x] Fit model coefficients on train, choose on validation, and report final metrics on untouched test.
-- [ ] Measure every specified product scenario with 40-100 cards per side population, 8-20 paired seeds, mirroring, Wilson intervals, and side counts.
-- [ ] Record gap buckets and matchup residuals; retain 80/20 and 90/10 same-tier examples.
-- [ ] Iterate only model/solver within permitted geometry bounds until every hard reality and dispersion gate passes.
+- [x] Measure every specified product scenario with 40-100 cards per side population, 8-20 paired seeds, mirroring, Wilson intervals, and side counts.
+- [x] Record gap buckets and matchup residuals; retain 80/20 and 90/10 same-tier examples.
+- [x] Iterate only model/solver within permitted geometry bounds until every hard reality and dispersion gate passes.
 
 ### Task 6: Establish multi-axis combat sensitivity
 

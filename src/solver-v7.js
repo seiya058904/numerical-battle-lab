@@ -24,7 +24,7 @@
         if((error>0&&current>=limits[1])||(error<0&&current<=limits[0]))continue;
         const marginal=N.marginalValueV7(card,{kind:'stat',key:knob.key,relativeStep:.025});
         if(!Number.isFinite(marginal)||marginal<=1e-7)continue;
-        const preference=.99+.02*Number(genome[knob.axis]??.5);
+        const preference=1;
         candidates.push({knob,marginal,score:marginal*preference/(1+uses[knob.key]*.45)});
       }
       candidates.sort((a,b)=>b.score-a.score||a.knob.key.localeCompare(b.knob.key));

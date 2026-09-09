@@ -14,7 +14,7 @@ function isConnectedGraphV7(nodes,edges){
 function fitBradleyTerryV7(nodes,edges,options={}){
   if(!isConnectedGraphV7(nodes,edges))throw new Error('battle graph must be connected');
   const regularization=Number(options.regularization??.01);
-  const iterations=Number(options.iterations??10000);
+  const iterations=Number(options.iterations??40000);
   const theta=Object.fromEntries(nodes.map(id=>[id,0]));
   let converged=false;
   for(let iteration=0;iteration<iterations;iteration++){
@@ -75,7 +75,7 @@ function buildSparsePairsV7(cards){
     const tier=`${card.level}|${card.rarity}`;if(!tierGroups.has(tier))tierGroups.set(tier,[]);tierGroups.get(tier).push(card);
     if(card.seed!==undefined){if(!seedGroups.has(card.seed))seedGroups.set(card.seed,[]);seedGroups.get(card.seed).push(card);}
   }
-  for(const group of tierGroups.values())for(let i=0;i<group.length-1;i++)add(group[i],group[i+1],'same-tier');
+  for(const group of tierGroups.values())for(let i=0;i<group.length;i++)for(let j=i+1;j<group.length;j++)add(group[i],group[j],'same-tier');
   for(const group of seedGroups.values()){
     group.sort((a,b)=>a.targetTheta-b.targetTheta||a.id.localeCompare(b.id));
     for(let i=0;i<group.length-1;i++)add(group[i],group[i+1],'same-seed-level');

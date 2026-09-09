@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 1,
+  "generatorVersion": 7,
+  "methodology": {
+    "populationPerSide": 40,
+    "seedPairs": 20,
+    "pairedMatchSeeds": 8,
+    "mirroredSides": true,
+    "crossBalancedSeedFamilies": true,
+    "canonicalAI": true,
+    "roundCap": 100,
+    "allBattlesIncludedInRates": true
+  },
+  "pass": true,
+  "totals": {
+    "battles": 5760,
+    "teamAWins": 2867,
+    "teamBWins": 2893,
+    "draws": 0,
+    "teamAWinRate": 0.49774305555555554,
+    "teamAWilson95": {
+      "lower": 0.4848365982775468,
+      "upper": 0.5106525212296855
+    },
+    "sideBiasPass": true
+  },
+  "scenarios": [
+    {
+      "id": "lv40-vs-lv100-C",
+      "low": {
+        "level": 40,
+        "rarity": "C"
+      },
+      "high": {
+        "level": 100,
+        "rarity": "C"
+      },
+      "gate": {
+        "higherMin": 0.99,
+        "lowerMax": 0.01,
+        "wilsonLowerMin": 0.98
+      },
+      "populationPerSide": 40,
+      "seedPairs": 20,
+      "pairedMatchSeeds": 8,
+      "mirroredSides": true,
+      "crossBalancedSeedFamilies": true,
+      "teamAWins": 320,
+      "teamBWins": 320,
+      "higherWins": 640,
+      "lowerWins": 0,
+      "draws": 0,
+      "battles": 640,
+      "higherRate": 1,
+      "lowerRate": 0,
+      "drawRate": 0,
+      "higherWilson95": {
+        "lower": 0.9940335329947058,
+        "upper": 0.9999999999999999
+      },
+      "checks": {
+        "higherMin": true,
+        "lowerMax": true,
+        "wilsonLowerMin": true
+      },
+      "pass": true
+    },
+    {
+      "id": "lv40-vs-lv100-A",
+      "low": {
+        "level": 40,
+        "rarity": "A"
+      },
+      "high": {
+        "level": 100,
+        "rarity": "A"
+      },
+      "gate": {
+        "higherMin": 0.99,
+        "lowerMax": 0.01,
+        "wilsonLowerMin": 0.98
+      },
+      "populationPerSide": 40,
+      "seedPairs": 20,
+      "pairedMatchSeeds": 8,
+      "mirroredSides": true,
+      "crossBalancedSeedFamilies": true,
+      "teamAWins": 320,
+      "teamBWins": 320,
+      "higherWins": 640,
+      "lowerWins": 0,
+      "draws": 0,
+      "battles": 640,
+      "higherRate": 1,
+      "lowerRate": 0,
+      "drawRate": 0,
+      "higherWilson95": {
+        "lower": 0.9940335329947058,
+        "upper": 0.9999999999999999
+      },
+      "checks": {
+        "higherMin": true,
+        "lowerMax": true,
+        "wilsonLowerMin": true
+      },
+      "pass": true
+    },
+    {
+      "id": "lv40-vs-lv100-SSS",
+      "low": {
+        "level": 40,
+        "rarity": "SSS"
+      },
+      "high": {
+        "level": 100,
+        "rarity": "SSS"
+      },
+      "gate": {
+        "higherMin": 0.99,
+        "lowerMax": 0.01,
+        "wilsonLowerMin": 0.98
+      },
+      "populationPerSide": 40,
+      "seedPairs": 20,
+      "pairedMatchSeeds": 8,
+      "mirroredSides": true,
+      "crossBalancedSeedFamilies": true,
+      "teamAWins": 320,
+      "teamBWins": 320,
+      "higherWins": 640,
+      "lowerWins": 0,
+      "draws": 0,
+      "battles": 640,
+      "higherRate": 1,
+      "lowerRate": 0,
+      "drawRate": 0,
+      "higherWilson95": {
+        "lower": 0.9940335329947058,
+        "upper": 0.9999999999999999
+      },
+      "checks": {
+        "higherMin": true,
+        "lowerMax": true,
+        "wilsonLowerMin": true
+      },
+      "pass": true
+    },
+    {
+      "id": "lv40-vs-lv100-XS_COLLECTOR",
+      "low": {
+        "level": 40,
+        "rarity": "XS_COLLECTOR"
+      },
+      "high": {
+        "level": 100,
+        "rarity": "XS_COLLECTOR"
+      },
+      "gate": {
+        "higherMin": 0.99,
+        "lowerMax": 0.01,
+        "wilsonLowerMin": 0.98
+      },
+      "populationPerSide": 40,
+      "seedPairs": 20,
+      "pairedMatchSeeds": 8,
+      "mirroredSides": true,
+      "crossBalancedSeedFamilies": true,
+      "teamAWins": 320,
+      "teamBWins": 320,
+      "higherWins": 640,
+      "lowerWins": 0,
+      "draws": 0,
+      "battles": 640,
+      "higherRate": 1,
+      "lowerRate": 0,
+      "drawRate": 0,
+      "higherWilson95": {
+        "lower": 0.9940335329947058,
+        "upper": 0.9999999999999999
+      },
+      "checks": {
+        "higherMin": true,
+        "lowerMax": true,
+        "wilsonLowerMin": true
+      },
+      "pass": true
+    },
+    {
+      "id": "lv40-xc-vs-lv100-c",
+      "low": {
+        "level": 40,
+        "rarity": "XS_COLLECTOR"
+      },
+      "high": {
+        "level": 100,
+        "rarity": "C"
+      },
+      "gate": {
+        "higherMin": 0.98,
+        "lowerMax": 0.015
+      },
+      "populationPerSide": 40,
+      "seedPairs": 20,
+      "pairedMatchSeeds": 8,
+      "mirroredSides": true,
+      "crossBalancedSeedFamilies": true,
+      "teamAWins": 320,
+      "teamBWins": 320,
+      "higherWins": 640,
+      "lowerWins": 0,
+      "draws": 0,
+      "battles": 640,
+      "higherRate": 1,
+      "lowerRate": 0,
+      "drawRate": 0,
+      "higherWilson95": {
+        "lower": 0.9940335329947058,
+        "upper": 0.9999999999999999
+      },
+      "checks": {
+        "higherMin": true,
+        "lowerMax": true
+      },
+      "pass": true
+    },
+    {
+      "id": "lv70-xc-vs-lv100-c",
+      "low": {
+        "level": 70,
+        "rarity": "XS_COLLECTOR"
+      },
+      "high": {
+        "level": 100,
+        "rarity": "C"
+      },
+      "gate": {
+        "lowerMin": 0.35,
+        "lowerMax": 0.7
+      },
+      "populationPerSide": 40,
+      "seedPairs": 20,
+      "pairedMatchSeeds": 8,
+      "mirroredSides": true,
+      "crossBalancedSeedFamilies": true,
+      "teamAWins": 323,
+      "teamBWins": 317,
+      "higherWins": 221,
+      "lowerWins": 419,
+      "draws": 0,
+      "battles": 640,
+      "higherRate": 0.3453125,
+      "lowerRate": 0.6546875,
+      "drawRate": 0,
+      "higherWilson95": {
+        "lower": 0.3094971524578007,
+        "upper": 0.38297372327196216
+      },
+      "checks": {
+        "lowerMin": true,
+        "lowerMax": true
+      },
+      "pass": true
+    },
+    {
+      "id": "lv70-xs-vs-lv100-c",
+      "low": {
+        "level": 70,
+        "rarity": "XS"
+      },
+      "high": {
+        "level": 100,
+        "rarity": "C"
+      },
+      "gate": {
+        "lowerMin": 0.2,
+        "lowerMax": 0.45
+      },
+      "populationPerSide": 40,
+      "seedPairs": 20,
+      "pairedMatchSeeds": 8,
+      "mirroredSides": true,
+      "crossBalancedSeedFamilies": true,
+      "teamAWins": 304,
+      "teamBWins": 336,
+      "higherWins": 512,
+      "lowerWins": 128,
+      "draws": 0,
+      "battles": 640,
+      "higherRate": 0.8,
+      "lowerRate": 0.2,
+      "drawRate": 0,
+      "higherWilson95": {
+        "lower": 0.7672610921221783,
+        "upper": 0.8291590276746452
+      },
+      "checks": {
+        "lowerMin": true,
+        "lowerMax": true
+      },
+      "pass": true
+    },
+    {
+      "id": "lv50-c-vs-lv50-xc",
+      "low": {
+        "level": 50,
+        "rarity": "C"
+      },
+      "high": {
+        "level": 50,
+        "rarity": "XS_COLLECTOR"
+      },
+      "gate": {
+        "higherMin": 0.99
+      },
+      "populationPerSide": 40,
+      "seedPairs": 20,
+      "pairedMatchSeeds": 8,
+      "mirroredSides": true,
+      "crossBalancedSeedFamilies": true,
+      "teamAWins": 320,
+      "teamBWins": 320,
+      "higherWins": 640,
+      "lowerWins": 0,
+      "draws": 0,
+      "battles": 640,
+      "higherRate": 1,
+      "lowerRate": 0,
+      "drawRate": 0,
+      "higherWilson95": {
+        "lower": 0.9940335329947058,
+        "upper": 0.9999999999999999
+      },
+      "checks": {
+        "higherMin": true
+      },
+      "pass": true
+    },
+    {
+      "id": "lv100-c-vs-lv100-xc",
+      "low": {
+        "level": 100,
+        "rarity": "C"
+      },
+      "high": {
+        "level": 100,
+        "rarity": "XS_COLLECTOR"
+      },
+      "gate": {
+        "higherMin": 0.99
+      },
+      "populationPerSide": 40,
+      "seedPairs": 20,
+      "pairedMatchSeeds": 8,
+      "mirroredSides": true,
+      "crossBalancedSeedFamilies": true,
+      "teamAWins": 320,
+      "teamBWins": 320,
+      "higherWins": 640,
+      "lowerWins": 0,
+      "draws": 0,
+      "battles": 640,
+      "higherRate": 1,
+      "lowerRate": 0,
+      "drawRate": 0,
+      "higherWilson95": {
+        "lower": 0.9940335329947058,
+        "upper": 0.9999999999999999
+      },
+      "checks": {
+        "higherMin": true
+      },
+      "pass": true
+    }
+  ]
+}

@@ -37,3 +37,9 @@ test('V7 calibration feature vector is derived from content shape, not card meta
   const dot=structuredClone(card);dot.statuses=[{id:'dot',kind:'debuff',duration:3,periodic:{effects:[{type:'damage',formula:'ATK * .4'}]}}];dot.actions=[{id:'apply',target:'enemy',effects:[{type:'status',status:'dot',duration:3}]}];
   assert.notDeepEqual(N.strengthShapeVectorV7(card),N.strengthShapeVectorV7(dot));
 });
+
+test('V7 one-action-per-round model does not multiply strength by action count',()=>{
+  const base={stats:{ATK:100,MAX_HP:1000,DEF:100,RES:100,SPD:100},actions:[{id:'a',target:'enemy',cooldown:0,cost:0,effects:[{type:'damage',damageType:'true',formula:'ATK * 2',strengthAnchor:true}]}],statuses:[],triggers:[]};
+  const duplicate=structuredClone(base);duplicate.actions.push({...structuredClone(base.actions[0]),id:'b'});
+  assert.ok(Math.abs(N.predictThetaV7(base)-N.predictThetaV7(duplicate))<1e-9);
+});

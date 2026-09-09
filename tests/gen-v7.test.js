@@ -37,14 +37,15 @@ test('V7 output is deterministic and V6 remains the product default before final
   assert.equal(N.generateCardByVersion({...opts,generatorVersion:6}).generatorVersion,6);
 });
 
-test('V7 cards carry a content-native round pressure backbone across all styles',()=>{
+test('V7 cards carry a content-native cooldown pressure backbone across all styles',()=>{
   for(const seed of ['direct-style','support-style','control-style']){
     const card=NCB.generateCardV7({seed,level:50,rarity:'A'});
-    const backbone=card.triggers.find(trigger=>trigger.id===card.id+':pressure-backbone');
+    const backbone=card.actions.find(action=>action.name==='基础攻势');
     assert.ok(backbone);
-    assert.equal(backbone.event,'roundStart');
-    assert.equal(backbone.target,'all-enemies');
+    assert.equal(backbone.cooldown,1);
+    assert.equal(backbone.target,'enemy');
     assert.ok(backbone.effects.some(effect=>effect.type==='damage'&&effect.damageType==='true'&&effect.formula.includes('ATK')));
+    for(const action of card.actions)assert.ok(action.effects.some(effect=>effect.type==='damage'&&effect.damageType==='true'&&effect.formula.includes('ATK')));
   }
 });
 
