@@ -196,6 +196,39 @@
     userIntentExamples:['资源循环更快','不缺能量'],
     readBy:['engine resource regen','canonical AI','BattlePower v2','Behavior Analyzer'],writtenBy:['Generator v4','Advanced Editor'],affects:['resource income'],doesNotAffect:['damage']});
 
+  def('POTENCY',{
+    nameZh:'效能',summary:'V7 的非直接数值输出轴，放大周期、触发与引爆伤害，不放大普通直接攻击。',
+    higherEffect:'DoT、状态周期伤害与触发伤害更强，但高值收益逐渐饱和。',lowerEffect:'非直接输出更弱。',direction:'positive',
+    battleEffect:'以 100 为中性值，通过有界响应曲线进入 kind=trigger/status 或带 dot/periodic/trigger/detonation 标签的伤害。',
+    interactions:['ATK','periodic','trigger','damage formula'],aiMeaning:'AI 在周期与触发效用估计中使用同一 POTENCY 响应。',battlePowerMeaning:'BattlePower V4 从内容特征估计其长期非直接输出。',
+    examples:['POTENCY=100：中性','POTENCY=150：强化非直接效果'],tuningGuidance:'只在卡确有周期/触发消费者时提高；不要把普通直伤标成 periodic 来绕过 ATK。',
+    userIntentExamples:['强化 DoT','强化触发伤害'],readBy:['engine computeDamage','canonical AI','Strength Model V7'],writtenBy:['Generator V7','Advanced Editor'],affects:['periodic damage','trigger damage','detonation'],doesNotAffect:['ordinary direct damage'],introducedIn:7});
+  def('CONTROL_POWER',{
+    nameZh:'控制强度',summary:'V7 敌对控制/弱化的进攻轴，与目标 TENACITY 在 logit 概率空间对抗。',
+    higherEffect:'敌对非 DoT 状态更易成功，持续时间最多提高到 1.50 倍。',lowerEffect:'控制更易被抵抗，持续时间最低约 0.60 倍。',direction:'positive',
+    battleEffect:'logit(finalChance)=logit(baseChance)+K×contest；双方有效值相等时 finalChance 精确等于 baseChance。',interactions:['TENACITY','STATUS_CHANCE','STATUS_DURATION'],
+    aiMeaning:'AI 使用经对抗修正的 chance 与 bounded duration 估计控制价值。',battlePowerMeaning:'BattlePower V4 读取内容中的控制频率、成功率与该属性。',
+    examples:['CONTROL_POWER=100 vs TENACITY=100：保持基础概率'],tuningGuidance:'通过 CONTROL_POWER/TENACITY 配对调节，不要直接添加必中控制。',
+    userIntentExamples:['控制更稳','更容易沉默'],readBy:['status effect resolver','canonical AI','Strength Model V7'],writtenBy:['Generator V7','Advanced Editor'],affects:['hostile non-DoT status chance','bounded status duration'],doesNotAffect:['DoT chance','friendly buffs'],introducedIn:7});
+  def('TENACITY',{
+    nameZh:'韧性',summary:'V7 控制抗性轴，抵抗敌方 CONTROL_POWER。',higherEffect:'敌方控制与弱化更难命中且持续更短。',lowerEffect:'更容易受到控制。',direction:'positive',
+    battleEffect:'作为 control contest 的防守输入；对友方增益和 DoT 状态不生效。',interactions:['CONTROL_POWER','STATUS_CHANCE','STATUS_DURATION'],
+    aiMeaning:'AI 评估对高 TENACITY 目标施加控制的期望收益更低。',battlePowerMeaning:'BattlePower V4 将其作为长期控制抗性内容特征。',
+    examples:['TENACITY=100：中性'],tuningGuidance:'控制抗性过强时先检查 contest 曲线和 1.50/0.60 duration bound。',userIntentExamples:['更抗控制'],
+    readBy:['status effect resolver','canonical AI','Strength Model V7'],writtenBy:['Generator V7','Advanced Editor'],affects:['enemy control chance','enemy control duration'],doesNotAffect:['damage mitigation','DoT'],introducedIn:7});
+  def('RECOVERY',{
+    nameZh:'恢复速度',summary:'V7 冷却准备轴；影响技能何时再次可用，但不增加每回合行动次数。',higherEffect:'较长冷却技能更快再次就绪，高值有界饱和。',lowerEffect:'冷却准备更慢。',direction:'positive',
+    battleEffect:'每回合 cooldownProgress += recoveryRate；跨整数部分减少 cooldown，100 的 rate 精确为 1。',interactions:['COOLDOWN','cooldownProgress','ONE Action opportunity'],
+    aiMeaning:'AI 以 recoveryRate 调整技能长期使用频率。',battlePowerMeaning:'BattlePower V4 从 cooldown 与 RECOVERY 的交互估计节奏。',
+    examples:['RECOVERY=100：legacy 一回合减 1'],tuningGuidance:'不得用 RECOVERY 生成额外行动；只调整 readiness。',userIntentExamples:['冷却更快'],
+    readBy:['engine round start','canonical AI','Strength Model V7'],writtenBy:['Generator V7','Advanced Editor'],affects:['cooldown readiness'],doesNotAffect:['actions per round'],introducedIn:7});
+  def('BARRIER_POWER',{
+    nameZh:'屏障强度',summary:'V7 Shield/Ward/Barrier 的独立输出轴，100 为中性。',higherEffect:'屏障与类型护符数值提高，高值有界饱和。',lowerEffect:'屏障类效果更弱。',direction:'positive',
+    battleEffect:'效果公式结果先乘 barrierRate，再进入 ModifyShield/ModifyWard 和容量上限。',interactions:['shield','ward','MAX_HP'],
+    aiMeaning:'AI 以相同 barrierRate 估计屏障即时效用。',battlePowerMeaning:'BattlePower V4 从屏障频率、公式与 BARRIER_POWER 估计防护。',
+    examples:['BARRIER_POWER=100：公式原值'],tuningGuidance:'用它调屏障专精，避免继续让 MAX_HP 单独 double-dip。',userIntentExamples:['护盾更厚','护符更强'],
+    readBy:['shield effect','ward effect','canonical AI','Strength Model V7'],writtenBy:['Generator V7','Advanced Editor'],affects:['shield amount','ward amount'],doesNotAffect:['base HP','healing'],introducedIn:7});
+
   // ---------- Battle Wear concept (§8) ----------
   def('VOLATILITY',{
     nameZh:'波动性',summary:'控制这张卡牌的伤害与部分随机效果在平均值附近波动的幅度。',

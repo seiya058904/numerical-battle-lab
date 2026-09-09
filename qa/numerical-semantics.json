@@ -16,23 +16,23 @@
     "ok": true
   },
   "volatility": {
-    "lowStd": 158.5091129521861,
-    "highStd": 190.33741968759935,
+    "lowStd": 170.7899945026705,
+    "highStd": 447.13361786184475,
     "lowHits": [
-      2981,
-      3022,
-      2982,
-      2982,
-      3005,
-      2571
+      2993,
+      2953,
+      3032,
+      2951,
+      3034,
+      2543
     ],
     "highHits": [
-      2983,
-      3466,
-      2993,
-      2961,
-      3235,
-      2956
+      3146,
+      2598,
+      3603,
+      2619,
+      3620,
+      2637
     ],
     "ok": true
   },
@@ -51,6 +51,20 @@
   "healPower": {
     "p100": 100,
     "p200": 200,
+    "ok": true
+  },
+  "v7Axes": {
+    "potency100": 100,
+    "potency200": 190,
+    "barrier100": 1,
+    "barrier200": 1.9,
+    "recovery100": 1,
+    "recovery200": 1.9,
+    "controlNeutral": 0.37,
+    "controlHigh": 0.9954461280935514,
+    "controlLow": 0.0015754356016472158,
+    "durationHigh": 1.5,
+    "durationLow": 0.6,
     "ok": true
   },
   "allOk": true

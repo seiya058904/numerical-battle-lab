@@ -83,13 +83,13 @@
 
   install('shield',
     ({engine,actor,target,effect,ctx})=>{
-      const raw=effect.formula!==undefined?engine.evaluateFormula(effect.formula,actor,target,ctx):Number(effect.amount||0);
+      const raw=(effect.formula!==undefined?engine.evaluateFormula(effect.formula,actor,target,ctx):Number(effect.amount||0))*engine.barrierRate(actor);
       const amount=Math.max(0,Math.floor(Number(engine.kernel.run('ModifyShield',target,raw,actor,{effect})))); if(amount<=0)return;
       target.shield=Math.min(target.maxHp,target.shield+amount);
       engine.pushLog({kind:'shield',sourceId:actor.id,targetId:target.id,amount,text:`${target.name} 获得 ${amount} 屏障`});
     },
     ({engine,actor,target,effect,ctx})=>{
-      const raw=Math.max(0,effect.formula!==undefined?engine.evaluateFormula(effect.formula,actor,target,ctx):Number(effect.amount||0));
+      const raw=Math.max(0,effect.formula!==undefined?engine.evaluateFormula(effect.formula,actor,target,ctx):Number(effect.amount||0))*engine.barrierRate(actor);
       return Math.min(raw,Math.max(0,target.maxHp-target.shield))*.68;
     }
   );
@@ -97,14 +97,14 @@
   install('ward',
     ({engine,actor,target,effect,ctx})=>{
       const damageType=effect.damageType||'arcane'; if(!NCB.DAMAGE_TYPES[damageType])return;
-      const raw=effect.formula!==undefined?engine.evaluateFormula(effect.formula,actor,target,ctx):Number(effect.amount||0);
+      const raw=(effect.formula!==undefined?engine.evaluateFormula(effect.formula,actor,target,ctx):Number(effect.amount||0))*engine.barrierRate(actor);
       const amount=Math.max(0,Math.floor(Number(engine.kernel.run('ModifyWard',target,raw,actor,{effect,damageType})))); if(amount<=0)return;
       target.wards=target.wards||{};
       target.wards[damageType]=Math.min(target.maxHp,Math.max(0,Number(target.wards[damageType]||0))+amount);
       engine.pushLog({kind:'ward',sourceId:actor.id,targetId:target.id,amount,damageType,text:`${target.name} 获得 ${amount} ${NCB.DAMAGE_TYPES[damageType]?.name||damageType}护符`});
     },
     ({engine,actor,target,effect,ctx})=>{
-      const raw=Math.max(0,effect.formula!==undefined?engine.evaluateFormula(effect.formula,actor,target,ctx):Number(effect.amount||0));
+      const raw=Math.max(0,effect.formula!==undefined?engine.evaluateFormula(effect.formula,actor,target,ctx):Number(effect.amount||0))*engine.barrierRate(actor);
       const current=Number(target.wards?.[effect.damageType||'arcane']||0);
       return Math.min(raw,Math.max(0,target.maxHp-current))*.72;
     }
@@ -112,9 +112,11 @@
 
   install('status',
     ({engine,actor,target,effect})=>{
-      if(effect.chance!==undefined&&engine.prng.random()>=Number(effect.chance))return;
+      const contested=engine.isControlStatus(actor,target,effect.status);
+      const chance=contested?engine.controlChance(actor,target,effect.chance===undefined?1:Number(effect.chance)):Number(effect.chance??1);
+      if(chance<1&&engine.prng.random()>=chance)return;
       const opts={stacks:effect.stacks||1,sourceId:actor.id};
-      if(Object.prototype.hasOwnProperty.call(effect,'duration'))opts.duration=effect.duration;
+      if(Object.prototype.hasOwnProperty.call(effect,'duration'))opts.duration=effect.duration===null?null:(contested?Math.max(1,Math.round(Number(effect.duration)*engine.controlDurationMultiplier(actor,target))):effect.duration);
       engine.applyStatus(target.id,effect.status,opts);
     },
     ({engine,actor,target,effect,helpers})=>helpers.statusUtility(engine,actor,target,effect)

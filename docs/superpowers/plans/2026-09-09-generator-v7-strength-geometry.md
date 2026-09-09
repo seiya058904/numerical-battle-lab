@@ -85,11 +85,11 @@
 
 **Interfaces:** absent optional V7 stats resolve to neutral 100; RECOVERY changes cooldown readiness only.
 
-- [ ] Use the V6 baseline to identify weak independent axes before adding fields.
-- [ ] Write failing engine tests for each retained neutral-100 stat and exact legacy replay equality when fields are absent.
-- [ ] Implement only evidence-backed POTENCY, CONTROL_POWER/TENACITY, RECOVERY, or BARRIER_POWER with bounded/diminishing behavior.
-- [ ] Run direct empirical perturbations without re-solving and require six axes >=45% of ATK, ATK <=2x peer median, and no axis >35% normalized share.
-- [ ] Re-run numerical coverage and semantic audits with zero undocumented active fields.
+- [x] Use the V6 baseline to identify weak independent axes before adding fields.
+- [x] Write failing engine tests for each retained neutral-100 stat and exact legacy replay equality when fields are absent.
+- [x] Implement only evidence-backed POTENCY, CONTROL_POWER/TENACITY, RECOVERY, or BARRIER_POWER with bounded/diminishing behavior.
+- [x] Run direct empirical perturbations without re-solving and require six axes >=45% of ATK, ATK <=2x peer median, and no axis >35% normalized share.
+- [x] Re-run numerical coverage and semantic audits with zero undocumented active fields.
 
 ### Task 7: Calibrate independent BattlePower V4
 

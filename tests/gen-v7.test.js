@@ -44,8 +44,8 @@ test('V7 cards carry a content-native cooldown pressure backbone across all styl
     assert.ok(backbone);
     assert.equal(backbone.cooldown,1);
     assert.equal(backbone.target,'enemy');
-    assert.ok(backbone.effects.some(effect=>effect.type==='damage'&&effect.damageType==='true'&&effect.formula.includes('ATK')));
-    for(const action of card.actions)assert.ok(action.effects.some(effect=>effect.type==='damage'&&effect.damageType==='true'&&effect.formula.includes('ATK')));
+    assert.ok(backbone.effects.some(effect=>effect.type==='damage'&&effect.damageType!=='true'&&effect.formula.includes('ATK')));
+    for(const action of card.actions)assert.ok(action.effects.some(effect=>effect.type==='damage'&&effect.damageType!=='true'&&effect.formula.includes('ATK')));
   }
 });
 
@@ -56,4 +56,17 @@ test('V7 soft style preferences cannot create order-of-magnitude stat splits at 
     const limit=key==='ATK'||key==='MAX_HP'?3:5;
     assert.ok(Math.max(...values)/Math.min(...values)<limit,`${key} spread was ${Math.max(...values)/Math.min(...values)}`);
   }
+});
+
+test('V7 cards expose all retained neutral-100 axes through real scalable content',()=>{
+  const card=N.generateCardV7({seed:'multi-axis-contract',level:50,rarity:'A'});
+  for(const stat of ['POTENCY','CONTROL_POWER','TENACITY','RECOVERY','BARRIER_POWER'])assert.ok(card.stats[stat]>=20&&card.stats[stat]<=300,`${stat}=${card.stats[stat]}`);
+  const effects=card.actions.flatMap(action=>action.effects||[]);
+  assert.ok(effects.some(effect=>effect.type==='status'&&effect.status===card.statuses.find(status=>status.periodic)?.id));
+  assert.ok(effects.some(effect=>effect.type==='status'&&['stun','slow','silence'].includes(effect.status)));
+  assert.ok(effects.some(effect=>effect.type==='shield'||effect.type==='ward'));
+  assert.ok(effects.some(effect=>effect.type==='heal'));
+  const anchors=effects.filter(effect=>effect.strengthAnchor);
+  assert.ok(anchors.length>=card.actions.length);
+  assert.ok(anchors.every(effect=>effect.damageType!=='true'&&effect.canCrit!==false));
 });

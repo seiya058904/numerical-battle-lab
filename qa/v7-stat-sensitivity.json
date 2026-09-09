@@ -1,0 +1,3385 @@
+{
+  "schemaVersion": 1,
+  "generatorVersion": 7,
+  "method": "direct central perturbation; no regeneration or re-solving",
+  "baselineHead": null,
+  "population": {
+    "cards": 8,
+    "opponents": 8,
+    "matchSeedsPerPair": 3,
+    "directPairedSeeds": 12,
+    "mirroredSides": true,
+    "truth": "canonical AI vs AI battles"
+  },
+  "axes": {
+    "ATK": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.877702,
+          "highTheta": -1.877702,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 2.197225,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 22,
+            "lowerWins": 2,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.917,
+            "lowerWinRate": 0.083,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.742,
+              "high": 0.977
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.564949,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 1.265666,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 19,
+            "lowerWins": 5,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.792,
+            "lowerWinRate": 0.208,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.595,
+              "high": 0.908
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.71079,
+          "highTheta": -0.770705,
+          "panelDeltaTheta": 0.940085,
+          "deltaTheta": 2.197225,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 22,
+            "lowerWins": 2,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.917,
+            "lowerWinRate": 0.083,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.742,
+              "high": 0.977
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -1.071584,
+          "highTheta": -0.499956,
+          "panelDeltaTheta": 0.571628,
+          "deltaTheta": 2.197225,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 22,
+            "lowerWins": 2,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.917,
+            "lowerWinRate": 0.083,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.742,
+              "high": 0.977
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.770705,
+          "highTheta": -0.499956,
+          "panelDeltaTheta": 0.270749,
+          "deltaTheta": 0.847298,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 17,
+            "lowerWins": 7,
+            "draws": 0,
+            "teamAWins": 15,
+            "teamBWins": 9,
+            "higherWinRate": 0.708,
+            "lowerWinRate": 0.292,
+            "drawRate": 0,
+            "teamAWinRate": 0.625,
+            "teamBWinRate": 0.375,
+            "ci95": {
+              "low": 0.508,
+              "high": 0.851
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.163629,
+          "highTheta": 0.587787,
+          "panelDeltaTheta": 0.424157,
+          "deltaTheta": -0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 11,
+            "lowerWins": 13,
+            "draws": 0,
+            "teamAWins": 15,
+            "teamBWins": 9,
+            "higherWinRate": 0.458,
+            "lowerWinRate": 0.542,
+            "drawRate": 0,
+            "teamAWinRate": 0.625,
+            "teamBWinRate": 0.375,
+            "ci95": {
+              "low": 0.279,
+              "high": 0.649
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.425009,
+          "highTheta": -1.299283,
+          "panelDeltaTheta": 0.125726,
+          "deltaTheta": 1.516347,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 20,
+            "lowerWins": 4,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.833,
+            "lowerWinRate": 0.167,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.641,
+              "high": 0.933
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0.160343,
+      "medianDeltaTheta": 1.265666,
+      "p75DeltaTheta": 2.197225,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 2.197225
+    },
+    "MAX_HP": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.71079,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 2.751535,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 23,
+            "lowerWins": 1,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.958,
+            "lowerWinRate": 0.042,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.798,
+              "high": 0.993
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -3.455265,
+          "highTheta": -2.291412,
+          "panelDeltaTheta": 1.163853,
+          "deltaTheta": 1.265666,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 19,
+            "lowerWins": 5,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.792,
+            "lowerWinRate": 0.208,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.595,
+              "high": 0.908
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.181994,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0.11041,
+          "deltaTheta": 2.197225,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 22,
+            "lowerWins": 2,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.917,
+            "lowerWinRate": 0.083,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.742,
+              "high": 0.977
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.966843,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0.100032,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.67788,
+          "highTheta": -0.329479,
+          "panelDeltaTheta": 0.348401,
+          "deltaTheta": 0.663294,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 16,
+            "lowerWins": 8,
+            "draws": 0,
+            "teamAWins": 18,
+            "teamBWins": 6,
+            "higherWinRate": 0.667,
+            "lowerWinRate": 0.333,
+            "drawRate": 0,
+            "teamAWinRate": 0.75,
+            "teamBWinRate": 0.25,
+            "ci95": {
+              "low": 0.467,
+              "high": 0.82
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.246133,
+          "highTheta": 0.499956,
+          "panelDeltaTheta": 0.253823,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 1.299283,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0.76873,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.877702,
+          "highTheta": -1.299283,
+          "panelDeltaTheta": 0.578419,
+          "deltaTheta": 1.516347,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 20,
+            "lowerWins": 4,
+            "draws": 0,
+            "teamAWins": 8,
+            "teamBWins": 16,
+            "higherWinRate": 0.833,
+            "lowerWinRate": 0.167,
+            "drawRate": 0,
+            "teamAWinRate": 0.333,
+            "teamBWinRate": 0.667,
+            "ci95": {
+              "low": 0.641,
+              "high": 0.933
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 1.265666,
+      "p75DeltaTheta": 2.197225,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 3.89182
+    },
+    "DEF": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.71079,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.564949,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.489548,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 15,
+            "lowerWins": 9,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.625,
+            "lowerWinRate": 0.375,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.427,
+              "high": 0.788
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.866811,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.847298,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 17,
+            "lowerWins": 7,
+            "draws": 0,
+            "teamAWins": 7,
+            "teamBWins": 17,
+            "higherWinRate": 0.708,
+            "lowerWinRate": 0.292,
+            "drawRate": 0,
+            "teamAWinRate": 0.292,
+            "teamBWinRate": 0.708,
+            "ci95": {
+              "low": 0.508,
+              "high": 0.851
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.413976,
+          "highTheta": -0.413976,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.663294,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 16,
+            "lowerWins": 8,
+            "draws": 0,
+            "teamAWins": 16,
+            "teamBWins": 8,
+            "higherWinRate": 0.667,
+            "lowerWinRate": 0.333,
+            "drawRate": 0,
+            "teamAWinRate": 0.667,
+            "teamBWinRate": 0.333,
+            "ci95": {
+              "low": 0.467,
+              "high": 0.82
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.329479,
+          "highTheta": 0.499956,
+          "panelDeltaTheta": 0.170477,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.425009,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": -0.285782,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0.489548,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0.847298
+    },
+    "RES": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.71079,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 1.045969,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 18,
+            "lowerWins": 6,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.75,
+            "lowerWinRate": 0.25,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.551,
+              "high": 0.88
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.291412,
+          "panelDeltaTheta": 0.273538,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 13,
+            "lowerWins": 11,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.542,
+            "lowerWinRate": 0.458,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.351,
+              "high": 0.721
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.866811,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 8,
+            "teamBWins": 16,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.333,
+            "teamBWinRate": 0.667,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.413976,
+          "highTheta": -0.413976,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.413976,
+          "highTheta": 0.499956,
+          "panelDeltaTheta": 0.08598,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 1.877702,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0.190311,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.634131,
+          "highTheta": -1.561236,
+          "panelDeltaTheta": 0.072895,
+          "deltaTheta": 1.516347,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 20,
+            "lowerWins": 4,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.833,
+            "lowerWinRate": 0.167,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.641,
+              "high": 0.933
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0.160343,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 1.516347
+    },
+    "SPD": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.877702,
+          "highTheta": -1.561236,
+          "panelDeltaTheta": 0.316466,
+          "deltaTheta": -0.663294,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 8,
+            "lowerWins": 16,
+            "draws": 0,
+            "teamAWins": 16,
+            "teamBWins": 8,
+            "higherWinRate": 0.333,
+            "lowerWinRate": 0.667,
+            "drawRate": 0,
+            "teamAWinRate": 0.667,
+            "teamBWinRate": 0.333,
+            "ci95": {
+              "low": 0.18,
+              "high": 0.533
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.564949,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.847298,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 17,
+            "lowerWins": 7,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.708,
+            "lowerWinRate": 0.292,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.508,
+              "high": 0.851
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -0.966843,
+          "highTheta": -1.181994,
+          "panelDeltaTheta": -0.215151,
+          "deltaTheta": 0.322773,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 14,
+            "lowerWins": 10,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.583,
+            "lowerWinRate": 0.417,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.388,
+              "high": 0.755
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -1.425009,
+          "highTheta": -0.499956,
+          "panelDeltaTheta": 0.925053,
+          "deltaTheta": 0.322773,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 14,
+            "lowerWins": 10,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.583,
+            "lowerWinRate": 0.417,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.388,
+              "high": 0.755
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.499956,
+          "highTheta": -0.329479,
+          "panelDeltaTheta": 0.170477,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.413976,
+          "highTheta": 0.67788,
+          "panelDeltaTheta": 0.263904,
+          "deltaTheta": 1.81529,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 21,
+            "lowerWins": 3,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.875,
+            "lowerWinRate": 0.125,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.69,
+              "high": 0.957
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 1.045969,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 18,
+            "lowerWins": 6,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.75,
+            "lowerWinRate": 0.25,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.551,
+              "high": 0.88
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.71079,
+          "highTheta": -1.299283,
+          "panelDeltaTheta": 0.411507,
+          "deltaTheta": 0.663294,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 16,
+            "lowerWins": 8,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.667,
+            "lowerWinRate": 0.333,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.467,
+              "high": 0.82
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0.322773,
+      "medianDeltaTheta": 0.663294,
+      "p75DeltaTheta": 1.045969,
+      "minDeltaTheta": 0.322773,
+      "maxDeltaTheta": 3.89182
+    },
+    "ACC": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.71079,
+          "highTheta": -1.561236,
+          "panelDeltaTheta": 0.149555,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.564949,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.322773,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 14,
+            "lowerWins": 10,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.583,
+            "lowerWinRate": 0.417,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.388,
+              "high": 0.755
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.847298,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 17,
+            "lowerWins": 7,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.708,
+            "lowerWinRate": 0.292,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.508,
+              "high": 0.851
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.866811,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.489548,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 15,
+            "lowerWins": 9,
+            "draws": 0,
+            "teamAWins": 7,
+            "teamBWins": 17,
+            "higherWinRate": 0.625,
+            "lowerWinRate": 0.375,
+            "drawRate": 0,
+            "teamAWinRate": 0.292,
+            "teamBWinRate": 0.708,
+            "ci95": {
+              "low": 0.427,
+              "high": 0.788
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.413976,
+          "highTheta": -0.413976,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 13,
+            "lowerWins": 11,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.542,
+            "lowerWinRate": 0.458,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.351,
+              "high": 0.721
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.329479,
+          "highTheta": 0.413976,
+          "panelDeltaTheta": 0.084497,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.561236,
+          "highTheta": -1.425009,
+          "panelDeltaTheta": 0.136227,
+          "deltaTheta": 0.663294,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 16,
+            "lowerWins": 8,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.667,
+            "lowerWinRate": 0.333,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.467,
+              "high": 0.82
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0.160343,
+      "p75DeltaTheta": 0.489548,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0.847298
+    },
+    "EVA": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.561236,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": -0.149555,
+          "deltaTheta": 0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 13,
+            "lowerWins": 11,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.542,
+            "lowerWinRate": 0.458,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.351,
+              "high": 0.721
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.564949,
+          "panelDeltaTheta": 0,
+          "deltaTheta": -0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 11,
+            "lowerWins": 13,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.458,
+            "lowerWinRate": 0.542,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.279,
+              "high": 0.649
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.489548,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 15,
+            "lowerWins": 9,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.625,
+            "lowerWinRate": 0.375,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.427,
+              "high": 0.788
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.866811,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.489548,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 15,
+            "lowerWins": 9,
+            "draws": 0,
+            "teamAWins": 5,
+            "teamBWins": 19,
+            "higherWinRate": 0.625,
+            "lowerWinRate": 0.375,
+            "drawRate": 0,
+            "teamAWinRate": 0.208,
+            "teamBWinRate": 0.792,
+            "ci95": {
+              "low": 0.427,
+              "high": 0.788
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.413976,
+          "highTheta": -0.413976,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 13,
+            "lowerWins": 11,
+            "draws": 0,
+            "teamAWins": 15,
+            "teamBWins": 9,
+            "higherWinRate": 0.542,
+            "lowerWinRate": 0.458,
+            "drawRate": 0,
+            "teamAWinRate": 0.625,
+            "teamBWinRate": 0.375,
+            "ci95": {
+              "low": 0.351,
+              "high": 0.721
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.499956,
+          "highTheta": 0.587787,
+          "panelDeltaTheta": 0.087831,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.561236,
+          "highTheta": -1.299283,
+          "panelDeltaTheta": 0.261953,
+          "deltaTheta": 1.045969,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 18,
+            "lowerWins": 6,
+            "draws": 0,
+            "teamAWins": 8,
+            "teamBWins": 16,
+            "higherWinRate": 0.75,
+            "lowerWinRate": 0.25,
+            "drawRate": 0,
+            "teamAWinRate": 0.333,
+            "teamBWinRate": 0.667,
+            "ci95": {
+              "low": 0.551,
+              "high": 0.88
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0.160343,
+      "p75DeltaTheta": 0.489548,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 1.045969
+    },
+    "CRIT": {
+      "perturbation": "plus/minus 5 percentage points",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.71079,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": 0,
+          "deltaTheta": -0.322773,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 10,
+            "lowerWins": 14,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.417,
+            "lowerWinRate": 0.583,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.245,
+              "high": 0.612
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.564949,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.322773,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 14,
+            "lowerWins": 10,
+            "draws": 0,
+            "teamAWins": 8,
+            "teamBWins": 16,
+            "higherWinRate": 0.583,
+            "lowerWinRate": 0.417,
+            "drawRate": 0,
+            "teamAWinRate": 0.333,
+            "teamBWinRate": 0.667,
+            "ci95": {
+              "low": 0.388,
+              "high": 0.755
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.866811,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 8,
+            "teamBWins": 16,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.333,
+            "teamBWinRate": 0.667,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.587787,
+          "highTheta": -0.329479,
+          "panelDeltaTheta": 0.258307,
+          "deltaTheta": 0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 13,
+            "lowerWins": 11,
+            "draws": 0,
+            "teamAWins": 15,
+            "teamBWins": 9,
+            "higherWinRate": 0.542,
+            "lowerWinRate": 0.458,
+            "drawRate": 0,
+            "teamAWinRate": 0.625,
+            "teamBWinRate": 0.375,
+            "ci95": {
+              "low": 0.351,
+              "high": 0.721
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.499956,
+          "highTheta": 0.499956,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.561236,
+          "highTheta": -1.561236,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.847298,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 17,
+            "lowerWins": 7,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.708,
+            "lowerWinRate": 0.292,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.508,
+              "high": 0.851
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0.322773,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0.847298
+    },
+    "PEN": {
+      "perturbation": "plus/minus 5 percentage points",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.877702,
+          "highTheta": -1.561236,
+          "panelDeltaTheta": 0.316466,
+          "deltaTheta": 0.489548,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 15,
+            "lowerWins": 9,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.625,
+            "lowerWinRate": 0.375,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.427,
+              "high": 0.788
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.291412,
+          "highTheta": -2.564949,
+          "panelDeltaTheta": -0.273538,
+          "deltaTheta": 0.322773,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 14,
+            "lowerWins": 10,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.583,
+            "lowerWinRate": 0.417,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.388,
+              "high": 0.755
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.181994,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0.315183,
+          "deltaTheta": 1.045969,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 18,
+            "lowerWins": 6,
+            "draws": 0,
+            "teamAWins": 8,
+            "teamBWins": 16,
+            "higherWinRate": 0.75,
+            "lowerWinRate": 0.25,
+            "drawRate": 0,
+            "teamAWinRate": 0.333,
+            "teamBWinRate": 0.667,
+            "ci95": {
+              "low": 0.551,
+              "high": 0.88
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.866811,
+          "highTheta": -0.770705,
+          "panelDeltaTheta": 0.096105,
+          "deltaTheta": 1.045969,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 18,
+            "lowerWins": 6,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.75,
+            "lowerWinRate": 0.25,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.551,
+              "high": 0.88
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.413976,
+          "highTheta": -0.329479,
+          "panelDeltaTheta": 0.084497,
+          "deltaTheta": 0.663294,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 16,
+            "lowerWins": 8,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.667,
+            "lowerWinRate": 0.333,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.467,
+              "high": 0.82
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.413976,
+          "highTheta": 0.499956,
+          "panelDeltaTheta": 0.08598,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 1.71079,
+          "highTheta": 1.71079,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.561236,
+          "highTheta": -1.425009,
+          "panelDeltaTheta": 0.136227,
+          "deltaTheta": 1.81529,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 21,
+            "lowerWins": 3,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.875,
+            "lowerWinRate": 0.125,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.69,
+              "high": 0.957
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0.489548,
+      "p75DeltaTheta": 1.045969,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 1.81529
+    },
+    "HEAL_POWER": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.71079,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": 0,
+          "deltaTheta": -0.847298,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 7,
+            "lowerWins": 17,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.292,
+            "lowerWinRate": 0.708,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.149,
+              "high": 0.492
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.564949,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.071584,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0.204773,
+          "deltaTheta": -0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 11,
+            "lowerWins": 13,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.458,
+            "lowerWinRate": 0.542,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.279,
+              "high": 0.649
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.866811,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 8,
+            "teamBWins": 16,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.333,
+            "teamBWinRate": 0.667,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.413976,
+          "highTheta": -0.371564,
+          "panelDeltaTheta": 0.042412,
+          "deltaTheta": 0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 13,
+            "lowerWins": 11,
+            "draws": 0,
+            "teamAWins": 15,
+            "teamBWins": 9,
+            "higherWinRate": 0.542,
+            "lowerWinRate": 0.458,
+            "drawRate": 0,
+            "teamAWinRate": 0.625,
+            "teamBWinRate": 0.375,
+            "ci95": {
+              "low": 0.351,
+              "high": 0.721
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.413976,
+          "highTheta": 0.499956,
+          "panelDeltaTheta": 0.08598,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.360977,
+          "highTheta": -1.299283,
+          "panelDeltaTheta": 0.061694,
+          "deltaTheta": -0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 11,
+            "lowerWins": 13,
+            "draws": 0,
+            "teamAWins": 9,
+            "teamBWins": 15,
+            "higherWinRate": 0.458,
+            "lowerWinRate": 0.542,
+            "drawRate": 0,
+            "teamAWinRate": 0.375,
+            "teamBWinRate": 0.625,
+            "ci95": {
+              "low": 0.279,
+              "high": 0.649
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0.160343,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0.847298
+    },
+    "ENERGY_REGEN": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.71079,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.564949,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.866811,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 8,
+            "teamBWins": 16,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.333,
+            "teamBWinRate": 0.667,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.413976,
+          "highTheta": -0.413976,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.499956,
+          "highTheta": 0.499956,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.561236,
+          "highTheta": -1.561236,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0,
+      "p75DeltaTheta": 0,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 0
+    },
+    "POTENCY": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -2.564949,
+          "highTheta": -1.877702,
+          "panelDeltaTheta": 0.687247,
+          "deltaTheta": 2.751535,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 23,
+            "lowerWins": 1,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.958,
+            "lowerWinRate": 0.042,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.798,
+              "high": 0.993
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -2.291412,
+          "panelDeltaTheta": 0.273538,
+          "deltaTheta": 1.81529,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 21,
+            "lowerWins": 3,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.875,
+            "lowerWinRate": 0.125,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.69,
+              "high": 0.957
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.71079,
+          "highTheta": -0.770705,
+          "panelDeltaTheta": 0.940085,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -1.181994,
+          "highTheta": -0.587787,
+          "panelDeltaTheta": 0.594207,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.587787,
+          "highTheta": -0.499956,
+          "panelDeltaTheta": 0.087831,
+          "deltaTheta": 1.265666,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 19,
+            "lowerWins": 5,
+            "draws": 0,
+            "teamAWins": 15,
+            "teamBWins": 9,
+            "higherWinRate": 0.792,
+            "lowerWinRate": 0.208,
+            "drawRate": 0,
+            "teamAWinRate": 0.625,
+            "teamBWinRate": 0.375,
+            "ci95": {
+              "low": 0.595,
+              "high": 0.908
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": -0.163629,
+          "highTheta": 0.67788,
+          "panelDeltaTheta": 0.841509,
+          "deltaTheta": 0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 13,
+            "lowerWins": 11,
+            "draws": 0,
+            "teamAWins": 15,
+            "teamBWins": 9,
+            "higherWinRate": 0.542,
+            "lowerWinRate": 0.458,
+            "drawRate": 0,
+            "teamAWinRate": 0.625,
+            "teamBWinRate": 0.375,
+            "ci95": {
+              "low": 0.351,
+              "high": 0.721
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.561236,
+          "highTheta": -1.181994,
+          "panelDeltaTheta": 0.379242,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0.160343,
+      "medianDeltaTheta": 1.81529,
+      "p75DeltaTheta": 3.89182,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 3.89182
+    },
+    "CONTROL_POWER": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -2.068013,
+          "highTheta": -1.877702,
+          "panelDeltaTheta": 0.190311,
+          "deltaTheta": 3.178054,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 23,
+            "lowerWins": 0,
+            "draws": 1,
+            "teamAWins": 11,
+            "teamBWins": 12,
+            "higherWinRate": 0.958,
+            "lowerWinRate": 0,
+            "drawRate": 0.042,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.798,
+              "high": 0.993
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -1.561236,
+          "panelDeltaTheta": 1.003714,
+          "deltaTheta": 2.751535,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 23,
+            "lowerWins": 1,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.958,
+            "lowerWinRate": 0.042,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.798,
+              "high": 0.993
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.181994,
+          "highTheta": -1.181994,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 1.81529,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 21,
+            "lowerWins": 3,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.875,
+            "lowerWinRate": 0.125,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.69,
+              "high": 0.957
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -1.181994,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0.315183,
+          "deltaTheta": -0.489548,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 9,
+            "lowerWins": 15,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.375,
+            "lowerWinRate": 0.625,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.212,
+              "high": 0.573
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -1.561236,
+          "highTheta": 0.413976,
+          "panelDeltaTheta": 1.975212,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": -0.246133,
+          "highTheta": 1.299283,
+          "panelDeltaTheta": 1.545416,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 0.770705,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 1.297307,
+          "deltaTheta": 2.197225,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 22,
+            "lowerWins": 2,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.917,
+            "lowerWinRate": 0.083,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.742,
+              "high": 0.977
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.877702,
+          "highTheta": -0.966843,
+          "panelDeltaTheta": 0.910859,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0.489548,
+      "medianDeltaTheta": 2.197225,
+      "p75DeltaTheta": 3.178054,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 3.89182
+    },
+    "TENACITY": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -2.068013,
+          "highTheta": -1.299283,
+          "panelDeltaTheta": 0.76873,
+          "deltaTheta": 2.442347,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 22,
+            "lowerWins": 1,
+            "draws": 1,
+            "teamAWins": 12,
+            "teamBWins": 11,
+            "higherWinRate": 0.917,
+            "lowerWinRate": 0.042,
+            "drawRate": 0.042,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.742,
+              "high": 0.977
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -1.877702,
+          "panelDeltaTheta": 0.687247,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.299283,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0.227699,
+          "deltaTheta": 1.81529,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 21,
+            "lowerWins": 3,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.875,
+            "lowerWinRate": 0.125,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.69,
+              "high": 0.957
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.770705,
+          "highTheta": -0.770705,
+          "panelDeltaTheta": 0,
+          "deltaTheta": -0.322773,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 10,
+            "lowerWins": 14,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.417,
+            "lowerWinRate": 0.583,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.245,
+              "high": 0.612
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.329479,
+          "highTheta": -0.413976,
+          "panelDeltaTheta": -0.084497,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.413976,
+          "highTheta": 0.866811,
+          "panelDeltaTheta": 0.452835,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 1.969441,
+          "highTheta": 2.923162,
+          "panelDeltaTheta": 0.953721,
+          "deltaTheta": 2.197225,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 22,
+            "lowerWins": 2,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.917,
+            "lowerWinRate": 0.083,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.742,
+              "high": 0.977
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -2.564949,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 1.698139,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0.322773,
+      "medianDeltaTheta": 2.197225,
+      "p75DeltaTheta": 3.89182,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 3.89182
+    },
+    "RECOVERY": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -0.966843,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": -0.743947,
+          "deltaTheta": 0.663294,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 16,
+            "lowerWins": 8,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.667,
+            "lowerWinRate": 0.333,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.467,
+              "high": 0.82
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.564949,
+          "highTheta": -3.455265,
+          "panelDeltaTheta": -0.890315,
+          "deltaTheta": -0.322773,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 10,
+            "lowerWins": 14,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.417,
+            "lowerWinRate": 0.583,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.245,
+              "high": 0.612
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.181994,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0.11041,
+          "deltaTheta": 1.516347,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 20,
+            "lowerWins": 4,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.833,
+            "lowerWinRate": 0.167,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.641,
+              "high": 0.933
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.966843,
+          "highTheta": -0.770705,
+          "panelDeltaTheta": 0.196138,
+          "deltaTheta": 0.847298,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 17,
+            "lowerWins": 7,
+            "draws": 0,
+            "teamAWins": 9,
+            "teamBWins": 15,
+            "higherWinRate": 0.708,
+            "lowerWinRate": 0.292,
+            "drawRate": 0,
+            "teamAWinRate": 0.375,
+            "teamBWinRate": 0.625,
+            "ci95": {
+              "low": 0.508,
+              "high": 0.851
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.587787,
+          "highTheta": -0.587787,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 1.265666,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 19,
+            "lowerWins": 5,
+            "draws": 0,
+            "teamAWins": 15,
+            "teamBWins": 9,
+            "higherWinRate": 0.792,
+            "lowerWinRate": 0.208,
+            "drawRate": 0,
+            "teamAWinRate": 0.625,
+            "teamBWinRate": 0.375,
+            "ci95": {
+              "low": 0.595,
+              "high": 0.908
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0,
+          "highTheta": 0.329479,
+          "panelDeltaTheta": 0.329479,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 14,
+            "teamBWins": 10,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.583,
+            "teamBWinRate": 0.417,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 2.068013,
+          "highTheta": 2.068013,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.561236,
+          "highTheta": -1.181994,
+          "panelDeltaTheta": 0.379242,
+          "deltaTheta": 0.847298,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 17,
+            "lowerWins": 7,
+            "draws": 0,
+            "teamAWins": 11,
+            "teamBWins": 13,
+            "higherWinRate": 0.708,
+            "lowerWinRate": 0.292,
+            "drawRate": 0,
+            "teamAWinRate": 0.458,
+            "teamBWinRate": 0.542,
+            "ci95": {
+              "low": 0.508,
+              "high": 0.851
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0,
+      "medianDeltaTheta": 0.663294,
+      "p75DeltaTheta": 0.847298,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 1.516347
+    },
+    "BARRIER_POWER": {
+      "perturbation": "plus/minus 10 percent",
+      "samples": [
+        {
+          "cardId": "gen_d657c1fe",
+          "lowTheta": -1.71079,
+          "highTheta": -1.71079,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 1.81529,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 21,
+            "lowerWins": 3,
+            "draws": 0,
+            "teamAWins": 15,
+            "teamBWins": 9,
+            "higherWinRate": 0.875,
+            "lowerWinRate": 0.125,
+            "drawRate": 0,
+            "teamAWinRate": 0.625,
+            "teamBWinRate": 0.375,
+            "ci95": {
+              "low": 0.69,
+              "high": 0.957
+            }
+          }
+        },
+        {
+          "cardId": "gen_d5e06af9",
+          "lowTheta": -2.923162,
+          "highTheta": -2.291412,
+          "panelDeltaTheta": 0.63175,
+          "deltaTheta": 0.663294,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 16,
+            "lowerWins": 8,
+            "draws": 0,
+            "teamAWins": 10,
+            "teamBWins": 14,
+            "higherWinRate": 0.667,
+            "lowerWinRate": 0.333,
+            "drawRate": 0,
+            "teamAWinRate": 0.417,
+            "teamBWinRate": 0.583,
+            "ci95": {
+              "low": 0.467,
+              "high": 0.82
+            }
+          }
+        },
+        {
+          "cardId": "gen_c48e7dc4",
+          "lowTheta": -1.071584,
+          "highTheta": -1.071584,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 2.197225,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 22,
+            "lowerWins": 2,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 0.917,
+            "lowerWinRate": 0.083,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.742,
+              "high": 0.977
+            }
+          }
+        },
+        {
+          "cardId": "gen_db8ca5f",
+          "lowTheta": -0.866811,
+          "highTheta": -0.866811,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 3.89182,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 24,
+            "lowerWins": 0,
+            "draws": 0,
+            "teamAWins": 12,
+            "teamBWins": 12,
+            "higherWinRate": 1,
+            "lowerWinRate": 0,
+            "drawRate": 0,
+            "teamAWinRate": 0.5,
+            "teamBWinRate": 0.5,
+            "ci95": {
+              "low": 0.862,
+              "high": 1
+            }
+          }
+        },
+        {
+          "cardId": "gen_f83c3ce2",
+          "lowTheta": -0.413976,
+          "highTheta": -0.413976,
+          "panelDeltaTheta": 0,
+          "deltaTheta": 0.847298,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 17,
+            "lowerWins": 7,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.708,
+            "lowerWinRate": 0.292,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.508,
+              "high": 0.851
+            }
+          }
+        },
+        {
+          "cardId": "gen_3f685d6d",
+          "lowTheta": 0.413976,
+          "highTheta": 0.587787,
+          "panelDeltaTheta": 0.173811,
+          "deltaTheta": 0.160343,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 13,
+            "lowerWins": 11,
+            "draws": 0,
+            "teamAWins": 13,
+            "teamBWins": 11,
+            "higherWinRate": 0.542,
+            "lowerWinRate": 0.458,
+            "drawRate": 0,
+            "teamAWinRate": 0.542,
+            "teamBWinRate": 0.458,
+            "ci95": {
+              "low": 0.351,
+              "high": 0.721
+            }
+          }
+        },
+        {
+          "cardId": "gen_ddcb9268",
+          "lowTheta": 1.181994,
+          "highTheta": 1.71079,
+          "panelDeltaTheta": 0.528797,
+          "deltaTheta": 0,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 12,
+            "lowerWins": 12,
+            "draws": 0,
+            "teamAWins": 6,
+            "teamBWins": 18,
+            "higherWinRate": 0.5,
+            "lowerWinRate": 0.5,
+            "drawRate": 0,
+            "teamAWinRate": 0.25,
+            "teamBWinRate": 0.75,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.686
+            }
+          }
+        },
+        {
+          "cardId": "gen_905ae093",
+          "lowTheta": -1.877702,
+          "highTheta": -1.299283,
+          "panelDeltaTheta": 0.578419,
+          "deltaTheta": 1.516347,
+          "pairedCounts": {
+            "pairCount": 12,
+            "battleCount": 24,
+            "higherWins": 20,
+            "lowerWins": 4,
+            "draws": 0,
+            "teamAWins": 8,
+            "teamBWins": 16,
+            "higherWinRate": 0.833,
+            "lowerWinRate": 0.167,
+            "drawRate": 0,
+            "teamAWinRate": 0.333,
+            "teamBWinRate": 0.667,
+            "ci95": {
+              "low": 0.641,
+              "high": 0.933
+            }
+          }
+        }
+      ],
+      "p25DeltaTheta": 0.160343,
+      "medianDeltaTheta": 0.847298,
+      "p75DeltaTheta": 1.81529,
+      "minDeltaTheta": 0,
+      "maxDeltaTheta": 3.89182
+    }
+  },
+  "teamSide": {
+    "teamAWins": 7566,
+    "teamBWins": 7784,
+    "draws": 10,
+    "battles": 15360,
+    "teamAWinRate": 0.492578,
+    "teamBWinRate": 0.506771,
+    "drawRate": 0.000651
+  }
+}

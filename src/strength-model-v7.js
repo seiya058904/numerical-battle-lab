@@ -7,6 +7,8 @@
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const clone=value=>JSON.parse(JSON.stringify(value));
   const num=(value,fallback=0)=>Number.isFinite(Number(value))?Number(value):fallback;
+  const axisRate=value=>{const x=Math.max(0,num(value,100))/100;return 2*x/(1+x);};
+  const responsiveRate=value=>{const x=Math.max(.01,num(value,100)/100);return clamp(1+1.5*Math.tanh(Math.log(x)),.25,2.5);};
 
   function scope(card){
     const s=card.stats||{},hp=Math.max(1,num(s.MAX_HP,1000)),atk=Math.max(0,num(s.ATK,0));
@@ -34,7 +36,7 @@
         const definition=statusMap.get(effect.status)||{};
         const duration=clamp(num(effect.duration??definition.duration,2),1,6),chance=clamp(num(effect.chance,1),0,1);
         const flags=definition.flags||{};
-        out.control+=(flags.stun?1:flags.silence?.65:definition.kind==='debuff'?.3:.08)*duration*chance*w*(num((card.stats||{}).CONTROL_POWER,100)/Math.max(1,WORLD.tenacity||100));
+        out.control+=(flags.stun?1:flags.silence?.65:definition.kind==='debuff'?.3:.08)*duration*chance*w*(responsiveRate((card.stats||{}).CONTROL_POWER)*100/Math.max(1,WORLD.tenacity||100));
         if(definition.periodic?.effects){const periodic=effectTotals(card,definition.periodic.effects,w*duration*chance,depth+1);out.periodic+=periodic.direct;out.heal+=periodic.heal;out.barrier+=periodic.barrier;}
       }
       if(effect.effects)add(effectTotals(card,effect.effects,w,depth+1));
@@ -42,7 +44,7 @@
     return out;
   }
   function actionFrequency(card,action){
-    const s=card.stats||{},recovery=Math.max(.35,num(s.RECOVERY,100)/100);
+    const s=card.stats||{},recovery=Math.max(.25,responsiveRate(s.RECOVERY));
     const cooldown=Math.max(0,num(action.cooldown,0)),cooldownFrequency=1/(1+cooldown/recovery);
     const regen=Math.max(0.1,num(s.ENERGY_REGEN,2)),cost=Math.max(0,num(action.cost,0));
     const resourceFrequency=cost?clamp(regen/(cost*(WORLD.resourcePressure||1.4)),.05,1):1;
@@ -59,7 +61,7 @@
     const damageType=action.effects?.find(effect=>effect.type==='damage')?.damageType||'physical';
     const mitigation=['physical','bleed'].includes(damageType)?physicalMitigation:damageType==='true'?1:magicMitigation;
     const frequency=actionFrequency(card,action);
-    const potency=Math.max(.1,num(s.POTENCY,100)/100),healPower=Math.max(.1,num(s.HEAL_POWER,100)/100),barrierPower=Math.max(.1,num(s.BARRIER_POWER,100)/100);
+    const potency=Math.max(.1,responsiveRate(s.POTENCY)),healPower=Math.max(.1,num(s.HEAL_POWER,100)/100),barrierPower=Math.max(.1,responsiveRate(s.BARRIER_POWER));
     return {direct:totals.direct*accuracy*crit*mitigation*frequency,periodic:totals.periodic*potency*mitigation*frequency,
       heal:totals.heal*healPower*frequency,barrier:totals.barrier*barrierPower*frequency,control:totals.control*frequency,economy:totals.economy*frequency};
   }
@@ -78,10 +80,11 @@
     const mitigation=defenseMix*(1+num(s.DEF,0)/100)+(1-defenseMix)*(1+num(s.RES,0)/100);
     const incomingHit=clamp((WORLD.acc||100)/(WORLD.acc||100+num(s.EVA,0)*.85),.25,1);
     const resistance=Object.entries(card.resistances||{}).reduce((sum,[type,value])=>sum+(WORLD.damageTypeMix?.[type]||0)*clamp(num(value),-.75,.85),0);
-    const endurance=Math.max(1,num(s.MAX_HP,1)*mitigation*(1-resistance)/incomingHit);
+    const tenacityFactor=.4+.6*responsiveRate(s.TENACITY);
+    const endurance=Math.max(1,num(s.MAX_HP,1)*mitigation*(1-resistance)/incomingHit*tenacityFactor);
     const sustain=total.heal*(WORLD.battleRounds||12)*.55+total.barrier*(WORLD.battleRounds||12)*.35;
     const tempo=1+Math.tanh((num(s.SPD,100)-100)/250)*.08;
-    const generalPower=Math.sqrt(Math.max(.01,attack*tempo)*Math.max(1,endurance));
+    const generalPower=Math.sqrt(Math.max(.01,(attack+tacticalAttack)*tempo)*Math.max(1,endurance+sustain));
     return {...total,anchorThroughput,tacticalAttack,attack,endurance,sustain,tempo,generalPower};
   }
   const SHAPE_FEATURE_NAMES=['directShare','periodicShare','controlShare','sustainShare','barrierShare','damageActionShare','statusActionShare','supportActionShare','triggerDensity','retaliationDamageShare','roundTriggerShare','drainActionShare','cleanseDispelShare','actionCount','averageCooldown','averagePriority','logGeneralPower','logGeneralPowerSquared','attackEnduranceBalance','defenseBalance','speedLog'];

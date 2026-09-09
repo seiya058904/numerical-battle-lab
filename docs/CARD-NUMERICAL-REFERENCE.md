@@ -8,7 +8,7 @@
 
 | 类别 | 已文档化 |
 |---|---:|
-| 参数 Card Stats / Resources | 111 |
+| 参数 Card Stats / Resources | 116 |
 | 效果 Effect types | 18 |
 | 条件 Conditions | 27 |
 | 目标 Targets | 8 |
@@ -35,6 +35,11 @@
 | LIFESTEAL | 吸血 | positive | 按造成的 HP 伤害回复施法者生命（%）。与 Action 自带 drainRatio 是两条独立路径。 | 打出的伤害回血更多，越打越站。 | 回复更少。 | engine applyDamage lifesteal path / canonical AI / BattlePower v2 / Behavior Analyzer | drainRatio / HEAL_POWER / HEAL_TAKEN / damage |
 | HEAL_POWER | 治疗强度 | positive | 放大自身施放的治疗（%）。 | 自己的治疗更强。 | 治疗更弱。 | engine heal pipeline / canonical AI / BattlePower v2 | HEAL_TAKEN / Battle Wear / heal |
 | HEAL_TAKEN | 受疗倍率 | positive | 控制自己收到治疗的倍率（%）。 | 收到更多治疗。 | 更难被治疗（可用于重伤/禁疗）。 | engine heal pipeline / canonical AI / BattlePower v2 | HEAL_POWER / Battle Wear / heal |
+| POTENCY | 效能 | positive | V7 的非直接数值输出轴，放大周期、触发与引爆伤害，不放大普通直接攻击。 | DoT、状态周期伤害与触发伤害更强，但高值收益逐渐饱和。 | 非直接输出更弱。 | engine computeDamage / canonical AI / Strength Model V7 | ATK / periodic / trigger / damage formula |
+| CONTROL_POWER | 控制强度 | positive | V7 敌对控制/弱化的进攻轴，与目标 TENACITY 在 logit 概率空间对抗。 | 敌对非 DoT 状态更易成功，持续时间最多提高到 1.50 倍。 | 控制更易被抵抗，持续时间最低约 0.60 倍。 | status effect resolver / canonical AI / Strength Model V7 | TENACITY / STATUS_CHANCE / STATUS_DURATION |
+| TENACITY | 韧性 | positive | V7 控制抗性轴，抵抗敌方 CONTROL_POWER。 | 敌方控制与弱化更难命中且持续更短。 | 更容易受到控制。 | status effect resolver / canonical AI / Strength Model V7 | CONTROL_POWER / STATUS_CHANCE / STATUS_DURATION |
+| RECOVERY | 恢复速度 | positive | V7 冷却准备轴；影响技能何时再次可用，但不增加每回合行动次数。 | 较长冷却技能更快再次就绪，高值有界饱和。 | 冷却准备更慢。 | engine round start / canonical AI / Strength Model V7 | COOLDOWN / cooldownProgress / ONE Action opportunity |
+| BARRIER_POWER | 屏障强度 | positive | V7 Shield/Ward/Barrier 的独立输出轴，100 为中性。 | 屏障与类型护符数值提高，高值有界饱和。 | 屏障类效果更弱。 | shield effect / ward effect / canonical AI / Strength Model V7 | shield / ward / MAX_HP |
 | ENERGY_MAX | 能量上限 | contextual | 标准技能资源池上限。 |  |  |  |  |
 | ENERGY_REGEN | 能量回复 | positive | 每回合恢复标准能量。 | 技能循环更快、更稳定。 | 技能更缺资源。 | engine resource regen / canonical AI / BattlePower v2 / Behavior Analyzer | ENERGY_MAX / resourceRegens / RESOURCE_GAIN_MOD |
 | RESOURCE_MAX | 自定义资源上限 | contextual | 任意资源 X 通过 X_MAX 定义上限。 |  |  |  |  |

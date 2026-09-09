@@ -1101,3 +1101,73 @@ test('generic emitEvent effect lets content and plugins compose new trigger prog
   NCB.UNIT_DEFS.vanguard.skills.push('__emit');const e=NCB.createBattle({seed:'gen5,8,6,7,5',teamA:['vanguard'],teamB:['duelist']});const a=e.getLiving('A')[0];e.applyStatus(a.id,'__listener',{duration:2});a.energy=0;e.useSkill({actorId:a.id,skillId:'__emit',targetId:a.id});assert.equal(a.energy,2);
   NCB.UNIT_DEFS.vanguard.skills.pop();delete NCB.SKILL_DEFS.__emit;delete NCB.STATUS_DEFS.__listener;
 });
+
+test('V7 combat axes default to neutral 100 without mutating legacy snapshots', () => {
+  const NCB=load();
+  const e=NCB.createBattle({seed:'gen5,233,233,233,233',teamA:['ranger'],teamB:['vanguard']});
+  const actor=e.getLiving('A')[0];
+  for(const stat of ['POTENCY','CONTROL_POWER','TENACITY','RECOVERY','BARRIER_POWER']){
+    assert.equal(Object.hasOwn(actor.stats,stat),false);
+    assert.equal(e.getStat(actor.id,stat),100);
+  }
+  const snapshot=e.serializableSnapshot();
+  assert.equal(Object.hasOwn(snapshot.teams.A[0].stats,'RECOVERY'),false);
+  assert.equal(Object.hasOwn(snapshot.teams.A[0],'cooldownProgress'),false);
+});
+
+test('POTENCY scales periodic and trigger damage but leaves direct damage unchanged', () => {
+  const NCB=load();
+  const run=(kind,potency)=>{
+    NCB.SKILL_DEFS.__potencyHit={id:'__potencyHit',name:'Potency Hit',kind,target:'enemy',cost:0,cooldown:0,accuracy:1,damageType:'true',formula:'100',effects:[{type:'damage',canMiss:false,canCrit:false,canReflect:false}]};
+    const e=NCB.createBattle({seed:'gen5,234,234,234,234',teamA:['ranger'],teamB:['vanguard']});
+    const a=e.getLiving('A')[0],b=e.getLiving('B')[0];a.stats.POTENCY=potency;a.skills.push('__potencyHit');const before=b.hp;
+    e.useSkill({actorId:a.id,skillId:'__potencyHit',targetId:b.id});
+    return before-b.hp;
+  };
+  assert.equal(run('damage',200),run('damage',100));
+  assert.ok(run('trigger',200)>run('trigger',100));
+  assert.ok(run('trigger',400)-run('trigger',200)<run('trigger',200)-run('trigger',100));
+  delete NCB.SKILL_DEFS.__potencyHit;
+});
+
+test('CONTROL_POWER and TENACITY preserve base chance at equality and bound chance and duration', () => {
+  const NCB=load();
+  const e=NCB.createBattle({seed:'gen5,235,235,235,235',teamA:['ranger'],teamB:['vanguard']});
+  const a=e.getLiving('A')[0],b=e.getLiving('B')[0];
+  assert.equal(e.controlChance(a,b,.37),.37);
+  a.stats.CONTROL_POWER=400;b.stats.TENACITY=20;
+  assert.ok(e.controlChance(a,b,.37)>.37);
+  assert.ok(e.controlDurationMultiplier(a,b)<=1.5);
+  a.stats.CONTROL_POWER=20;b.stats.TENACITY=400;
+  assert.ok(e.controlChance(a,b,.37)<.37);
+  assert.ok(e.controlDurationMultiplier(a,b)>=.6);
+});
+
+test('BARRIER_POWER scales shield and ward with diminishing returns', () => {
+  const NCB=load();
+  const run=power=>{
+    NCB.SKILL_DEFS.__barrier={id:'__barrier',name:'Barrier',kind:'support',target:'self',cost:0,cooldown:0,effects:[{type:'shield',amount:100},{type:'ward',damageType:'fire',amount:100}]};
+    const e=NCB.createBattle({seed:'gen5,236,236,236,236',teamA:['ranger'],teamB:['vanguard']});
+    const a=e.getLiving('A')[0];a.stats.BARRIER_POWER=power;a.skills.push('__barrier');e.useSkill({actorId:a.id,skillId:'__barrier',targetId:a.id});return a.shield+a.wards.fire;
+  };
+  const neutral=run(100),high=run(200),extreme=run(400);
+  assert.equal(neutral,200);
+  assert.ok(high>neutral);
+  assert.ok(extreme-high<high-neutral);
+  delete NCB.SKILL_DEFS.__barrier;
+});
+
+test('RECOVERY accelerates cooldown readiness without adding action opportunities', () => {
+  const NCB=load();
+  NCB.SKILL_DEFS.__recovery={id:'__recovery',name:'Recovery',kind:'damage',target:'enemy',cost:0,cooldown:3,accuracy:1,damageType:'true',formula:'1',effects:[{type:'damage',canMiss:false,canCrit:false}]};
+  const setup=recovery=>{const e=NCB.createBattle({seed:'gen5,237,237,237,237',teamA:['ranger'],teamB:['vanguard']});const a=e.getLiving('A')[0],b=e.getLiving('B')[0];a.stats.RECOVERY=recovery;a.skills=['__recovery'];e.useSkill({actorId:a.id,skillId:'__recovery',targetId:b.id});return {e,a,b};};
+  const neutral=setup(100),fast=setup(300);
+  for(let i=0;i<3;i++){neutral.e.processRoundStart(false);fast.e.processRoundStart(false);}
+  assert.equal(neutral.a.cooldowns.__recovery,1);
+  assert.equal(fast.a.cooldowns.__recovery,0);
+  const actions=[{actorId:fast.a.id,skillId:'__recovery',targetId:fast.b.id},{actorId:fast.a.id,skillId:'__recovery',targetId:fast.b.id}];
+  const beforeActions=fast.e.log.filter(row=>row.kind==='action'&&row.actorId===fast.a.id).length;
+  fast.e.resolveRound(actions);
+  assert.equal(fast.e.log.filter(row=>row.kind==='action'&&row.actorId===fast.a.id).length-beforeActions,1);
+  delete NCB.SKILL_DEFS.__recovery;
+});

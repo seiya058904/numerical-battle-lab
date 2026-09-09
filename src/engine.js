@@ -3,6 +3,9 @@
   const NCB = root.NCB = root.NCB || {};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const round2=v=>Math.round(v*100)/100;
+  const NEUTRAL_100_STATS=new Set(['POTENCY','CONTROL_POWER','TENACITY','RECOVERY','BARRIER_POWER']);
+  const diminishing100=value=>{const x=Math.max(0,Number(value)||0)/100;return 2*x/(1+x);};
+  const responsive100=value=>{const x=Math.max(.01,(Number(value)||0)/100);return clamp(1+1.5*Math.tanh(Math.log(x)),.25,2.5);};
 
   function deriveSeed(n) {
     const x = (Number(n)||1) >>> 0;
@@ -73,7 +76,7 @@
       return out;
     }
     getStat(entityId,statId) {
-      const e=this.entity(entityId); let base=Number(e.stats[statId]||0);
+      const e=this.entity(entityId); let base=Number(e.stats[statId]===undefined&&NEUTRAL_100_STATS.has(statId)?100:(e.stats[statId]||0));
       const definition=NCB.UNIT_DEFS[e.templateId];
       const rawScope={...e.stats,MAX_HP:e.maxHp,HP:e.hp,HP_PCT:e.maxHp?e.hp/e.maxHp:0,MISSING_HP:e.maxHp-e.hp,ENERGY:Number(e.energy||0)};
       const passives=[];
@@ -92,6 +95,15 @@
       }
       return round2(Number(this.kernel.run('ModifyStat',e,base,null,{statId})));
     }
+    axisRate(entityOrId,statId){const e=typeof entityOrId==='string'?this.entity(entityOrId):entityOrId;return diminishing100(this.getStat(e.id,statId));}
+    potencyRate(entityOrId){const e=typeof entityOrId==='string'?this.entity(entityOrId):entityOrId;return responsive100(this.getStat(e.id,'POTENCY'));}
+    barrierRate(entityOrId){const e=typeof entityOrId==='string'?this.entity(entityOrId):entityOrId;return responsive100(this.getStat(e.id,'BARRIER_POWER'));}
+    recoveryRate(entityOrId){const e=typeof entityOrId==='string'?this.entity(entityOrId):entityOrId;return responsive100(this.getStat(e.id,'RECOVERY'));}
+    isPotencyDamage(skill,effect={},ctx={}){const tags=[...(effect.tags||[]),...(skill.tags||[])];return skill.kind==='trigger'||skill.kind==='status'||ctx.STATUS_ID!==undefined||tags.some(tag=>['dot','periodic','trigger','detonation'].includes(tag));}
+    isControlStatus(actor,target,statusId){const def=NCB.STATUS_DEFS[statusId],tags=def?.tags||[];return !!def&&def.kind==='debuff'&&actor.teamId!==target.teamId&&!tags.some(tag=>['dot','poison','burn','bleed'].includes(tag));}
+    controlContest(actor,target){return responsive100(this.getStat(actor.id,'CONTROL_POWER'))*100-responsive100(this.getStat(target.id,'TENACITY'))*100;}
+    controlChance(actor,target,baseChance){const base=clamp(Number(baseChance),0,1);if(base===0||base===1)return base;const shifted=Math.log(base/(1-base))+.06*this.controlContest(actor,target);return 1/(1+Math.exp(-shifted));}
+    controlDurationMultiplier(actor,target){return clamp(Math.exp(.012*this.controlContest(actor,target)),.6,1.5);}
     // Deterministic per-round stat factor from RAMP/FATIGUE params (v4 individuals).
     // Legacy entities (no params) always return 1.
     timeStatFactor(e){
@@ -261,7 +273,7 @@
     accuracyCheck(actor,target,skill,effect={}){const acc=this.getStat(actor.id,'ACC');const ignoreEvasion=effect.ignoreEvasion??skill.ignoreEvasion??false;const eva=ignoreEvasion?0:this.getStat(target.id,'EVA');const base=this.skillAccuracy(actor,target,skill,effect);const chance=clamp(base*(100+acc)/(100+acc+eva*.85),.05,.995);const hit=this.prng.random()<chance;return{hit,chance};}
     computeDamage(actor,target,skill,effect={},extraScope={}){const scope=this.scopeFor(actor,target,extraScope);const accuracy=effect.canMiss===false?{hit:true,chance:1}:this.accuracyCheck(actor,target,skill,effect);if(!accuracy.hit)return{miss:true,trace:[`命中率: ${(accuracy.chance*100).toFixed(1)}% → MISS`]};
       const critChance=this.skillCritChance(actor,target,skill,effect);const crit=critChance>0&&this.prng.random()<critChance;const critMult=crit?this.getStat(actor.id,'CRIT_DMG')/100:1;const basePen=this.skillPenetration(actor,target,skill,effect);
-      const defs=effect.components||skill.damageComponents||[{type:effect.damageType||skill.damageType||'physical',formula:effect.formula||skill.formula,penetration:effect.penetration,typePenetration:effect.typePenetration}];const componentTrace=[];const components=defs.map(c=>{const formula=c.formula||effect.formula||skill.formula;const base=Math.max(0,evalFormula(formula,scope))*Number(c.multiplier??1)*Number(effect.spreadMultiplier??skill.spreadMultiplier??1);const varianceMin=Number(c.varianceMin??effect.varianceMin??skill.varianceMin??1),varianceMax=Number(c.varianceMax??effect.varianceMax??skill.varianceMax??1);const lo=Math.min(varianceMin,varianceMax),hi=Math.max(varianceMin,varianceMax);
+      const defs=effect.components||skill.damageComponents||[{type:effect.damageType||skill.damageType||'physical',formula:effect.formula||skill.formula,penetration:effect.penetration,typePenetration:effect.typePenetration}];const componentTrace=[];const potency=this.isPotencyDamage(skill,effect,extraScope)?this.potencyRate(actor):1;const components=defs.map(c=>{const formula=c.formula||effect.formula||skill.formula;const base=Math.max(0,evalFormula(formula,scope))*Number(c.multiplier??1)*Number(effect.spreadMultiplier??skill.spreadMultiplier??1)*potency;const varianceMin=Number(c.varianceMin??effect.varianceMin??skill.varianceMin??1),varianceMax=Number(c.varianceMax??effect.varianceMax??skill.varianceMax??1);const lo=Math.min(varianceMin,varianceMax),hi=Math.max(varianceMin,varianceMax);
       // v4 individual randomness: VOLATILITY widens/narrows the variance window
       // around its midpoint; LUCK biases the draw toward the top/bottom half.
       // Legacy actors (VOLATILITY=1, LUCK=0) reproduce the old roll exactly.
@@ -294,7 +306,7 @@
       const selector=NCB.TARGET_COMPONENTS?.[skill.target],selectorCtx={battle:this,actor,skill};const multi=typeof selector?.multi==='function'?selector.multi(selectorCtx):selector?.multi;
       const targets=multi?valid.slice():[primary];for(const target of targets){const effectCtx={LAST_HIT:false,LAST_CRIT:false,LAST_DAMAGE:0,LAST_HP_DAMAGE:0,LAST_SHIELD_DAMAGE:0,LAST_KILL:false};for(const effect of skill.effects||[])this.resolveEffect(actor,target,skill,effect,effectCtx);}
     }
-    processRoundStart(initial=false){for(const team of ['A','B'])for(const e of this.getLiving(team)){if(!initial){for(const k of Object.keys(e.cooldowns))e.cooldowns[k]=Math.max(0,e.cooldowns[k]-1);e.energy=clamp(e.energy+this.getStat(e.id,'ENERGY_REGEN'),0,e.stats.ENERGY_MAX);const def=NCB.UNIT_DEFS[e.templateId]||{};for(const [resource,amount] of Object.entries(def.resourceRegens||{}))this.changeResource(e,resource,amount);
+    processRoundStart(initial=false){for(const team of ['A','B'])for(const e of this.getLiving(team)){if(!initial){const activeCooldowns=Object.keys(e.cooldowns).filter(k=>e.cooldowns[k]>0);if(activeCooldowns.length){e._cooldownProgress=Number(e._cooldownProgress||0)+this.recoveryRate(e);const steps=Math.floor(e._cooldownProgress+1e-12);e._cooldownProgress-=steps;for(const k of activeCooldowns)e.cooldowns[k]=Math.max(0,e.cooldowns[k]-steps);if(!Object.values(e.cooldowns).some(value=>value>0))e._cooldownProgress=0;}else e._cooldownProgress=0;e.energy=clamp(e.energy+this.getStat(e.id,'ENERGY_REGEN'),0,e.stats.ENERGY_MAX);const def=NCB.UNIT_DEFS[e.templateId]||{};for(const [resource,amount] of Object.entries(def.resourceRegens||{}))this.changeResource(e,resource,amount);
           for(const inst of e.statuses.slice()){
             const statusDef=NCB.STATUS_DEFS[inst.id],upkeep=statusDef?.upkeep;if(!upkeep||upkeep.timing&&upkeep.timing!=='roundStart')continue;
             const resource=String(upkeep.resource||'ENERGY').toUpperCase(),amount=Math.max(0,Number(upkeep.amount||0))*(upkeep.perStack?Math.max(1,inst.stacks||1):1);const available=this.getResource(e,resource);const payable=resource==='HP'&&!upkeep.allowLethal?available>amount:available>=amount;
@@ -363,7 +375,7 @@
       }
     }
     orderActions(actions){const normalized=[];for(const [i,a] of actions.entries()){let actor;try{actor=this.entity(a.actorId);}catch{continue;}if(actor.hp<=0)continue;const skill=NCB.SKILL_DEFS[a.skillId];if(!skill)continue;const basePriority=a.overridePriority??skill.priority??0;const priority=Number(this.kernel.run('ModifyPriority',actor,basePriority,null,{skill,action:a}));normalized.push({...a,id:`r${this.round}-${i}`,order:200,priority,speed:this.getStat(actor.id,'SPD')});}return NCB.sortActions(normalized,this.prng);}
-    resolveRound(actions){if(this.outcome().ended)return;this._effectWork=0;const ordered=this.orderActions(actions);const record=actions.map(a=>({...a}));for(const a of ordered){if(this.outcome().ended)break;this.presentationGroup++;this.useSkill(a);this.captureFrame(null);}this.presentationGroup++;this.processTurnEnd();this.history.push(record);if(!this.outcome().ended){this.round++;this.processRoundStart(false);}this.captureFrame(null);return this.outcome();}
+    resolveRound(actions){if(this.outcome().ended)return;this._effectWork=0;const ordered=this.orderActions(actions),acted=new Set(),record=[];for(const a of ordered){if(this.outcome().ended)break;if(acted.has(a.actorId))continue;acted.add(a.actorId);record.push({...a});this.presentationGroup++;this.useSkill(a);this.captureFrame(null);}this.presentationGroup++;this.processTurnEnd();this.history.push(record);if(!this.outcome().ended){this.round++;this.processRoundStart(false);}this.captureFrame(null);return this.outcome();}
     outcome(){const a=this.getLiving('A').length,b=this.getLiving('B').length;if(a&&b)return this.history.length>=this.config.maxRounds?{ended:true,winner:'draw'}:{ended:false};if(!a&&!b)return{ended:true,winner:'draw'};return{ended:true,winner:a?'A':'B'};}
     serializableSnapshot(){return{seed:this.config.seed,rng:this.prng.getSeed(),round:this.round,teams:Object.fromEntries(['A','B'].map(t=>[t,this.teams[t].entities.map(e=>({id:e.id,templateId:e.templateId,hp:e.hp,maxHp:e.maxHp,shield:e.shield,energy:e.energy,stats:{...e.stats},statuses:e.statuses.map(s=>({...s,data:s.data?{...s.data}:undefined})),cooldowns:{...e.cooldowns},alive:e.alive,wards:{...(e.wards||{})},resistances:{...e.resistances},affinities:{...e.affinities},immunities:{...e.immunities},tags:[...(e.tags||[])],wear:e._wear||0}))])),outcome:this.outcome(),log:this.log.map(x=>({...x,trace:x.trace?x.trace.slice():undefined}))};}
     exportReplay(){
@@ -394,7 +406,8 @@
     for(const c of defs){
       const formula=c.formula||effect.formula||skill.formula;
       const varianceMin=Number(c.varianceMin??effect.varianceMin??skill.varianceMin??1),varianceMax=Number(c.varianceMax??effect.varianceMax??skill.varianceMax??1);const vol=Number(actor.stats?.VOLATILITY??1),luck=Number(actor.stats?.LUCK??0),half=(varianceMax-varianceMin)/2*vol;const u=luck>=0?(1+luck)/(2+luck):1/(2-luck);const expectedVariance=(varianceMin+varianceMax)/2-half+2*half*u;
-      const base=Math.max(0,evalFormula(formula,scope))*Number(c.multiplier??1)*Number(effect.spreadMultiplier??skill.spreadMultiplier??1)*expectedCrit*expectedVariance;
+      const potency=engine.isPotencyDamage(skill,effect,ctx)?engine.potencyRate(actor):1;
+      const base=Math.max(0,evalFormula(formula,scope))*Number(c.multiplier??1)*Number(effect.spreadMultiplier??skill.spreadMultiplier??1)*expectedCrit*expectedVariance*potency;
       perHit+=engine.previewDamageComponent(actor.id,target.id,{type:c.type||effect.damageType||skill.damageType||'physical',amount:base,penetration:c.penetration??basePen,typePenetration:c.typePenetration??Number(skill.typePenetrationBonus||0)/100,ignoreDefense:c.ignoreDefense??effect.ignoreDefense??skill.ignoreDefense,ignoreResistance:c.ignoreResistance??effect.ignoreResistance??skill.ignoreResistance,defenseStat:c.defenseStat??effect.defenseStat??skill.defenseStat,minDamage:c.minDamage??effect.minDamage??skill.minDamage,maxDamage:c.maxDamage??effect.maxDamage??skill.maxDamage}).finalDamage;
     }
     const hits=engine.skillHits(actor,target,skill,effect);
@@ -422,8 +435,11 @@
       value-=amount*(String(def.upkeep.resource||'ENERGY').toUpperCase()==='HP'?8:4);
     }
     if(def.duration===null)value+=8;
-    const chance=effect.chance===undefined?1:Number(effect.chance);
-    return value*chance;
+    const baseChance=effect.chance===undefined?1:Number(effect.chance);
+    const contested=engine.isControlStatus(actor,target,effect.status);
+    const chance=contested?engine.controlChance(actor,target,baseChance):baseChance;
+    const duration=contested?engine.controlDurationMultiplier(actor,target):1;
+    return value*chance*duration;
   }
 
   function effectUtility(engine,actor,target,skill,effect,ctx={}){
