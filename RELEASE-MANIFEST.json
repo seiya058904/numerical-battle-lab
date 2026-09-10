@@ -65,13 +65,13 @@
     },
     {
       "path": "calibration/reference-world-v7.js",
-      "size": 608,
-      "sha256": "1a81008ea43e45dc9645b3f7184116f25e0f06c3528351bdf6eab6485691b7c5"
+      "size": 528,
+      "sha256": "bb3c5e951e2331f8c073765b21afaf09dc768ec86171f8599bacf8630a243f84"
     },
     {
       "path": "calibration/reference-world-v7.json",
-      "size": 513,
-      "sha256": "1be45635f0f7f87f1e4e65315dfc83fdad1b96ff7e157ca7be1b7a97788936ad"
+      "size": 519,
+      "sha256": "c7c6ee931df91a7759b8d5a0b3bf117d42577ab16399a01d02ba145685e3c2a5"
     },
     {
       "path": "calibration/strength-model-v7.js",
@@ -115,13 +115,13 @@
     },
     {
       "path": "content/presets-v7.js",
-      "size": 759382,
-      "sha256": "7915da08e6481dceee7657005c271e44181b89913445a731f8789f5fb6bcd087"
+      "size": 759379,
+      "sha256": "2dbdcfd1d84e030d21d741aaee31001ce1b79272992cbee32ba3ee62c78489d5"
     },
     {
       "path": "content/presets-v7.json",
-      "size": 1026113,
-      "sha256": "62653b6fac3d5ff47d38b409a27edca55f26ee3ddb25969059d9a30c1ececc9c"
+      "size": 1026110,
+      "sha256": "b06b74f1a82e0cb27689574745ef3025da1f42c36b2e3b62fad739caae776f9b"
     },
     {
       "path": "docs/ARCHITECTURE.md",
@@ -235,8 +235,8 @@
     },
     {
       "path": "docs/V7-DELIVERY-REPORT.md",
-      "size": 10654,
-      "sha256": "77f090319c544597f98fd8d3453ddccbeac3eff483041f830c6f345c453b0f07"
+      "size": 15807,
+      "sha256": "7608a45e5b03afa50745f6a7da15ba1a969572ea1ee1cfdc29d2f268aa1d2721"
     },
     {
       "path": "docs/numeric-component-catalog.json",
@@ -300,8 +300,8 @@
     },
     {
       "path": "package.json",
-      "size": 3287,
-      "sha256": "7a3eb3f0d2fa8360da93e6ecbbb0d7ab911708dbe33ebd389670c8517383364e"
+      "size": 3621,
+      "sha256": "ddab4d80377443beb3b202ae8fe30a91282e62475e9f36c0e94195cec930c81f"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
@@ -869,6 +869,16 @@
       "sha256": "269031dd1792c2f8fc8d84b3fc14eec7c876fb0cf2bfce1c9a88bf43f7c9b81c"
     },
     {
+      "path": "qa/v7-mechanism-labels.json",
+      "size": 96844,
+      "sha256": "7135d739603b89c2f17da8f7ec5d82438943bab919c0d9678b8bfb22441da4ab"
+    },
+    {
+      "path": "qa/v7-mechanism-ranking.json",
+      "size": 32269,
+      "sha256": "e11aedc3cf1972ad213728a9141ef208c122a78070b6dbfc81e9d31351cdaba2"
+    },
+    {
       "path": "qa/v7-performance.json",
       "size": 475,
       "sha256": "7ece6e9f7216f46fdc444b34b4f5693d078890f55029294ac3c8116833a8d0b4"
@@ -884,9 +894,19 @@
       "sha256": "363b9762eb6c54e557c4f09ec63cf2c56776ae2558e84d6d5d310960df377464"
     },
     {
+      "path": "qa/v7-reference-scale.json",
+      "size": 1588,
+      "sha256": "54b484922ff31c7275b9c243c7cf411e5e5a04a521bb0d912c92044a22d0c5ea"
+    },
+    {
       "path": "qa/v7-seed-dispersion.json",
       "size": 17809,
       "sha256": "fab0b902fdfaa018aa8c2aea27ee45870b72c3badcf135a1e497423b1cf76dc9"
+    },
+    {
+      "path": "qa/v7-solver-saturation.json",
+      "size": 2968,
+      "sha256": "3448d259453b839b49587804fedce200a80d7a8f0dd4c578fb0dab0e826e08cf"
     },
     {
       "path": "qa/v7-stat-sensitivity.json",
@@ -1009,6 +1029,11 @@
       "sha256": "379d4a6c5035405128a0f9ed697db93bcf3b6f96e3e6145184abbeb53f66cecc"
     },
     {
+      "path": "scripts/audit-v7-solver-saturation.js",
+      "size": 4054,
+      "sha256": "5a24505e42ffdf1ebcca748276cbedfb209f3fb989bb4a51182e4c2c2e4904c2"
+    },
+    {
       "path": "scripts/benchmark-gen-v7.js",
       "size": 2284,
       "sha256": "defdce83da23694e3b106ad93983fd69ca3f2b0285a62681b5a07faa06cd1a62"
@@ -1019,14 +1044,19 @@
       "sha256": "000ff0dbc0a980a266fdcd91cd0856dc582d693b01cc3965ff81fa9a9c77bfaf"
     },
     {
+      "path": "scripts/calibrate-reference-world-v7.js",
+      "size": 5691,
+      "sha256": "0d1d0c2ca3085546e214c32e9c4edcb01c4fbb9c17b3b4671d339711da2bfcc9"
+    },
+    {
       "path": "scripts/calibrate-strength-model-v7.js",
       "size": 3157,
       "sha256": "3c12414a8bcfaf2a554076cbfb73f30d05b6e761485b130529a3a2558bd0c9e6"
     },
     {
       "path": "scripts/diagnose-v7-mechanism-ranking.js",
-      "size": 3437,
-      "sha256": "47e2da7352090cbba6e5b9e43dafc067e644cc912a5d44e159da1aa793bf2008"
+      "size": 11277,
+      "sha256": "cf8fafcc24234972d5912943584a05d350db7ed33da7b017d7fc14d5fa43ea4e"
     },
     {
       "path": "scripts/diversity-audit-v4.js",
@@ -1042,6 +1072,16 @@
       "path": "scripts/empirical-strength-audit.js",
       "size": 3491,
       "sha256": "3516a02e09cdeab2daaaf1290ac07d1e10f5ebb83eda412038660dff7178ec2b"
+    },
+    {
+      "path": "scripts/explore-v7-mechanism-features-v2.js",
+      "size": 13129,
+      "sha256": "d981c3674600cdad8e637547e75ffa4190c0edc0abb513d0a070101abc8fca21"
+    },
+    {
+      "path": "scripts/explore-v7-mechanism-features.js",
+      "size": 15172,
+      "sha256": "688af217c7cc5b1ab64fe6f9962e6bc8cc0019c30a76f8d77112c11b41a278a9"
     },
     {
       "path": "scripts/fit-v7-empirical-strength.js",
@@ -1130,8 +1170,8 @@
     },
     {
       "path": "scripts/static-check.js",
-      "size": 9088,
-      "sha256": "525fc807df05905b20c8df29d24e8ddac6f77bf5a39696a872597cbc83e51394"
+      "size": 9424,
+      "sha256": "b3871c40ed86120157f1771e4a9a4dc267d9555b7894cb46c620c97e46f55e31"
     },
     {
       "path": "scripts/stress-check.js",
@@ -1345,8 +1385,8 @@
     },
     {
       "path": "src/solver-v7.js",
-      "size": 2792,
-      "sha256": "64f21dd654c874065f57a8fa5a0b9a92455bc5b34e7d61ac689d28af5d65f137"
+      "size": 3269,
+      "sha256": "a60e823f8fc4ed23915ec427f876cffe8d7f005ff627b3152c3fceb3b15045ca"
     },
     {
       "path": "src/status-runtime.js",

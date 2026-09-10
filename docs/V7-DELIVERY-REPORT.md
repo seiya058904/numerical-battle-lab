@@ -1,11 +1,87 @@
 # V7 Delivery Report
 
-> STATUS: **BLOCKED** — V7 is implemented, BattlePower V4 and the product gate pass,
-> but two Reality acceptance items fail, so the product default was **not**
-> switched and nothing was pushed as a completed V7 release.
+> STATUS: **BLOCKED** — the reference-scale root cause is fixed and verified
+> (solver saturation and convergence now pass), but the Mechanism Ranking Gate
+> fails, so per spec §30 the Solver/Full-Reality stage was **not** entered, the
+> product default was **not** switched and nothing was pushed as a completed V7
+> release.
 >
 > Every number below comes from an actual run of the committed scripts against
 > the committed artifacts. Nothing is estimated or invented.
+
+## Convergence round 2 — root causes, fixes, and what still blocks
+
+### Root Cause Before (measured on the inherited code)
+
+```text
+referenceGeneralPower            300   (measured correct value: 26,056.676 — an 87x miss)
+unsolved base card prediction    +28.6 theta vs target 0
+solver result                    ATK ~ 3, MAX_HP ~ 530, HEAL_POWER = 52.73 for EVERY seed
+mechanism model spread           1.11 theta   (real battle spread 3.35 -> 6.26 theta)
+mechanism Spearman(model, real)  -0.046  (predictTheta) / -0.065 (calibrated)
+seed dispersion p95-p5           3.0 - 8.4 theta per tier (bar: <= 1.0)
+Target -> Reality Spearman       0.8892  (bar: >= 0.95)
+```
+
+### After (this round, verified)
+
+| Gate | Result |
+|---|---|
+| Reference scale (`calibrate:v7-reference`) | **PASS** — `referenceGeneralPower` 300 → **26,056.676** (median of 256 deterministic unsolved Lv50 A cards); median predictTheta **0.000**, p5 −0.454 / p95 0.359 |
+| Solver saturation (`audit:v7-solver-saturation`, 1000 cards) | **PASS** — every knob **0.00%** bound-hit (was: ATK/MAX_HP/HEAL_POWER ~100%); the ACC collapse (7.9% at the cap) was removed by a bound-headroom rule in knob selection |
+| Solver convergence (same 1000 cards) | **PASS** — median abs error **0.0002**, p95 **0.038**, median 5 iterations, all converged, all packs valid |
+| Product gate (`gate:v7-product`) | **PASS** — 24/24 on the corrected scale (Lv100 vs Lv40 100%, Lv100 C vs Lv40 XC 100%, Lv70 XC vs Lv100 C 46.9%, Lv70 XS vs Lv100 C 35.9%, same-level C vs XC 100%) |
+| Mechanism Ranking Gate (spec §30: ≥0.80 required, ≥0.85 target) | **FAIL** — held-out (unseen mechanism families) Spearman **0.49–0.54** vs required **0.85** |
+
+### Why the mechanism gate still fails — measured, not guessed
+
+Dataset: 48 unsolved Lv50 A cards, balanced sparse mirrored graph, 432 edges,
+2,592 battles, BT converged, **draw rate 1.9%** (decisive), real spread
+**p95−p5 = 6.264 theta** (`qa/v7-mechanism-labels.json`, `qa/v7-mechanism-ranking.json`).
+Labels are cached by content hash, so model iterations cost no battles.
+
+1. **All candidate models are blind to it.** Overall Spearman: `predictTheta`
+   −0.187, `predictRealityTheta` (with the committed ridge correction) −0.065,
+   and **BattlePower V4 −0.043**. BPv4's 0.953 was measured on *solved* cards
+   (where level/rarity-driven stat magnitudes dominate); on same-tier unsolved
+   cards it has no mechanism signal either.
+2. **The obvious suspect was disproved causally.** `barrierType` split the
+   population cleanly (ward n=26 mean +0.97 vs shield n=22 mean −1.15 — a 2.12θ
+   gap), but a controlled same-card swap measured **shield 15 / ward 14 / 11
+   draws — no effect**. The correlation is a confound: `pick()` consumes a PRNG
+   draw, which shifts every downstream action's randomly drawn numbers.
+3. **A refined engine-accurate structural feature set is not enough.** Features
+   built around real availability (cooldown counted down by RECOVERY, energy
+   affordability), the signature action's sustained value, sustain-vs-damage
+   races and kill-time reach best single-feature |ρ| = **0.453** (`dpsToEhp`) and
+   held-out family Spearman **0.49–0.54** at every ridge strength
+   (`scripts/explore-v7-mechanism-features-v2.js`).
+4. **The remaining variance is dominated by randomly drawn action numbers.**
+   `meanCooldown` (−0.327), `meanCost` (+0.147) and `meanAvailability` (+0.172)
+   carry most of the modellable signal: the skeleton draws `cooldown 1..5`,
+   `cost 0..6` and `priority -2..3` per action from one shared PRNG stream, so
+   pure randomness moves a card's per-round throughput by up to ~6x. Spec §34
+   says the solver owns "**Mechanic Skeleton + Style Genome + TargetTheta →
+   numbers**" — cooldowns, costs and priorities are exactly such numbers, yet
+   they are currently drawn randomly instead of being solved. That is the
+   identified next lever: give the solver those numeric knobs (and the per-action
+   coefficients) so iso-power is reached by tuning numbers, **without** shrinking
+   mechanism variety (which spec §7 forbids).
+
+### Not done, by design
+
+Per spec §30, a mechanism-ranking result below 0.80 forbids entering the
+Solver/Full-Reality stage, so the 37,440-battle graph was **not** re-run and the
+default switch was **not** performed. Artifact provenance for this state:
+
+| Artifact group | Built with |
+|---|---|
+| `qa/v7-reference-scale.json`, `qa/v7-solver-saturation.json`, `qa/v7-mechanism-labels.json`, `qa/v7-mechanism-ranking.json`, `content/presets-v7.*` | corrected reference scale (current code) |
+| `qa/v7-battle-graph.json`, `v7-empirical-strength.json`, `v7-seed-dispersion.json`, `v7-matchup-residuals.json`, `v7-product-strength.json`, `v7-stat-sensitivity.json`, `v7-axis-sensitivity.json`, `v7-battlepower-reality.json` | pre-fix build — retained deliberately as the "Root Cause Before" evidence recorded above; they will be regenerated once the mechanism gate passes |
+
+---
+
+## Convergence round 1 — inherited state
 
 ## Git
 
