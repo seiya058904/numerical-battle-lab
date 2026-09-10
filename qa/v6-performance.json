@@ -1,8 +1,0 @@
-{
-  "cards": 1000,
-  "totalMs": 683.264,
-  "meanMsPerCard": 0.683,
-  "medianMsPerCard": 0.654,
-  "p95MsPerCard": 0.989,
-  "measurement": "wall clock performance.now; no battle engine or AI invoked"
-}

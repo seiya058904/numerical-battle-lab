@@ -1,109 +1,110 @@
-(function(root){
+/* =========================================================
+   numerical-battle-lab · src/power.js
+   实力体系：Level（第一维度） × Rarity（第二维度） → 最终属性
+   Battle Power：只读最终属性的展示型综合数字，不参与战斗。
+   ========================================================= */
+(function (global) {
   'use strict';
-  const NCB=root.NCB=root.NCB||{};
-  // Unified rarity coordinate system (spec 1, 33). Single ascending order.
-  const RARITY_ORDER=['C','C+','B','B+','A','A+','S','SS','SSS'];
-  const RARITY_RPI={C:100,'C+':108,B:118,'B+':129,A:141,'A+':154,S:169,SS:187,SSS:207};
-  function rpiOf(rarity){const v=RARITY_RPI[rarity];if(v===undefined)throw new Error('unknown rarity: '+rarity);return v;}
-  const POWER_RULES={
-    levelFormula:{base:0.40,scale:0.60,denominator:99,exponent:0.92},
-    qualityRange:[0.97,1.03],
-    numericScaleBase:100,
-    budgetBase:1000,
-    budgetPartitions:{primary:0.52,secondary:0.13,activeSkills:0.25,passiveTrigger:0.10},
-  };
-  // LevelFactor = 0.40 + 0.60*((L-1)/99)^0.92 ; LF(1)=0.4, LF(100)=1
-  // Level is strictly validated as an integer in 1..100 (only undefined defaults to 100);
-  // out-of-range/non-finite/non-integer values are rejected, never silently clamped.
-  function normalizeLevel(level){
-    if(level===undefined)return 100;
-    const n=Number(level);
-    if(!Number.isFinite(n))throw new Error('level must be a finite number, got '+String(level));
-    if(!Number.isInteger(n))throw new Error('level must be an integer 1..100, got '+String(level));
-    if(n<1||n>100)throw new Error('level must be 1..100, got '+String(level));
-    return n;
-  }
-  function levelFactor(level){
-    const L=POWER_RULES.levelFormula;
-    const lv=normalizeLevel(level);
-    const t=(lv-1)/L.denominator;
-    return L.base+L.scale*Math.pow(t,L.exponent);
-  }
-  function computeCardPower({rarity,level,quality}){
-    const q=Number(quality);
-    if(!Number.isFinite(q)||q<POWER_RULES.qualityRange[0]||q>POWER_RULES.qualityRange[1])
-      throw new Error('quality '+q+' out of ['+POWER_RULES.qualityRange.join(',')+']');
-    const power=rpiOf(rarity)*levelFactor(level)*q;
-    if(!Number.isFinite(power))throw new Error('non-finite CardPower');
-    return power;
-  }
-  // v1.2: same CardPower model but using the extended (12-rarity) RPI coordinate.
-  function computeCardPowerV2({rarity,level,quality}){
-    const q=Number(quality);
-    if(!Number.isFinite(q)||q<POWER_RULES.qualityRange[0]||q>POWER_RULES.qualityRange[1])
-      throw new Error('quality '+q+' out of ['+POWER_RULES.qualityRange.join(',')+']');
-    const power=rpiV2(rarity)*levelFactor(level)*q;
-    if(!Number.isFinite(power))throw new Error('non-finite CardPowerV2');
-    return power;
-  }
-  function numericScale(power){return Math.sqrt(Math.max(0.01,Number(power))/POWER_RULES.numericScaleBase);}
-  function generationBudget(power){return POWER_RULES.budgetBase*numericScale(power);}
-  function splitBudget(budget){
-    const b=Number(budget),p=POWER_RULES.budgetPartitions;
-    const round=x=>Math.round(x*10)/10;
-    return{primary:round(b*p.primary),secondary:round(b*p.secondary),activeSkills:round(b*p.activeSkills),passiveTrigger:round(b*p.passiveTrigger)};
-  }
-  // Deterministic offline hash for seeding (FNV-1a 32-bit).
-  function seedHash(seed){let h=2166136261>>>0;const s=String(seed==null?'':seed);for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
-  // QualityFactor in [0.97,1.03], reproducible for the same seed.
-  function qualityFactor(seed){
-    const sd=seedHash(seed);
-    const prng=new NCB.Gen5PRNG('gen5,'+((sd>>>0)&0xffff)+','+((sd>>>16)&0xffff)+',1,2');
-    return prng.random(9700,10301)/10000;
-  }
-  // ---- v1.2 extended rarity tables (review/spec 9) ----
-  // v1 keeps its canonical 9-rarity table untouched (RARITY_ORDER/RARITY_RPI) so
-  // generator v1 stays fully backward compatible. v1.2 adds three new rarities on
-  // top of the existing nine WITHOUT changing any old RPI value (the old 9 use the
-  // same numeric targets as v1; only new ids follow the new naming scheme).
-  // Legacy v1 alt-forms map to the new ids for v2 dispatch.
-  const RARITY_ALIAS={'C+':'C_PLUS','B+':'B_PLUS','A+':'A_PLUS','C_PLUS':'C_PLUS','B_PLUS':'B_PLUS','A_PLUS':'A_PLUS'};
-  const RARITY_V2_ORDER=['C','C_PLUS','B','B_PLUS','A','A_PLUS','S','SS','SSS','SSS_COLLECTOR','XS','XS_COLLECTOR'];
-  const RARITY_V2_RPI={C:100,C_PLUS:108,B:118,B_PLUS:129,A:141,A_PLUS:154,S:169,SS:187,SSS:207,SSS_COLLECTOR:218,XS:232,XS_COLLECTOR:245};
-  const V2_RARITY_DISPLAY={
-    C:'C','C_PLUS':'C+',B:'B','B_PLUS':'B+',A:'A','A_PLUS':'A+',S:'S',SS:'SS',SSS:'SSS',
-    'SSS_COLLECTOR':'SSS 典藏版',XS:'XS','XS_COLLECTOR':'XS 典藏版',
-  };
-  function toV2RarityId(rarity){
-    if(rarity==null)return'C';
-    const s=String(rarity);
-    if(RARITY_V2_RPI[s]!==undefined)return s;
-    const alias=RARITY_ALIAS[s];
-    if(alias&&RARITY_V2_RPI[alias]!==undefined)return alias;
-    throw new Error('unknown rarity: '+s);
-  }
-  function rpiV2(rarity){const id=toV2RarityId(rarity);return RARITY_V2_RPI[id];}
-  NCB.RARITY_ALIAS=Object.freeze({...RARITY_ALIAS});
-  NCB.RARITY_V2_ORDER=RARITY_V2_ORDER.slice();
-  NCB.RARITY_V2_RPI=Object.freeze({...RARITY_V2_RPI});
-  NCB.V2_RARITY_DISPLAY=Object.freeze({...V2_RARITY_DISPLAY});
-  NCB.toV2RarityId=toV2RarityId;
-  NCB.rpiV2=rpiV2;
-  // ---- end v1.2 extended rarity ----
 
-  NCB.RARITY_ORDER=RARITY_ORDER.slice();
-  NCB.RARITY_RPI=Object.freeze({...RARITY_RPI});
-  NCB.POWER_RULES=POWER_RULES;
-  NCB.rpiOf=rpiOf;
-  NCB.rarityOrder=()=>RARITY_ORDER.slice();
-  NCB.computeCardPowerV2=computeCardPowerV2;
-  NCB.normalizeLevel=normalizeLevel;
-  NCB.levelFactor=levelFactor;
-  NCB.computeCardPower=computeCardPower;
-  NCB.numericScale=numericScale;
-  NCB.generationBudget=generationBudget;
-  NCB.splitBudget=splitBudget;
-  NCB.seedHash=seedHash;
-  NCB.qualityFactor=qualityFactor;
-  if(typeof module!=='undefined')module.exports=NCB;
-})(typeof globalThis!=='undefined'?globalThis:window);
+  const C = (typeof module !== 'undefined' && module.exports) ? require('./cards.js') : global.NCB;
+  const { RARITY_LIST, CARDS } = C;
+
+  // 基准属性（C、Lv100、p=1 时的参考值）
+  const BASE = { hp: 1200, atk: 200, def: 150, spd: 20 };
+
+  // ---- Level 曲线：超指数增长 ----
+  // g(1)=1.02  g(40)=3.38  g(70)=13.52  g(100)=81.12
+  // Lv100 / Lv40 = 24 倍属性差 → 实力差距巨大
+  function gLevel(level) {
+    return Math.exp(0.02143 * level + 0.0002253 * level * level);
+  }
+
+  // ---- Rarity 曲线：C=1.00 → XS Collector=6.00，每档 ≈ 18% 成长（纯指数）----
+  // Lv70 XS Collector 的 p = 13.52 × 6.00 = 81.1 ≈ Lv100 C 的 p = 81.1 → 真正悬念
+  function rarityMul(tier) {
+    return Math.exp(Math.log(6) / 11 * tier);
+  }
+
+  // 各档位稀有度乘数（调试/展示用）
+  const RARITY_TABLE = RARITY_LIST.map((name, i) => ({
+    name, tier: i, mult: Math.round(rarityMul(i) * 1000) / 1000
+  }));
+
+  // ---- 由固定卡牌 + 等级构建最终单位 ----
+  function buildUnit(card, level) {
+    const p = gLevel(level) * rarityMul(card.rarity);
+    return {
+      cardId: card.id,
+      name: card.name,
+      role: card.role,
+      rarity: card.rarity,
+      rarityName: RARITY_LIST[card.rarity],
+      level,
+      maxHp: Math.round(BASE.hp * card.base.hp * p),
+      hp: Math.round(BASE.hp * card.base.hp * p),
+      atk: Math.round(BASE.atk * card.base.atk * p),
+      def: Math.round(BASE.def * card.base.def * p),
+      spd: Math.round(BASE.spd * card.base.spd * p),
+      acc: card.acc,
+      eva: card.eva,
+      crit: card.crit,
+      critDmg: card.critDmg,
+      pen: card.pen,
+      lifesteal: card.lifesteal,
+      hpRegen: card.hpRegen,
+      volatility: card.volatility
+    };
+  }
+
+  // ---- Battle Power：透明线性综合公式 ----
+  // 只用于展示“综合实力”，不参与战斗、不修改伤害、不强制胜者。
+  // 长期平均：BP 越高越强；实力接近时允许互有胜负。
+  function battlePower(u) {
+    return Math.round(
+      u.maxHp * 0.30 +
+      u.atk * 3.40 +
+      u.def * 1.00 +
+      u.spd * 14 +
+      u.acc * 1.60 +
+      u.eva * 1.60 +
+      u.crit * 900 +
+      u.critDmg * 80 +
+      u.pen * 700 +
+      u.lifesteal * 650 +
+      u.hpRegen * 550 +
+      u.volatility * 120
+    );
+  }
+
+  function fmt(n) {
+    return Math.round(n).toLocaleString('en-US');
+  }
+
+  const STAT_LABELS = {
+    maxHp: '生命', atk: '攻击', def: '防御', spd: '速度',
+    acc: '命中', eva: '闪避', crit: '暴击率', critDmg: '暴击伤害',
+    pen: '穿透', lifesteal: '吸血', hpRegen: '每回合回复', volatility: '波动'
+  };
+
+  // 展示用属性行（12 项）
+  function statRows(u) {
+    return [
+      ['maxHp', fmt(u.maxHp)],
+      ['atk', fmt(u.atk)],
+      ['def', fmt(u.def)],
+      ['spd', fmt(u.spd)],
+      ['acc', String(u.acc)],
+      ['eva', String(u.eva)],
+      ['crit', (u.crit * 100).toFixed(0) + '%'],
+      ['critDmg', (u.critDmg * 100).toFixed(0) + '%'],
+      ['pen', (u.pen * 100).toFixed(0) + '%'],
+      ['lifesteal', (u.lifesteal * 100).toFixed(0) + '%'],
+      ['hpRegen', (u.hpRegen * 100).toFixed(1) + '%'],
+      ['volatility', (u.volatility * 100).toFixed(0) + '%']
+    ];
+  }
+
+  const API = { BASE, gLevel, rarityMul, RARITY_TABLE, buildUnit, battlePower, fmt, STAT_LABELS, statRows, CARDS };
+  if (typeof module !== 'undefined' && module.exports) module.exports = API;
+  global.NCB = Object.assign(global.NCB || {}, API);
+})(typeof window !== 'undefined' ? window : globalThis);

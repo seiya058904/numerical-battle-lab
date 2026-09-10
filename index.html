@@ -1,112 +1,72 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <title>数值对战实验室</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111'/%3E%3Cpath d='M8 22 14 10l4 8 3-6 3 10z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Ccircle cx='24' cy='10' r='2' fill='%23fff'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数值卡牌 · 自动 PK</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="app" class="app-shell">
-    <header class="topbar">
-      <div class="brand-block">
-        <div class="brand">NUMERICAL BATTLE LAB</div>
-        <h1>数值对战实验室</h1>
-      </div>
-      <div class="top-meta">
 
+<h1>数值卡牌 · 自动 PK</h1>
+<div class="sub">选两张卡 → 调等级 → 开始战斗 → 看谁赢 · 实力由 等级 × 稀有度 × 战力 × 多属性 共同决定</div>
 
-        <details class="lab-menu" id="lab-menu">
-          <summary>高级实验室</summary>
-          <div class="lab-menu-panel">
-            <button data-tab="editor">数值编辑</button>
-            <button data-tab="simulation">批量模拟</button>
-            <button data-tab="guide">规则 / 架构</button>
-            <button data-tab="replay">对局重放</button>
-            <button data-tab="trace">计算详情</button>
-            <button data-tab="json">JSON 导入导出</button>
-          </div>
-        </details>
-      </div>
-    </header>
-
-    <nav class="tabs" aria-label="主导航">
-      <button data-tab="battle" class="tab is-active">对战</button>
-      <button data-tab="cards" class="tab">卡牌</button>
-      <button data-tab="generate" class="tab">生成卡牌</button>
-      <button data-tab="help" class="tab">玩法说明</button>
-    </nav>
-
-    <main>
-      <section id="view-battle" class="view is-active"></section>
-      <section id="view-cards" class="view"></section>
-      <section id="view-generate" class="view"></section>
-      <section id="view-help" class="view"></section>
-      <!-- advanced lab views (hidden behind 高级实验室, never deleted) -->
-      <section id="view-editor" class="view"></section>
-      <section id="view-simulation" class="view"></section>
-      <section id="view-guide" class="view"></section>
-      <section id="view-replay" class="view"></section>
-      <section id="view-trace" class="view"></section>
-      <section id="view-json" class="view"></section>
-    </main>
-
-    <footer>
-      <span>创造 · 组合 · 观察</span>
-      <span>确定性 / 可离线 / 单机</span>
-    </footer>
+<div class="setup">
+  <div class="panel" id="panelA">
+    <h2>◆ 蓝方</h2>
+    <select id="selA"></select>
+    <div class="lvlrow">
+      <label>等级</label>
+      <input type="range" id="lvlA" min="1" max="100" value="50">
+      <div class="lvlval" id="lvlAVal">50</div>
+    </div>
+    <div id="prevA"></div>
   </div>
 
-  <!-- 完全离线运行时。随包固定的 Acorn 解析受限公式 AST，再由 src/formula.js 白名单解释器执行。 -->
-  <script src="src/kernel.js"></script>
-  <script src="src/components.js"></script>
-  <script src="src/rules.js"></script>
-  <script src="src/content.js"></script>
-  <script src="src/status-runtime.js"></script>
-  <script src="vendor/acorn-8.15.0.js"></script>
-  <script src="src/formula.js"></script>
-  <script src="src/validator.js"></script>
-  <script src="src/effects.js"></script>
-  <script src="src/engine.js"></script>
-  <script src="src/ai.js"></script>
-  <script src="src/power.js"></script>
-  <script src="src/power-v5.js"></script>
-  <script src="src/gen-stats.js"></script>
-  <script src="src/gen-skills.js"></script>
-  <script src="src/generator.js"></script>
-  <script src="src/gen-names.js"></script>
-  <script src="src/name-generator-v2.js"></script>
-  <script src="src/name-generator-v3.js"></script>
-  <script src="src/gen-v2.js"></script>
-  <script src="src/gen-v3.js"></script>
-  <script src="src/gen-v4.js"></script>
-  <script src="src/gen-v5.js"></script>
-  <script src="src/budget-v6.js"></script>
-  <script src="src/strength-geometry-v7.js"></script>
-  <script src="src/strength-model-v7.js"></script>
-  <script src="src/stat-battle-v7.js"></script>
-  <script src="src/budget-price.js"></script>
-  <script src="src/gen-v6.js"></script>
-  <script src="src/gen-v7.js"></script>
-  <script src="src/behavior.js"></script>
-  <script src="src/battlepower-model.js"></script>
-  <script src="src/battlepower.js"></script>
-  <script src="src/battlepower-v2.js"></script>
-  <script src="src/battlepower-v3.js"></script>
-  <script src="src/battlepower-v4.js"></script>
-  <script src="src/numerical-knowledge.js"></script>
-  <script src="src/card-ui.js"></script>
-  <script src="src/card-browser.js"></script>
-  <script src="content/presets-v4.js"></script>
-  <script src="content/presets-v5.js"></script>
-  <script src="content/presets-v6.js"></script>
-  <script src="content/presets-v7.js"></script>
-  <script src="src/presets.js"></script>
-  <script src="src/presets-v6.js"></script>
-  <script src="src/presets-v7.js"></script>
-  <script src="src/app.js"></script>
+  <div class="vscol"><div class="vs">VS</div></div>
+
+  <div class="panel" id="panelB">
+    <h2>◆ 红方</h2>
+    <select id="selB"></select>
+    <div class="lvlrow">
+      <label>等级</label>
+      <input type="range" id="lvlB" min="1" max="100" value="50">
+      <div class="lvlval" id="lvlBVal">50</div>
+    </div>
+    <div id="prevB"></div>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="fighter">
+    <div class="fname"><span class="n" id="sNameA">—</span><span class="rar" id="sRarA"></span></div>
+    <div class="hpwrap"><div class="hpbar" id="hpbarA" style="width:100%"></div><div class="hptext" id="hpTA">— / —</div></div>
+  </div>
+  <div class="vscol"><div class="vs" id="roundTxt">—</div></div>
+  <div class="fighter">
+    <div class="fname"><span class="n" id="sNameB">—</span><span class="rar" id="sRarB"></span></div>
+    <div class="hpwrap"><div class="hpbar" id="hpbarB" style="width:100%"></div><div class="hptext" id="hpTB">— / —</div></div>
+  </div>
+</div>
+
+<div class="bar">
+  <button id="startBtn">开始战斗</button>
+  <button id="againBtn" class="ghost">再战</button>
+  <div class="speedsel">
+    <span>速度</span>
+    <div class="spdbtn on" data-speed="slow">慢</div>
+    <div class="spdbtn" data-speed="fast">快</div>
+    <div class="spdbtn" data-speed="instant">瞬</div>
+  </div>
+</div>
+
+<div class="logbox" id="logbox"></div>
+<div class="result" id="resultBox" style="display:none"></div>
+
+<script src="src/cards.js"></script>
+<script src="src/power.js"></script>
+<script src="src/battle.js"></script>
+<script src="src/app.js"></script>
+<script>NCB.initApp();</script>
 </body>
 </html>
-

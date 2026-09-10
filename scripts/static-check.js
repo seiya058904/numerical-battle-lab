@@ -1,77 +1,105 @@
+/* =========================================================
+   scripts/static-check.js — 新产品静态架构门禁
+   1. 运行时文件集合与期望清单完全一致（无死代码/旧系统残留）
+   2. index.html 只加载 4 个 src 模块
+   3. 战斗引擎不含 Math.random（确定性）
+   4. 卡库 24 张 / 12 档
+   ========================================================= */
+'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
-const root = path.resolve(__dirname,'..');
-const required=['index.html','styles.css','src/kernel.js','src/components.js','src/rules.js','src/content.js','src/status-runtime.js','src/formula.js','src/validator.js','src/effects.js','src/engine.js','src/power.js','src/gen-stats.js','src/gen-skills.js','src/generator.js','src/gen-names.js','src/gen-v2.js','src/battlepower-model.js','src/battlepower.js','src/card-ui.js','src/app.js','README.md','THIRD_PARTY_NOTICES.md','docs/NUMERIC-COMPONENT-CATALOG.md','docs/numeric-component-catalog.json','docs/PLUGIN-API.md','docs/ARCHITECTURE.md','docs/CONTENT-AUTHORING.md','docs/GENERATOR-BALANCE-v1.2.md','docs/BALANCE-AUDIT-v1.2.md','vendor/acorn-8.15.0.js','third_party/acorn/LICENSE','third_party/acorn/UPSTREAM.md','scripts/power-calibration.js','scripts/adjacent-rarity-matrix.js','scripts/matched-rarity-test.js','scripts/similar-bp-test.js','scripts/health-metrics.js','scripts/generate-v1-fixture.js','tests/fixtures/generator-v1.1.0.json','src/budget-v6.js','src/budget-price.js','src/gen-v6.js','src/presets-v6.js','content/presets-v6.js','content/presets-v6.json','scripts/migrate-presets-v6.js','scripts/gate-v6-strength.js','scripts/audit-v6-strength.js','qa/v6-strength-audit.json','docs/GENERATOR-V6-DESIGN.md','src/strength-geometry-v7.js','src/strength-model-v7.js','src/stat-battle-v7.js','src/gen-v7.js','src/battlepower-v4.js','src/presets-v7.js','content/presets-v7.js','content/presets-v7.json','scripts/build-v7-battle-graph.js','scripts/fit-v7-empirical-strength.js','scripts/audit-v7-geometry.js','scripts/audit-v7-seed-dispersion.js','scripts/audit-v7-presets.js','scripts/migrate-presets-v7.js','scripts/gate-v7-product.js','scripts/benchmark-gen-v7.js','qa/v7-battle-graph.json','qa/v7-empirical-strength.json','qa/v7-seed-dispersion.json','qa/v7-preset-matrix.json','qa/v7-performance.json','docs/GENERATOR-V7-DESIGN.md','docs/NUMERICAL-ARCHITECTURE-V7.md','docs/V7-DELIVERY-REPORT.md','docs/V7-MECHANISM-ATTRIBUTION.md'];
-for(const file of required)if(!fs.existsSync(path.join(root,file)))throw new Error(`missing ${file}`);
+const { execSync } = require('node:child_process');
 
-const sourceFiles=fs.readdirSync(path.join(root,'src')).filter(x=>x.endsWith('.js')).map(x=>path.join(root,'src',x));
-const sourceText=sourceFiles.map(f=>fs.readFileSync(f,'utf8')).join('\n');
-if(/Math\.random\s*\(/.test(sourceText))throw new Error('runtime contains Math.random()');
-if(/\beval\s*\(/.test(sourceText)||/new\s+Function\s*\(/.test(sourceText))throw new Error('runtime contains eval/new Function');
-if(/fallbackFormula/.test(sourceText))throw new Error('legacy hardcoded formula fallback still exists');
-
-const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
-if(/<script[^>]+src=["']https?:\/\//i.test(html))throw new Error('external runtime script dependency found');
-if(!html.includes('vendor/acorn-8.15.0.js'))throw new Error('vendored Acorn parser missing from index');
-if(html.indexOf('<script src="vendor/acorn-8.15.0.js"')>html.indexOf('<script src="src/formula.js"'))throw new Error('Acorn parser must load before formula adapter');
-for(const runtime of ['src/kernel.js','src/components.js','src/rules.js','src/content.js','src/status-runtime.js','src/formula.js','src/validator.js','src/effects.js','src/engine.js','src/power.js','src/gen-stats.js','src/gen-skills.js','src/generator.js','src/gen-names.js','src/gen-v2.js','src/battlepower-model.js','src/battlepower.js','src/card-ui.js','src/app.js','src/budget-v6.js','src/budget-price.js','src/gen-v6.js','src/presets-v6.js','src/strength-geometry-v7.js','src/strength-model-v7.js','src/stat-battle-v7.js','src/gen-v7.js','src/battlepower-v4.js','src/presets-v7.js'])if(!html.includes(runtime))throw new Error(`runtime script missing from index: ${runtime}`);
-
-// Architecture guard: canonical engine/effect runtime must not know concrete content IDs.
-global.NCB={};
-for(const f of ['kernel.js','components.js','rules.js','content.js','status-runtime.js','formula.js','validator.js','effects.js','engine.js'])require(path.join(root,'src',f));
-const NCB=global.NCB;
-const engineText=[fs.readFileSync(path.join(root,'src/engine.js'),'utf8'),fs.readFileSync(path.join(root,'src/effects.js'),'utf8')].join('\n');
-for(const id of Object.keys(NCB.UNIT_DEFS||{}))if(engineText.includes(`'${id}'`)||engineText.includes(`"${id}"`))throw new Error(`runtime contains concrete unit id: ${id}`);
-for(const id of Object.keys(NCB.STATUS_DEFS||{}))if(engineText.includes(`'${id}'`)||engineText.includes(`"${id}"`))throw new Error(`runtime contains concrete status id: ${id}`);
-
-const validation=NCB.validateContentPack({units:NCB.UNIT_DEFS,skills:NCB.SKILL_DEFS,statuses:NCB.STATUS_DEFS});
-if(!validation.ok)throw new Error(`built-in content invalid:\n${validation.errors.join('\n')}`);
-for(const [id,spec] of Object.entries(NCB.EFFECT_COMPONENTS||{}))if(typeof spec.resolve!=='function')throw new Error(`effect component is not executable: ${id}`);
-if(Object.keys(NCB.PARAMETER_CATALOG||{}).length<90)throw new Error('numeric parameter catalog unexpectedly small');
-const formulaInfo=NCB.formulaEngineInfo?.()||{};
-if(!formulaInfo.offline)throw new Error('formula engine is not offline');
-if(formulaInfo.name!=='Acorn'||formulaInfo.version!=='8.15.0')throw new Error(`unexpected formula parser: ${formulaInfo.name||'unknown'} ${formulaInfo.version||''}`);
-const acornHash=require('node:crypto').createHash('sha256').update(fs.readFileSync(path.join(root,'vendor/acorn-8.15.0.js'))).digest('hex');
-if(acornHash!=='fdb08546776ec6228b03e8d02b40d4ab3255bae5f401adba7ff5dad927ac5c9c')throw new Error('vendored Acorn hash mismatch');
-
-const app=fs.readFileSync(path.join(root,'src/app.js'),'utf8');
-for(const marker of ['data-tab="battle"','data-tab="editor"','data-tab="simulation"','qaSelfTest'])if(!app.includes(marker)&&!html.includes(marker))throw new Error(`UI marker missing: ${marker}`);
-
-// ---- Release metadata / manifest audit (review fix 6) ----
-// package.json.version === RELEASE-MANIFEST.json.version === current release version.
-const RELEASE_VERSION='1.5.0';
-const pkgMeta=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
-const manifestMeta=JSON.parse(fs.readFileSync(path.join(root,'RELEASE-MANIFEST.json'),'utf8'));
-if(pkgMeta.version!==RELEASE_VERSION)throw new Error(`package.json version ${pkgMeta.version} != release ${RELEASE_VERSION}`);
-if(manifestMeta.version!==RELEASE_VERSION)throw new Error(`RELEASE-MANIFEST.json version ${manifestMeta.version} != release ${RELEASE_VERSION}`);
-
-// Manifest duty: complete auditable file set of the current official main release.
-// Every git-tracked file (except self-auditing meta files) must be listed, and every
-// listed entry must match the canonical git blob's size + sha256.
-const {execFileSync}=require('node:child_process');
-const META_SELF_MANIFEST=new Set(['RELEASE-MANIFEST.json','scripts/generate-manifest.js']);
-let tracked;
-try{tracked=execFileSync('git',['ls-files'],{cwd:root,encoding:'utf8'}).split('\n').map(s=>s.trim()).filter(Boolean);}
-catch(e){throw new Error(`manifest audit requires git: ${e.message}`);}
-const manifestPaths=new Set(manifestMeta.files.map(f=>f.path));
-// Any tracked file that is NOT self-auditing meta must be listed.
-for(const t of tracked){if(!META_SELF_MANIFEST.has(t)&&!manifestPaths.has(t))throw new Error(`RELEASE-MANIFEST missing tracked file: ${t}`);}
-// No self-auditing meta file may appear inside the listing.
-for(const m of META_SELF_MANIFEST){if(manifestPaths.has(m))throw new Error(`RELEASE-MANIFEST must not list self-auditing meta file: ${m}`);}
-for(const f of manifestMeta.files){
-  const abs=path.join(root,f.path);
-  if(!fs.existsSync(abs))throw new Error(`manifest lists missing file: ${f.path}`);
-  // Compare against the canonical git blob (LF in repo; working tree may be CRLF under autocrlf).
-  let buf;
-  try{buf=execFileSync('git',['show',`:${f.path}`],{cwd:root});}
-  catch(e){buf=fs.readFileSync(abs);}
-  if(buf.length!==f.size)throw new Error(`manifest size mismatch: ${f.path}`);
-  const h=require('node:crypto').createHash('sha256').update(buf).digest('hex');
-  if(h!==f.sha256)throw new Error(`manifest sha256 mismatch: ${f.path}`);
+const ROOT = path.resolve(__dirname, '..');
+let failed = false;
+function check(name, ok, detail) {
+  if (!ok) {
+    failed = true;
+    console.error(`✗ ${name}${detail ? ' — ' + detail : ''}`);
+  } else {
+    console.log(`✓ ${name}`);
+  }
 }
 
-console.log(`static checks: PASS · ${Object.keys(NCB.PARAMETER_CATALOG).length} parameters · ${Object.keys(NCB.EFFECT_COMPONENTS).length} effects · v${RELEASE_VERSION} manifest audited (${manifestMeta.files.length} files)`);
+// ---- 1. 运行时文件集合 ----
+const EXPECTED_FILES = [
+  '.github/workflows/verify.yml',
+  '.gitignore',
+  '.nojekyll',
+  'AGENTS.md',
+  'README.md',
+  'index.html',
+  'package.json',
+  'styles.css',
+  'src/cards.js',
+  'src/power.js',
+  'src/battle.js',
+  'src/app.js',
+  'tests/cards.test.js',
+  'tests/power.test.js',
+  'tests/battle.test.js',
+  'tests/product-acceptance.test.js',
+  'scripts/static-check.js',
+  'scripts/acceptance.js',
+  'scripts/serve.js'
+].sort();
 
+let tracked;
+try {
+  tracked = execSync('git ls-files', { cwd: ROOT, encoding: 'utf8' })
+    .split('\n').map(s => s.trim()).filter(Boolean).sort();
+} catch (e) {
+  tracked = null;
+}
+if (tracked) {
+  const unexpected = tracked.filter(f => !EXPECTED_FILES.includes(f));
+  const missing = EXPECTED_FILES.filter(f => !tracked.includes(f));
+  check('运行时文件集合 = 期望清单（无旧系统残留/无死文件）',
+    unexpected.length === 0 && missing.length === 0,
+    `多余: ${unexpected.join(', ') || '无'}；缺失: ${missing.join(', ') || '无'}`);
+} else {
+  check('git 可用', false, '无法执行 git ls-files');
+}
 
+// ---- 2. index.html 只加载 4 个 src 模块 ----
+const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const scripts = [...html.matchAll(/<script src="([^"]+)"/g)].map(m => m[1]);
+check('index.html 只加载 4 个 src 模块', JSON.stringify(scripts) === JSON.stringify([
+  'src/cards.js', 'src/power.js', 'src/battle.js', 'src/app.js'
+]), `实际: ${scripts.join(', ')}`);
 
+// ---- 3. 战斗引擎确定性 ----
+const battleSrc = fs.readFileSync(path.join(ROOT, 'src/battle.js'), 'utf8');
+check('src/battle.js 不含 Math.random（确定性 PRNG）', !/Math\.random/.test(battleSrc));
 
+// ---- 4. 卡库结构 ----
+const { CARDS, RARITY_LIST } = require(path.join(ROOT, 'src/cards.js'));
+check('卡库 = 24 张', CARDS.length === 24, `实际 ${CARDS.length}`);
+check('稀有度 = 12 档', RARITY_LIST.length === 12, `实际 ${RARITY_LIST.length}`);
+
+// ---- 5. 不允许残留的旧系统路径 ----
+const BANNED = [
+  'vendor', 'third_party', 'content', 'calibration', 'docs', 'qa',
+  'src/engine.js', 'src/formula.js', 'src/ai.js', 'src/kernel.js',
+  'src/effects.js', 'src/status-runtime.js', 'src/solver-v7.js',
+  'src/strength-model-v7.js', 'src/battlepower.js', 'src/battlepower-v2.js',
+  'src/battlepower-v3.js', 'src/battlepower-v4.js', 'src/power-v5.js',
+  'src/presets.js', 'src/card-browser.js', 'src/card-ui.js',
+  'src/behavior.js', 'src/numerical-knowledge.js', 'src/validator.js',
+  'src/generator.js', 'src/gen-v1.js', 'src/gen-v2.js', 'src/gen-v3.js',
+  'src/gen-v4.js', 'src/gen-v5.js', 'src/gen-v6.js', 'src/gen-v7.js',
+  'RELEASE-MANIFEST.json', 'QA-REPORT.md', 'FINAL-REPORT.md',
+  'THIRD_PARTY_NOTICES.md', 'RELEASE-NOTES.md', 'dev-bp-check.js', 'dev-eff-check.js'
+];
+const bannedFound = BANNED.filter(p => fs.existsSync(path.join(ROOT, p)));
+check('旧系统路径全部删除', bannedFound.length === 0, `残留: ${bannedFound.join(', ') || '无'}`);
+
+// ---- 6. 根目录无旧 QA 日志 ----
+const rootLogs = fs.readdirSync(ROOT).filter(f => f.endsWith('.log'));
+check('根目录无 .log QA 产物', rootLogs.length === 0, `残留: ${rootLogs.join(', ')}`);
+
+if (failed) {
+  console.error('\n静态检查失败');
+  process.exit(1);
+}
+console.log('\n静态检查通过');

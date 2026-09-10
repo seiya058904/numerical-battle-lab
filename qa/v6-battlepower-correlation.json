@@ -1,6 +1,0 @@
-{
-  "sampleSize": 300,
-  "spearman": 0.931,
-  "pearson": 0.717,
-  "note": "BattlePower reads card content only; ExpectedStrength is recorded solely by this external audit."
-}

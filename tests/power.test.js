@@ -1,78 +1,118 @@
-const test=require('node:test');
-const assert=require('node:assert/strict');
-function load(){
-  delete require.cache[require.resolve('../src/kernel.js')];
-  delete require.cache[require.resolve('../src/power.js')];
-  global.NCB={};require('../src/kernel.js');require('../src/power.js');return global.NCB;
-}
+/* =========================================================
+   tests/power.test.js — Level / Rarity / Battle Power 秩序
+   ========================================================= */
+'use strict';
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const { CARDS, RARITY_LIST } = require('../src/cards.js');
+const { gLevel, rarityMul, buildUnit, battlePower } = require('../src/power.js');
 
-test('rarity order is the single ascending order and RPI matches spec',()=>{
-  const N=load();
-  assert.deepEqual(N.RARITY_ORDER,['C','C+','B','B+','A','A+','S','SS','SSS']);
-  assert.deepEqual(N.RARITY_RPI,{C:100,'C+':108,B:118,'B+':129,A:141,'A+':154,S:169,SS:187,SSS:207});
-  assert.equal(N.rpiOf('C'),100);
-  assert.equal(N.rpiOf('SSS'),207);
-  for(let i=1;i<N.RARITY_ORDER.length;i++){
-    assert.ok(N.RARITY_RPI[N.RARITY_ORDER[i]]>N.RARITY_RPI[N.RARITY_ORDER[i-1]],N.RARITY_ORDER[i]+' must be stronger than '+N.RARITY_ORDER[i-1]);
+const LEVELS = [1, 25, 50, 75, 100];
+const tiers = RARITY_LIST.map((_, t) => CARDS.filter(c => c.rarity === t));
+
+test('Level 曲线：单调递增，Lv100/Lv40 巨大差距', () => {
+  let prev = 0;
+  for (let L = 1; L <= 100; L++) {
+    const g = gLevel(L);
+    assert.ok(g > prev, `gLevel(${L}) 必须严格递增`);
+    prev = g;
+  }
+  assert.ok(gLevel(100) / gLevel(40) >= 20, `g(100)/g(40) = ${gLevel(100) / gLevel(40)} 应 ≥ 20`);
+});
+
+test('Rarity 曲线：单调递增，C=1，XS Collector≈6', () => {
+  let prev = 0;
+  for (let i = 0; i < 12; i++) {
+    const m = rarityMul(i);
+    assert.ok(m > prev, `rarityMul(${i}) 必须严格递增`);
+    prev = m;
+  }
+  assert.ok(Math.abs(rarityMul(0) - 1) < 1e-9, 'C 稀有度乘数应为 1');
+  assert.ok(rarityMul(11) >= 5.5 && rarityMul(11) <= 6.5, `XS Collector 乘数应为 ≈6，实际 ${rarityMul(11)}`);
+});
+
+test('同 p 悬念设计：g(70) × XS Collector ≈ g(100)', () => {
+  const ratio = gLevel(70) * rarityMul(11) / gLevel(100);
+  assert.ok(ratio >= 0.95 && ratio <= 1.05, `g(70)*rar(11)/g(100) = ${ratio} 应 ≈ 1`);
+});
+
+test('buildUnit：数值符合公式且随等级增长（非递减；10 级窗口严格增长）', () => {
+  const card = CARDS[0];
+  let prevHp = 0, prevAtk = 0, prevDef = 0, prevSpd = 0;
+  for (let L = 1; L <= 100; L++) {
+    const u = buildUnit(card, L);
+    assert.ok(Number.isFinite(u.maxHp) && u.maxHp > 0);
+    assert.ok(u.hp === u.maxHp, '满血单位 HP == maxHp');
+    // 取整可能导致低数值平台，但绝不下降
+    assert.ok(u.maxHp >= prevHp && u.atk >= prevAtk && u.def >= prevDef && u.spd >= prevSpd,
+      `Lv${L} 属性不应下降`);
+    prevHp = u.maxHp; prevAtk = u.atk; prevDef = u.def; prevSpd = u.spd;
+  }
+  // 10 级窗口内必须严格增长（低等级取整平台不会超过几级）
+  for (let L = 1; L <= 90; L += 10) {
+    const a = buildUnit(card, L);
+    const b = buildUnit(card, L + 10);
+    assert.ok(b.maxHp > a.maxHp && b.atk > a.atk && b.def > a.def && b.spd > a.spd,
+      `Lv${L} → Lv${L + 10} 属性必须严格增长`);
   }
 });
-test('unknown rarity throws',()=>{const N=load();assert.throws(()=>N.rpiOf('ZZZ'),/unknown rarity/);});
 
-test('LevelFactor matches the spec curve at sample points',()=>{
-  const N=load();
-  const expect={1:0.400,10:0.466,20:0.531,30:0.594,40:0.655,50:0.714,60:0.773,70:0.830,80:0.888,90:0.944,100:1.000};
-  for(const [lv,v] of Object.entries(expect)){
-    assert.ok(Math.abs(N.levelFactor(Number(lv))-v)<0.005,'LF('+lv+')='+N.levelFactor(Number(lv))+', want ~'+v);
+test('Battle Power：每张卡随等级严格增长', () => {
+  for (const c of CARDS) {
+    let prev = -1;
+    for (let L = 1; L <= 100; L++) {
+      const bp = battlePower(buildUnit(c, L));
+      assert.ok(Number.isFinite(bp) && bp > 0, `${c.id} Lv${L} BP 非法`);
+      assert.ok(bp > prev, `${c.id} BP 必须随等级严格增长 (Lv${L - 1}:${prev} → Lv${L}:${bp})`);
+      prev = bp;
+    }
   }
-  for(let lv=2;lv<=100;lv++)assert.ok(N.levelFactor(lv)>N.levelFactor(lv-1));
-  assert.equal(N.levelFactor(100),1);
 });
 
-test('CardPower and GenerationBudget match spec examples',()=>{
-  const N=load();
-  assert.equal(N.computeCardPower({rarity:'C',level:100,quality:1}),100);
-  assert.equal(N.generationBudget(100),1000);
-  const a50=N.computeCardPower({rarity:'A',level:50,quality:1});
-  assert.ok(Math.abs(a50-100.7)<1,'A Lv50 power ~100.7, got '+a50);
-  const sss=N.computeCardPower({rarity:'SSS',level:100,quality:1});
-  assert.ok(Math.abs(N.generationBudget(sss)-1439)<3,'SSS Lv100 budget ~1439, got '+N.generationBudget(sss));
-});
-
-test('budget partition uses registerable ratios summing to 1',()=>{
-  const N=load();
-  const s=N.splitBudget(1000);
-  assert.deepEqual(s,{primary:520,secondary:130,activeSkills:250,passiveTrigger:100});
-  const sum=['primary','secondary','activeSkills','passiveTrigger'].reduce((a,k)=>a+N.POWER_RULES.budgetPartitions[k],0);
-  assert.ok(Math.abs(sum-1)<1e-9);
-});
-
-test('qualityFactor is seeded-deterministic and in range',()=>{
-  const N=load();
-  const a=N.qualityFactor('A_ASSASSIN_20260901_000134');
-  const b=N.qualityFactor('A_ASSASSIN_20260901_000134');
-  assert.equal(a,b,'same seed must give same quality');
-  assert.ok(a>=0.97&&a<=1.03,a);
-  assert.notEqual(N.qualityFactor('X1'),N.qualityFactor('X2'),'different seeds differ');
-  for(let i=0;i<200;i++){const q=N.qualityFactor('s'+i);assert.ok(q>=0.97&&q<=1.03,q);}
-});
-
-test('normalizeLevel validates strict integer 1..100 (undefined defaults 100)',()=>{
-  const N=load();
-  assert.equal(N.normalizeLevel(undefined),100,'only undefined defaults to 100');
-  assert.equal(N.normalizeLevel(1),1);
-  assert.equal(N.normalizeLevel(50),50);
-  assert.equal(N.normalizeLevel(100),100);
-  for(const bad of [0,-1,101,999,1.5,NaN,Infinity,-Infinity,'abc','']){
-    assert.throws(()=>N.normalizeLevel(bad),/level/i,'must reject level '+String(bad));
+test('Battle Power：同等级稀有度层级 — 各档均值严格递增', () => {
+  for (const L of LEVELS) {
+    const means = tiers.map(t => t.reduce((s, c) => s + battlePower(buildUnit(c, L)), 0) / t.length);
+    for (let i = 0; i < means.length - 1; i++) {
+      assert.ok(means[i] < means[i + 1],
+        `Lv${L} tier${i} 均值 ${Math.round(means[i])} 应 < tier${i + 1} ${Math.round(means[i + 1])}`);
+    }
   }
-  assert.throws(()=>N.normalizeLevel(null),/level/i,'null is not a valid level (only undefined defaults)');
 });
 
-test('levelFactor rejects invalid levels instead of silently clamping',()=>{
-  const N=load();
-  for(const bad of [0,-1,101,999,1.5,NaN,Infinity]){
-    assert.throws(()=>N.levelFactor(bad),/level/i,'LF must reject '+String(bad));
+test('Battle Power：同等级相隔 ≥2 档时高阶每张卡都更高', () => {
+  for (const L of LEVELS) {
+    for (let i = 0; i < tiers.length; i++) {
+      for (let j = i + 2; j < tiers.length; j++) {
+        const mx = Math.max(...tiers[i].map(c => battlePower(buildUnit(c, L))));
+        const mn = Math.min(...tiers[j].map(c => battlePower(buildUnit(c, L))));
+        assert.ok(mx < mn,
+          `Lv${L} tier${i} 最高 ${mx} 应 < tier${j} 最低 ${mn}`);
+      }
+    }
   }
-  assert.equal(N.levelFactor(1),0.4);
-  assert.equal(N.levelFactor(100),1);
+});
+
+test('Battle Power：同档卡 BP 接近（档内最大/最小 ≤ 1.15）', () => {
+  for (const L of [50, 100]) {
+    for (const t of tiers) {
+      const vals = t.map(c => battlePower(buildUnit(c, L)));
+      const spread = Math.max(...vals) / Math.min(...vals);
+      assert.ok(spread <= 1.15, `Lv${L} tier${t[0].rarity} 档内 BP 离散过大: ${spread.toFixed(3)}`);
+    }
+  }
+});
+
+test('Battle Power 关键产品量级：Lv100 C > Lv40 XS Collector；Lv70 XS Collector ≈ Lv100 C', () => {
+  const cs = tiers[0];
+  const xscs = tiers[11];
+  for (const c of cs) {
+    for (const x of xscs) {
+      const bpHigh = battlePower(buildUnit(c, 100));
+      const bpLow = battlePower(buildUnit(x, 40));
+      assert.ok(bpHigh > bpLow, `Lv100 ${c.id} (${bpHigh}) 应 > Lv40 ${x.id} (${bpLow})`);
+      const bp70 = battlePower(buildUnit(x, 70));
+      const ratio = Math.max(bp70, bpHigh) / Math.min(bp70, bpHigh);
+      assert.ok(ratio <= 1.35, `Lv70 ${x.id} (${bp70}) 与 Lv100 ${c.id} (${bpHigh}) 应接近，比值 ${ratio.toFixed(3)}`);
+    }
+  }
 });

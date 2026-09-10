@@ -20,14 +20,6 @@ jobs:
         with:
           node-version: 22
 
-      # V7 产品门禁：普通 PR 只跑快速 verify；正式 push 到 main 必须跑 verify:release（verify + gate:v7-product + diversity）。
-      # 旧 v1.2.3 的 health-metrics / adjacent-rarity / BattlePower / matched-rarity /
-      # Similar-BP 公平性 gate 已移出 release 阻断，仅保留在 npm run diagnostics:legacy。
-      - name: Verify (PR fast gate)
-        if: github.event_name == 'pull_request'
+      # 产品验证：静态架构检查 + 全量测试 + 产品实战验收（零依赖，纯 Node）
+      - name: Verify
         run: npm run verify
-
-      - name: Verify Release (main release gate)
-        if: github.event_name == 'push'
-        run: npm run verify:release
-

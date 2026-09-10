@@ -1,707 +1,200 @@
-(function (root) {
+/* =========================================================
+   numerical-battle-lab · src/app.js
+   单页 UI：选卡 → 调等级 → 开始 → 回放事件列表 → 看结果。
+   播放速度（慢/快/瞬）只改变事件之间的延迟，绝不改变结果。
+   ========================================================= */
+(function (global) {
   'use strict';
-  const NCB = root.NCB;
-  if (!NCB) throw new Error('NCB engine not loaded');
 
-  // ===========================================================================
-  // v1.2 player-facing UI (spec 1-6, 25-33):
-  //   default nav: 对战 / 卡牌 / 生成卡牌 / 玩法说明
-  //   advanced lab (数值编辑/批量模拟/规则架构/Replay/计算链/JSON) hidden behind
-  //   高级实验室 in the top-right. Advanced lab features are preserved, never deleted.
-  // ===========================================================================
+  const M = (typeof module !== 'undefined' && module.exports)
+    ? Object.assign({}, require('./power.js'), require('./battle.js'))
+    : global.NCB;
+  const { CARDS, RARITY_LIST, RARITY_COLOR, buildUnit, battlePower, fmt, statRows, STAT_LABELS, simulate, applyEvents } = M;
 
-  const $ = (s,el=document) => el.querySelector(s);
-  const $$ = (s,el=document) => [...el.querySelectorAll(s)];
-  const esc = v => String(v ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const SPEEDS = { slow: 120, fast: 45, instant: 0 };
 
-  const STORAGE_LIBRARY='nbl-card-library-v1';
-  const STORAGE_SETUP='nbl-setup-v1';
-  const memoryStorage=new Map();
-  const storage={
-    get(k){try{return root.localStorage?.getItem(k)??memoryStorage.get(k)??null;}catch(_){return memoryStorage.get(k)??null;}},
-    set(k,v){memoryStorage.set(k,String(v));try{root.localStorage?.setItem(k,String(v));}catch(_){}},
-    remove(k){memoryStorage.delete(k);try{root.localStorage?.removeItem(k);}catch(_){}},
-  };
-
-  // ---- Card Library (local persistence; NO account/server/cloud/shop/gacha) ----
-  function loadLibrary(){
-    try{const s=JSON.parse(storage.get(STORAGE_LIBRARY)||'null');if(Array.isArray(s))return s;}catch(_){}
-    return [];
-  }
-  function saveLibrary(){storage.set(STORAGE_LIBRARY,JSON.stringify(state.library));}
-  function libraryContains(id){return state.library.some(c=>c.id===id);}
-
-  const RARITY_OPTIONS=NCB.RARITY_V2_ORDER||[];
-  
-  const ROLE_ZH=NCB.ROLE_ZH||{};
-
-  const defaultSetup={
-    opponentDifficulty:'normal',
-    battleSizeA:1,battleSizeB:1,
-    // Fixed seed used ONLY by the explicit "同种子重放(复现)" advanced action.
-    // Normal "开始对战" and "重开" always roll a fresh match seed (see below).
-    seedNumber:20260901,
-  };
-  function loadSetup(){try{const s=JSON.parse(storage.get(STORAGE_SETUP)||'null');return{...defaultSetup,...(s||{})};}catch(_){return{...defaultSetup};}}
-  function saveSetup(){storage.set(STORAGE_SETUP,JSON.stringify(state.setup));}
-
-  // Fresh match seed for normal play. Engine determinism is untouched: the SAME
-  // seed always reproduces the exact same battle (fixed-seed reproduction stays
-  // available via Replay / 高级实验室 / the explicit same-seed rerun). Normal
-  // "开始对战" and "重开" must NOT replay the same RNG stream, so each gets a new
-  // seed. crypto.getRandomValues is used when available; the fallback combines
-  // Date.now + a monotonic counter + session entropy — never Math.random, so the
-  // static runtime gate stays intact.
-  let freshSeedCounter=0;
-  const sessionEntropy=(Date.now()>>>0);
-  function freshMatchSeed(){
-    try{
-      if(typeof crypto!=='undefined'&&typeof crypto.getRandomValues==='function'){
-        const b=new Uint32Array(1);crypto.getRandomValues(b);return b[0]>>>0;
-      }
-    }catch(_){/* fall through */}
-    return ((Date.now()>>>0)+((++freshSeedCounter)*0x9e3779b9>>>0)+(sessionEntropy^0x85ebca6b))>>>0;
-  }
-  // A live battle whose config we can re-run (used by restart / same-seed rerun).
-  let lastMatchConfig=null;
-
-  const state={
-    tab:'battle',
-    setup:loadSetup(),
-    library:loadLibrary(),
-    // Read-only system presets (NOT part of the user's localStorage library).
-    systemPresets:(NCB.SYSTEM_PRESETS||[]),
-    // Explicit per-slot team selection (card IDs, not pool indices). Each slot is
-    // independently chosen; nothing is auto-filled. Team sizes live in setup.
-    selectedTeams:{A:[],B:[]},
-    engine:null,
-    pending:new Map(),
-    selectedActorId:null,
-    selectedSkillId:null,
-    logFilter:'all',
-    // generate form
-    genRarity:'A',genLevel:100,genSeed:'',genManualSeed:false,
-    // battle mode: manual (player picks skills) | auto (both AI)
-    battleMode:'auto',autoPaused:false,
-    autoSpeed:1,
-    // advanced lab (preserved)
-    editorUnitId:'vanguard',
-    editorStatusId:'fortified',
-    simulation:null,
-    replay:null,
-    replayIndex:0,
-    traceSource:null,
-  };
-
-  function setTab(tab){
-    state.tab=tab;
-    $$('.tab').forEach(b=>b.classList.toggle('is-active',b.dataset.tab===tab));
-    $$('.view').forEach(v=>v.classList.toggle('is-active',v.id===`view-${tab}`));
-    if(tab==='battle'){renderBattle();if(state.engine)startAuto();}
-    if(tab==='cards')renderCards();
-    if(tab==='generate')renderGenerate();
-    if(tab==='help')renderHelp();
-    if(tab==='editor')renderEditor();
-    if(tab==='simulation')renderSimulation();
-    if(tab==='guide')renderGuide();
-    if(tab==='replay')renderReplay();
-    if(tab==='trace')renderTrace();
-    if(tab==='json')renderJson();
-    root.scrollTo(0,0);
+  // ---- 纯逻辑：把事件应用到回放状态（供 UI 与测试共用） ----
+  function createViewState() {
+    return { round: 0, hpA: 0, maxA: 1, hpB: 0, maxB: 1, aliveA: true, aliveB: true };
   }
 
-  // ===========================================================================
-  // GENERATE (player-facing: 稀有度/等级/类型定位/Seed(可选)/随机生成)
-  // ===========================================================================
-  let autoSeedCounter=0;
-  function generateFromForm(){
-    const seed=state.genManualSeed&&state.genSeed?String(state.genSeed):null;
-    // Auto seed: unique + non-deterministic per click, without Math.random
-    // (the static runtime gate forbids Math.random in src/). Engine stays
-    // deterministic given any fixed seed; only the auto default varies per click.
-    const autoSeed='auto-'+(++autoSeedCounter)+'-'+Date.now();
-    if(!Number.isInteger(state.genLevel)||state.genLevel<1||state.genLevel>100){alert('等级请输入 1–100 的整数。');return;}
-    // v4 is classless: no archetype input — an individual, not a class.
-    const card=NCB.generateCardByVersion({
-      rarity:state.genRarity,level:state.genLevel,
-      seed:seed??autoSeed,
+  function applyEventToState(state, e) {
+    state.round = e.round;
+    state.hpA = e.hpA; state.maxA = e.maxA;
+    state.hpB = e.hpB; state.maxB = e.maxB;
+    state.aliveA = e.aliveA; state.aliveB = e.aliveB;
+    return state;
+  }
+
+  // ---- DOM 初始化（浏览器端） ----
+  function initApp() {
+    if (typeof document === 'undefined') return null;
+    const el = (id) => document.getElementById(id);
+
+    const selA = el('selA'), selB = el('selB');
+    const lvlA = el('lvlA'), lvlB = el('lvlB');
+    const lvlAVal = el('lvlAVal'), lvlBVal = el('lvlBVal');
+    const logbox = el('logbox');
+    const resultBox = el('resultBox');
+    const startBtn = el('startBtn');
+    const againBtn = el('againBtn');
+    const roundTxt = el('roundTxt');
+    const barA = el('hpbarA'), barB = el('hpbarB');
+    const hpTA = el('hpTA'), hpTB = el('hpTB');
+
+    const state = { playing: false, delay: SPEEDS.slow, events: [], seed: 0 };
+
+    // 卡牌下拉：按稀有度分组
+    function fillSelect(sel, def) {
+      sel.innerHTML = '';
+      const groups = {};
+      CARDS.forEach((c, i) => {
+        const r = RARITY_LIST[c.rarity];
+        (groups[r] = groups[r] || []).push({ c, i });
+      });
+      RARITY_LIST.forEach((r) => {
+        if (!groups[r]) return;
+        const og = document.createElement('optgroup');
+        og.label = '— ' + r + ' —';
+        groups[r].forEach(({ c, i }) => {
+          const o = document.createElement('option');
+          o.value = i;
+          o.textContent = `${c.name} [${r}] ${c.role}`;
+          og.appendChild(o);
+        });
+        sel.appendChild(og);
+      });
+      sel.value = def;
+    }
+    fillSelect(selA, 0);
+    fillSelect(selB, 5);
+
+    function renderPreview(side) {
+      const sel = side === 'A' ? selA : selB;
+      const lvl = +(side === 'A' ? lvlA : lvlB).value;
+      const card = CARDS[+sel.value];
+      const u = buildUnit(card, lvl);
+      const rc = RARITY_COLOR[RARITY_LIST[card.rarity]];
+      const bp = battlePower(u);
+      const rows = statRows(u)
+        .map(([k, v]) => `<div class="st"><span>${STAT_LABELS[k]}</span><span>${v}</span></div>`)
+        .join('');
+      el('prev' + side).innerHTML = `
+        <div class="cardhead">
+          <span class="cname">${card.name}</span>
+          <span class="badge" style="background:${rc}">${RARITY_LIST[card.rarity]}</span>
+          <span class="role">${card.role}</span>
+        </div>
+        <div class="cdesc">${card.desc}</div>
+        <div class="bprow"><span>Battle Power</span><span>${fmt(bp)}</span></div>
+        <div class="stats">${rows}</div>`;
+    }
+
+    function refreshAll() {
+      lvlAVal.textContent = lvlA.value;
+      lvlBVal.textContent = lvlB.value;
+      renderPreview('A');
+      renderPreview('B');
+    }
+
+    selA.addEventListener('change', refreshAll);
+    selB.addEventListener('change', refreshAll);
+    lvlA.addEventListener('input', refreshAll);
+    lvlB.addEventListener('input', refreshAll);
+
+    // 速度按钮：只改延迟
+    document.querySelectorAll('.spdbtn').forEach((b) => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.spdbtn').forEach((x) => x.classList.remove('on'));
+        b.classList.add('on');
+        state.delay = SPEEDS[b.dataset.speed];
+      });
     });
-    state.lastGenerated=card;
-    renderGenerate();
-    return card;
-  }
-  function addToLibrary(card){
-    if(!card||libraryContains(card.id)){alert('这张卡已在卡牌库中。');return;}
-    state.library.push(NCB.deepClone(card));
-    saveLibrary();
-  }
-  // Copy a read-only system preset into the user library as a NEW editable entry
-  // (new id + remapped internal ids) so it never collides with the preset's id and
-  // keeps deterministic combat identity of its own.
-  function copyPresetToLibrary(preset){
-    if(!preset)return null;
-    let c=NCB.deepClone(preset);const oldId=c.id,newId=oldId+'-mine-'+Date.now();
-    const remap=x=>{if(typeof x==='string')return x.startsWith(oldId)?newId+x.slice(oldId.length):x;if(Array.isArray(x))return x.map(remap);if(x&&typeof x==='object')return Object.fromEntries(Object.entries(x).map(([k,v])=>[k,remap(v)]));return x;};
-    c=remap(c);c.id=newId;delete c.presentation;delete c.curated;
-    addToLibrary(c);renderCards();
-    return c;
-  }
-  function stopAuto(){if(autoTimer)clearInterval(autoTimer);autoTimer=null;}
-  function beginBattle(config){
-    stopAuto();lastMatchConfig={...config};state.engine=NCB.createBattle({...config,capturePresentation:true});state.display=state.engine.presentationFrames.splice(0).at(-1)?.snapshot||state.engine.presentationSnapshot();state.frameQueue=[];state.frameIndex=0;state.frameRow=null;state.stepGroup=null;state.battleMode='auto';state.autoPaused=false;
-    // Build per-entity battle-card metadata map so every entity (incl. multi-team
-    // extra members) resolves its own rarity/level/BattlePower, not a shared one.
-    state._deployedMeta=new Map();
-    for(const t of ['A','B'])for(const ent of state.engine.teams[t].entities){
-      const meta=state.systemPresets.find(c=>c.id===ent.templateId)||state.library.find(c=>c.id===ent.templateId)||null;
-      if(meta)state._deployedMeta.set(ent.templateId,meta);
+
+    function updateBar(side, hp, max) {
+      const pct = Math.max(0, Math.min(100, hp / max * 100));
+      const bar = side === 'A' ? barA : barB;
+      const txt = side === 'A' ? hpTA : hpTB;
+      bar.style.width = pct + '%';
+      bar.className = 'hpbar' + (pct < 25 ? ' low' : pct < 55 ? ' mid' : '');
+      txt.textContent = `${fmt(hp)} / ${fmt(max)}`;
     }
-    state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;
-    setTab('battle');startAuto();
-  }
-  function startBattleWithCard(card){
-    if(!libraryContains(card.id)&&!isSystemPreset(card.id))addToLibrary(card);
-    const pool=selectableCards();const idx=pool.findIndex(c=>c.id===card.id);
-    const bSlot=pool[1]?pool[1].id:null;
-    // A slot 1 = chosen card; B slot 1 = another pool card (or empty). Multi-slot
-    // slots are emptied — no auto-fill, the player must pick each slot explicitly.
-    state.selectedTeams={A:[idx>=0?card.id:null],B:[bSlot]};
-    state.engine=null;stopAuto();setTab('battle');
-  }
 
-  // ---- Explicit team-selection helpers (no auto-fill anywhere) ----
-  function teamSize(side){return Math.max(1,Math.min(6,Number(state.setup['battleSize'+side])||1));}
-  function resizeTeam(side){
-    const size=teamSize(side),sel=state.selectedTeams[side];
-    while(sel.length<size)sel.push(null); // grow: new slots start empty
-    if(sel.length>size)sel.length=size;   // shrink: drop the trailing slots
-  }
-  function slotCard(side,index){
-    const id=state.selectedTeams[side][index];
-    if(id==null)return null;
-    return selectableCards().find(c=>c.id===id)||null;
-  }
-  function teamFilled(side){const sel=state.selectedTeams[side];const size=teamSize(side);return sel.length>=size&&sel.slice(0,size).every(id=>id!=null);}
-  function bothTeamsFilled(){return teamFilled('A')&&teamFilled('B');}
-  function explicitTeamIds(side){
-    const size=teamSize(side);return (state.selectedTeams[side]||[]).slice(0,size);
-  }
-
-  // ---- Card sources: system presets (read-only) + user library (editable) ----
-  function isSystemPreset(id){return!!(state.systemPresets||[]).find(c=>c.id===id);}
-  function selectableCards(){return [...(state.systemPresets||[]), ...state.library];}
-
-  // Unified battle-card metadata resolver: system preset → user library → none.
-  // Replaces the old `state.library.find(...)` assumption that every battle card
-  // lived in the user library.
-  function resolveBattleCardMeta(templateId){
-    return NCB.resolveCardMeta(templateId,{system:state.systemPresets,library:state.library,deployed:state._deployedMeta});
-  }
-
-  // The pool index maps to a concrete card (preset or user card). Used for the
-  // battle selectors AND multi-unit team building (extra members cycle the pool).
-  function cardAt(poolIndex){
-    const pool=selectableCards();
-    return pool.length?pool[((poolIndex%pool.length)+pool.length)%pool.length]:null;
-  }
-  let overlayReturnFocus=null;
-  const overlayHistoryKey='nbl-overlay';
-  function rememberOverlay(){
-    if(document.querySelector('.picker-overlay'))return;
-    overlayReturnFocus=document.activeElement;
-    root.history.pushState({...root.history.state,[overlayHistoryKey]:true},'');
-  }
-  root.addEventListener('popstate',()=>{if(document.querySelector('.picker-overlay')&&!root.history.state?.[overlayHistoryKey])closePicker();});
-  function syncOverlayLock(){document.body.classList.toggle('picker-open',!!document.querySelector('.picker-overlay,.knowledge-sheet'));}
-  function closeKnowledgeSheet(){const sheet=document.querySelector('.knowledge-sheet');const focus=sheet?._returnFocus;sheet?.remove();syncOverlayLock();if(focus?.isConnected)focus.focus({preventScroll:true});}
-  function closePicker(){closeKnowledgeSheet();document.querySelector('.picker-overlay')?.remove();syncOverlayLock();if(root.history.state?.[overlayHistoryKey])root.history.back();if(overlayReturnFocus?.isConnected)overlayReturnFocus.focus({preventScroll:true});}
-  document.addEventListener('keydown',event=>{
-    const modal=document.querySelector('.knowledge-sheet')||document.querySelector('.picker-overlay');if(!modal)return;
-    if(event.key==='Escape'){event.preventDefault();if(modal.classList.contains('knowledge-sheet'))closeKnowledgeSheet();else closePicker();return;}
-    if(event.key!=='Tab')return;
-    const controls=[...modal.querySelectorAll('button,input,select,textarea,a[href],summary')].filter(el=>!el.disabled&&el.getClientRects().length);
-    const first=controls[0],last=controls.at(-1);if(!first)return;
-    if(event.shiftKey&&(document.activeElement===first||!modal.contains(document.activeElement))){event.preventDefault();last.focus();}
-    else if(!event.shiftKey&&(document.activeElement===last||!modal.contains(document.activeElement))){event.preventDefault();first.focus();}
-  });
-  function browserOptions(extra={}){return {onCopy:c=>{copyPresetToLibrary(c);closePicker();setTab('cards');},canEdit:c=>!isSystemPreset(c.id),onEdit:c=>{closePicker();openCardEditor(c);},onDelete:c=>{if(confirm(`删除「${c.displayName||c.name}」？`)){state.library=state.library.filter(x=>x.id!==c.id);saveLibrary();closePicker();renderCards();}},...extra};}
-  function openPicker(side,slot){
-    rememberOverlay();
-    const label=(side==='A'?'左方':'右方')+(slot>0?` ${slot+1} 号位`:'');
-    const overlay=document.createElement('section');overlay.className='picker-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','选择'+label+'卡牌');document.body.appendChild(overlay);document.body.classList.add('picker-open');
-    new NCB.CardBrowser(overlay,selectableCards(),browserOptions({title:'选择'+label+'卡牌',selectLabel:'选为'+label,onClose:closePicker,onSelect:c=>{resizeTeam(side);const sel=state.selectedTeams[side];sel[slot]=c.id;state.selectedTeams[side]=sel;closePicker();renderBattle();}}));overlay.querySelector('[data-browser-close]')?.focus({preventScroll:true});
-  }
-  function setupSlot(side,index){
-    resizeTeam(side);
-    const card=slotCard(side,index),size=teamSize(side);
-    const title=(side==='A'?'左方':'右方')+(size>1?` ${index+1} 号位`:'');
-    const id=`picker:${side}:${index}`;
-    return `<div class="setup-slot" data-team-slot="${id}"><h2>${title}</h2>${card?NCB.selectionCard(card):'<div class="empty-slot">＋<p>选择卡牌</p></div>'}<button class="btn primary" data-open-picker="${id}">${card?'更换卡牌':'选择卡牌'}</button></div>`;
-  }
-  function setupTeam(side){
-    const size=teamSize(side);resizeTeam(side);
-    const slots=[];
-    for(let i=0;i<size;i++)slots.push(setupSlot(side,i));
-    return `<div class="setup-team"><div class="setup-team-head">${side==='A'?'左方':'右方'}<span class="inline-note">${size} 人</span></div><div class="setup-slot-list">${slots.join('')}</div></div>`;
-  }
-
-  function renderBattle(){
-    const view=$('#view-battle');if(!view)return;view.dataset.frameIndex=state.frameIndex||0;
-    const engine=state.engine;
-    if(!engine){
-      const missing=(()=>{let n=0;for(const side of ['A','B']){const size=teamSize(side),sel=(state.selectedTeams[side]||[]);for(let i=0;i<size;i++)if(!sel[i])n++;}return n;})();
-      const startHint=missing?`<p class="hint warn">还需选择 ${missing} 张卡牌才能开始对战。</p>`:'';
-      view.innerHTML=`<div class="battle-empty">
-        <div class="big-title">让创造，自己交锋。</div>
-        <p>直接选两张系统预设卡，或从「我的卡牌」用自建卡，观察它们如何出招。每局对战的随机种子都是新的，重开也是一场新对局。</p>
-        <div class="battle-setup-panel">
-          <div class="setup-slots">${setupTeam('A')}<b class="setup-vs">VS</b>${setupTeam('B')}</div>
-          ${startHint}
-          <button class="btn big primary" data-action="battle-start" ${bothTeamsFilled()?'':'disabled'}>开始对战</button>
-          <details class="advanced-note"><summary>高级设置</summary><div class="field-row"><label class="field"><span>左方人数</span><select data-battle-size-a>${[1,2,3,4,5,6].map(n=>`<option ${state.setup.battleSizeA===n?'selected':''}>${n}</option>`).join('')}</select></label><label class="field"><span>右方人数</span><select data-battle-size-b>${[1,2,3,4,5,6].map(n=>`<option ${state.setup.battleSizeB===n?'selected':''}>${n}</option>`).join('')}</select></label><label class="field"><span>最大回合</span><input data-max-rounds type="number" min="1" max="1000" value="100"></label></div>
-          <div class="field-row"><label class="field"><span>固定种子（复现用）</span><input data-fixed-seed type="number" min="1" max="4294967295" value="${state.setup.seedNumber}"></label><span class="inline-note">普通开始/重开使用新随机种子；此值仅供「同种子重放」复现。</span></div>
-          <p class="hint">每一栏的每个槽位独立选卡；未填满不能开始，系统预设为只读来源。</p></details>
-        </div>
-      </div>`;
-      return;
+    function log(text, cls) {
+      const div = document.createElement('div');
+      div.className = 'le ' + (cls || '');
+      div.textContent = text;
+      logbox.appendChild(div);
+      logbox.scrollTop = logbox.scrollHeight;
     }
-    view.innerHTML=`
-      <div class="battle-toolbar">
-        <span class="battle-mode-pill">${state.battleMode==='manual'?'实验接管':'AI 对战'}</span>
-        <span class="hint">回合 ${state.display?.round??engine.round}</span>
-        <span class="spacer"></span>
-        <button class="btn small" data-action="battle-restart">重开</button>
-        <button class="btn small" data-action="battle-back">返回选卡</button>
-      </div>
-      <div class="battle-vs">
-        <div class="battle-side">
-          <div class="side-label">左方</div>
-          <div class="arena-line">${teamCards('A')}</div>
-        </div>
-        <div class="battle-vs-divider">VS</div>
-        <div class="battle-side">
-          <div class="side-label">右方</div>
-          <div class="arena-line">${teamCards('B')}</div>
-        </div>
-      </div>
-      ${outcomeBanner()}<div class="current-event" aria-live="polite">${esc(state.frameRow?.text||'双方正在观察战场')}</div>
-      ${state.battleMode==='auto'?autoControls():commandPanel()}<details class="advanced-note"><summary>实验控制</summary><button class="btn small" data-action="manual-takeover">${state.battleMode==='auto'?'手动接管左方':'返回 AI 对战'}</button><button class="btn small" data-action="edit-battle-card">编辑左方卡牌</button><button class="btn small" data-action="rerun-same-seed" title="用固定种子精确复现本局（普通重开是新随机局）">同种子重放(复现)</button></details>
-      <div class="battle-log-panel">
-        <div class="panel-head"><h3>战斗记录</h3>
-          <div class="log-tools"><select data-log-filter><option value="all">全部</option><option value="damage">伤害</option><option value="heal">治疗</option><option value="status">状态</option><option value="system">系统</option></select></div>
-        </div>
-        <div class="battle-log">${logRows()}</div>
-      </div>`;
-    const filter=$('[data-log-filter]',view);if(filter)filter.value=state.logFilter;
-  }
 
-  function autoControls(){
-    return `<div class="auto-controls">
-      <button class="btn" data-action="auto-pause">${state.autoPaused?'继续':'暂停'}</button>
-      <button class="btn" data-action="auto-step">下一步</button>
-      <span class="spacer"></span>
-      ${[1,2,4].map(x=>`<button class="btn ${state.autoSpeed===x?'is-active':''}" data-action="auto-speed" data-speed="${x}">${x}×</button>`).join('')}
-    </div>`;
-  }
-
-  function meter(label,value,max){const ratio=max?Math.max(0,Math.min(1,value/max)):0;return `<div class="meter-row"><span>${label}</span><span class="meter"><i style="width:${ratio*100}%"></i></span><span>${Math.round(value)}/${Math.round(max)}</span></div>`;}
-  function resourceIds(entity){const keys=Object.keys(entity.stats||{});const out=[];if((entity.stats.ENERGY_MAX??0)>0)out.push('ENERGY');for(const key of keys){if(!key.endsWith('_MAX'))continue;const id=key.slice(0,-4);if(id==='ENERGY'||id==='HP')continue;if((entity.stats[key]??0)>0)out.push(id);}return [...new Set(out)];}
-  function resourceMeters(entity){return resourceIds(entity).map(id=>meter('能量',state.engine.getResource(entity,id),state.engine.resourceMax(entity,id))).join('');}
-  function formatSkillCosts(skill){const costs=state.engine?.skillCosts(skill)||[];return costs.length?costs.map(c=>`${c.resource==='ENERGY'?'能量':c.resource} ${c.amount}`).join(' + '):'无消耗';}
-  function statusLine(entity){const statuses=entity.statuses.map(s=>{const d=NCB.STATUS_DEFS[s.id]||{name:s.id,kind:''};return `<span class="status ${d.kind==='debuff'?'debuff':''}" title="${esc(d.name)}">${esc(d.name)}${s.stacks>1?` ×${s.stacks}`:''}<small> ${s.duration===null?'∞':`${s.duration}回合`}</small></span>`;});return statuses.join('')||'<span class="inline-note">无状态</span>';}
-  function entityCard(entity){
-    const engine=state.engine;const selected=state.selectedActorId===entity.id;let target=false;
-    if(state.selectedSkillId&&state.selectedActorId){try{target=engine.getValidTargets(state.selectedActorId,state.selectedSkillId).some(t=>t.id===entity.id);}catch(_){}}
-    const planned=state.pending.get(entity.id);
-    const derived=id=>entity.displayStats?.[id]??engine.getStat(entity.id,id);
-    const meta=resolveBattleCardMeta(entity.templateId);
-    const ui=meta?NCB.rarityUI(meta.rarity):null;
-    const bp=meta?NCB.battlePowerOf(meta):null;
-    const lv=meta?meta.level:null;
-    return `<article class="entity-card ${entity.hp>0?'selectable':''} ${selected?'is-selected':''} ${target?'is-target':''} ${entity.hp<=0?'is-dead':''} ${state.frameRow?.sourceId===entity.id?'is-acting':''}" data-entity-id="${entity.id}">
-      <div class="entity-top"><div><div class="entity-name">${esc(entity.name)}</div>${meta&&ui?`<div class="entity-meta">${esc(ui.badge)} · Lv.${lv??''}${bp?` · ${esc(NCB.formatBattlePower(bp))}`:''}</div>`:''}</div></div>
-      ${NCB.artPlaceholder(meta?meta.rarity:'C',entity.templateId)}<div class="meter-group">${meter('生命',entity.hp,entity.maxHp)}${meter('护盾',entity.shield,entity.maxHp)}</div>
-      <div class="stat-line"><span class="stat-chip">攻击<b>${derived('ATK')}</b></span><span class="stat-chip">防御<b>${derived('DEF')}</b></span><span class="stat-chip">速度<b>${derived('SPD')}</b></span><span class="stat-chip">暴击<b>${derived('CRIT')}%</b></span></div>
-      <div class="battle-resources">${resourceIds(entity).map(id=>`<span data-resource="${esc(id)}">${esc(({ENERGY:'能量',RAGE:'怒气',SOUL:'魂力',CHRONO:'时能'})[id]||id)} <b>${Math.round(engine.getResource(entity,id))}/${Math.round(engine.resourceMax(entity,id))}</b></span>`).join('')}${Object.entries(entity.wards||{}).filter(([,v])=>v>0).map(([id,v])=>`<span data-ward="${esc(id)}">${esc(NCB.DAMAGE_TYPES[id]?.name||id)}护符 <b>${Math.round(v)}</b></span>`).join('')}</div>
-      <div class="status-line">${statusLine(entity)}</div><div class="battle-actions">${entity.skills.map(id=>`<span title="${esc(NCB.describeAction(NCB.SKILL_DEFS[id]))}">${esc(NCB.SKILL_DEFS[id].name)}</span>`).join('')}</div>
-      ${state.frameRow?.targetId===entity.id?floatHtml(state.frameRow):''}${planned?`<span class="action-marker">已选择行动</span>`:''}
-    </article>`;
-  }
-  function teamCards(teamId){const entities=(state.display?.teams||state.engine.teams)[teamId].entities;return `<div class="team-line" style="--team-cols:${Math.min(entities.length,6)}">${entities.map(entityCard).join('')}</div>`;}
-
-  function skillTargetLabel(skill){return ({self:'自己',ally:'单个友方','all-allies':'全体友方',enemy:'单个敌方','all-enemies':'全体敌方'})[skill.target]||skill.target;}
-  function commandPanel(){
-    const engine=state.engine;if(!engine)return'';
-    ensureActor();const actor=state.selectedActorId?engine.entity(state.selectedActorId):null;
-    const required=engine.getLiving('A').filter(e=>engine.getLegalSkills(e.id).length);
-    const allReady=required.every(e=>state.pending.has(e.id));
-    const selectedSkill=state.selectedSkillId?NCB.SKILL_DEFS[state.selectedSkillId]:null;
-    const pending=[...state.pending.values()];
-    return `<div class="command-panel">
-      <div class="panel"><div class="panel-head"><h3>选择行动</h3><span class="inline-note">回合 ${engine.round}</span></div><div class="panel-body">
-        ${actor?`<div class="actor-title">${esc(actor.name)}</div><div class="actor-sub">请选择技能${selectedSkill?'，再点击高亮目标':''}</div>
-        <div class="skill-list">${engine.getLegalSkills(actor.id).map(skill=>`<button class="skill-btn ${state.selectedSkillId===skill.id?'is-active':''}" data-skill-id="${skill.id}"><span><span class="skill-name">${esc(skill.name)}</span><span class="skill-meta">${esc(skillTargetLabel(skill))} · 优先P${skill.priority||0} · 冷却CD${skill.cooldown||0}</span></span><span class="skill-cost">${esc(formatSkillCosts(skill))}</span></button>`).join('')||'<div class="empty">当前无法行动</div>'}`:'<div class="empty">没有可操作实体</div>'}
-        <div class="row"><button class="btn" data-action="auto-plan">AI 填充我方</button><button class="btn primary" data-action="resolve-round" ${allReady?'':'disabled'}>结算回合</button><button class="btn" data-action="auto-finish">自动演算到结束</button></div>
-      </div></div>
-      <div class="panel"><div class="panel-head"><h3>已安排行动</h3><span>${pending.length}/${required.length}</span></div><div class="panel-body pending-list">${pending.length?pending.map(a=>{const actor=engine.entity(a.actorId),skill=NCB.SKILL_DEFS[a.skillId],target=engine.entity(a.targetId);return `<div class="pending-item"><span>${esc(actor.name)} → ${esc(skill.name)} → ${esc(target.name)}</span><button class="btn small ghost" data-remove-action="${actor.id}">×</button></div>`}).join(''):'<div class="inline-note">尚未安排动作。</div>'}</div></div>
-    </div>`;
-  }
-
-  function logRows(){
-    const log=(state.engine?.log||[]).slice(0,state.display?.logLength);const filtered=state.logFilter==='all'?log:log.filter(x=>x.kind===state.logFilter);
-    if(!filtered.length)return `<div class="empty">暂无战斗记录</div>`;
-    return filtered.slice(-200).reverse().map(entry=>`<div class="log-row ${esc(entry.kind)}"><span class="log-index">#${entry.id} R${entry.round}</span>${esc(entry.text||entry.kind)}${entry.trace?.length?`<details><summary>计算详情</summary><ol class="trace">${entry.trace.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></details>`:''}</div>`).join('');
-  }
-  function outcomeBanner(){const o=state.display?.outcome||state.engine.outcome();if(!o.ended)return'';return `<div class="result-banner">${o.winner==='draw'?'平局':`${o.winner==='A'?'左方':'右方'}胜利！`}</div>`;}
-
-  function ensureActor(){
-    if(!state.engine)return;
-    const candidate=state.engine.getLiving('A').find(e=>!state.pending.has(e.id)&&state.engine.getLegalSkills(e.id).length);
-    const existing=state.selectedActorId&&state.engine.getLiving('A').some(e=>e.id===state.selectedActorId)?state.engine.entity(state.selectedActorId):null;
-    if(!existing||state.pending.has(existing.id)||!state.engine.getLegalSkills(existing.id).length)state.selectedActorId=candidate?.id||state.engine.getLiving('A')[0]?.id||null;
-  }
-
-  function queueAction(actorId,skillId,targetId){state.pending.set(actorId,{actorId,skillId,targetId});state.selectedSkillId=null;state.selectedActorId=null;ensureActor();renderBattle();}
-  function handleSkill(skillId){
-    const engine=state.engine,actor=state.selectedActorId?engine.entity(state.selectedActorId):null;if(!actor)return;
-    const skill=NCB.SKILL_DEFS[skillId];const targets=engine.getValidTargets(actor.id,skill.id);if(!targets.length)return;
-    if(skill.target==='self'||skill.target==='all-allies'||skill.target==='all-enemies')queueAction(actor.id,skill.id,targets[0].id);
-    else{state.selectedSkillId=skill.id;renderBattle();}
-  }
-  function autoPlanPlayer(){state.pending.clear();for(const a of NCB.planAI(state.engine,'A','canonical'))state.pending.set(a.actorId,a);state.selectedActorId=null;state.selectedSkillId=null;ensureActor();renderBattle();}
-  function resolveRound(){const required=state.engine.getLiving('A').filter(e=>state.engine.getLegalSkills(e.id).length);if(!required.every(e=>state.pending.has(e.id)))return;const enemy=NCB.planAI(state.engine,'B','canonical');state.engine.resolveRound([...state.pending.values(),...enemy]);state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;ensureActor();renderBattle();}
-  function autoFinish(){let guard=0;while(!state.engine.outcome().ended&&guard++<60){state.engine.resolveRound([...NCB.planAI(state.engine,'A','canonical'),...NCB.planAI(state.engine,'B','canonical')]);}state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;renderBattle();}
-  function floatHtml(row){
-    let text='';if(row.kind==='damage'&&row.amount>0)text=row.hpDamage?`−${row.hpDamage} HP`:`−${row.shieldDamage||row.wardDamage||0} 盾`;
-    if(row.kind==='heal'||row.kind==='affinity')text=`+${row.amount} HP`;
-    if((row.kind==='shield'||row.kind==='ward')&&(row.displayAmount??row.amount)>0)text=`+${row.displayAmount??row.amount} ${row.kind==='ward'?'护符':'盾'}`;
-    if(row.kind==='hp-cost')text=`${row.amount} HP`;
-    return text?`<span class="combat-float-slot" data-frame-id="${row.id||0}">${esc(text)}</span>`:'';
-  }
-  function prepareFrames(){
-    if(!state.engine)return false;
-    if(!state.frameQueue?.length&&!state.engine.outcome().ended){
-      state.engine.resolveRound([...NCB.planAI(state.engine,'A','canonical'),...NCB.planAI(state.engine,'B','canonical')]);
-      state.frameQueue=state.engine.presentationFrames.splice(0);
+    function applyEntry(e) {
+      log(e.text, e.cls);
+      updateBar('A', e.hpA, e.maxA);
+      updateBar('B', e.hpB, e.maxB);
+      roundTxt.textContent = 'R' + e.round;
     }
-    return !!state.frameQueue?.length;
-  }
-  function autoStep(){
-    if(!prepareFrames())return false;
-    const frame=state.frameQueue.shift();state.display=frame.snapshot;state.frameIndex=frame.index;state.frameRow=frame.row;
-    renderBattle();return true;
-  }
-  function autoTogglePause(){state.autoPaused=!state.autoPaused;state.stepGroup=null;renderBattle();startAuto();}
-  function setAutoSpeed(s){state.autoSpeed=s;startAuto();renderBattle();}
-  let autoTimer=null;
-  function startAuto(){
-    stopAuto();
-    const tick=()=>{
-      if(!state.engine||state.tab!=='battle'||state.battleMode!=='auto')return;
-      if(state.autoPaused&&state.stepGroup==null)return;
-      if(!autoStep()){state.stepGroup=null;return;}
-      if(state.stepGroup!=null&&state.frameQueue[0]?.group!==state.stepGroup){state.stepGroup=null;return;}
-      autoTimer=setTimeout(tick,(state.frameRow?600:80)/state.autoSpeed);
-    };
-    autoTimer=setTimeout(tick,600/state.autoSpeed);
-  }
-  function stepAction(){
-    stopAuto();state.battleMode='auto';state.autoPaused=true;
-    if(prepareFrames()){state.stepGroup=state.frameQueue[0].group;autoStep();if(state.frameQueue[0]?.group===state.stepGroup)startAuto();else state.stepGroup=null;}
-  }
 
-  // ===========================================================================
-  // CARDS (card library)
-  // ===========================================================================
-  function renderCards(){const view=$('#view-cards');if(!view)return;new NCB.CardBrowser(view,selectableCards(),browserOptions({title:`卡牌库 · ${state.systemPresets.length} 张系统预设`,selectLabel:'立即对战',onSelect:startBattleWithCard}));}
-  function renderGenerate(){
-    const view=$('#view-generate');if(!view)return;
-    const card=state.lastGenerated;
-    view.innerHTML=`<div class="generate-layout">
-      <div class="panel"><div class="panel-head"><h2>生成卡牌</h2><span class="hint">选择稀有度 / 等级，生成一个独立个体</span></div><div class="panel-body">
-        <div class="field-row">
-          <label class="field"><span>稀有度</span><select data-gen-rarity>${RARITY_OPTIONS.map(r=>`<option value="${r}" ${r===state.genRarity?'selected':''}>${esc(NCB.V2_RARITY_DISPLAY?.[r]||r)}</option>`).join('')}</select></label>
-          <label class="field"><span>等级</span><input data-gen-level type="number" min="1" max="100" step="1" value="${state.genLevel}"></label>
-        </div>
-        <details class="advanced-note"><summary>Seed（高级）</summary>
-          <label class="field"><span>固定种子</span><input type="text" data-gen-seed value="${esc(state.genSeed)}" placeholder="留空则自动随机"></label>
-          <p class="hint">默认自动随机种子；只有高级模式下手动指定。</p>
-        </details>
-        <div class="row"><button class="btn big primary" data-action="generate-roll">随机生成</button></div>
-      </div></div>
-      ${card?`<div class="panel"><div class="panel-head"><h2>生成结果</h2></div><div class="panel-body">
-        <div class="card-center">${NCB.renderCard(card,{showId:false})}</div>
-        <div class="row"><button class="btn primary" data-action="add-to-library">加入我的卡牌</button><button class="btn" data-action="battle-generated">立即对战</button><button class="btn" data-action="generate-roll">再次生成</button><button class="btn" data-action="edit-generated">高级编辑</button></div>
-      </div></div>`:''}
-    </div>`;
-  }
-
-  // ===========================================================================
-  // HELP (玩法说明)
-  // ===========================================================================
-  function renderHelp(){
-    $('#view-help').innerHTML=`<div class="help-layout"><h2>创造、组合、观察。</h2><ol class="help-steps"><li>可直接选两张「系统预设」开战，无需先建卡；或选择稀有度和等级自建卡。</li><li>保存到我的卡牌，选择左右双方。</li><li>开始对战，看 AI 自动决策。随时暂停、单步或调速。</li><li>结束后重开、换卡，或打开高级编辑修改数值。</li></ol>
-    <button class="btn primary" data-action="open-knowledge">打开「数值百科」</button>
-    <h3>快速入门</h3><p><b>生命</b>决定能承受多少伤害；<b>攻击</b>决定很多进攻行动的基础威力；<b>防御</b>主要抵抗物理伤害；<b>抗性</b>处理元素/奥术伤害；<b>速度</b>影响行动顺序。</p>
-    <p>暴击、穿透、命中、闪避、治疗、护盾决定攻防细节；资源、状态、DoT、消费把战斗组合成循环。最后，<b>波动性</b>让同一个行动在不同回合结果不同，<b>成长/疲劳</b>让同一张卡第 3 回合与第 30 回合不是同一个状态，<b>战斗损耗</b>让治疗型卡在超长局中最终也会结束战斗。</p>
-    <h3>同时决策，顺序结算</h3><p>每轮所有存活角色先选择一个行动与合法目标，再按行动优先级、速度和确定性规则统一排序。状态与反击会即时触发。达到最大回合则平局。</p><h3>稀有度 · 等级 · 战力</h3><p>内置 60 张经过筛选的系统预设（每档稀有度 5 张），覆盖 12 档稀有度、Lv.10–100，方便第一眼对比。卡面上「战力」是综合实力的<b>参考数值</b>，<b>不参与</b>战斗计算——高战力也可能因机制克制而输。</p><p>等级可输入 1–100 的任意整数；12 档稀有度代表逐步增加的数值预算；同等级下更高稀有度通常总体更强。特点由最终数值与行动分析而来。没有升级、奖励或解锁。</p><p>在「卡牌详情 → 详细数值」里点击任意字段可查看它的含义；「数值百科」可搜索全部参数、效果、条件、公式变量。数据保存在当前浏览器。高级实验室可编辑完整行动、资源、状态、公式，查看回放与计算详情。</p></div>`;
-  }
-
-  // ===========================================================================
-  // ADVANCED LAB (preserved from v1: editor / simulation / guide / replay / trace / json)
-  // ===========================================================================
-  function currentPack(){return{units:NCB.UNIT_DEFS,skills:NCB.SKILL_DEFS,statuses:NCB.STATUS_DEFS};}
-  function unitOptions(selected){return Object.keys(NCB.UNIT_DEFS).map(id=>`<option value="${esc(id)}" ${id===selected?'selected':''}>${esc(NCB.UNIT_DEFS[id].name)} / ${esc(NCB.UNIT_DEFS[id].role)}</option>`).join('');}
-
-  // ===========================================================================
-  // NUMERICAL KNOWLEDGE — 数值百科 (game encyclopedia; spec NKS §27-31)
-  // ===========================================================================
-  const KNOW_CATEGORIES=[
-    ['params','基础/战斗属性',k=>Object.entries(k.params).filter(([,e])=>['实体基础','防御','资源'].includes(e.category))],
-    ['random','随机性',k=>Object.entries(k.params).filter(([,e])=>['VOLATILITY','LUCK'].includes(e.id))],
-    ['time','成长与疲劳',k=>Object.entries(k.params).filter(([,e])=>['ENDURANCE','RAMP_START','RAMP_RATE','RAMP_CAP','FATIGUE_START','FATIGUE_RATE','FATIGUE_CAP','BATTLE_WEAR'].includes(e.id))],
-    ['effects','行动效果',k=>Object.entries(k.effects)],
-    ['conditions','条件',k=>Object.entries(k.conditions)],
-    ['events','事件',k=>Object.entries(k.events)],
-    ['formula','公式变量',k=>Object.entries(k.formulaSymbols)],
-    ['types','伤害类型',k=>Object.entries(k.damageTypes)]
-  ];
-  function knowledgeSheet(id){
-    const returnFocus=document.querySelector('.knowledge-sheet')?._returnFocus||document.activeElement;
-    document.querySelectorAll('.knowledge-sheet').forEach(s=>s.remove());
-    const hit=NCB.knowledgeLookup(id);if(!hit)return;
-    const e=hit.entry;
-    const lines=[];lines.push(`<span class="knowledge-kind">${esc(hit.kind)}</span>`);
-    lines.push(`<h2>${esc(e.nameZh||e.nameEn||id)}${e.nameEn&&e.nameEn!==(e.nameZh||e.nameEn)?` · <code>${esc(e.nameEn)}</code>`:''}</h2>`);
-    if(e.summary)lines.push(`<p>${esc(e.summary)}</p>`);
-    if(e.higherEffect||e.lowerEffect){lines.push('<div class="knowledge-updown"><div><b>调高</b><p>'+esc(e.higherEffect||'—')+'</p></div><div><b>调低</b><p>'+esc(e.lowerEffect||'—')+'</p></div></div>');}
-    if(e.battleEffect)lines.push(`<h4>进入战斗计算</h4><p>${esc(e.battleEffect)}</p>`);
-    if((e.interactions||[]).length)lines.push(`<h4>相关</h4><p>${e.interactions.map(x=>`<button class="btn tiny" data-knowledge="${esc(x)}">${esc(x)}</button>`).join(' ')}</p>`);
-    if((e.examples||[]).length)lines.push(`<h4>示例</h4><ul>${e.examples.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`);
-    if(e.aiMeaning)lines.push(`<h4>AI 如何理解</h4><p>${esc(e.aiMeaning)}</p>`);
-    if(e.battlePowerMeaning)lines.push(`<h4>战力如何理解</h4><p>${esc(e.battlePowerMeaning)}</p>`);
-    if(e.tuningGuidance)lines.push(`<h4>调优指南</h4><p>${esc(e.tuningGuidance)}</p>`);
-    if((e.readBy||[]).length)lines.push(`<h4>读取方</h4><p>${esc(e.readBy.join(' / '))}</p>`);
-    const sheet=document.createElement('section');
-    sheet._returnFocus=returnFocus;
-    sheet.className='knowledge-sheet';sheet.setAttribute('role','dialog');sheet.setAttribute('aria-modal','true');
-    sheet.innerHTML=`<div class="knowledge-sheet-card"><button class="btn ghost" data-knowledge-close>关闭</button>${lines.join('')}<button class="btn knowledge-more" data-knowledge-browse="${esc(id)}">在完整百科中查看</button></div>`;
-    document.body.appendChild(sheet);document.body.classList.add('picker-open');
-    sheet.querySelector('[data-knowledge-close]').onclick=closeKnowledgeSheet;
-    sheet.querySelector('[data-knowledge-close]').focus({preventScroll:true});
-  }
-  function renderKnowledgeBrowser(root){
-    const k=NCB.NUMERICAL_KNOWLEDGE();
-    const render=()=>{
-      const q=(root.querySelector('[data-kb-search]')?.value||'').trim().toLowerCase();
-      let results=q?NCB.knowledgeSearch(q):[];
-      const cat=root.querySelector('[data-kb-cat]')?.value||'';
-      if(!q&&cat){const entry=KNOW_CATEGORIES.find(c=>c[0]===cat);if(entry)results=entry[2](k).map(([id,e])=>({kind:'参数',id,nameZh:e.nameZh||e.human||id,nameEn:e.nameEn||id,summary:e.summary||e.human||''}));}
-      root.querySelector('[data-kb-results]').innerHTML=results.length
-        ?`<div class="kb-results">${results.map(r=>`<button class="kb-row" data-knowledge="${esc(r.id)}"><b>${esc(r.nameZh)}</b><span>${esc(r.kind)} · <code>${esc(r.nameEn||r.id)}</code></span><small>${esc(r.summary)}</small></button>`).join('')}</div>`
-        :`<p class="empty">输入关键词，例如「吸血」「疲劳」「暴击」「ATK」。</p>`;
-    };
-    root.innerHTML=`<div class="kb"><div class="kb-head"><h2>数值百科</h2><button class="btn" data-kb-close>返回</button></div><input type="search" data-kb-search placeholder="搜索：攻击 / 暴击 / 疲劳 / 吸血 …"><select data-kb-cat><option value="">按分类浏览</option>${KNOW_CATEGORIES.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select><div data-kb-results></div></div>`;
-    root.oninput=e=>{if(e.target.matches('[data-kb-search]'))render();};
-    root.onchange=e=>{if(e.target.matches('[data-kb-cat]'))render();};
-    // Search blur must not rebuild a row between pointer-down and click.
-    const open=e=>{if(e.target.closest('[data-kb-close]'))closePicker();};
-    root.onclick=open;
-    render();
-  }
-  function openKnowledgeBrowser(){
-    rememberOverlay();
-    const overlay=document.createElement('section');overlay.className='picker-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','数值百科');
-    document.body.appendChild(overlay);document.body.classList.add('picker-open');
-    renderKnowledgeBrowser(overlay);
-    overlay.querySelector('[data-kb-close]')?.focus({preventScroll:true});
-  }
-
-  function renderEditor(){ const view=$('#view-editor');if(!view)return;
-    const unit=NCB.UNIT_DEFS[state.editorUnitId]||NCB.UNIT_DEFS[Object.keys(NCB.UNIT_DEFS)[0]];state.editorUnitId=unit.id;
-    view.innerHTML=`<div class="editor-layout"><div class="panel"><div class="panel-head"><h2>实体目录</h2><span>${Object.keys(NCB.UNIT_DEFS).length}</span></div><div class="panel-body roster-list">${Object.keys(NCB.UNIT_DEFS).map(id=>{const u=NCB.UNIT_DEFS[id];return`<button class="roster-btn ${id===unit.id?'is-active':''}" data-editor-unit="${id}"><b>${esc(u.name)}</b><span>${esc(u.role)} · ${u.skills.length} 技能</span></button>`}).join('')}</div></div>
-      <div class="stack"><div class="panel"><div class="panel-head"><h2>实体数值</h2><span class="inline-note">高级编辑</span></div><div class="panel-body">
-        <div class="grid two"><label class="field"><span>名称</span><input data-unit-field="name" value="${esc(unit.name)}"></label><label class="field"><span>定位</span><input data-unit-field="role" value="${esc(unit.role)}"></label></div>
-        <div class="form-grid">${['MAX_HP','ATK','DEF','RES','SPD','CRIT','CRIT_DMG','PEN','ACC','EVA','ENERGY_MAX','ENERGY_REGEN'].map(stat=>`<label class="field"><span>${esc(stat)}</span><input type="number" step="0.01" data-stat="${stat}" value="${unit.stats[stat]??0}"></label>`).join('')}</div>
-        <p class="inline-note">抗性/亲和/技能程序编辑保留自 v1 实验室；具体见「规则/架构」与 JSON 视图。</p>
-      </div></div></div></div>`;
-  }
-
-  function simulationLineup(team){return (state.setup[`team${team}`]||[]).map(id=>`<span class="status">${esc(NCB.UNIT_DEFS[id]?.name||id)}</span>`).join(' ');}
-  function topMetricRows(obj,limit=8,format=v=>String(v)){return Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]).slice(0,limit).map(([k,v])=>`<div class="pending-item"><span>${esc(NCB.SKILL_DEFS[k]?.name||NCB.STATUS_DEFS[k]?.name||NCB.DAMAGE_TYPES[k]?.name||k)}</span><b>${esc(format(v))}</b></div>`).join('')||'<div class="inline-note">暂无数据</div>';}
-  function renderSimulation(){const view=$('#view-simulation');if(!view)return;const r=state.simulation;
-    const ids=Object.keys(NCB.UNIT_DEFS);
-    // Default to two distinct built-in units so the first run resolves (a mirror
-    // of the same sustain kit is the known heal-stall case).
-    const dfltA=ids[0]||'vanguard',dfltB=ids.find(x=>x!==dfltA)||ids[1]||'warden';
-    const opt=(id,dflt)=>`<option ${id===dflt?'selected':''}>${esc(id)}</option>`;
-    view.innerHTML=`<div class="sim-layout"><div class="panel"><div class="panel-head"><h2>批量模拟</h2></div><div class="panel-body stack">
-      <label class="field"><span>我方阵容</span><select data-sim-team-a>${ids.map(id=>opt(id,dfltA)).join('')}</select></label>
-      <label class="field"><span>对手阵容</span><select data-sim-team-b>${ids.map(id=>opt(id,dfltB)).join('')}</select></label>
-      <label class="field"><span>局数</span><input type="number" min="1" max="5000" value="${r?.battles||500}" data-sim="battles"></label>
-      <label class="field"><span>随机种子基数</span><input type="number" value="9000" data-sim="seedBase"></label>
-      <button class="btn primary" data-action="run-simulation">运行批量模拟</button>
-      <p class="inline-note">每场战斗使用独立确定性种子；AI 与真实战斗使用同一 Formula/Effect 管线。</p>
-    </div></div>
-    <div class="stack">${r?`<div class="metric-grid"><div class="metric"><label>我方胜率</label><strong>${(r.winRateA*100).toFixed(1)}%</strong></div><div class="metric"><label>对手胜率</label><strong>${(r.winRateB*100).toFixed(1)}%</strong></div><div class="metric"><label>平均回合</label><strong>${r.avgRounds}</strong></div></div>
-      <div class="panel"><div class="panel-head"><h3>技能使用</h3></div><div class="panel-body pending-list">${topMetricRows(r.skillUsage)}</div></div>
-      <div class="panel"><div class="panel-head"><h3>状态施加</h3></div><div class="panel-body pending-list">${topMetricRows(r.statusApplications)}</div></div>`:'<div class="panel"><div class="empty">选择参数并运行。</div></div>'}</div></div>`;
-  }
-  function runSimulationFromUI(){const view=$('#view-simulation'),get=k=>$(`[data-sim="${k}"]`,view)?.value;
-    const a=$('[data-sim-team-a]',view)?.value||'vanguard',b=$('[data-sim-team-b]',view)?.value||'warden';
-    state.simulation=NCB.runSimulation({battles:Number(get('battles'))||500,seedBase:Number(get('seedBase'))||9000,teamA:[a],teamB:[b],difficultyA:'canonical',difficultyB:'canonical',maxRounds:50});renderSimulation();}
-
-  function parameterLibraryHtml(){const groups=new Map();for(const def of NCB.PARAMETER_LIST||[]){if(!groups.has(def.category))groups.set(def.category,[]);groups.get(def.category).push(def);}return [...groups.entries()].map(([cat,defs])=>`<details class="parameter-group"><summary><b>${esc(cat)}</b><span class="inline-note">${defs.length} 旋钮</span></summary><div class="definition-list">${defs.map(def=>`<div class="definition"><b>${esc(def.id)} · ${esc(def.name)}</b><br><span>${esc(def.human)}</span><br><span class="inline-note">类型 ${esc(def.kind)} · 单位 ${esc(def.unit||'-')} · 默认 ${esc(def.defaultValue)} · 范围 ${esc(def.range)}<br>结果：${esc(def.effect)}<br>AI：${esc(def.ai)}</span></div>`).join('')}</div></details>`).join('');}
-  function renderGuide(){const view=$('#view-guide');if(!view)return;view.innerHTML=`<div class="reference-grid"><div class="panel"><div class="panel-head"><h2>核心模型</h2></div><div class="panel-body"><h3>卡牌不是内核</h3><p>Engine 只认识 <b>CombatEntity</b>、Skill、Status、Action、Event 和数值。网页把实体画成卡片只是展示层。同一个内核也可以接 CLI、纯文字列表或其他 UI。</p><div class="code">CombatEntity[]\n  ↓ Actions\nPriority / Speed Queue\n  ↓\nRelay Event Modifiers\n  ↓\nFormula → Accuracy → Crit → Defense/Penetration\n  ↓\nShield Replacement → HP → Trigger / Status\n  ↓\nDeterministic State + Replay</div></div></div>
-    <div class="panel"><div class="panel-head"><h2>成熟系统吸收</h2></div><div class="panel-body"><p>确定性 Gen5 PRNG、Priority/Speed 排序和 relay-event 内核直接派生/泛化自 Pokémon Showdown。Damage Packet、复合伤害与穿透借鉴 Cataclysm-DDA；攻击参数 Event Modifier 借鉴 Wesnoth；多资源/Sustain/抗性穿透借鉴 ToME 类大型 RPG。公式 DSL 使用随包固定的 Acorn 8.15.0（MIT）解析 AST，再由极小白名单解释器执行。</p></div></div>
-    <div class="panel"><div class="panel-head"><h2>数值组件语言</h2></div><div class="panel-body"><p>内容不是角色专属代码，而是固定组件语言的组合。目前注册 <b>${Object.keys(NCB.PARAMETER_CATALOG||{}).length}</b> 个参数旋钮、<b>${Object.keys(NCB.EFFECT_COMPONENTS||{}).length}</b> 个 Effect、<b>${Object.keys(NCB.CONDITION_COMPONENTS||{}).length}</b> 个 Condition、<b>${Object.keys(NCB.TARGET_COMPONENTS||{}).length}</b> 个 Target、<b>${Object.keys(NCB.EVENT_COMPONENTS||{}).length}</b> 个 Event 插入点。</p>${parameterLibraryHtml()}</div></div>
-    <div class="panel"><div class="panel-head"><h2>插件接口</h2></div><div class="panel-body"><p><b>Effect:</b> ${esc(Object.keys(NCB.EFFECT_COMPONENTS||{}).join(', '))}</p><p><b>Condition:</b> ${esc(Object.keys(NCB.CONDITION_COMPONENTS||{}).join(', '))}</p><p><b>Target:</b> ${esc(Object.keys(NCB.TARGET_COMPONENTS||{}).join(', '))}</p><p><b>Event:</b> ${esc(Object.keys(NCB.EVENT_COMPONENTS||{}).join(', '))}</p></div></div></div>`;}
-
-  function renderReplay(){const view=$('#view-replay');if(!view)return;
-    view.innerHTML=`<div class="panel"><div class="panel-head"><h2>对局重放</h2></div><div class="panel-body stack">
-      <p class="hint">将当前对局导出为 Replay JSON，之后可重新导入逐回合回放。</p>
-      <div class="row"><button class="btn primary" data-action="export-replay">导出当前对局</button><label class="btn" for="replay-file">导入 Replay</label><input id="replay-file" class="hidden" type="file" accept="application/json"></div>
-      ${state.replay?`<div class="metric-grid"><div class="metric"><label>回合</label><strong>${state.replayIndex}/${state.replay.rounds.length}</strong></div></div><div class="row"><button class="btn" data-action="replay-prev">上一步</button><button class="btn" data-action="replay-next">下一步</button></div>`:''}
-    </div></div>`;
-  }
-  function renderTrace(){const view=$('#view-trace');if(!view)return;
-    const log=(state.engine?.log||[]).slice(0,state.display?.logLength);
-    view.innerHTML=`<div class="panel"><div class="panel-head"><h2>计算详情</h2><span>${log.length} 条</span></div><div class="panel-body battle-log">${logRows()}</div></div>`;
-  }
-  function renderJson(){const view=$('#view-json');if(!view)return;
-    view.innerHTML=`<div class="panel"><div class="panel-head"><h2>JSON 导入导出</h2></div><div class="panel-body stack">
-      <p class="hint">导出当前全部内容（实体/技能/状态）为 JSON 包，或在编辑器修改后保存。</p>
-      <div class="row"><button class="btn primary" data-action="export-content">导出内容 JSON</button><label class="btn" for="content-file">导入 JSON</label><input id="content-file" class="hidden" type="file" accept="application/json"></div>
-    </div></div>`;
-  }
-
-  // ===========================================================================
-  // EVENTS
-  // ===========================================================================
-  document.addEventListener('click',event=>{
-    const kb=event.target.closest('[data-knowledge]');if(kb){knowledgeSheet(kb.dataset.knowledge);return;}
-    const kbb=event.target.closest('[data-knowledge-browse]');if(kbb){closeKnowledgeSheet();const overlay=document.querySelector('.picker-overlay');if(overlay){renderKnowledgeBrowser(overlay);}else openKnowledgeBrowser();setTimeout(()=>{const hit=NCB.knowledgeLookup(kbb.dataset.knowledgeBrowse);if(hit){const input=document.querySelector('.picker-overlay [data-kb-search]');if(input){input.value=hit.entry.nameEn||kbb.dataset.knowledgeBrowse;input.dispatchEvent(new Event('input'));}}},0);return;}
-    const picker=event.target.closest('[data-open-picker]');if(picker){const spec=String(picker.dataset.openPicker||'').split(':');const side=spec[1],slot=Number(spec[2]);if(side&&Number.isInteger(slot)&&slot>=0)openPicker(side,slot);return;}
-    const roster=event.target.closest('[data-editor-unit]');if(roster){state.editorUnitId=roster.dataset.editorUnit;renderEditor();return;}
-    const tab=event.target.closest('[data-tab]');if(tab){$('#lab-menu').open=false;setTab(tab.dataset.tab);if(tab.dataset.tab==='battle'){renderBattle();}return;}
-    const presetBtn=event.target.closest('[data-preset-action]');
-    if(presetBtn){
-      const i=Number(presetBtn.dataset.presetIndex);const card=(state.systemPresets||[])[i];
-      if(!card)return;
-      const act=presetBtn.dataset.presetAction;
-      if(act==='battle'){const pool=selectableCards();const idx=pool.findIndex(c=>c.id===card.id);state.selectedTeams={A:[idx>=0?card.id:null],B:[pool[1]?pool[1].id:null]};state.engine=null;stopAuto();setTab('battle');renderBattle();}
-      if(act==='copy')copyPresetToLibrary(card);
-      return;
+    function showResult(r) {
+      resultBox.style.display = 'block';
+      const a = r.a, b = r.b;
+      if (r.winner === 0) {
+        resultBox.className = 'result win0';
+        resultBox.textContent = `🏆 ${a.name}（Lv.${a.level} ${a.rarityName}）获胜 — 剩余 ${(a.hp / a.maxHp * 100).toFixed(1)}% 生命`;
+      } else if (r.winner === 1) {
+        resultBox.className = 'result win1';
+        resultBox.textContent = `🏆 ${b.name}（Lv.${b.level} ${b.rarityName}）获胜 — 剩余 ${(b.hp / b.maxHp * 100).toFixed(1)}% 生命`;
+      } else {
+        resultBox.className = 'result draw';
+        resultBox.textContent = `⚖ 平局 — 蓝方 ${(a.hp / a.maxHp * 100).toFixed(1)}% / 红方 ${(b.hp / b.maxHp * 100).toFixed(1)}%`;
+      }
     }
-    const libBtn=event.target.closest('[data-lib-action]');
-    if(libBtn){
-      const i=Number(libBtn.dataset.libIndex);const card=state.library[i];
-      if(!card)return;
-      const act=libBtn.dataset.libAction;
-      if(act==='battle')startBattleWithCard(card);
-      if(act==='edit')openCardEditor(card);
-      if(act==='duplicate'){let c=NCB.deepClone(card);const oldId=c.id,newId=oldId+'-copy-'+Date.now();const remap=x=>{if(typeof x==='string')return x.startsWith(oldId)?newId+x.slice(oldId.length):x;if(Array.isArray(x))return x.map(remap);if(x&&typeof x==='object')return Object.fromEntries(Object.entries(x).map(([k,v])=>[k,remap(v)]));return x;};c=remap(c);c.id=newId;c.displayName=(card.displayName||card.name)+' 副本';addToLibrary(c);renderCards();}
-      if(act==='rename'){const n=prompt('输入新名称：',card.displayName||card.name||'');if(n&&n.trim()){card.displayName=n.trim();saveLibrary();renderCards();}}
-      if(act==='copyseed'){const seed=card.seed??'';if(navigator.clipboard?.writeText){navigator.clipboard.writeText(seed).then(()=>alert('种子已复制：'+seed)).catch(()=>alert('种子：'+seed));}else alert('种子：'+seed);}
-      if(act==='regenerate'){const c=NCB.generateCardByVersion({rarity:card.rarity,level:card.level,...(card.generatorVersion<=3?{archetype:card.archetype}:{}),seed:card.seed,generatorVersion:card.generatorVersion});state.library[i]=NCB.deepClone(c);saveLibrary();renderCards();}
-      if(act==='delete'){if(confirm(`删除「${card.displayName||card.name}」？`)){state.library.splice(i,1);saveLibrary();renderCards();}}
-      return;
-    }
-    const card=event.target.closest('[data-entity-id]');
-    if(card&&state.tab==='battle'&&state.battleMode==='manual'){
-      const id=card.dataset.entityId,e=state.engine.entity(id);if(e.hp<=0)return;
-      if(state.selectedSkillId&&state.selectedActorId){const targets=state.engine.getValidTargets(state.selectedActorId,state.selectedSkillId);if(targets.some(t=>t.id===id)){queueAction(state.selectedActorId,state.selectedSkillId,id);return;}}
-      if(e.teamId==='A'&&!state.pending.has(e.id)){state.selectedActorId=e.id;state.selectedSkillId=null;renderBattle();}return;
-    }
-    const skill=event.target.closest('[data-skill-id]');if(skill){handleSkill(skill.dataset.skillId);return;}
-    const remove=event.target.closest('[data-remove-action]');if(remove){state.pending.delete(remove.dataset.removeAction);ensureActor();renderBattle();return;}
-    const action=event.target.closest('[data-action]')?.dataset.action;if(!action)return;
-    if(action==='open-knowledge'){openKnowledgeBrowser();return;}
-    if(action==='battle-start'){
-      const sizeA=teamSize('A'),sizeB=teamSize('B'),maxRounds=Number($('[data-max-rounds]').value);
-      if(!Number.isInteger(maxRounds)||maxRounds<1||maxRounds>1000){alert('最大回合请输入 1–1000 的整数。');return;}
-      if(!bothTeamsFilled()){alert('请为每一栏的每个槽位选择卡牌。');return;}
-      // Explicit selection ONLY — never auto-fill from the pool.
-      const teamA=explicitTeamIds('A').map(id=>{const c=selectableCards().find(x=>x.id===id);return c?NCB.deployCard(c):null;}).filter(Boolean);
-      const teamB=explicitTeamIds('B').map(id=>{const c=selectableCards().find(x=>x.id===id);return c?NCB.deployCard(c):null;}).filter(Boolean);
-      if(teamA.length!==sizeA||teamB.length!==sizeB){alert('编队未完整，请补全卡牌。');return;}
-      // Normal play rolls a FRESH match seed every start.
-      beginBattle({seed:NCB.deriveSeed(freshMatchSeed()),teamA,teamB,maxRounds});
-    }
-    if(action==='demo-cards'){for(const c of (state.systemPresets||[]).slice(0,2))copyPresetToLibrary(c);renderCards();renderBattle();}
-    if(action==='manual-takeover'){state.display=null;state.frameQueue=[];state.engine.presentationFrames=[];state.battleMode=state.battleMode==='auto'?'manual':'auto';state.autoPaused=state.battleMode==='manual';if(state.battleMode==='auto')startAuto();renderBattle();}
-    if(action==='edit-generated'&&state.lastGenerated)openCardEditor(state.lastGenerated);
-    if(action==='edit-battle-card'){let c=resolveBattleCardMeta(state.engine?.config.teamA[0]);if(c){if(isSystemPreset(c.id)){c=copyPresetToLibrary(c);}if(c)openCardEditor(c);}}
-    if(action==='save-card-edit')saveCardEdit();
-    if(action==='battle-restart'){if(state.engine)createBattleWithSameCard();}
-    if(action==='rerun-same-seed'){if(lastMatchConfig)beginBattle({...lastMatchConfig,seed:NCB.deriveSeed(Number($('[data-fixed-seed]')?.value??state.setup.seedNumber))});}
-    if(action==='battle-back'){stopAuto();state.engine=null;renderBattle();}
-    if(action==='auto-plan')autoPlanPlayer();
-    if(action==='resolve-round')resolveRound();
-    if(action==='auto-finish')autoFinish();
-    if(action==='auto-pause')autoTogglePause();
-    if(action==='auto-step')stepAction();
-    if(action==='auto-speed'){state.autoSpeed=Number(event.target.closest('[data-speed]').dataset.speed);startAuto();renderBattle();}
-    if(action==='generate-roll')generateFromForm();
-    if(action==='add-to-library'){if(state.lastGenerated){addToLibrary(state.lastGenerated);renderGenerate();}}
-    if(action==='battle-generated'){if(state.lastGenerated)startBattleWithCard(state.lastGenerated);}
-    if(action==='cards-to-generate')setTab('generate');
-    if(action==='export-replay'){if(state.engine)downloadJson(`数值对战-${Date.now()}.json`,state.engine.exportReplay());else alert('当前没有对局。');}
-    if(action==='replay-prev'){if(state.replay){state.replayIndex=Math.max(0,state.replayIndex-1);applyReplay(state.replay,state.replayIndex);setTab('replay');}}
-    if(action==='replay-next'){if(state.replay){state.replayIndex=Math.min(state.replay.rounds.length,state.replayIndex+1);applyReplay(state.replay,state.replayIndex);setTab('replay');}}
-    if(action==='run-simulation')runSimulationFromUI();
-    if(action==='export-content')downloadJson('数值内容.json',{version:2,units:NCB.UNIT_DEFS,skills:NCB.SKILL_DEFS,statuses:NCB.STATUS_DEFS});
-    if(action==='reset-content'){if(confirm('恢复全部内置数值？')){storage.remove('numerical-battle-content-v1');location.reload();}}
-  });
 
-  document.addEventListener('change',event=>{
-    if(event.target.matches('[data-stat],[data-unit-field]')){const unit=NCB.UNIT_DEFS[state.editorUnitId];if(event.target.dataset.stat){const n=Number(event.target.value);if(!Number.isFinite(n))return;unit.stats[event.target.dataset.stat]=n;}else unit[event.target.dataset.unitField]=event.target.value;storage.set('numerical-battle-content-v1',JSON.stringify(currentPack()));return;}
-    if(event.target.matches('[data-log-filter]')){state.logFilter=event.target.value;renderBattle();return;}
-    if(event.target.matches('[data-gen-rarity]')){state.genRarity=event.target.value;return;}
-    if(event.target.matches('[data-gen-level]')){state.genLevel=Number(event.target.value);return;}
-    if(event.target.matches('[data-gen-seed]')){state.genManualSeed=true;state.genSeed=event.target.value;return;}
-    if(event.target.matches('[data-battle-size-a]')||event.target.matches('[data-battle-size-b]')){
-      const side=event.target.matches('[data-battle-size-a]')?'A':'B';
-      state.setup['battleSize'+side]=Number(event.target.value);saveSetup();
-      resizeTeam(side);renderBattle();return;
+    function setControlsLocked(locked) {
+      selA.disabled = locked;
+      selB.disabled = locked;
+      lvlA.disabled = locked;
+      lvlB.disabled = locked;
+      startBtn.disabled = locked;
+      againBtn.disabled = locked;
     }
-    if(event.target.matches('[data-fixed-seed]')){state.setup.seedNumber=Number(event.target.value)||defaultSetup.seedNumber;saveSetup();return;}
-    if(event.target.id==='replay-file'){const file=event.target.files[0];if(file)file.text().then(text=>{try{applyReplay(JSON.parse(text),JSON.parse(text).rounds?.length);setTab('replay');}catch(e){alert(`Replay 无效: ${e.message}`);}});}
-    if(event.target.id==='content-file'){const file=event.target.files[0];if(file)file.text().then(text=>{try{importContent(JSON.parse(text));}catch(e){alert(`内容包无效: ${e.message}`);}});}
-  });
 
-  document.addEventListener('input',event=>{
-    if(event.target.matches('[data-gen-seed]')){state.genSeed=event.target.value;state.genManualSeed=true;}
-  });
+    async function runBattle() {
+      if (state.playing) return;
+      state.playing = true;
+      setControlsLocked(true);
+      logbox.innerHTML = '';
+      resultBox.style.display = 'none';
+      roundTxt.textContent = '—';
 
-  function createBattleWithSameCard(){if(state.engine)beginBattle({...state.engine.config,seed:NCB.deriveSeed(freshMatchSeed())});}
-  function openCardEditor(card){
-    state.editCard=card;state.autoPaused=true;setTab('editor');
-    $('#view-editor').innerHTML=`<h2>编辑 ${esc(card.displayName||card.name)}</h2><p>修改任意属性、行动、状态、资源或公式。保存前会验证；原始卡牌在保存成功前保持不变。</p><label class="field"><span>完整卡牌 JSON</span><textarea id="card-json-editor" spellcheck="false" rows="24">${esc(JSON.stringify(card,null,2))}</textarea></label><p id="card-edit-error" role="alert"></p><button class="btn primary" data-action="save-card-edit">验证并保存</button>`;
-  }
-  function saveCardEdit(){
-    try{
-      const c=JSON.parse($('#card-json-editor').value);c.id=state.editCard.id;
-      NCB.normalizeLevel(c.level);const actions=NCB.getCardActions(c);
-      if(actions.length<2||actions.length>6)throw new Error('行动数量必须为 2–6。');
-      const pack=NCB.assembleCardPack(c),v=NCB.validateContentPack(pack);if(!v.ok)throw new Error(v.errors.slice(0,8).join('；'));
-      const i=state.library.findIndex(x=>x.id===c.id);if(i>=0)state.library[i]=c;else state.library.push(c);
-      state.lastGenerated=c;saveLibrary();state.engine=null;stopAuto();setTab('cards');
-    }catch(e){$('#card-edit-error').textContent=e.message;}
+      const cardA = CARDS[+selA.value];
+      const cardB = CARDS[+selB.value];
+      state.seed = (Math.random() * 0xFFFFFFFF) >>> 0;
+
+      // 先完整模拟，结果已确定；再按速度回放事件列表
+      const result = simulate(cardA, +lvlA.value, cardB, +lvlB.value, state.seed);
+      state.events = result.events;
+      el('sNameA').textContent = cardA.name;
+      el('sNameB').textContent = cardB.name;
+      el('sRarA').textContent = `${RARITY_LIST[cardA.rarity]} Lv.${lvlA.value}`;
+      el('sRarB').textContent = `${RARITY_LIST[cardB.rarity]} Lv.${lvlB.value}`;
+
+      const delayMs = () => new Promise((r) => setTimeout(r, state.delay));
+      await applyEvents(result.events, applyEntry, delayMs);
+
+      showResult(result);
+      setControlsLocked(false);
+      state.playing = false;
+    }
+
+    startBtn.addEventListener('click', runBattle);
+    againBtn.addEventListener('click', runBattle);
+
+    refreshAll();
+    return { state };
   }
 
-  function downloadJson(filename,data){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),500);}
-  function applyReplay(replay,index=replay.rounds.length){stopAuto();state.autoPaused=true;NCB.restoreReplayContent(replay);const engine=NCB.createBattle({seed:replay.seed,teamA:replay.teamA,teamB:replay.teamB,maxRounds:replay.maxRounds,rulesVersion:replay.rulesVersion});for(let i=0;i<Math.min(index,replay.rounds.length);i++){if(engine.outcome().ended)break;engine.resolveRound(replay.rounds[i]);}state.engine=engine;state.display=null;state.frameQueue=[];state._deployedMeta=new Map();for(const t of ['A','B'])for(const ent of engine.teams[t].entities){const meta=state.systemPresets.find(c=>c.id===ent.templateId)||state.library.find(c=>c.id===ent.templateId)||null;if(meta)state._deployedMeta.set(ent.templateId,meta);}state.replay=replay;state.replayIndex=Math.min(index,replay.rounds.length);state.pending.clear();state.selectedActorId=null;state.selectedSkillId=null;}
-  function importContent(data){if(!data?.units||!data?.skills||!data?.statuses)throw new Error('JSON 缺少 units / skills / statuses');const validation=NCB.validateContentPack(data);if(!validation.ok)throw new Error(`内容验证失败:\n${validation.errors.slice(0,12).join('\n')}`);const repl=k=>{for(const key of Object.keys(NCB[k]))delete NCB[k][key];Object.assign(NCB[k],NCB.deepClone(data[k]));};repl('UNIT_DEFS');repl('SKILL_DEFS');repl('STATUS_DEFS');alert('内容已导入。');setTab('guide');}
-
-  function updateHeader(){
-    const formula=$('#formula-state');if(formula){const info=NCB.formulaEngineInfo?.()||{};formula.textContent=info.offline?`${(info.name||'公式').toUpperCase()} ${info.version||''} / 离线`.replace(/\s+/g,' ').trim():'公式检查';}
-    const engine=$('#engine-state');if(engine)engine.textContent='引擎就绪';
-  }
-
-  function qaSelfTest(){try{const engine=NCB.createBattle({seed:'gen5,77,88,99,111',teamA:['vanguard','ranger'],teamB:['warden','assassin']});for(let i=0;i<2;i++)engine.resolveRound([...NCB.planAI(engine,'A','hard'),...NCB.planAI(engine,'B','normal')]);const replay=NCB.replayBattle(engine.exportReplay());const same=JSON.stringify(replay.serializableSnapshot())===JSON.stringify(engine.serializableSnapshot());const sim=NCB.runSimulation({battles:10,seedBase:500,teamA:['vanguard','ranger'],teamB:['warden','assassin'],difficultyA:'normal',difficultyB:'normal',maxRounds:25});const ok=same&&sim.battles===10&&engine.log.length>0;document.body.dataset.qaPass=String(ok);const marker=document.createElement('div');marker.id='qa-result';marker.textContent=ok?'QA_PASS':'QA_FAIL';marker.style.cssText='position:fixed;right:8px;bottom:8px;padding:4px 6px;background:#111;color:#fff;font:10px monospace;z-index:9999';document.body.appendChild(marker);}catch(e){document.body.dataset.qaPass='false';console.error(e);}}
-
-  try{const saved=JSON.parse(storage.get('numerical-battle-content-v1')||'null');if(saved&&NCB.validateContentPack(saved).ok){Object.assign(NCB.UNIT_DEFS,saved.units);Object.assign(NCB.SKILL_DEFS,saved.skills);Object.assign(NCB.STATUS_DEFS,saved.statuses);}}catch(_){}
-  renderHelp();updateHeader();setTab('battle');
-  if(new URLSearchParams(location.search).get('qa')==='1')setTimeout(qaSelfTest,50);
-})(window);
+  const API = { createViewState, applyEventToState, initApp };
+  if (typeof module !== 'undefined' && module.exports) module.exports = API;
+  global.NCB = Object.assign(global.NCB || {}, API);
+})(typeof window !== 'undefined' ? window : globalThis);

@@ -1,355 +1,141 @@
-/* ===========================================================================
-   Numerical Battle Lab v1.2 — player-facing UI
-   Mobile-first (official acceptance 390×844), desktop-friendly.
-   Rarity card frames are distinct by border style + badge + collector mark
-   (not color-only, so color-blind players can tell them apart).
-   =========================================================================== */
-
-:root{
-  --bg:#fafafa;--bg2:#f0f0f0;--panel:#fff;--panel2:#f5f5f5;
-  --text:#171717;--muted:#595959;--line:#d1d1d1;
-  --accent:#171717;--accent2:#333;--warn:#444;--danger:#333;--radius:10px;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0d1017;
+  color: #d7dde8;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 14px;
+  padding: 18px;
+  min-height: 100vh;
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+h1 { font-size: 18px; font-weight: 600; letter-spacing: 1px; margin-bottom: 4px; color: #eaf0fa; }
+.sub { font-size: 12px; color: #6b7686; margin-bottom: 16px; }
 
-.app-shell{max-width:1100px;margin:0 auto;padding:0 12px 40px;min-height:100vh;display:flex;flex-direction:column}
+/* 选卡区 */
+.setup {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+.panel {
+  background: #141a25;
+  border: 1px solid #202938;
+  border-radius: 10px;
+  padding: 12px;
+}
+.panel h2 { font-size: 13px; color: #7f8ea3; font-weight: 600; margin-bottom: 8px; letter-spacing: 1px; }
+select, input[type=range] { width: 100%; }
+select {
+  background: #0e131c; color: #d7dde8; border: 1px solid #263142;
+  border-radius: 6px; padding: 7px 8px; font-size: 13px; outline: none; cursor: pointer;
+}
+select:focus { border-color: #3b82f6; }
+select:disabled { opacity: .55; cursor: not-allowed; }
+.lvlrow { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
+.lvlrow label { font-size: 12px; color: #7f8ea3; white-space: nowrap; }
+.lvlval {
+  font-family: ui-monospace, monospace; font-size: 13px; color: #f0b429;
+  min-width: 34px; text-align: right; font-weight: 700;
+}
+input[type=range] {
+  -webkit-appearance: none; height: 4px; background: #263142; border-radius: 3px; outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
+  background: #3b82f6; cursor: pointer; border: 2px solid #0d1017;
+}
+input[type=range]:disabled::-webkit-slider-thumb { background: #475569; }
 
-/* ---- top bar ---- */
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 2px;flex-wrap:wrap}
-.brand{font-size:11px;letter-spacing:2px;color:var(--accent);font-weight:700}
-.topbar h1{font-size:18px;margin:2px 0 0}
-.top-meta{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--muted);flex-wrap:wrap}
-.top-meta span{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.cardhead { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.cname { font-size: 15px; font-weight: 700; }
+.badge {
+  font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 4px;
+  letter-spacing: .5px; color: #0d1017;
+}
+.role { font-size: 11px; color: #6b7686; margin-left: auto; }
+.cdesc { font-size: 11.5px; color: #8794a8; margin-top: 5px; line-height: 1.5; min-height: 32px; }
 
-/* ---- advanced lab menu ---- */
-.lab-menu{position:relative}
-.lab-menu summary{cursor:pointer;list-style:none;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:12px;color:var(--muted)}
-.lab-menu summary::-webkit-details-marker{display:none}
-.lab-menu-panel{position:absolute;right:0;top:calc(100% + 6px);z-index:60;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);min-width:170px;padding:6px;display:flex;flex-direction:column}
-.lab-menu-panel button{background:none;border:0;color:var(--text);text-align:left;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13px}
-.lab-menu-panel button:hover{background:var(--panel2)}
+.bprow {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 8px; padding: 4px 8px; border-radius: 6px;
+  background: #0e131c; border: 1px solid #2a3650; font-size: 12px;
+}
+.bprow span:first-child { color: #f0b429; font-weight: 700; letter-spacing: 1px; }
+.bprow span:last-child { font-family: ui-monospace, monospace; font-size: 14px; font-weight: 800; color: #ffe08a; }
 
-/* ---- tabs ---- */
-.tabs{display:flex;gap:6px;padding:4px 2px;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:0;background:var(--bg);z-index:50}
-.tab{background:none;border:0;color:var(--muted);padding:9px 16px;font-size:15px;cursor:pointer;border-radius:10px 10px 0 0;white-space:nowrap;font-weight:600}
-.tab:hover{color:var(--text)}
-.tab.is-active{color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 12px; margin-top: 9px; }
+.st { display: flex; justify-content: space-between; font-size: 11.5px; padding: 2px 0; border-bottom: 1px dashed #1c2637; }
+.st span:first-child { color: #6b7686; }
+.st span:last-child { font-family: ui-monospace, monospace; color: #b9c6d9; }
 
-.view{display:none;padding-top:14px}
-.view.is-active{display:block}
+.vscol { display: flex; align-items: center; justify-content: center; height: 100%; padding-top: 60px; }
+.vs { font-size: 20px; font-weight: 900; color: #33405a; letter-spacing: 2px; }
 
-/* ---- buttons ---- */
-.btn{background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 14px;font-size:14px;cursor:pointer;font-family:inherit}
-.btn:hover{border-color:var(--accent);color:var(--accent)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
-.btn.primary:hover{filter:brightness(1.1);color:#fff}
-.btn.big{padding:12px 22px;font-size:16px;border-radius:12px}
-.btn.small{padding:5px 10px;font-size:12px;border-radius:8px}
-.btn.ghost{background:transparent}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.btn.is-active{background:var(--accent);color:#fff;border-color:var(--accent)}
-
-.spacer{flex:1}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.hint,.inline-note{color:var(--muted);font-size:12px}
-.field{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
-.field select,.field input,.field textarea{background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit}
-.field-row{display:flex;gap:12px;flex-wrap:wrap}
-.field-row .field{flex:1;min-width:140px}
-.field span{font-weight:600}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:14px;overflow:hidden}
-.panel-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.panel-head h2,.panel-head h3{margin:0;font-size:15px}
-.panel-body{padding:14px}
-.stack{display:flex;flex-direction:column;gap:12px}
-.grid{display:grid;gap:12px}.grid.two{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.hidden{display:none}
-
-/* ---- battle setup (newbie flow) ---- */
-.battle-empty,.empty-state{padding:40px 16px;text-align:center}
-.big-title{font-size:26px;font-weight:800;margin:0 0 8px}
-.battle-setup-panel{max-width:520px;margin:20px auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:14px;text-align:left}
-.advanced-note summary{cursor:pointer;color:var(--muted);font-size:12px;margin-top:6px}
-.advanced-note[open] summary{margin-bottom:10px}
-.mode-toggle-row{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:8px;flex-wrap:wrap}
-
-/* ---- battle field ---- */
-.battle-toolbar{display:flex;align-items:center;gap:10px;padding:8px 2px;flex-wrap:wrap}
-.battle-mode-pill{background:var(--accent);color:#fff;border-radius:999px;padding:3px 12px;font-size:12px;font-weight:700}
-.battle-vs{display:flex;flex-direction:column;gap:10px;align-items:center}
-.battle-vs-divider{font-size:22px;font-weight:900;color:var(--muted)}
-.battle-side{width:100%}
-.side-label{font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700;letter-spacing:1px}
-.arena-line .team-line{display:grid;gap:10px;grid-template-columns:repeat(var(--team-cols,4),minmax(0,1fr))}
-.entity-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:10px;position:relative}
-.entity-card.selectable{cursor:pointer}
-.entity-card.is-selected{border-color:var(--accent);box-shadow:0 0 0 2px #444}
-.entity-card.is-target{border-color:var(--danger)}
-.entity-card.is-dead{opacity:.4}
-.entity-top{display:flex;justify-content:space-between;gap:6px;margin-bottom:8px}
-.entity-name{font-weight:700}
-.entity-role{font-size:11px;color:var(--muted)}
-.meter-row{display:flex;align-items:center;gap:8px;font-size:12px}
-.meter{flex:1;height:8px;background:var(--bg2);border-radius:999px;overflow:hidden}
-.meter i{display:block;height:100%;background:var(--accent)}
-.stat-line{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.stat-chip{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:3px 8px;font-size:11px;color:var(--muted)}
-.stat-chip b{margin-left:4px;color:var(--text)}
-.status-line{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.status{background:var(--panel2);border-radius:999px;padding:2px 8px;font-size:11px}
-.status.debuff{border:1px solid var(--danger)}
-.action-marker{position:absolute;top:8px;right:8px;background:var(--accent2);color:#fff;font-size:10px;border-radius:999px;padding:2px 8px}
-
-/* ---- command / skill buttons ---- */
-.command-panel{display:flex;flex-direction:column;gap:12px;margin-top:14px}
-.skill-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin:10px 0}
-.skill-btn{background:var(--bg2);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px;display:flex;justify-content:space-between;gap:8px;cursor:pointer;text-align:left;min-height:56px}
-.skill-btn:hover{border-color:var(--accent)}
-.skill-btn.is-active{border-color:var(--accent);background:#eee}
-.skill-name{font-weight:700}
-.skill-meta{display:block;font-size:11px;color:var(--muted);margin-top:2px}
-.skill-cost{font-size:11px;color:var(--accent2);white-space:nowrap}
-.pending-list{display:flex;flex-direction:column;gap:6px}
-.pending-item{display:flex;justify-content:space-between;align-items:center;background:var(--bg2);border-radius:8px;padding:6px 10px;font-size:13px}
-.auto-controls{display:flex;align-items:center;gap:8px;margin:10px 0;flex-wrap:wrap}
-
-/* ---- battle log ---- */
-.battle-log-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-top:14px}
-.battle-log{max-height:360px;overflow:auto;padding:10px 14px;font-size:13px}
-.log-row{padding:4px 0;border-bottom:1px dashed var(--line)}
-.log-index{color:var(--muted);margin-right:8px;font-size:11px}
-.log-row summary{cursor:pointer;color:var(--accent)}
-.trace{font-size:11px;color:var(--muted);margin:4px 0}
-.result-banner{background:var(--accent2);color:#fff;font-weight:800;text-align:center;padding:12px;border-radius:var(--radius);margin:10px 0}
-.log-tools{display:flex;align-items:center;gap:8px}
-.log-tools select{background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:4px 8px;font-size:12px}
-
-/* ---- cards / generate ---- */
-.cards-toolbar,.generate-layout{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}
-.cards-toolbar h2{margin:0}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding:6px 0}
-.card-collection-item{display:flex;flex-direction:column;gap:8px}
-.card-collection-actions{display:flex;flex-wrap:wrap;gap:6px}
-.card-center{display:flex;justify-content:center;margin:10px 0}
-.generate-layout{flex-direction:column;align-items:stretch}
-
-/* ---- card presentation (adapter) ---- */
-.card{position:relative;border-radius:14px;overflow:hidden;background:var(--panel2);border:2px solid var(--line);display:flex;flex-direction:column;transition:transform .12s}
-.card:hover{transform:translateY(-2px)}
-.card-frame-glow{position:absolute;inset:0;pointer-events:none;opacity:.5}
-.card-art{width:100%;height:auto;aspect-ratio:120/90;display:block}
-.card-body{padding:12px}
-.card-headline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative}
-.card-name{font-size:17px;font-weight:800}
-.card-id{font-size:10px;color:var(--muted)}
-.rarity-badge{font-size:11px;font-weight:800;border-radius:6px;padding:2px 8px;color:#fff}
-.collector-mark{font-size:15px;color:var(--warn);animation:none}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.card-meta-line{display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px;color:var(--muted);flex-wrap:wrap}
-.card-lv,.card-power{font-weight:700}
-.card-power{color:var(--accent)}
-.card-role{background:var(--bg2);border-radius:999px;padding:2px 8px}
-.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:8px 0}
-.card-stat{background:var(--bg);border-radius:8px;padding:5px 7px;font-size:11px;display:flex;flex-direction:column}
-.card-stat b{font-size:12px}
-.card-stat i{color:var(--muted);font-style:normal;font-size:9px}
-.card-stat em{font-style:normal;font-weight:700;margin-top:1px}
-.card-detail summary{cursor:pointer;color:var(--accent);font-size:12px}
-.detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:6px}
-.detail-row{display:flex;justify-content:space-between;font-size:11px;background:var(--bg);border-radius:6px;padding:3px 7px}
-.card-skills{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
-.card-skills-title{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px}
-.card-skill{padding:6px 0;border-bottom:1px dashed var(--line)}
-.card-skill:last-child{border-bottom:0}
-.card-skill-head{display:flex;justify-content:space-between;gap:6px;align-items:center}
-.card-skill-desc{font-size:11px;color:var(--muted);margin:3px 0 0}
-.skill-free{color:var(--accent2);font-size:11px}
-.skill-cost{color:var(--warn);font-size:11px}
-.skill-cd{color:var(--muted);font-size:11px}
-.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
-.tag{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:10px;color:var(--muted)}
-
-.rarity-badge{background:#eee;color:#171717;border:1px solid #aaa}
-/* compact tile */
-.card-tile{position:relative;background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer}
-.card-tile .rarity-badge{position:absolute;top:6px;right:6px}
-.card-tile-name{font-weight:700;padding-right:56px}
-.card-tile-meta{font-size:11px;color:var(--muted)}
-.card-tile-stats{font-size:11px;margin-top:4px}
-
-/* ---- help ---- */
-.help-layout{display:flex;flex-direction:column;gap:14px}
-.help-steps,.help-list{line-height:1.9}
-.help-steps li,.help-list li{margin-bottom:6px}
-
-/* ---- metrics ---- */
-.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:12px}
-.metric{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px;text-align:center}
-.metric label{display:block;font-size:11px;color:var(--muted)}
-.metric strong{font-size:22px}
-.bar{display:flex;height:16px;border-radius:999px;overflow:hidden}
-.bar .a{background:var(--accent)}.bar .d{background:var(--muted)}.bar .b{background:var(--danger)}
-
-/* ---- editor / sim / guide (advanced lab) ---- */
-.editor-layout,.sim-layout{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.roster-list{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow:auto}
-.roster-btn{background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px 10px;text-align:left;cursor:pointer}
-.roster-btn.is-active{border-color:var(--accent)}
-.roster-btn span{display:block;font-size:11px;color:var(--muted)}
-.code{font-family:ui-monospace,Consolas,monospace;font-size:12px;background:#f0f0f0;border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre-wrap;overflow:auto}
-.reference-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.parameter-group{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}
-.parameter-group summary{cursor:pointer}
-.definition-list{font-size:12px;display:flex;flex-direction:column;gap:6px}
-.definition{border-bottom:1px dashed var(--line);padding:4px 0}
-
-/* ---- footer ---- */
-footer{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;padding:18px 2px 0;border-top:1px solid var(--line);margin-top:auto;flex-wrap:wrap;gap:6px}
-
-/* ---- desktop refinements ---- */
-@media (min-width:768px){
-  .battle-vs{flex-direction:row;align-items:flex-start}
-  .battle-vs-divider{padding-top:80px}
-  .card-stats{grid-template-columns:repeat(3,1fr)}
+/* 战斗舞台 */
+.stage { display: grid; grid-template-columns: 1fr 150px 1fr; gap: 12px; margin-bottom: 14px; }
+.fighter { background: #141a25; border: 1px solid #202938; border-radius: 10px; padding: 12px; }
+.fname { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.fname .n { font-size: 14px; font-weight: 700; }
+.fname .rar { font-size: 11px; color: #f0b429; font-weight: 700; }
+.hpwrap { position: relative; height: 22px; background: #0a0e14; border-radius: 5px; overflow: hidden; border: 1px solid #1e2836; }
+.hpbar { height: 100%; background: linear-gradient(90deg, #2f9e44, #51cf66); transition: width .18s linear; }
+.hpbar.low { background: linear-gradient(90deg, #c92a2a, #e03131); }
+.hpbar.mid { background: linear-gradient(90deg, #d97706, #f59e0b); }
+.hptext {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-family: ui-monospace, monospace; color: #fff; text-shadow: 0 1px 2px #000; font-weight: 600;
 }
 
-/* v3 spectator and creation surfaces */
-main{flex:1;padding-bottom:32px;min-width:0}
-.topbar{padding:24px 0}.brand{letter-spacing:1px}.topbar h1{font-size:21px}
-.battle-empty{padding-top:60px}.big-title{font-size:clamp(26px,4vw,44px);letter-spacing:-.03em}
-.battle-empty p{color:var(--muted)}
-.battle-setup-panel{max-width:720px;background:transparent;border:0;padding:24px 0;gap:24px}
-.setup-vs{align-self:center;font-size:20px;padding-top:20px}
-.empty-duel{display:flex;flex-direction:column;align-items:center;gap:16px}
-.empty-duel .card-art{width:180px}
-.btn{min-height:40px}.btn.small{min-height:36px}
-button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #555;outline-offset:3px}
-input,select,textarea{min-width:0;max-width:100%}select{min-height:44px}
-.battle-side{min-width:0}.battle-vs{gap:24px;padding:18px 0}
-.entity-card{border:2px solid #222;padding:16px}.entity-card.selectable{cursor:default}
-.entity-name{font-size:20px}.entity-card .card-art{height:135px;width:100%}
-.entity-card .stat-chip{border:0;padding:4px 6px}.meter{height:9px}
-.battle-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;font-size:12px}
-.battle-actions span{border-bottom:1px solid #aaa;padding:2px}
-.current-event{padding:16px;text-align:center;font-size:16px;font-weight:650;background:#eee;border-radius:8px}
-.auto-controls{justify-content:center;padding:10px 0}.auto-controls .spacer{flex:0}
-.card{background:#fff;border-color:#222}.card-art{height:140px;aspect-ratio:auto;fill:#171717}
-.card-stats{grid-template-columns:repeat(4,1fr)}.card-stat i{display:none}.card-stat em{font-size:19px}
-.card-stat{background:transparent;padding:4px}.card-skill-desc{font-size:12px}.card-summary{font-size:12px;color:#595959}
-.card-center .card{width:100%;max-width:430px}.card-frame-glow{display:none}
-.generate-layout{display:grid;grid-template-columns:minmax(260px,.85fr) minmax(280px,1fr);gap:28px;align-items:start}
-.generate-layout>.panel{border:0;background:transparent}.generate-layout .panel-head{padding:18px 0}.generate-layout .panel-body{padding:20px 0}
-.generate-layout .field-row{flex-direction:column;gap:20px}.generate-layout .row{margin-top:24px}
-.help-layout{max-width:720px;padding:24px 8px;gap:12px}.help-layout p{margin:0}
-#card-json-editor{width:100%;font:13px/1.6 Consolas,monospace;background:#fff;color:#171717}
-#card-edit-error{color:#7b2020;overflow-wrap:anywhere}
-.battle-log{overflow-wrap:anywhere}.trace{white-space:pre-wrap}
-@keyframes impact{0%{transform:translateX(0)}30%{transform:translateX(5px)}65%{transform:translateX(-4px)}100%{transform:translateX(0)}}
-.entity-card.is-hit{animation:impact .25s ease-out}
-@media(min-width:768px){.battle-side{flex:1}.arena-line .team-line{grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr))}.card-stats{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:767px){
-  .app-shell{padding:0 16px 24px}.topbar{padding:18px 0}.topbar h1{font-size:17px}.brand{font-size:9px}
-  .tab{padding:10px 11px;font-size:14px}.generate-layout{grid-template-columns:minmax(0,1fr);gap:8px}
-  .battle-empty{padding:34px 0}.battle-setup-panel .field-row{flex-direction:column}.setup-vs{padding:0}
-  .arena-line .team-line{grid-template-columns:1fr}.entity-card .card-art{height:90px}
-  .battle-vs{gap:10px}.entity-card{padding:12px}.battle-vs-divider{font-size:16px}
-  .editor-layout,.reference-grid,.sim-layout{grid-template-columns:minmax(0,1fr)}.card-grid{grid-template-columns:minmax(0,1fr)}
+/* 控制条 */
+.bar { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+button {
+  background: #2563eb; color: #fff; border: none; border-radius: 7px;
+  padding: 9px 22px; font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: background .15s; letter-spacing: 1px;
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-
-.combat-number{position:absolute;right:18px;top:48px;font-size:26px;font-weight:800;background:#fff;padding:2px 6px;border:2px solid #222;animation:damage-rise .6s ease-out forwards;pointer-events:none}
-@keyframes damage-rise{to{transform:translateY(-24px);opacity:0}}
-@media(prefers-reduced-motion:reduce){.combat-number{display:none}}
-
-/* UX pass — system presets + battle rarity/level/战力 readability (B&W only) */
-.entity-meta{font-size:12px;font-weight:700;color:#333;margin-top:2px}
-.entity-meta b{color:#171717}
-.entity-role{font-size:11px;color:#595959;white-space:nowrap}
-.card-region{margin-bottom:28px}
-.cards-region-head{display:flex;align-items:baseline;gap:12px;padding:6px 2px;border-bottom:2px solid #222;margin-bottom:12px}
-.cards-region-head h2{margin:0;font-size:18px}
-.cards-region-head .hint{color:#595959;font-size:12px}
-.card-source-preset{opacity:.96}
-.card-source-preset .card{border-style:dashed}
-.card-power{font-weight:700;color:#333}
-.card-summary-beh{font-size:12px;color:#171717}
-.card-summary-beh b{font-weight:700}
-.card-beh b{color:#171717}
-@media(max-width:767px){.entity-meta{font-size:11px}.card-region{margin-bottom:20px}}
-/* Generator v4: shared mobile card browser and atomic battle presentation. */
-.picker-open{overflow:hidden}
-.picker-overlay{position:fixed;inset:0;z-index:1000;background:#fafafa;overflow:auto;padding:20px max(18px,calc((100vw - 1100px)/2));overscroll-behavior:contain}
-.browser-heading,.selection-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.browser-heading h2{font-size:22px}.card-filters{padding:16px 0;border-bottom:1px solid #bbb;margin-bottom:16px}
-.search-field{display:block;font-size:12px;font-weight:700}.search-field input{display:block;width:100%;margin-top:6px;min-height:44px}
-.rarity-filters{display:flex;gap:6px;overflow-x:auto;padding:12px 0;max-width:100%}.rarity-filters button{flex:none;white-space:nowrap}
-.filter-row{display:flex;gap:12px;margin:10px 0}.filter-row label{flex:1;min-width:0;font-size:12px}.filter-row input,.filter-row select{display:block;width:100%;min-width:0;min-height:40px}
-.behavior-filters{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.behavior-filters details{flex-basis:100%}.behavior-filters details button{margin:6px 4px 0 0}
-.active-filters{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.filter-token{border:1px solid #999;border-radius:20px;background:white;padding:6px 10px;font:inherit;font-size:12px}.result-count{font-size:12px;margin-left:auto}
-.selection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.selection-wrap{min-width:0}.selection-card{position:relative;padding:20px;border:1px solid #b0b0b0;background:#fff;border-radius:12px;overflow:hidden}
-.selection-head h3{margin:0;font-size:22px}.selection-head .rarity-badge{position:static;flex:none}.selection-meta{font:12px monospace;color:#555;margin-top:8px}.selection-card .card-art{display:block;width:110px;height:100px;margin:12px auto}
-.selection-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:11px}.selection-stats b{display:block;font-size:18px;margin-top:4px}.selection-summary{font-size:12px;line-height:1.65;min-height:40px;color:#555}.selection-actions{font-size:12px;line-height:1.7}.selection-card>.btn,.select-card{width:100%}.select-card{margin-top:7px}.random-pick{margin-bottom:14px}.load-more{display:block;margin:24px auto;min-width:220px}
-.browser-detail{max-width:640px;margin:auto}.browser-detail>.card{margin:20px 0}.browser-detail pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px}.browser-detail details{margin:14px 0}.detail-footer{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:8px;padding:16px 0;background:#fafafa;border-top:1px solid #aaa}.detail-footer .primary{flex:1}
-.setup-slots{display:grid;grid-template-columns:minmax(0,1fr) 35px minmax(0,1fr);gap:16px;align-items:center}.setup-slot{min-width:0}.setup-slot h2{font-size:15px}.setup-slot>.btn{width:100%;margin-top:10px}.setup-slot .selection-card>[data-browser-detail]{display:none}.empty-slot{padding:40px 20px;border:1px dashed #aaa;border-radius:12px;background:#fff;text-align:center;font-size:28px}.empty-slot p{font-size:14px}.battle-setup-panel>.big{width:100%;margin-top:22px}
-.combat-float-slot{position:absolute;left:50%;top:37%;transform:translateX(-50%);white-space:nowrap;pointer-events:none;padding:6px 12px;background:#111;color:#fff;border:2px solid white;border-radius:6px;font:bold 22px monospace;z-index:5;animation:frame-float .5s ease-out both}
-@keyframes frame-float{from{opacity:.2;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,-8px)}}
-.current-event{min-height:40px;overflow-wrap:anywhere}.entity-card{position:relative}.entity-card .meter i{transition:none}
-@media(max-width:650px){.selection-grid{grid-template-columns:1fr}.picker-overlay{padding:14px 18px}.selection-card{padding:20px}.setup-slots{grid-template-columns:1fr}.setup-vs{text-align:center}.setup-slot .selection-card .card-art{height:72px}.card-browser{min-width:0}.browser-heading h2{font-size:18px}.filter-row{gap:8px}.combat-float-slot{font-size:18px}.browser-detail .card{max-width:100%}.card-filters{padding-top:8px}}
-@media(prefers-reduced-motion:reduce){.combat-float-slot{animation:none}}
-
-/* Numerical Knowledge — 数值百科 (v1.3.1) */
-.knowledge-sheet{position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.35);display:flex;align-items:flex-end;justify-content:center}
-.knowledge-sheet-card{width:min(560px,100%);max-height:78vh;overflow:auto;background:#fff;border-top:2px solid #111;padding:20px 22px;border-radius:14px 14px 0 0;animation:kb-up .22s ease-out}
-@keyframes kb-up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
-.knowledge-sheet-card h2{font-size:20px;margin:6px 0 10px}.knowledge-sheet-card h4{font-size:13px;margin:14px 0 4px;border-top:1px solid #ddd;padding-top:10px}
-.knowledge-sheet-card p{font-size:13px;line-height:1.7;color:#222;margin:4px 0}
-.knowledge-kind{display:inline-block;font:11px monospace;border:1px solid #999;border-radius:10px;padding:2px 8px;color:#444}
-.knowledge-updown{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}.knowledge-updown div{border:1px solid #ccc;border-radius:8px;padding:8px 10px;font-size:12px}.knowledge-updown b{display:block;margin-bottom:2px}
-.knowledge-sheet-card ul{margin:4px 0 0;padding-left:18px;font-size:13px;line-height:1.8}
-.knowledge-more{display:inline-block;margin-top:14px;font-size:12px;color:#333;border-bottom:1px solid #999}
-.btn.tiny{font-size:11px;padding:2px 8px;margin:2px}
-.kb{max-width:680px;margin:auto}.kb-head h2{font-size:22px}.kb input[type=search]{display:block;width:100%;min-height:46px;margin:12px 0 8px;font-size:14px}.kb select{min-height:40px;width:100%}
-.kb-results{display:flex;flex-direction:column;gap:8px;margin-top:12px}.kb-row{text-align:left;border:1px solid #c0c0c0;border-radius:10px;background:#fff;padding:10px 12px;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}.kb-row b{display:block;font-size:14px}.kb-row span{font:11px monospace;color:#555}.kb-row small{display:block;color:#333;font-size:12px;line-height:1.5;margin-top:3px}
-.detail-row .detail-stat{display:flex;width:100%;gap:10px;align-items:center;border:none;background:transparent;padding:4px 0;font:inherit;cursor:pointer;text-align:left}.detail-row .detail-stat span{flex:1;font-size:12px}.detail-row .detail-stat b{min-width:70px;text-align:right;font-size:12px}.detail-row .detail-stat i{font-style:normal;color:#777;font-size:12px}
-.behavior-evidence{display:flex;flex-direction:column;gap:6px}.behavior-evidence-row{display:flex;gap:8px;align-items:baseline;font-size:12px}.tag-evidence{color:#555}
-@media(max-width:650px){.knowledge-sheet-card{padding:16px}.kb-results{max-height:60vh}}
-
-/* Final vision audit: hierarchy conveys rarity without color. */
-.selection-card.rarity-cplus,.card.rarity-cplus{border-color:#666}
-.selection-card.rarity-b,.card.rarity-b{border-width:2px}
-.selection-card.rarity-bplus,.card.rarity-bplus{border-width:2px;border-color:#555}
-.selection-card.rarity-a,.card.rarity-a{border-width:2px;border-top-width:4px}
-.selection-card.rarity-aplus,.card.rarity-aplus{border-width:2px;border-block-width:4px}
-.selection-card.rarity-s,.card.rarity-s{border:4px double #555}
-.selection-card.rarity-ss,.card.rarity-ss{border:4px double #222}
-.selection-card.rarity-sss,.card.rarity-sss{border:5px double #222}
-.selection-card.rarity-sss-coll,.card.rarity-sss-coll{border:5px double #111;box-shadow:inset 0 0 0 3px #eee}
-.selection-card.rarity-xs,.card.rarity-xs{border:6px double #111}
-.selection-card.rarity-xs-coll,.card.rarity-xs-coll{border:6px double #111;box-shadow:inset 0 0 0 4px #ddd}
-.rarity-xs .rarity-badge,.rarity-xs-coll .rarity-badge,.rarity-sss-coll .rarity-badge{background:#111;color:#fff}
-.behavior-filter-group{margin:10px 0}.behavior-filter-group>summary{min-height:40px;padding:10px 0;cursor:pointer}
-.kb-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.detail-row .detail-stat{min-height:44px}.detail-stat small{display:block;color:#666;font-size:11px}
-.battle-resources{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:#555;margin:6px 0}
-.entity-card.is-acting{box-shadow:inset 4px 0 #111}
-@media(max-width:650px){
-  .entity-card .card-art{height:48px;width:64px;position:absolute;right:10px;top:8px}
-  .entity-top{padding-right:66px;min-height:48px}
-  .battle-vs{padding:10px 0;gap:6px}.battle-vs-divider{line-height:1}
-  .entity-card .battle-actions{margin-top:5px}.entity-card .status-line{margin-top:5px}
-  .current-event{padding:10px;font-size:14px}.selection-summary{font-size:13px}
+button:hover { background: #3b82f6; }
+button:disabled { background: #1e293b; color: #475569; cursor: not-allowed; }
+button.ghost { background: #1c2637; color: #93a4bb; padding: 9px 16px; }
+button.ghost:hover { background: #26324a; }
+.speedsel { display: flex; gap: 6px; margin-left: auto; align-items: center; font-size: 12px; color: #6b7686; }
+.spdbtn {
+  background: #1c2637; color: #7f8ea3; border: 1px solid #263142; border-radius: 5px;
+  padding: 5px 12px; font-size: 12px; cursor: pointer; font-weight: 500;
 }
+.spdbtn.on { background: #2563eb; color: #fff; border-color: #2563eb; }
 
-.browser-options>summary{padding:8px 0;min-height:40px;cursor:pointer}
-@media(max-width:650px){
- .combat-float-slot{left:auto;right:8px;top:8px;transform:none;animation:corner-float .3s ease-out both}
- @keyframes corner-float{from{transform:translateY(4px)}to{transform:translateY(-3px)}}
+/* 日志 */
+.logbox {
+  background: #0b0f16; border: 1px solid #1a222f; border-radius: 10px;
+  height: 320px; overflow-y: auto; padding: 10px 14px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; line-height: 1.75;
 }
-@media(prefers-reduced-motion:reduce){.combat-float-slot{animation:none}}
-@media(max-width:650px){
- .battle-empty{padding:22px 0}.battle-empty .battle-setup-panel{padding:12px 0;gap:12px}
- .setup-slots{gap:8px}.setup-slot h2{margin:0 0 8px}.empty-slot{padding:14px 16px}.empty-slot p{margin:6px 0}
+.logbox::-webkit-scrollbar { width: 8px; }
+.logbox::-webkit-scrollbar-thumb { background: #202938; border-radius: 4px; }
+.le { color: #7f8ea3; }
+.le.act { color: #74c0fc; font-weight: 600; }
+.le.hit { color: #b9c6d9; }
+.le.crit { color: #ffd43b; font-weight: 700; }
+.le.heal { color: #69db7c; }
+.le.miss { color: #5c6b7f; font-style: italic; }
+.le.death { color: #ff6b6b; font-weight: 800; }
+.le.sys { color: #4dabf7; font-weight: 700; }
+.le.draw { color: #adb5bd; font-weight: 700; }
+.result {
+  margin-top: 10px; padding: 12px; border-radius: 8px; text-align: center;
+  font-size: 15px; font-weight: 700; letter-spacing: 1px;
+  background: #141a25; border: 1px solid #202938;
+}
+.result.win0 { border-color: #2f9e44; color: #69db7c; }
+.result.win1 { border-color: #c92a2a; color: #ff8787; }
+.result.draw { border-color: #6b7686; color: #adb5bd; }
+
+/* 移动端：单列堆叠 */
+@media (max-width: 760px) {
+  body { padding: 12px; }
+  .setup { grid-template-columns: 1fr; }
+  .vscol { padding: 8px 0; height: auto; }
+  .stage { grid-template-columns: 1fr; }
+  .speedsel { margin-left: 0; }
 }
