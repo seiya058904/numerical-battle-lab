@@ -12,12 +12,12 @@
 普通「开始对战」与「重开」每局都会生成**新的对局随机种子**（相同阵容 + 新随机轨迹），精确复现走 Replay / 高级实验室「同种子重放」。
 没有经验、货币、升级、抽卡、关卡或解锁；等级只是 1–100 的自由生成参数。
 
-卡面上的 **「战力」是玩家观察卡牌综合实力的参考数值**（v6/v5 用独立的 BattlePower v3 估算；v4 旧卡仍用 BattlePower v2），**不参与**任何战斗计算。对战中每个实体单独显示稀有度 / 等级 / 战力。
+卡面上的 **「战力」是玩家观察卡牌综合实力的参考数值**（v7 用独立的 BattlePower v4 估算；v6/v5 用 BattlePower v3；v4 旧卡仍用 BattlePower v2），**不参与**任何战斗计算。对战中每个实体单独显示稀有度 / 等级 / 战力。
 
-**Generator v6 是当前默认生成器，v1–v5 保留为显式 legacy。** 强度体系遵循 Level × Rarity Strength Contract：
-**Level × Rarity 共同决定 ExpectedStrength 与总实力预算；Seed 只决定预算在攻击、耐久、恢复、控制、节奏、资源、可靠性和触发器之间如何分配；机制决定打法与克制；Match Seed 决定单局结果。**
-生成器是纯确定性函数，不运行战斗、不调用 AI 或 BattlePower；BattlePower 和 canonical-AI Monte Carlo 分别是独立的 Measurement 与 Reality 层。
-同 seed 的卡无论 Lv/Rarity 怎么变，**机制指纹与物种专名都不变**——只是数值强度按包络校准。
+**Generator v6 仍是当前产品默认生成器；Generator v7 已完成实现并可通过显式 `generatorVersion:7` 使用，但尚未切换默认。** V7 的强度体系遵循 Strength Geometry Contract：
+**Level 是第一实力维度、Rarity 是第二实力维度（都是后段差距越来越大的凸成长）；Seed 只决定打法和克制（StyleGenome + 机制骨架），不决定实力阶层；Match Seed 决定单局结果。**
+生成器是纯确定性函数，不运行战斗、不调用 AI 或 BattlePower；BattlePower v4 和 canonical-AI Reality（37,440 场镜像 Bradley-Terry 构图）分别是独立的 Measurement 与 Reality 层。
+同 seed 的卡无论 Lv/Rarity 怎么变，**机制指纹与物种专名都不变**——只是数值强度按 iso-power solver 校准到 TargetTheta。
 **命名体系（Name Generator v3）**：卡名是可直接朗读、好记的原创物种专名（如 米洛、咕拉奇、维洛恩、莫里亚姆…），
 由 6 个纯语音家族（ROUND/AGILE/HEAVY/SLEEK/WILD/ANCIENT）以 2/3/4 字 = 10/70/20 生成，
 5 字禁止；名字只由 Seed 决定，绝不读稀有度/等级/BP/机制。官方 60 预设使用人工定稿名称。
@@ -29,7 +29,8 @@
 数值、行动、资源、状态和公式可在卡牌的「编辑」中修改完整 JSON，保存前校验。高级实验室保留数值编辑、批量模拟、组件目录、Trace 和 Replay。
 移动端观战按**事件逐帧**讲故事：血条逐事件同步、每实体单浮动数字队列、暂停/单步/1×/2×/4×。
 
-参阅 [Generator v6 设计](docs/GENERATOR-V6-DESIGN.md)、[v6 交付报告](docs/V6-DELIVERY-REPORT.md) 与 [Generator v5 legacy](docs/GENERATOR-V5.md)。
+参阅 [Generator v7 设计](docs/GENERATOR-V7-DESIGN.md)、[V7 数值架构](docs/NUMERICAL-ARCHITECTURE-V7.md)、
+[v7 交付报告](docs/V7-DELIVERY-REPORT.md)、[Generator v6 legacy](docs/GENERATOR-V6-DESIGN.md) 与 [v6 交付报告](docs/V6-DELIVERY-REPORT.md)。
 
 ## 直接运行
 
@@ -47,13 +48,14 @@ python -m http.server 8765
 
 - 1–6 vs 1–6 同时在场，支持不对称人数；默认玩家向 **1 VS 1**（更多对战设置可调 1–6）。
 - 20 个示例实体、63 个示例技能、33 个状态；它们只是组件语言的示范组合，不是引擎上限。
-- **生成卡牌（Generator v6，Classless，默认）**：12 档稀有度、任意整数等级 1..100、无职业先验、
-  连续随机预算分配、2–6 个可变行动、个体级随机（VOLATILITY/LUCK）、时间成长/疲劳（RAMP/FATIGUE/ENDURANCE）、
-  Battle Wear 长局收敛、物种专名（Name Generator v3）、复合效果、条件、资源循环与状态事件程序。
-  强度由 **ExpectedStrength(Level, Rarity) → Seed allocation → budget-priced card** 决定；同 seed 的机制指纹与名称跨 Lv/Rarity 完全不变，主面板和机制幅度按同一总预算调和至 ±5% 内。
-  显式 `generatorVersion: 1|2|3|4|5` 继续复现 legacy。
-- **战力评分（BattlePower v3，v6/v5 measurement）**：只读真实 stats/actions/formulas 的静态综合实力估算；
-  绝不读取稀有度/等级、绝不 clamp、绝不因对局种子变化。v4 旧卡继续用 BattlePower v2。
+- **生成卡牌（Generator v7，显式 `generatorVersion:7`；产品默认仍为 v6）**：12 档稀有度、任意整数等级 1..100、无职业先验、
+  Seed-only 机制骨架（8 轴 StyleGenome + 胜利路径/资源/伤害类型/状态策略/触发事件）+ 内容-only
+  iso-power solver（逐旋钮边际强度，收敛到 TargetTheta ±0.12）。强度由 **TargetTheta(Level, Rarity) →
+  solver 调和真实数值**决定；同 seed 的机制指纹与名称跨 Lv/Rarity 完全不变。
+  显式 `generatorVersion: 1|2|3|4|5|6` 继续复现 legacy。
+- **战力评分（BattlePower v4，v7 measurement）**：只读真实 stats/actions/formulas 的静态综合实力估算，
+  用 37,440 场真实战斗的 EmpiricalTheta 在 holdout 上校准；绝不读取稀有度/等级/种子/预算/对局结果。
+  v6/v5 卡继续用 BattlePower v3，v4 旧卡继续用 BattlePower v2。
 - **对局随机语义**：普通「开始/重开」每局新 seed；同 seed 精确复现；Replay 逐步重现原局；
   SPD 先手为有界随机（Priority 优先 → SPD×jitter → 确定性兜底）。
 - **Behavior Analyzer（特征分析器）**：生成完成后事后分析卡牌特点（2–4 标签 + 一句话摘要），
@@ -139,4 +141,5 @@ npm run verify
 - `npm run audit:power-envelope`：v5 强度审计（包络/等级梯子/稀有度梯子/C+ vs A+ 跨种子回归/跨稀有度 Monte Carlo）→ `qa/power-envelope-v5.json`。
 - `npm run audit:presets-v5`：v5 预设审计（60 张全部落入包络、名字唯一、结构自洽）→ `qa/presets-v5-audit.json`。
 - `npm run audit:naming`：Name Generator v3 审计（10k 唯一率、生僻字=0、禁用后缀=0、长度分布）→ `qa/naming-v3-audit.json`。
-- `npm run verify:release`：verify + `npm run diversity`。仓库清单按 Git 暂存区内容生成；提交新文件后先 `npm run manifest`。
+- `npm run verify:release`：verify + `gate:v7-product`（V7 产品门禁）+ `npm run diversity`。仓库清单按 Git 暂存区内容生成；提交新文件后先 `npm run manifest`。
+- `npm run reality:v7`：完整 V7 Reality 链（37,440 场构图 → EmpiricalTheta → 校准 → seed dispersion → 产品门 → 多轴 → BattlePower v4）→ `qa/v7-*.json`。

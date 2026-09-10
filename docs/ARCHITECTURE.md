@@ -46,16 +46,27 @@ Actions are normalized, then ordered deterministically by:
 
 Because the initiative rolls come from the battle PRNG, replay stays byte-exact; only a new match seed changes who goes first. A sufficiently large SPD gap makes the faster side act first with certainty (the bounded range cannot close it), so very slow units can never randomly out-run much faster ones. Priority/speed can be modified through the shared event-modifier system. No UI timing, wall clock or animation state participates in resolution.
 
-## 3a. Level × Rarity strength model (Generator v6 default)
+## 3a. Strength geometry model (Generator v7 default)
 
-`src/budget-v6.js` owns the authoritative total-strength contract:
+Generator v7 owns the current product contract; Generator v6 remains explicit
+legacy (`generatorVersion:6`).
 
-- **Level** decides the overall magnitude scale: `LevelScale(L)=0.10+0.90·((L-1)/99)^0.95`.
-- **Rarity** multiplies the same total budget from C=1.0 through XS Collector=12.0.
-- **Seed** produces a bounded allocation profile and mechanic topology, never a second total-strength multiplier.
-- **Generator v6** prices stats and mechanics and reconciles card content to ExpectedStrength within 5%; it never invokes combat, AI, opponents, Monte Carlo, or BattlePower.
-- **BattlePower v3** reads only real card content as an independent static measurement. Corrected paired canonical-AI audits are the independent reality layer.
-- **Name Generator v3** depends on seed only, so the same seed retains its name at any level or rarity.
+- **Level** is the first strength dimension: `LevelScore(L)=16·((L-1)/99)^1.70`.
+- **Rarity** is the second strength dimension: convex `RarityScore` from C=0
+  through XS Collector=7.60.
+- **TargetTheta = LevelScore + RarityScore − anchor(Lv50 A)**; a content-only
+  iso-power solver tunes individual numeric knobs until the predicted general
+  strength lands on TargetTheta (|error| ≤ 0.12).
+- **Seed** produces a style genome and a mechanic skeleton, never a second
+  total-strength multiplier; the mechanic fingerprint is invariant across level
+  and rarity.
+- **BattlePower v4** reads only real card content as an independent static
+  measurement, ridge-calibrated against holdout EmpiricalTheta from the
+  37,440-battle mirrored canonical-AI graph (regularized Bradley-Terry). It is
+  a separate reality layer; the full audit stays release evidence while
+  `gate:v7-product` is the deterministic CI regression.
+- **Name Generator v3** depends on seed only, so the same seed retains its name
+  at any level or rarity.
 
 ## 3b. Match randomness semantics
 

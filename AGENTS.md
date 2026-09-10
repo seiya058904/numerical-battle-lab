@@ -57,9 +57,19 @@ userIntentExamples）。
 ## 常用命令
 
 ```bash
-npm test                       # 全量 Node 行为测试（含 v1-v5、预设、数值知识、随机/先手）
+npm test                       # 全量 Node 行为测试（含 v1-v7、预设、数值知识、随机/先手）
 npm run verify                 # catalog + 全量测试 + 静态架构/清单门禁
-npm run verify:release         # verify + diversity
+npm run verify:release         # verify + gate:v7-product + diversity（V7 产品门禁）
+npm run gate:v7-product        # V7 轻量确定性 CI 回归门（几何/solver/产品 smoke/多轴/BP/legacy/命名/多样性）
+npm run reality:v7             # 完整 Reality 链：37,440 场构图 → EmpiricalTheta → 校准 → dispersion → 产品门 → 多轴 → BPv4
+npm run audit:v7-geometry      # V7 几何审计 → qa/v7-strength-geometry.json
+npm run audit:v7-product       # 产品最高纲领 A–F 大样本审计 → qa/v7-product-strength.json
+npm run audit:v7-seed-dispersion # p95-p5 seed dispersion + matchup residuals → qa/v7-seed-dispersion.json
+npm run audit:v7-sensitivity   # 多轴敏感度审计 → qa/v7-stat-sensitivity.json + qa/v7-axis-sensitivity.json
+npm run audit:v7-battlepower   # BattlePower v4 校准 + holdout reality → qa/v7-battlepower-reality.json
+npm run audit:v7-presets       # 预设实战矩阵 + 3v3 smoke → qa/v7-preset-matrix.json
+npm run benchmark:v7           # 1000 卡生成性能 → qa/v7-performance.json
+npm run migrate:presets-v7     # 从 presets-v6 生成 content/presets-v7.{json,js}（Naming V3 冻结）
 npm run diversity:v4           # 10000 张 v4 卡多样性审计 → qa/diversity-v4.json
 npm run calibration:v4         # BattlePower v2 经验校准 → qa/power-v4-calibration.json
 npm run migrate:presets-v5     # 从 presets-v4 迁移生成 content/presets-v5.{json,js}
@@ -75,6 +85,7 @@ node scripts/audit-numerical-semantics.js # 参数扰动验证（文档描述 ==
 node qa/browser-v4.js          # 真实 Chromium 移动/桌面 QA（需 playwright + 127.0.0.1:8774 静态服务）
 node qa/browser-knowledge.js   # 数值百科 UI QA（同上）
 node qa/browser-multi.js       # 多人显式编队 + 新种子/重开语义 QA（同上）
+npm run diagnostics:legacy     # V6 gate + 旧 v1.2.x 诊断（gate:v6-strength 已从 verify:release 移到这里）
 npm run manifest               # 重新生成 RELEASE-MANIFEST.json（提交新文件后必须）
 ```
 

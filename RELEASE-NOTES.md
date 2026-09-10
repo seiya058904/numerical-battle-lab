@@ -12,6 +12,20 @@ Ordinary content is composed from registered primitives and parameters instead o
 
 ---
 
+## v1.6.0 — Generator v7: Strength Geometry + Empirical Reality + BattlePower v4 (V7 built, default switch pending)
+
+- **Generator v7 is implemented and available, but the product default remains Generator v6** until every Reality acceptance item passes; v1–v6 stay explicit legacy paths (`generatorVersion: 1..6`).
+- **Strength Geometry**: `TargetTheta = LevelScore + RarityScore − anchor(Lv50 A)` with convex back-loaded Level (16·((L−1)/99)^1.70) and convex 12-tier Rarity (C=0 … XS_COLLECTOR=7.60). Level is the first strength dimension, Rarity the second; the engine never reads them as combat authority.
+- **Content-only iso-power solver**: per-knob marginal-value solving targets TargetTheta; generation never runs battles, AI, opponents, Monte Carlo or BattlePower.
+- **Empirical Reality**: 37,440 mirrored canonical-AI battles (180 cards / 15 seed families / 12 tiers / 1,560 edges / 12 paired Match Seeds per edge) fitted by regularized Bradley-Terry into EmpiricalTheta with seed-family splits. Measured Spearman(Target, Empirical) = **0.889** and same-tier p95−p5 dispersion up to **8.4 theta** — both below the acceptance bar in the Phase-6 final semantics; the root cause is diagnosed in `docs/V7-DELIVERY-REPORT.md`.
+- **Multi-axis semantics (Phase 6, frozen)**: neutral-100 POTENCY / CONTROL_POWER / TENACITY / RECOVERY / BARRIER_POWER axes activated on evidence.
+- **BattlePower v4**: independent content-only estimator, ridge-calibrated against holdout EmpiricalTheta with seed-family isolation. Holdout Spearman **0.953**, large-gap ordering **96.2%**, strong inversion **0.0%** — all within the Definition of Done.
+- **Product gates** (`npm run gate:v7-product`, 21 checks, green): Lv100 vs Lv40 overwhelming, Lv100 C vs Lv40 XS Collector 100%, Lv70 XS Collector vs Lv100 C inside the 35–70% suspense window, Lv70 XS vs Lv100 C inside 20–45%, same-level C vs XS Collector 100%, plus geometry/solver/fingerprint/BP-content-only/legacy/naming/diversity regressions.
+- **Replay determinism fix**: Phase 6 recorded the *ordered* action sequence, which broke byte-exact replay for generated cards; the round record now keeps the original input order while the One Action Rule still deduplicates execution.
+- 60 canonical `presets-v7` cards (Naming V3 names index-aligned with v6, no hand-authored strength) ship as `SYSTEM_PRESETS_V7`; V6 strength gate moved to `npm run diagnostics:legacy`; `verify:release` now runs `verify + gate:v7-product + diversity`.
+
+---
+
 ## v1.5.0 — Generator v6 Final Strength Contract
 
 - Generator v6 is now the default generator and the 60-card v6 catalog is the default product preset list; v1–v5 remain explicit legacy paths.
