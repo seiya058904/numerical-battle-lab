@@ -6,12 +6,12 @@
   "formulaParser": "Acorn 8.15.0 + restricted AST evaluator",
   "scope": "full-main-release",
   "scopeNote": "Complete auditable file set of the current official main release, generated from `git ls-files` (runtime + docs + qa artifacts + deployment files: .nojekyll, .github/workflows/verify.yml, docs/superpowers plans). Self-auditing meta files RELEASE-MANIFEST.json and scripts/generate-manifest.js are excluded from their own listing (their hashes are inherently unstable under regeneration); scripts/static-check.js audits both directly against the working tree.",
-  "verifiedTests": 305,
+  "verifiedTests": 364,
   "files": [
     {
       "path": ".github/workflows/verify.yml",
-      "size": 883,
-      "sha256": "6e1653d0b7895727d558d0712ca067438d0d7cf600201592e1e1e51bb1ca7cd5"
+      "size": 865,
+      "sha256": "e30141aa48d91455c62c692830654e2df088df39ca741a44342c406c85ba348c"
     },
     {
       "path": ".gitignore",
@@ -25,8 +25,8 @@
     },
     {
       "path": "AGENTS.md",
-      "size": 10276,
-      "sha256": "2a1611d6b616714ce224b40297d50b4dcbd18a6f7527563d52a5c26a61197b15"
+      "size": 11516,
+      "sha256": "98bb3c64e7edd6296e1ee24bddd51d0013eef563b2dd8cb1d24d158903424eda"
     },
     {
       "path": "FINAL-REPORT.md",
@@ -40,18 +40,48 @@
     },
     {
       "path": "README.md",
-      "size": 13282,
-      "sha256": "26233761acef7a6e53ba7650bfd2c96f5212509bd48007598b76360a7c0c27e9"
+      "size": 13736,
+      "sha256": "c78791fdf902c785ac1960e256b3cc6594e4bab67f5d15919f9ed8844ad0ba30"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "size": 21832,
-      "sha256": "d93cfcb34c2d4d377ff1d9ed2238f04d081e7b959c8c090403458fb55ebad512"
+      "size": 24332,
+      "sha256": "aae1aab0937acef0ee95a1ae064f2a8d6302a55fede3ca900fd5619bd91e5193"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
       "size": 1948,
       "sha256": "d7039ec21693a16a872d804cddf0b68e88dbc845633c4558575fa9c54d3c59e2"
+    },
+    {
+      "path": "calibration/battlepower-v4.js",
+      "size": 2030,
+      "sha256": "8b2668d01dd5c50ce5f11d97717603285383f31ff1b48f19e580a887c318657c"
+    },
+    {
+      "path": "calibration/battlepower-v4.json",
+      "size": 2426,
+      "sha256": "f8435550c60f00f34a6c83386471ea180c48aa769827b01642282727a09a72aa"
+    },
+    {
+      "path": "calibration/reference-world-v7.js",
+      "size": 608,
+      "sha256": "1a81008ea43e45dc9645b3f7184116f25e0f06c3528351bdf6eab6485691b7c5"
+    },
+    {
+      "path": "calibration/reference-world-v7.json",
+      "size": 513,
+      "sha256": "1be45635f0f7f87f1e4e65315dfc83fdad1b96ff7e157ca7be1b7a97788936ad"
+    },
+    {
+      "path": "calibration/strength-model-v7.js",
+      "size": 1400,
+      "sha256": "9bca5795a0c8653f50a6d0b69a2f9b04bc8fb5c59ceff010e6c6dc05484fdfd8"
+    },
+    {
+      "path": "calibration/strength-model-v7.json",
+      "size": 1657,
+      "sha256": "9a6fbe4900914d34e2b3f9041c0311affcaeb4beeb84b417edaa47347de3e8b0"
     },
     {
       "path": "content/presets-v4.js",
@@ -84,9 +114,19 @@
       "sha256": "ac61fd9eb2cebc52190eb9c5b2c67f6a834d24939677f70c649733161bdaecc9"
     },
     {
+      "path": "content/presets-v7.js",
+      "size": 759382,
+      "sha256": "7915da08e6481dceee7657005c271e44181b89913445a731f8789f5fb6bcd087"
+    },
+    {
+      "path": "content/presets-v7.json",
+      "size": 1026113,
+      "sha256": "62653b6fac3d5ff47d38b409a27edca55f26ee3ddb25969059d9a30c1ececc9c"
+    },
+    {
       "path": "docs/ARCHITECTURE.md",
-      "size": 9552,
-      "sha256": "84cdd645d51f4696db4e82db80f8deb13be9e5dc83b0350b31756870e9109cd8"
+      "size": 9885,
+      "sha256": "c50f2c9f4abe64f437ccfbd4c46f223f6cbf09c21298f28d603944ea73f80144"
     },
     {
       "path": "docs/BALANCE-AUDIT-v1.2.md",
@@ -95,8 +135,8 @@
     },
     {
       "path": "docs/CARD-NUMERICAL-REFERENCE.md",
-      "size": 32501,
-      "sha256": "bdfd34b3884f36a6f8e1c4d979471fd1621e695fdbd946c8ec2465a9845a9dcc"
+      "size": 34115,
+      "sha256": "d0695bdcc470471584610cc31e04231b1bf0c03b2b18e241ac3ec17562062cbf"
     },
     {
       "path": "docs/CONTENT-AUTHORING.md",
@@ -149,14 +189,24 @@
       "sha256": "8940ee0fae739f1e408c559b89976d5cdb461e5fd233a571cbf967c9a14dd9ca"
     },
     {
+      "path": "docs/GENERATOR-V7-DESIGN.md",
+      "size": 5140,
+      "sha256": "1ca4452bd3d154b0dbf7d975393684367f5afdad8dbc04c91de8fd2a98f2c2ef"
+    },
+    {
       "path": "docs/GENERATOR.md",
       "size": 11986,
       "sha256": "f8778781c80701075bc917b3ae938f5b19bf2302e5ae0303ce07acddde96624c"
     },
     {
       "path": "docs/NUMERIC-COMPONENT-CATALOG.md",
-      "size": 24246,
-      "sha256": "82a137bffd8980ce89cb7e1145160c9ff1beac3bf0492d396ec1c9568062d3a8"
+      "size": 25138,
+      "sha256": "668a54e98d83b55d609c57aa8331d924cf677c7b468bdae13af273112cf9959e"
+    },
+    {
+      "path": "docs/NUMERICAL-ARCHITECTURE-V7.md",
+      "size": 5631,
+      "sha256": "0ce011ae125a653584a0f0be117cb58b2254fd35b588fbc6bb24a9013cfbceb7"
     },
     {
       "path": "docs/PLUGIN-API.md",
@@ -184,9 +234,14 @@
       "sha256": "d51a239ade46258d8b3da34ad1dd74af57db55729a7491cb72393aaed8f9d856"
     },
     {
+      "path": "docs/V7-DELIVERY-REPORT.md",
+      "size": 10654,
+      "sha256": "77f090319c544597f98fd8d3453ddccbeac3eff483041f830c6f345c453b0f07"
+    },
+    {
       "path": "docs/numeric-component-catalog.json",
-      "size": 63282,
-      "sha256": "e29e60db9204ac9b69f569a00982849b48a47fad1aee4b0d83d70b9b8e739b6f"
+      "size": 65810,
+      "sha256": "a58dc2c85bcb5a4a61a801ed6c45c5e13c3c22987f573536df8f1a7522dfca3e"
     },
     {
       "path": "docs/superpowers/plans/2026-01-power-rarity-model.md",
@@ -229,14 +284,24 @@
       "sha256": "8d9962c7cfbe1dd87644bc016f07b3df219796dcee59d5ae99019029793ac7c7"
     },
     {
+      "path": "docs/superpowers/plans/2026-09-09-generator-v7-strength-geometry.md",
+      "size": 11619,
+      "sha256": "7b55d3f7068f5d629a63ff9deea373e002f76c4e75d5384f025d85de73344446"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-09-generator-v7-strength-geometry-design.md",
+      "size": 5534,
+      "sha256": "ed0d6f01f8fa57a19edc99c3330dbc53e9085d976cfde1fbde62c1349a8f7bb4"
+    },
+    {
       "path": "index.html",
-      "size": 4403,
-      "sha256": "1caa9b4c9bc088a9c9b9794bb38aac0026e4e6e31216294c0bd50c95c4f5f650"
+      "size": 4955,
+      "sha256": "a4d6415dc18593eda04309d173f1b0fcec87417870d888a236eebd4a6b5ab254"
     },
     {
       "path": "package.json",
-      "size": 2082,
-      "sha256": "41ac2b9a825fe4ca97ef23d6084e2a9c304ba1bbcee7d03972a9470ce0d52786"
+      "size": 3287,
+      "sha256": "7a3eb3f0d2fa8360da93e6ecbbb0d7ab911708dbe33ebd389670c8517383364e"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
@@ -360,13 +425,13 @@
     },
     {
       "path": "qa/numerical-coverage.json",
-      "size": 283,
-      "sha256": "bceb2e7fcfbfc9920eaa571078e733bb8d973e8acc66d6bcb304889dce418cec"
+      "size": 302,
+      "sha256": "a2069b2343628f2a787435a9d3c6f3f41d83919af8d83f5fa75dc78c0d11412b"
     },
     {
       "path": "qa/numerical-semantics.json",
-      "size": 817,
-      "sha256": "3c643a3a1d65c7f1987f269bad9b4cf074347964157c267caff5cabe93f0fd16"
+      "size": 1144,
+      "sha256": "c02a3aa82a991877a8b64fd922d0e62455b6f859a9d0e54884b08a43d063a8c6"
     },
     {
       "path": "qa/power-calibration.json",
@@ -759,6 +824,11 @@
       "sha256": "fd4f7486a24ec6f2729a877df243bd90785cb2c63222e893faba45ed9f4ce8c0"
     },
     {
+      "path": "qa/v6-stat-sensitivity-baseline.json",
+      "size": 16498,
+      "sha256": "840497a751884013ba82ffd4184e64171d2a91cb91a47b3d329291ba7e0da5e3"
+    },
+    {
       "path": "qa/v6-strength-audit.json",
       "size": 806,
       "sha256": "fb5a54fedf5e5e3c37c092cfe9d3c556071eb2fe3f586d491308edc170013479"
@@ -772,6 +842,66 @@
       "path": "qa/v6-strength-final.json",
       "size": 21988,
       "sha256": "263ab25c4e22940f1d2e1f4c53b1739126dfc1b7ee837b46c137f06b500fcfda"
+    },
+    {
+      "path": "qa/v7-axis-sensitivity.json",
+      "size": 737,
+      "sha256": "d985b1d4965fa63952eefffbc6c9adc9423a759337ebd0bce55ada767de91780"
+    },
+    {
+      "path": "qa/v7-battle-graph.json",
+      "size": 463574,
+      "sha256": "f7660835bad2c9aa0a1bd728f6c54eb8438e0bff243d61aaf0f8b7b014fe174a"
+    },
+    {
+      "path": "qa/v7-battlepower-reality.json",
+      "size": 4847,
+      "sha256": "283d1a39d83bd241e8adede75777b69281c14929437a6cc059b39cd3b39c9c0b"
+    },
+    {
+      "path": "qa/v7-empirical-strength.json",
+      "size": 162799,
+      "sha256": "9446550020c1871c588aa9926397ad244de62a5a0cbed9e6f1ef16a996a29003"
+    },
+    {
+      "path": "qa/v7-matchup-residuals.json",
+      "size": 383416,
+      "sha256": "269031dd1792c2f8fc8d84b3fc14eec7c876fb0cf2bfce1c9a88bf43f7c9b81c"
+    },
+    {
+      "path": "qa/v7-performance.json",
+      "size": 475,
+      "sha256": "7ece6e9f7216f46fdc444b34b4f5693d078890f55029294ac3c8116833a8d0b4"
+    },
+    {
+      "path": "qa/v7-preset-matrix.json",
+      "size": 46135,
+      "sha256": "443f41fdf0ecb211780b03ef80505795b21c64c3ae32014cf444cac7ed245275"
+    },
+    {
+      "path": "qa/v7-product-strength.json",
+      "size": 8229,
+      "sha256": "363b9762eb6c54e557c4f09ec63cf2c56776ae2558e84d6d5d310960df377464"
+    },
+    {
+      "path": "qa/v7-seed-dispersion.json",
+      "size": 17809,
+      "sha256": "fab0b902fdfaa018aa8c2aea27ee45870b72c3badcf135a1e497423b1cf76dc9"
+    },
+    {
+      "path": "qa/v7-stat-sensitivity.json",
+      "size": 92515,
+      "sha256": "720414b6ef6891270d5cd9edb42973fe063a5b58bc1575732eebc55c45861794"
+    },
+    {
+      "path": "qa/v7-strength-geometry.json",
+      "size": 1348,
+      "sha256": "ec05980a720ca9e88bcb3219e31f6cde1445bad1c1191e60b35ac06eb0723398"
+    },
+    {
+      "path": "qa/v7-target-reality-calibration.json",
+      "size": 6494,
+      "sha256": "25a012907c96eeb98588b2077cb53e99717b011f298e0c3bec7131810ce4a850"
     },
     {
       "path": "scripts/adjacent-rarity-matrix.js",
@@ -789,6 +919,11 @@
       "sha256": "5e4d1cc554bb7dce31efaaf0712ce8bd45ab9ca5c0ee76d641252bea0ca45d75"
     },
     {
+      "path": "scripts/audit-battlepower-v4.js",
+      "size": 8063,
+      "sha256": "70f15611c91dcb481ea824779b5b2421b9772d2605c2ddcd75e46bb1c0303bc9"
+    },
+    {
       "path": "scripts/audit-naming-v2.js",
       "size": 3104,
       "sha256": "2747e609df1e169eca699adcb5e6aa7da27f73f970e9234cff925922fcdb0b82"
@@ -800,18 +935,23 @@
     },
     {
       "path": "scripts/audit-numerical-coverage.js",
-      "size": 3078,
-      "sha256": "6960dc4d3dd76e4693d86bf9f5f7740cf08645e052575c44dc82f13a77f5edff"
+      "size": 3457,
+      "sha256": "71f922d31bbe822b3332a8ace197b74328001159b8f80d01dd1fa454876a3eb9"
     },
     {
       "path": "scripts/audit-numerical-semantics.js",
-      "size": 11352,
-      "sha256": "79a5930795987155fafdc37eecb6ae621294d1fcc5bd6342ef490752c1201045"
+      "size": 13463,
+      "sha256": "b6ff595721ad71d0a3790e4a1a9df62e5771efba70e0b7a5357551d9cf344098"
     },
     {
       "path": "scripts/audit-presets-v5.js",
       "size": 2551,
       "sha256": "41ca4b3d61315da325b67a071e017310d0ea4db9ff887d6193b2484b7b004459"
+    },
+    {
+      "path": "scripts/audit-stat-sensitivity-v7.js",
+      "size": 10054,
+      "sha256": "b1e081e71e760c2f497d11bdcc3f55360e369eac4b4b2c5774033f0e4bec64e7"
     },
     {
       "path": "scripts/audit-v4-battles.js",
@@ -849,6 +989,46 @@
       "sha256": "d4ae931790bf418ec5352300f04beb90a1b7398412a5b0ad6b89035cfb47c682"
     },
     {
+      "path": "scripts/audit-v7-geometry.js",
+      "size": 1550,
+      "sha256": "b14767c42c4b79efdc75ce7d3a262c00f8a9a117e6f46182691efc57a7c00f20"
+    },
+    {
+      "path": "scripts/audit-v7-presets.js",
+      "size": 6188,
+      "sha256": "ec1f650430e31ccf74f7f02d57693c7dcb3792f973d52738554437281bbfd834"
+    },
+    {
+      "path": "scripts/audit-v7-product-strength.js",
+      "size": 4597,
+      "sha256": "2639c0f72eaa10a475637ffba6b648b855b570fc94da9913ae9bc717ede12f36"
+    },
+    {
+      "path": "scripts/audit-v7-seed-dispersion.js",
+      "size": 3391,
+      "sha256": "379d4a6c5035405128a0f9ed697db93bcf3b6f96e3e6145184abbeb53f66cecc"
+    },
+    {
+      "path": "scripts/benchmark-gen-v7.js",
+      "size": 2284,
+      "sha256": "defdce83da23694e3b106ad93983fd69ca3f2b0285a62681b5a07faa06cd1a62"
+    },
+    {
+      "path": "scripts/build-v7-battle-graph.js",
+      "size": 3288,
+      "sha256": "000ff0dbc0a980a266fdcd91cd0856dc582d693b01cc3965ff81fa9a9c77bfaf"
+    },
+    {
+      "path": "scripts/calibrate-strength-model-v7.js",
+      "size": 3157,
+      "sha256": "3c12414a8bcfaf2a554076cbfb73f30d05b6e761485b130529a3a2558bd0c9e6"
+    },
+    {
+      "path": "scripts/diagnose-v7-mechanism-ranking.js",
+      "size": 3437,
+      "sha256": "47e2da7352090cbba6e5b9e43dafc067e644cc912a5d44e159da1aa793bf2008"
+    },
+    {
       "path": "scripts/diversity-audit-v4.js",
       "size": 4414,
       "sha256": "f8d99201fd265f92da1bb339f80196b1ac3ab22548744fb694e36e3d1152ac61"
@@ -864,9 +1044,19 @@
       "sha256": "3516a02e09cdeab2daaaf1290ac07d1e10f5ebb83eda412038660dff7178ec2b"
     },
     {
+      "path": "scripts/fit-v7-empirical-strength.js",
+      "size": 3542,
+      "sha256": "f63f0a13c29b0723d6b1815e9d5fad9db9e5677cb61d6abc051c122ffe2314bb"
+    },
+    {
       "path": "scripts/gate-v6-strength.js",
       "size": 2224,
       "sha256": "095b55a37278d87ea6a8672a6d05d3fe8020d4a8093d93e37d112d7e92f5b468"
+    },
+    {
+      "path": "scripts/gate-v7-product.js",
+      "size": 8295,
+      "sha256": "68822caad0afbcfb5d155f7204bfbf5ef889b5e8e5c4efe94c88135cf9c7245c"
     },
     {
       "path": "scripts/gen-mc.js",
@@ -909,6 +1099,11 @@
       "sha256": "1171b8a1e266c383cc47f9ba65289e04a85ab408427f6d13fc1d7b620b269559"
     },
     {
+      "path": "scripts/migrate-presets-v7.js",
+      "size": 4591,
+      "sha256": "5e3583577ff8ecea1b13169cf282799c0c4a12af2c434a01d2b3aadd00ce954b"
+    },
+    {
       "path": "scripts/power-calibration.js",
       "size": 19509,
       "sha256": "58fe82b28936005d1577e132446df90c90cbcd0fa4e2253cfb438b0d45c8318a"
@@ -935,8 +1130,8 @@
     },
     {
       "path": "scripts/static-check.js",
-      "size": 7589,
-      "sha256": "ae921f24623855877f3dae6f8a4d7171414ddfb7fd7ce6188f69c59d8a5d8d96"
+      "size": 9088,
+      "sha256": "525fc807df05905b20c8df29d24e8ddac6f77bf5a39696a872597cbc83e51394"
     },
     {
       "path": "scripts/stress-check.js",
@@ -954,6 +1149,11 @@
       "sha256": "7d17cfe3e75c043c246211c0c200a4bed3e07c32dd382e178ec700e098e5f166"
     },
     {
+      "path": "src/audit-statistics-v7.js",
+      "size": 1265,
+      "sha256": "dbde779c25718397286c3b9f61082c4aed75a135f2c551bcb92b8c07a9631b71"
+    },
+    {
       "path": "src/battlepower-model.js",
       "size": 3516,
       "sha256": "395578deb0375a4f4949a609d22bb1deb31ff0999473350e674dcb056c76f222"
@@ -967,6 +1167,11 @@
       "path": "src/battlepower-v3.js",
       "size": 17421,
       "sha256": "8c5bae27a96341a0ece4694553c170bf1b38453a628cc3c7740a82b37e1eb5d6"
+    },
+    {
+      "path": "src/battlepower-v4.js",
+      "size": 12609,
+      "sha256": "d84b84e0b9530edbe3d49523d2b535556b911d66ecff2f8cd2b7094ffee836ec"
     },
     {
       "path": "src/battlepower.js",
@@ -989,19 +1194,24 @@
       "sha256": "ebdb5830af9047b22cca30b3c00088e9081f082597de194687e5293735d1862f"
     },
     {
+      "path": "src/calibration-v7.js",
+      "size": 3045,
+      "sha256": "a22a687e5a9989af188664a4e587cf7060f6a2845f24ab6fef5ea2aa5b4289f4"
+    },
+    {
       "path": "src/card-browser.js",
       "size": 11668,
       "sha256": "5951a558696929e530237c49b98ce40e8a6d42c1b3fc6c154f3f3f172691b210"
     },
     {
       "path": "src/card-ui.js",
-      "size": 15822,
-      "sha256": "274fe6c333a7d4f4e6a05a3c62b23eda3816e82f081e0599f161a1cdf25403bf"
+      "size": 16375,
+      "sha256": "c3a20251bf4189cdac4afe0722fe5c37e4d742f1fa0a71bb240b982b61fd7b9e"
     },
     {
       "path": "src/components.js",
-      "size": 40073,
-      "sha256": "58b1147eabff5061add20e4f4a4d9829bdc2111c20493dbff5a4293d54259502"
+      "size": 41576,
+      "sha256": "758cd78048f21faaf3b0263d9e1bd6a33fecfa3c35ffd19294b258303237474e"
     },
     {
       "path": "src/content.js",
@@ -1010,13 +1220,18 @@
     },
     {
       "path": "src/effects.js",
-      "size": 13195,
-      "sha256": "960f577fdcd21c50f85df4b6368bb66f394a9547b36db2c19037d16c2846892f"
+      "size": 13620,
+      "sha256": "b98c92d0c1e2add11da3a4ac962730e279ff62a2ad680f754061c1bd20942c89"
+    },
+    {
+      "path": "src/empirical-strength-v7.js",
+      "size": 5182,
+      "sha256": "f58b746edb0f642e58aaaed20e04aac27106d1da3ca796c2a7d17a6e252d5465"
     },
     {
       "path": "src/engine.js",
-      "size": 51567,
-      "sha256": "56f3e095fcf31a9a91a27cfd18cda17decb0424d6d2ff87ed1494cc7e1bdc12b"
+      "size": 54863,
+      "sha256": "5b3df03b4ea9a458e4de29e423c68367f12362556ce179642076d445cecdb5c5"
     },
     {
       "path": "src/formula.js",
@@ -1069,6 +1284,11 @@
       "sha256": "14a8a8565a5c974469342ec094c6bcc27e5da032c46af647c68a5601ffac734a"
     },
     {
+      "path": "src/gen-v7.js",
+      "size": 9357,
+      "sha256": "e8e1a0197042924ae6658a2de37b8f0922be9387ab3d94731b5bf045a742b5d0"
+    },
+    {
       "path": "src/generator.js",
       "size": 9611,
       "sha256": "6b8e21ed616995ada953b3e0031eb476d36395bba2e7e619555c2af2ecb37934"
@@ -1090,8 +1310,8 @@
     },
     {
       "path": "src/numerical-knowledge.js",
-      "size": 56864,
-      "sha256": "ea3f41cad386845581310c6c8f7aed9927328fdd5bec490ce74445f99a530aeb"
+      "size": 62183,
+      "sha256": "5458ce9a1d16d0317b43ac17a0712e8ed74d213c19873d53f6861a09a03d3afe"
     },
     {
       "path": "src/power-v5.js",
@@ -1109,6 +1329,11 @@
       "sha256": "7e68e3134220a6c1a23fd1890b0f9132c013b47090d67cf9a12fca9f245d9dcc"
     },
     {
+      "path": "src/presets-v7.js",
+      "size": 679,
+      "sha256": "c9dee72bbe210f2c3941e0193577e70092e941f1b5e8d7f61423f433238a1edf"
+    },
+    {
       "path": "src/presets.js",
       "size": 1303,
       "sha256": "97dd17f64cacf4e6275529b5bd183f89e6b120e972b2071e2fe8dd1d12657bad"
@@ -1119,6 +1344,11 @@
       "sha256": "8a0539ae61616cab5ce1804afa83912852c1f89eb1024e074babc50dee387f46"
     },
     {
+      "path": "src/solver-v7.js",
+      "size": 2792,
+      "sha256": "64f21dd654c874065f57a8fa5a0b9a92455bc5b34e7d61ac689d28af5d65f137"
+    },
+    {
       "path": "src/status-runtime.js",
       "size": 5010,
       "sha256": "0383f309240fbb9499d394325fc47ab93d17db66d2c04f71dfb38257d088c510"
@@ -1127,6 +1357,21 @@
       "path": "src/strength-audit-v6.js",
       "size": 1747,
       "sha256": "aac686f9079073608c4edf154b91222bbb3b136680ee385721d7cfca91209a25"
+    },
+    {
+      "path": "src/strength-geometry-v7.js",
+      "size": 2137,
+      "sha256": "fcb0dcbf959bacd1d9b3a138552eeec6de5e09be8479b46cb9a8fe7c34309de0"
+    },
+    {
+      "path": "src/strength-model-v7.js",
+      "size": 11604,
+      "sha256": "be3ee640f27b039fef64a17570e8e316e9cd541312883ba033cfe7a575f018b3"
+    },
+    {
+      "path": "src/style-genome-v7.js",
+      "size": 717,
+      "sha256": "9ad5bd4a9b058d195a1b750a95dcbfe48a587552ca038008d6b2f39ac1b8a869"
     },
     {
       "path": "src/validator.js",
@@ -1154,6 +1399,11 @@
       "sha256": "1265bf6baf17b22e4e3b2332bdec1ff3ee0c6c66e080848c144af3011bd84e94"
     },
     {
+      "path": "tests/audit-statistics-v7.test.js",
+      "size": 866,
+      "sha256": "5ddf9695b9384df04e810fff0dee50129094c6a46ce456d5f71fc657527bee62"
+    },
+    {
       "path": "tests/battlepower-model.test.js",
       "size": 3943,
       "sha256": "f05d112be526e493e02df41a94c9e00e5367e4c4de122ae64d4a273f81d61288"
@@ -1162,6 +1412,11 @@
       "path": "tests/battlepower-v2.test.js",
       "size": 3959,
       "sha256": "b3384c7a374ea1373a9aad0998f959629f35517058babace90fab599ef4c7e94"
+    },
+    {
+      "path": "tests/battlepower-v4.test.js",
+      "size": 5043,
+      "sha256": "b66213568d203f5a9f8772ad727c3d0ef1793490a6fcdf066208a3cfbe5548f9"
     },
     {
       "path": "tests/battlepower.test.js",
@@ -1189,6 +1444,11 @@
       "sha256": "b22a108bba257bc5037e4fa25c05244a2c337088b4708d2bbfe8cdbcaeb17b05"
     },
     {
+      "path": "tests/calibration-v7.test.js",
+      "size": 1331,
+      "sha256": "0603b0ccc2e205c890e19de5e8a0c9be38f8ae6f422cd60f8ca61958a5e51c46"
+    },
+    {
       "path": "tests/card-browser.test.js",
       "size": 2257,
       "sha256": "eb6f4669531bf45fbbc8b21a776b4aef64b6d701f70b8e945598f4af10d3fdf5"
@@ -1204,9 +1464,14 @@
       "sha256": "de40d8a6c9a369405a88a5918bb83c8cd3e302f1b3de13a77e14696b7d83f89c"
     },
     {
+      "path": "tests/empirical-strength-v7.test.js",
+      "size": 3544,
+      "sha256": "42eb444d8f9709ad42060370ab942d4581e620827c04b78e833e44900eeed63e"
+    },
+    {
       "path": "tests/engine.test.js",
-      "size": 67319,
-      "sha256": "f136f2997e9da8d9d2a2574c65b0eb94d3c8ffbbd2a707fb2067d00600feaaf3"
+      "size": 71542,
+      "sha256": "1d30c913c6649039232b75d9654e93b1390b3c6a53970d6c53dc332d30592664"
     },
     {
       "path": "tests/fixtures/generator-v1.1.0.json",
@@ -1259,6 +1524,11 @@
       "sha256": "d6aff61d012916f70c913113f5d3ed5d3dcf521bcc721dab94b19bdf0065e626"
     },
     {
+      "path": "tests/gen-v7.test.js",
+      "size": 4634,
+      "sha256": "9d68e1dcc7d68ff84f39e8324d4eab34030052684c72ceea2eb5b7c8d30bff34"
+    },
+    {
       "path": "tests/generator.test.js",
       "size": 10682,
       "sha256": "289ea845560ed618c299cc3653cc09a1bbfc758be21eeb7f606abf44e73b4375"
@@ -1309,14 +1579,34 @@
       "sha256": "222de0f9b6b6cdd41cca51e4de1eba1d7d5af5fd54474d0584da17ef91bf135d"
     },
     {
+      "path": "tests/presets-v7.test.js",
+      "size": 3422,
+      "sha256": "d68499674398962086350fea0d854273ca611814be6b9bb9c7ad53d396c5aeac"
+    },
+    {
       "path": "tests/presets.test.js",
       "size": 6799,
       "sha256": "0d11ca36118d4feefca843bc24a1fdd80e8946489dcba41cc40c4ecd1ce4f566"
     },
     {
+      "path": "tests/stat-sensitivity-v7.test.js",
+      "size": 5147,
+      "sha256": "67acaf8e8548956c3d07b9e8c491b4db9f9b5a34dffc65a13841155808c9e03d"
+    },
+    {
       "path": "tests/strength-audit-v6.test.js",
       "size": 1786,
       "sha256": "3d74967e051d29ac5e32832543877ff88bc92888a4d5dd8506b101e4b9ded100"
+    },
+    {
+      "path": "tests/strength-geometry-v7.test.js",
+      "size": 1718,
+      "sha256": "b6b057088d90691c41effee66c5e5ea5068a3ab880dd349634b97d8e9e32c3a6"
+    },
+    {
+      "path": "tests/strength-model-v7.test.js",
+      "size": 3263,
+      "sha256": "65d86bf74df9f083d2e16c7b90b3b313bf9a114f5144a32a5d587c4e468e6e32"
     },
     {
       "path": "tests/v1-fixture.test.js",
@@ -1342,6 +1632,11 @@
       "path": "tests/v6-audit-artifacts.test.js",
       "size": 2129,
       "sha256": "ff37847c84e4683842c804576af783c9222d290fe2d50dfece93ca478dd1d6bc"
+    },
+    {
+      "path": "tests/v7-product-gate.test.js",
+      "size": 4002,
+      "sha256": "c161a62dab6716d95586b9adeb4da3426a6c64e731031205db8c9b01e64ee96a"
     },
     {
       "path": "third_party/acorn/LICENSE",

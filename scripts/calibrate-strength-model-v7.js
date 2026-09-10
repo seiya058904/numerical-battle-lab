@@ -20,6 +20,8 @@ const result=fitRidgeCalibrationV7(datasets.train,datasets.validation,datasets.t
 const calibration={schemaVersion:1,trainedOn:'train seed families only',selectedOn:'validation seed families',testedOn:'untouched test seed families',featurePolicy:'mechanism-shape only; absolute strength diagnostics excluded from solver feedback',featureNames:N.STRENGTH_SHAPE_FEATURE_NAMES_V7.slice(0,fittedFeatureCount),means:result.model.means,scales:result.model.scales,coefficients:result.model.coefficients,intercept:result.model.intercept,ridge:result.model.lambda};
 const calibrationPath=path.join(ROOT,'calibration/strength-model-v7.json');
 fs.writeFileSync(calibrationPath,JSON.stringify(calibration,null,2)+'\n');
+// Browser embed (offline static runtime cannot fetch JSON).
+fs.writeFileSync(path.join(ROOT,'calibration/strength-model-v7.js'),'(function(r){r.NCB=r.NCB||{};r.NCB.STRENGTH_MODEL_CALIBRATION_V7='+JSON.stringify(calibration).replace(/<\/script/g,'<\\/script')+';})(typeof globalThis!==\'undefined\'?globalThis:window);\n');
 const artifact={schemaVersion:1,methodology:{target:'scaled empirical theta minus TargetTheta',scaleSource:'qa/v7-empirical-strength.json train-only scale',familyIsolation:true,hyperparameterSelection:'validation RMSE',testUsage:'evaluation only'},model:calibration,metrics:result.metrics,split:Object.fromEntries(Object.entries(datasets).map(([key,rows])=>[key,rows.map(row=>row.id)]))};
 const output=path.join(ROOT,'qa/v7-target-reality-calibration.json');
 fs.writeFileSync(output,JSON.stringify(artifact,null,2)+'\n');

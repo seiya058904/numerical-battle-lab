@@ -100,7 +100,7 @@
     barrierRate(entityOrId){const e=typeof entityOrId==='string'?this.entity(entityOrId):entityOrId;return responsive100(this.getStat(e.id,'BARRIER_POWER'));}
     recoveryRate(entityOrId){const e=typeof entityOrId==='string'?this.entity(entityOrId):entityOrId;return responsive100(this.getStat(e.id,'RECOVERY'));}
     isPotencyDamage(skill,effect={},ctx={}){const tags=[...(effect.tags||[]),...(skill.tags||[])];return skill.kind==='trigger'||skill.kind==='status'||ctx.STATUS_ID!==undefined||tags.some(tag=>['dot','periodic','trigger','detonation'].includes(tag));}
-    isControlStatus(actor,target,statusId){const def=NCB.STATUS_DEFS[statusId],tags=def?.tags||[];return !!def&&def.kind==='debuff'&&actor.teamId!==target.teamId&&!tags.some(tag=>['dot','poison','burn','bleed'].includes(tag));}
+    isControlStatus(actor,target,statusId){const def=NCB.STATUS_DEFS[statusId],tags=def?.tags||[];return !!def&&def.kind==='debuff'&&actor.teamId!==target.teamId&&!def.periodic&&!def.turnEnd&&!tags.includes('dot');}
     controlContest(actor,target){return responsive100(this.getStat(actor.id,'CONTROL_POWER'))*100-responsive100(this.getStat(target.id,'TENACITY'))*100;}
     controlChance(actor,target,baseChance){const base=clamp(Number(baseChance),0,1);if(base===0||base===1)return base;const shifted=Math.log(base/(1-base))+.06*this.controlContest(actor,target);return 1/(1+Math.exp(-shifted));}
     controlDurationMultiplier(actor,target){return clamp(Math.exp(.012*this.controlContest(actor,target)),.6,1.5);}

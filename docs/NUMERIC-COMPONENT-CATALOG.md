@@ -2,7 +2,7 @@
 
 这不是角色技能表，而是整个战斗系统的“积木盒”。角色、技能、状态只允许组合这些通用积木和参数；新增普通内容不应要求修改 BattleEngine。
 
-当前固定能力面：**91 个参数旋钮 / 18 个 Effect 组件 / 27 个 Condition 组件 / 8 个 Target 组件 / 29 个 Event 插入点 / 8 个 Damage Type**。
+当前固定能力面：**96 个参数旋钮 / 18 个 Effect 组件 / 27 个 Condition 组件 / 8 个 Target 组件 / 29 个 Event 插入点 / 8 个 Damage Type**。
 
 当前内容只是示例组合：20 个实体、63 个技能、33 个状态。理论组合空间远大于这些示例。
 
@@ -39,6 +39,11 @@
 | `LIFESTEAL` | 吸血 | number | % | 0 | 0–100 | 按造成的 HP 伤害回复施法者。 | 根据实际 HP_DAMAGE 回收生命。 |
 | `HEAL_POWER` | 治疗强度 | number | % | 100 | 0–500 | 放大自身施放的治疗。 | 治疗公式结果乘以 HEAL_POWER/100。 |
 | `HEAL_TAKEN` | 受疗倍率 | number | % | 100 | 0–500 | 控制收到治疗的倍率。 | 治疗结算乘以 HEAL_TAKEN/100。 |
+| `POTENCY` | 效能 | number | point | 100 | 0–500 | 放大周期、触发与引爆类非直接数值效果。 | 以 100 为中性值，经有界递减曲线进入非直接伤害。 |
+| `CONTROL_POWER` | 控制强度 | number | point | 100 | 0–500 | 提高敌对非 DoT 状态的成功率和有限持续时间。 | 与目标 TENACITY 在 logit 概率空间对抗。 |
+| `TENACITY` | 韧性 | number | point | 100 | 0–500 | 抵抗敌对控制与弱化状态。 | 作为 CONTROL_POWER 的对抗轴降低最终 chance 和有限 duration。 |
+| `RECOVERY` | 恢复速度 | number | point | 100 | 0–500 | 改变技能冷却准备速度。 | 每回合累积 cooldownProgress 并跨整数减少冷却。 |
+| `BARRIER_POWER` | 屏障强度 | number | point | 100 | 0–500 | 放大 Shield、Ward 与 Barrier 数值。 | 以 100 为中性值，经有界递减曲线放大屏障类效果。 |
 
 ## 资源
 
