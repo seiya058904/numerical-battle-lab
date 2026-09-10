@@ -6,7 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "verify": "node scripts/static-check.js && node --test tests/*.test.js && node scripts/acceptance.js",
+    "verify": "node scripts/static-check.js && node --test tests/*.test.js && node scripts/acceptance.js && node scripts/battlepower-audit.js",
     "serve": "node scripts/serve.js"
   }
 }

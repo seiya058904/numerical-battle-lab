@@ -33,7 +33,9 @@
     return clamp(0.90 + (attacker.acc - defender.eva) * 0.004, 0.45, 0.99);
   }
 
-  // 基础伤害：ATK 线性贡献 × 防御/穿透修正（无二次增长）
+  // 基础伤害：ATK²/(ATK+DEF_eff)。
+  // 当 ATK/DEF 随 Level×Rarity 同比例放大时，整体随总 scale 线性增长（等级体系成立）；
+  // 单独堆 ATK 时边际收益略高于线性（ATK 仍受 DEF 上限约束，无病态二次增长）。
   function baseDamage(attacker, defender) {
     const defEff = defender.def * Math.max(0.05, 1 - attacker.pen);
     return attacker.atk * attacker.atk / (attacker.atk + defEff);
@@ -53,7 +55,7 @@
       add(`　${foe.name} 闪避了 ${unit.name} 的攻击！`, 'miss');
       return;
     }
-    // 伤害：ATK 线性 × 防御/穿透修正 × 随机波动 × 暴击
+    // 伤害：ATK²/(ATK+DEF×修正) × 随机波动 × 暴击
     let dmg = baseDamage(unit, foe);
     dmg *= 1 + (rng() * 2 - 1) * unit.volatility;   // 波动
     const isCrit = rng() < unit.crit;               // 暴击

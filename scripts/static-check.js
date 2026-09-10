@@ -41,6 +41,7 @@ const EXPECTED_FILES = [
   'tests/product-acceptance.test.js',
   'scripts/static-check.js',
   'scripts/acceptance.js',
+  'scripts/battlepower-audit.js',
   'scripts/serve.js'
 ].sort();
 

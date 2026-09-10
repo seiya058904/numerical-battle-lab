@@ -40,12 +40,12 @@
 
 ```bash
 npm test          # node:test 全量测试（零依赖）
-npm run verify    # 静态检查（文件集合=期望清单）+ 全量测试 + 产品实战验收
+npm run verify    # 静态检查（文件集合=期望清单）+ 全量测试 + 产品实战验收 + BattlePower 审计
 npm run serve     # 本地静态服务器 http://127.0.0.1:8774
 ```
 
 ## 修改卡牌/数值后的检查清单
 
 1. `npm test`（BP 排序、确定性、验收匹配全部要绿）
-2. `npm run verify`
+2. `npm run verify`（含 `scripts/battlepower-audit.js`：Lv50 循环赛胜率与 BP 排名 Spearman 相关 ≥ 0.85）
 3. 如果改了 `index.html` 的 script 标签或新增/删除文件，同步更新 `scripts/static-check.js` 的期望清单
