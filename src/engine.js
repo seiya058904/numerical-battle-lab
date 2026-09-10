@@ -375,7 +375,15 @@
       }
     }
     orderActions(actions){const normalized=[];for(const [i,a] of actions.entries()){let actor;try{actor=this.entity(a.actorId);}catch{continue;}if(actor.hp<=0)continue;const skill=NCB.SKILL_DEFS[a.skillId];if(!skill)continue;const basePriority=a.overridePriority??skill.priority??0;const priority=Number(this.kernel.run('ModifyPriority',actor,basePriority,null,{skill,action:a}));normalized.push({...a,id:`r${this.round}-${i}`,order:200,priority,speed:this.getStat(actor.id,'SPD')});}return NCB.sortActions(normalized,this.prng);}
-    resolveRound(actions){if(this.outcome().ended)return;this._effectWork=0;const ordered=this.orderActions(actions),acted=new Set(),record=[];for(const a of ordered){if(this.outcome().ended)break;if(acted.has(a.actorId))continue;acted.add(a.actorId);record.push({...a});this.presentationGroup++;this.useSkill(a);this.captureFrame(null);}this.presentationGroup++;this.processTurnEnd();this.history.push(record);if(!this.outcome().ended){this.round++;this.processRoundStart(false);}this.captureFrame(null);return this.outcome();}
+    resolveRound(actions){if(this.outcome().ended)return;this._effectWork=0;const ordered=this.orderActions(actions),acted=new Set(),record=[];
+      // One Action Rule: each living actor executes at most one action per round.
+      // The replay record keeps the ORIGINAL input order (one entry per actor), so
+      // replaying it re-enters orderActions with the exact same input permutation
+      // and reproduces the same shuffle/initiative rolls (replay determinism).
+      for(const a of actions){if(acted.has(a.actorId))continue;acted.add(a.actorId);record.push({...a});}
+      const executed=new Set();
+      for(const a of ordered){if(this.outcome().ended)break;if(executed.has(a.actorId))continue;executed.add(a.actorId);this.presentationGroup++;this.useSkill(a);this.captureFrame(null);}
+      this.presentationGroup++;this.processTurnEnd();this.history.push(record);if(!this.outcome().ended){this.round++;this.processRoundStart(false);}this.captureFrame(null);return this.outcome();}
     outcome(){const a=this.getLiving('A').length,b=this.getLiving('B').length;if(a&&b)return this.history.length>=this.config.maxRounds?{ended:true,winner:'draw'}:{ended:false};if(!a&&!b)return{ended:true,winner:'draw'};return{ended:true,winner:a?'A':'B'};}
     serializableSnapshot(){return{seed:this.config.seed,rng:this.prng.getSeed(),round:this.round,teams:Object.fromEntries(['A','B'].map(t=>[t,this.teams[t].entities.map(e=>({id:e.id,templateId:e.templateId,hp:e.hp,maxHp:e.maxHp,shield:e.shield,energy:e.energy,stats:{...e.stats},statuses:e.statuses.map(s=>({...s,data:s.data?{...s.data}:undefined})),cooldowns:{...e.cooldowns},alive:e.alive,wards:{...(e.wards||{})},resistances:{...e.resistances},affinities:{...e.affinities},immunities:{...e.immunities},tags:[...(e.tags||[])],wear:e._wear||0}))])),outcome:this.outcome(),log:this.log.map(x=>({...x,trace:x.trace?x.trace.slice():undefined}))};}
     exportReplay(){
