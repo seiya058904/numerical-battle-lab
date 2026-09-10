@@ -16,3 +16,6 @@ npm-debug.log*
 
 # Playwright CLI session artifacts
 .playwright-cli/
+
+# WorkBuddy workspace data (memory/logs - never commit; breaks static-check file-set gate)
+.workbuddy/
