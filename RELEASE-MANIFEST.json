@@ -1055,8 +1055,8 @@
     },
     {
       "path": "scripts/gate-v7-product.js",
-      "size": 8295,
-      "sha256": "68822caad0afbcfb5d155f7204bfbf5ef889b5e8e5c4efe94c88135cf9c7245c"
+      "size": 10246,
+      "sha256": "8b15fc26e18e618d8f0e9127787a3233f0bb36f2148f6492a3b7774fcbb961c6"
     },
     {
       "path": "scripts/gen-mc.js",
