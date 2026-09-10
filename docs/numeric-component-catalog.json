@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedFrom": "src/components.js",
   "counts": {
-    "parameters": 96,
+    "parameters": 100,
     "effects": 18,
     "conditions": 27,
     "targets": 8,
@@ -154,6 +154,20 @@
       "tier": "core"
     },
     {
+      "id": "RES_PEN",
+      "name": "法术穿透",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 0,
+      "range": "0–95",
+      "human": "按比例忽略目标的 RES。",
+      "ai": "Stat-only V7 战斗中作为魔法伤害穿透，与 PEN（物理）互补。",
+      "effect": "只影响魔法伤害部分，不影响 DEF 相关物理减免。",
+      "source": "RPG spell penetration",
+      "tier": "core"
+    },
+    {
       "id": "LIFESTEAL",
       "name": "吸血",
       "category": "实体基础",
@@ -193,6 +207,20 @@
       "ai": "治疗结算乘以 HEAL_TAKEN/100。",
       "effect": "可用于重伤、治疗增益、吸收类机制。",
       "source": "RPG healing received",
+      "tier": "core"
+    },
+    {
+      "id": "HP_REGEN",
+      "name": "每回合回复",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 0,
+      "range": "0–12",
+      "human": "每回合回复 MAX_HP 的百分比。",
+      "ai": "回合开始时按 MAX_HP×HP_REGEN/100×(HEAL_POWER/100)×(HEAL_TAKEN/100) 回复。",
+      "effect": "与 LIFESTEAL 同受 HEAL_POWER/HEAL_TAKEN 调节；上限为 MAX_HP。",
+      "source": "RPG health regen per round",
       "tier": "core"
     },
     {
@@ -263,6 +291,34 @@
       "ai": "以 100 为中性值，经有界递减曲线放大屏障类效果。",
       "effect": "与 MAX_HP 分离，减少生命同时控制基础耐久和所有屏障的双重收益。",
       "source": "RPG barrier power",
+      "tier": "core"
+    },
+    {
+      "id": "TOUGHNESS",
+      "name": "坚韧",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 0,
+      "range": "0–30",
+      "human": "Stat-only V7 的固定伤害减免。",
+      "ai": "对最终伤害乘以 (1 - TOUGHNESS/100)，有界 0–30%。",
+      "effect": "与 DEF/RES 乘算；高投入高收益但受上界限制。",
+      "source": "RPG flat damage reduction",
+      "tier": "core"
+    },
+    {
+      "id": "CRIT_RES",
+      "name": "暴击抵抗",
+      "category": "实体基础",
+      "kind": "number",
+      "unit": "%",
+      "defaultValue": 0,
+      "range": "0–50",
+      "human": "Stat-only V7 中降低受到的暴击加成。",
+      "ai": "敌方暴击时的额外倍率乘以 (1 - CRIT_RES/100)。",
+      "effect": "只削减暴击部分，不影响普通命中伤害。",
+      "source": "RPG critical resistance",
       "tier": "core"
     },
     {

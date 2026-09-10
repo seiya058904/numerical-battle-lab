@@ -8,13 +8,6 @@
     "verify": "node scripts/generate-catalog.js && node --test tests/*.test.js && node scripts/static-check.js",
     "verify:release": "npm run verify && npm run gate:v7-product && npm run diversity",
     "gate:v7-product": "node scripts/gate-v7-product.js",
-    "calibrate:v7-reference": "node scripts/calibrate-reference-world-v7.js 256",
-    "audit:v7-solver-saturation": "node scripts/audit-v7-solver-saturation.js 1000",
-    "diagnose:v7-mechanism": "node scripts/diagnose-v7-mechanism-ranking.js 48 10 3",
-    "explore:v7-mechanism": "node scripts/explore-v7-mechanism-features-v2.js",
-    "experiment:v7-attribution": "node scripts/experiment-v7-attribution.js run C3 96 8 3 && node scripts/experiment-v7-attribution.js aggregate",
-    "audit:v7-solver-utilization": "node scripts/audit-v7-solver-utilization.js 1000",
-    "evaluate:v7-mechanism-96": "node scripts/evaluate-v7-mechanism-ranking-96.js",
     "gate:v6-strength": "node scripts/gate-v6-strength.js",
     "reality:v7": "node scripts/build-v7-battle-graph.js 15 12 100 && node scripts/fit-v7-empirical-strength.js && node scripts/calibrate-strength-model-v7.js && node scripts/audit-v7-seed-dispersion.js && node scripts/audit-v7-product-strength.js 40 8 && node scripts/audit-stat-sensitivity-v7.js 7 8 8 3 && node scripts/audit-battlepower-v4.js",
     "build:v7-graph": "node scripts/build-v7-battle-graph.js 15 12 100",
@@ -23,7 +16,7 @@
     "audit:v7-geometry": "node scripts/audit-v7-geometry.js",
     "audit:v7-product": "node scripts/audit-v7-product-strength.js 40 8",
     "audit:v7-seed-dispersion": "node scripts/audit-v7-seed-dispersion.js",
-    "audit:v7-sensitivity": "node scripts/audit-stat-sensitivity-v7.js 7 8 8 3",
+    "audit:v7-sensitivity": "node scripts/audit-stat-sensitivity-v7.js",
     "audit:v7-battlepower": "node scripts/audit-battlepower-v4.js",
     "audit:v7-presets": "node scripts/audit-v7-presets.js",
     "benchmark:v7": "node scripts/benchmark-gen-v7.js 1000",
@@ -51,5 +44,6 @@
     "audit:numerical-semantics": "node scripts/audit-numerical-semantics.js"
   }
 }
+
 
 

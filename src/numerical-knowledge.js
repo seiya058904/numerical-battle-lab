@@ -196,6 +196,38 @@
     userIntentExamples:['资源循环更快','不缺能量'],
     readBy:['engine resource regen','canonical AI','BattlePower v2','Behavior Analyzer'],writtenBy:['Generator v4','Advanced Editor'],affects:['resource income'],doesNotAffect:['damage']});
 
+  def('RES_PEN',{
+    nameZh:'法术穿透',summary:'Stat-only V7 的魔法伤害穿透：按比例忽略目标的 RES。',
+    higherEffect:'魔法伤害部分的有效 RES 更低。',lowerEffect:'更依赖物理穿透 PEN。',direction:'positive',
+    battleEffect:'Stat-only V7 战斗中魔法伤害部分的有效防御 = RES×(1 - RES_PEN/100)，上限 80%。',
+    interactions:['PEN','RES','DEF'],aiMeaning:'无（stat-only V7 无技能 AI）。',battlePowerMeaning:'GeneralStrength 通过 mitigation 项计入其输出贡献。',
+    examples:['RES_PEN=0：无穿透','RES_PEN=50：忽略一半 RES'],tuningGuidance:'与 PEN 构成物理/魔法双穿透；不要同时堆满两者以免溢出伤害。',
+    userIntentExamples:['打高 RES 目标更强'],readBy:['Stat-only V7 battle'],writtenBy:['Generator V7'],affects:['effective RES'],doesNotAffect:['DEF','physical damage'],introducedIn:7});
+
+  def('HP_REGEN',{
+    nameZh:'每回合回复',summary:'Stat-only V7 的被动生存：每回合回复 MAX_HP 的百分比。',
+    higherEffect:'长局中存活能力显著上升。',lowerEffect:'更依赖吸血或其他回复。',direction:'positive',
+    battleEffect:'回合开始按 MAX_HP×HP_REGEN/100×(HEAL_POWER/100)×(HEAL_TAKEN/100) 回复，上限为 MAX_HP。',
+    interactions:['MAX_HP','HEAL_POWER','HEAL_TAKEN','LIFESTEAL'],aiMeaning:'无（stat-only V7 无技能 AI）。',battlePowerMeaning:'GeneralStrength 的 sustain 项计入其长期生存贡献。',
+    examples:['HP_REGEN=0：无回复','HP_REGEN=5：每回合回 5% MAX_HP'],tuningGuidance:'与 LIFESTEAL 共用 HEAL_POWER/HEAL_TAKEN 调节；过高会让对局永不结束，受 MAX_HP 与回合上限约束。',
+    userIntentExamples:['每回合回血','被动续航'],readBy:['Stat-only V7 battle'],writtenBy:['Generator V7'],affects:['HP per round'],doesNotAffect:['damage'],introducedIn:7});
+
+  def('TOUGHNESS',{
+    nameZh:'坚韧',summary:'Stat-only V7 的固定伤害减免，独立于 DEF/RES。',
+    higherEffect:'受到的最终伤害明显降低。',lowerEffect:'几乎没有额外减伤。',direction:'positive',
+    battleEffect:'对最终伤害乘以 (1 - TOUGHNESS/100)，有界 0–30%。',
+    interactions:['DEF','RES','MAX_HP'],aiMeaning:'无（stat-only V7 无技能 AI）。',battlePowerMeaning:'GeneralStrength 的 mitigation 项计入其减伤贡献。',
+    examples:['TOUGHNESS=0：无减伤','TOUGHNESS=20：最终伤害 ×0.8'],tuningGuidance:'有 30% 上界防止 God Stat；与 DEF/RES 乘算时收益递减。',
+    userIntentExamples:['更抗打'],readBy:['Stat-only V7 battle'],writtenBy:['Generator V7'],affects:['final damage'],doesNotAffect:['crit chance','hit chance'],introducedIn:7});
+
+  def('CRIT_RES',{
+    nameZh:'暴击抵抗',summary:'Stat-only V7 中降低受到的暴击额外伤害。',
+    higherEffect:'面对暴击流的有效承伤更高。',lowerEffect:'暴击威胁更大。',direction:'positive',
+    battleEffect:'敌方暴击时的额外倍率乘以 (1 - CRIT_RES/100)，有界 0–50%。',
+    interactions:['CRIT','CRIT_DMG','EVA'],aiMeaning:'无（stat-only V7 无技能 AI）。',battlePowerMeaning:'GeneralStrength 的 critEV 项按目标视角计入减伤。',
+    examples:['CRIT_RES=0：无抵抗','CRIT_RES=50：暴击加成减半'],tuningGuidance:'只削减暴击部分，不保护普通命中，克制暴击构筑。',
+    userIntentExamples:['不怕暴击'],readBy:['Stat-only V7 battle'],writtenBy:['Generator V7'],affects:['crit damage taken'],doesNotAffect:['non-crit damage'],introducedIn:7});
+
   def('POTENCY',{
     nameZh:'效能',summary:'V7 的非直接数值输出轴，放大周期、触发与引爆伤害，不放大普通直接攻击。',
     higherEffect:'DoT、状态周期伤害与触发伤害更强，但高值收益逐渐饱和。',lowerEffect:'非直接输出更弱。',direction:'positive',

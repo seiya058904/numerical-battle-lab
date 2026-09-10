@@ -1,45 +1,46 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-for(const file of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','strength-geometry-v7','style-genome-v7','strength-model-v7'])require('../src/'+file+'.js');
+for(const file of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','name-generator-v3','gen-v2','gen-v3','gen-v4','gen-v5','budget-v6','budget-price','gen-v6','strength-geometry-v7','strength-model-v7','stat-battle-v7','gen-v7','battlepower-v4'])require('../src/'+file+'.js');
 const N=global.NCB;
+const clone=value=>JSON.parse(JSON.stringify(value));
 
-function simpleCard(){return {id:'simple',stats:{ATK:100,MAX_HP:1000,DEF:100,RES:100,SPD:100,ACC:100,EVA:20,CRIT:10,CRIT_DMG:150,PEN:10,HEAL_POWER:100,ENERGY_MAX:8,ENERGY_REGEN:2},actions:[{id:'hit',target:'enemy',accuracy:1,cooldown:0,cost:0,effects:[{type:'damage',damageType:'physical',formula:'ATK * 1'}]}],statuses:[],triggers:[],passives:[],resistances:{},affinities:{}};}
-
-test('V7 strength model is content-only and ignores identity metadata',()=>{
-  const card=simpleCard();
-  const a=N.predictThetaV7(card);
-  const b=N.predictThetaV7({...card,seed:'other',level:100,rarity:'XS_COLLECTOR',targetTheta:99,expectedStrength:999,generationStrengthBudget:999,empiricalTheta:-99});
-  assert.equal(a,b);
+test('GeneralPower is content-only and ignores identity metadata',()=>{
+  const card=N.generateCardV7({seed:'gp-meta',rarity:'A',level:50});
+  const base=N.generalStrengthV7(card).generalPower;
+  const edited=clone(card);
+  edited.level=100;edited.rarity='XS_COLLECTOR';edited.seed='other';edited.targetTheta=99;edited.budget=1;
+  assert.equal(N.generalStrengthV7(edited).generalPower,base);
 });
 
-test('V7 strength model understands interacting attack coefficients and defenses',()=>{
-  const card=simpleCard();
-  const stronger=structuredClone(card);stronger.actions[0].effects[0].formula='ATK * 2';
-  const tougher=structuredClone(card);tougher.stats.DEF=250;tougher.stats.RES=250;
-  assert.ok(N.predictThetaV7(stronger)>N.predictThetaV7(card));
-  assert.ok(N.predictThetaV7(tougher)>N.predictThetaV7(card));
-  const damageMarginal=N.marginalValueV7(card,{kind:'stat',key:'ATK',relativeStep:.05});
-  const noDamage=structuredClone(card);noDamage.actions=[];
-  assert.ok(damageMarginal>N.marginalValueV7(noDamage,{kind:'stat',key:'ATK',relativeStep:.05}));
+test('GeneralPower is monotone in offense and defense axes',()=>{
+  const card=N.generateCardV7({seed:'gp-mono',rarity:'A',level:50});
+  const base=N.generalStrengthV7(card).generalPower;
+  const strong=clone(card);strong.stats.ATK*=2;strong.stats.MAX_HP*=1.5;strong.stats.SPD*=1.3;
+  const weak=clone(card);weak.stats.ATK*=.5;
+  assert.ok(N.generalStrengthV7(strong).generalPower>base);
+  assert.ok(N.generalStrengthV7(weak).generalPower<base);
 });
 
-test('V7 style genome is deterministic, bounded, normalized only as preference weights',()=>{
-  const a=N.styleGenomeV7('style-seed'),b=N.styleGenomeV7('style-seed');
-  assert.deepEqual(a,b);
-  assert.deepEqual(Object.keys(a),['pressure','endurance','sustain','control','tempo','economy','reliability','triggers']);
-  assert.ok(Object.values(a).every(value=>value>=0&&value<=1));
-  assert.notEqual(Object.values(a).reduce((x,y)=>x+y,0),1);
+test('GeneralPower is a transparent geometric combination of stat components',()=>{
+  const card=N.generateCardV7({seed:'gp-form',rarity:'A',level:50});
+  const g=N.generalStrengthV7(card);
+  assert.ok(g.effectiveDamage>0);
+  assert.ok(g.effectiveHP>0);
+  assert.ok(Number.isFinite(g.tempo)&&g.tempo>0);
+  const noAtk=clone(card);noAtk.stats.ATK=0;
+  assert.ok(N.generalStrengthV7(noAtk).effectiveDamage<1e-6);
 });
 
-test('V7 calibration feature vector is derived from content shape, not card metadata',()=>{
-  const card=simpleCard(),copy={...structuredClone(card),seed:'secret',level:1,rarity:'C',targetTheta:-9};
-  assert.deepEqual(N.strengthShapeVectorV7(card),N.strengthShapeVectorV7(copy));
-  const dot=structuredClone(card);dot.statuses=[{id:'dot',kind:'debuff',duration:3,periodic:{effects:[{type:'damage',formula:'ATK * .4'}]}}];dot.actions=[{id:'apply',target:'enemy',effects:[{type:'status',status:'dot',duration:3}]}];
-  assert.notDeepEqual(N.strengthShapeVectorV7(card),N.strengthShapeVectorV7(dot));
+test('BattlePower is a monotone display of GeneralPower and anchored near Lv50 A',()=>{
+  const mid=N.generateCardV7({seed:'bp-anchor',rarity:'A',level:50});
+  const bp=N.battlePowerV7(mid);
+  assert.ok(bp>=700&&bp<=1300,`Lv50 A BP ${bp} near 1000`);
+  const low=N.generateCardV7({seed:'bp-anchor',rarity:'C',level:20});
+  const high=N.generateCardV7({seed:'bp-anchor',rarity:'XS_COLLECTOR',level:100});
+  assert.ok(N.battlePowerV7(high)>bp&&bp>N.battlePowerV7(low),'BP monotone in strength');
 });
 
-test('V7 one-action-per-round model does not multiply strength by action count',()=>{
-  const base={stats:{ATK:100,MAX_HP:1000,DEF:100,RES:100,SPD:100},actions:[{id:'a',target:'enemy',cooldown:0,cost:0,effects:[{type:'damage',damageType:'true',formula:'ATK * 2',strengthAnchor:true}]}],statuses:[],triggers:[]};
-  const duplicate=structuredClone(base);duplicate.actions.push({...structuredClone(base.actions[0]),id:'b'});
-  assert.ok(Math.abs(N.predictThetaV7(base)-N.predictThetaV7(duplicate))<1e-9);
+test('GeneralPower never runs a battle and never reads Level/Rarity/Seed',()=>{
+  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'..','src','strength-model-v7.js'),'utf8');
+  for(const forbidden of ['targetTheta','rarityScoreV7','levelScoreV7','createStatBattle','Math.random'])assert.ok(!source.includes(forbidden),`forbidden ${forbidden} in strength-model-v7.js`);
 });

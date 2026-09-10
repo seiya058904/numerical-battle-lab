@@ -1,84 +1,155 @@
-// Generator v7 — seed-only mechanics plus content-only iso-power solving.
+// Generator v7 — Stat-Only Numerical Battle.
+//
+// V7 cards carry only stats (no skills, statuses, triggers or resources). The
+// world order is the frozen Strength Geometry: TargetTheta = LevelScore +
+// RarityScore - anchor, so Level is the primary strength axis and Rarity the
+// secondary. Seed produces a continuous, normalized allocation profile that
+// spends the SAME total budget on a different stat shape.
+//
+//   Level + Rarity -> TargetTheta -> total budget B(theta)  (monotone)
+//   Seed          -> normalized allocation weights w_i (continuous, no classes)
+//   stat i        -> fill_i = min(1, (g * B * w_i / cost_i)^(1/p_i))
+//                    with its own convex price curve cost_i * fill^p_i;
+//                    the single global scale g is found by binary search so that
+//                    sum(cost_i * fill_i^p_i) == B exactly (no per-card solver).
+//
+// Deterministic, content-only at runtime: never runs battles, never reads
+// BattlePower, and never reads Level/Rarity/Seed back as a combat authority.
 (function(root){
   'use strict';
   const N=root.NCB=root.NCB||{};
   const round=value=>Math.round(Number(value)*1e6)/1e6;
-  const pick=(random,list)=>list[random.random(list.length)];
+  const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
   const clone=value=>JSON.parse(JSON.stringify(value));
-  const DAMAGE_FAMILIES=new Set(['direct','burst','dot','drain','control','resource','tempo','reflect']);
-  function randomFor(seed,salt){return new N.Gen5PRNG(N.deriveSeed(N.seedHash(String(seed)+'|'+salt)));}
 
-  function skeletonCandidate(seed,retry){
-    const random=randomFor(seed,'v7-skeleton-'+retry);
-    const scalableDamageTypes=Object.keys(N.DAMAGE_TYPES).filter(type=>type!=='true');
-    const victoryPath=pick(random,['direct','burst','dot','drain','control','resource','tempo','reflect']);
-    const count=6;
-    const actionFamilies=['backbone','direct','control','barrier','sustain',victoryPath];
-    if(!actionFamilies.some(family=>DAMAGE_FAMILIES.has(family)))actionFamilies[1]='direct';
-    return {version:7,retry,scalable:true,victoryPath,actionFamilies,damageType:pick(random,scalableDamageTypes),resource:pick(random,['RAGE','SOUL','CHRONO']),duration:2+random.random(4),statusPolicy:pick(random,['stack','refresh','replace']),triggerEvent:pick(random,['roundStart','roundEnd','afterDamageTaken','afterDamageDealt','afterKill'])};
+  // ---- stat model: mid value at cost, convex price exponent p, soft bounds ----
+  // value_i = mid_i * (g * B * w_i / cost_i)^(1/p_i), clipped to [min,max].
+  // Primary axes (ATK, MAX_HP) use a low exponent (near-linear, strong level
+  // scaling); secondary axes use higher exponents (diminishing, soft caps).
+  const STAT_SPECS=[
+    {key:'ATK',mid:320,cost:300,p:1.2,min:20,max:1600},
+    {key:'MAX_HP',mid:6000,cost:300,p:1.2,min:400,max:30000},
+    {key:'DEF',mid:110,cost:180,p:1.5,min:10,max:350},
+    {key:'RES',mid:110,cost:180,p:1.5,min:10,max:350},
+    {key:'SPD',mid:160,cost:150,p:1.5,min:30,max:350},
+    {key:'ACC',mid:120,cost:90,p:1.4,min:50,max:180},
+    {key:'EVA',mid:55,cost:90,p:1.4,min:0,max:120},
+    {key:'CRIT',mid:40,cost:150,p:1.6,min:0,max:100},
+    {key:'CRIT_DMG',mid:170,cost:120,p:1.5,min:100,max:280},
+    {key:'PEN',mid:30,cost:150,p:1.6,min:0,max:90},
+    {key:'RES_PEN',mid:30,cost:150,p:1.6,min:0,max:90},
+    {key:'LIFESTEAL',mid:15,cost:200,p:1.7,min:0,max:40},
+    {key:'HEAL_POWER',mid:110,cost:120,p:1.5,min:60,max:160},
+    {key:'HEAL_TAKEN',mid:110,cost:100,p:1.5,min:60,max:160},
+    {key:'HP_REGEN',mid:2,cost:300,p:1.8,min:0,max:5},
+    {key:'BARRIER_POWER',mid:120,cost:150,p:1.6,min:0,max:300},
+    {key:'VOLATILITY',mid:1.2,cost:60,p:1.4,min:.1,max:3},
+    {key:'LUCK',mid:0,cost:45,p:1.5,min:-1,max:1},
+    {key:'TOUGHNESS',mid:12,cost:240,p:1.8,min:0,max:30},
+    {key:'CRIT_RES',mid:25,cost:150,p:1.7,min:0,max:60},
+  ];
+  const BUDGET_BASE=1260;             // B at TargetTheta 0 (Lv50 A)
+  const BUDGET_GAIN=.146;             // B ~ exp(0.146*theta); bounded by soft caps
+
+  function totalBudget(targetTheta){
+    return Math.max(80,BUDGET_BASE*Math.exp(BUDGET_GAIN*targetTheta));
   }
-  function mechanicSkeletonV7(seed){
-    for(let retry=0;retry<8;retry++){const candidate=skeletonCandidate(String(seed??''),retry);if(candidate.actionFamilies.length>=2&&candidate.actionFamilies.length<=6&&candidate.actionFamilies.some(family=>DAMAGE_FAMILIES.has(family)))return candidate;}
-    throw new Error('v7 seed-only skeleton is not scalable');
+  function allocationProfile(seed){
+    const random=new N.Gen5PRNG(N.deriveSeed(N.seedHash(String(seed??'')+'|v7-stat-profile')));
+    // Continuous, moderately narrow weights: every stat gets a real share while
+    // shapes still differ strongly across seeds (no hardcoded classes).
+    const raw=STAT_SPECS.map(()=>Math.pow(.55+.45*random.random(),1.7));
+    const sum=raw.reduce((a,b)=>a+b,0)||1;
+    return raw.map(value=>value/sum);
   }
-  function baseStats(genome,random){
-    return {MAX_HP:34000,ATK:85,DEF:75,RES:75,SPD:100,ACC:100,EVA:30,CRIT:17.5,CRIT_DMG:152,PEN:17.5,LIFESTEAL:0,HEAL_POWER:100,HEAL_TAKEN:100,
-      ENERGY_MAX:10,ENERGY_REGEN:round(1+2.5*genome.economy),POTENCY:round(80+40*genome.triggers),CONTROL_POWER:round(80+40*genome.control),
-      TENACITY:round(80+40*genome.reliability),RECOVERY:round(80+40*genome.tempo),BARRIER_POWER:round(80+40*genome.endurance),
-      VOLATILITY:1,LUCK:0,ENDURANCE:50,RAMP_START:8,FATIGUE_START:45,RAMP_RATE:.01,FATIGUE_RATE:.004,RAMP_CAP:1.18,FATIGUE_CAP:.92};
+  function statsFromFills(fills){
+    const avgFill=fills.reduce((a,b)=>a+b,0)/Math.max(1,fills.length);
+    const stats={};
+    STAT_SPECS.forEach((spec,index)=>{
+      let value=spec.mid*Math.pow(Math.max(0,fills[index]),1/spec.p);
+      if(spec.key==='LUCK')value=clamp((fills[index]/Math.max(1e-9,avgFill)-1)*4,-1,1);
+      value=clamp(value,spec.min,spec.max);
+      if(spec.key==='VOLATILITY'||spec.key==='LUCK'||spec.key==='HP_REGEN')value=round(value*10)/10;
+      stats[spec.key]=round(value);
+    });
+    return stats;
   }
-  function buildUnsolvedCard(seed,rarity,level,skeleton,genome){
-    const identity=`v7|seed=${seed}|rarity=${rarity}|level=${level}`,id=N.cardId(identity),random=randomFor(seed,'v7-numbers');
-    const statusId=id+':periodic',buffId=id+':stance',stats=baseStats(genome,random);stats[skeleton.resource]=2;stats[skeleton.resource+'_MAX']=8;
-    const damage=(coefficient=.9,extra={})=>({type:'damage',damageType:skeleton.damageType,formula:`ATK * ${round(coefficient)}`,varianceMin:.88,varianceMax:1.12,...extra});
-    const anchorFormula='55 * (ATK + 1) * (0.02 + ACC / 100) * (0.70 + PEN / 100)';
-    const periodic={id:statusId,name:'蚀印',kind:'debuff',maxStacks:4,stacking:skeleton.statusPolicy,duration:skeleton.duration,periodic:{timing:'turnEnd',snapshot:'dynamic',effects:[damage(4,{canMiss:false,canCrit:false,canReflect:false,tags:['dot','periodic']})]}};
-    const stance={id:buffId,name:'调律',kind:'buff',maxStacks:1,stacking:'refresh',duration:skeleton.duration,modifiers:[{stat:pick(random,['ATK','DEF','RES','SPD']),operation:'multiply',value:1.01}]};
-    const makeAction=(family,index)=>{
-      const action={id:id+':a'+index,name:'',kind:'utility',target:'self',cost:1+random.random(5),cooldown:1+random.random(4),priority:random.random(5)-2,accuracy:round(.72+.24*genome.reliability),effects:[]};
-      switch(family){
-        case 'backbone':action.name='基础攻势';action.kind='damage';action.target='enemy';action.cost=0;action.cooldown=1;action.priority=10;action.accuracy=.78;action.effects=[damage(1,{formula:anchorFormula,canMiss:true,canReflect:false,strengthAnchor:true,varianceMin:.65,varianceMax:1.35}),{type:'status',status:statusId,stacks:1,duration:skeleton.duration,chance:round(.55+.3*genome.triggers)}];break;
-        case 'direct':action.name='精确打击';action.kind='damage';action.target='enemy';action.effects=[damage(24+genome.pressure*24)];break;
-        case 'burst':action.name='裂变突袭';action.kind='damage';action.target='enemy';action.cooldown=3;action.effects=[damage(16+genome.pressure*16,{hits:2})];break;
-        case 'dot':action.name='蚀印扩散';action.kind='status';action.target='enemy';action.effects=[{type:'status',status:statusId,stacks:1+random.random(2),duration:skeleton.duration,chance:round(.65+.3*genome.reliability)}];break;
-        case 'drain':action.name='汲取';action.kind='damage';action.target='enemy';action.effects=[damage(20+genome.pressure*20,{drainRatio:round(.08+.22*genome.sustain)})];break;
-        case 'control':action.name='压制';action.kind='damage';action.target='enemy';action.cost=0;action.cooldown=2;action.effects=[damage(14+genome.pressure*14),{type:'status',status:pick(random,['stun','slow','silence']),stacks:1,duration:2,chance:round(.6+.3*genome.control)}];break;
-        case 'barrier':action.name='屏障';action.kind='shield';action.cost=0;action.cooldown=2;action.effects=[{type:pick(random,['shield','ward']),damageType:skeleton.damageType,formula:`MAX_HP * ${round(.58+.24*genome.endurance)}`}];break;
-        case 'sustain':action.name='再生';action.kind='heal';action.target='ally';action.cost=0;action.cooldown=2;action.effects=[{type:'heal',formula:`MAX_HP * ${round(.62+.24*genome.sustain)}`}];break;
-        case 'resource':action.name='蓄能轰击';action.kind='damage';action.target='enemy';action.effects=[{type:'gain',resource:skeleton.resource,amount:2+random.random(3)},damage(18+genome.pressure*20)];break;
-        case 'tempo':action.name='先制';action.kind='damage';action.target='enemy';action.cooldown=1;action.priority=2+Math.round(3*genome.tempo);action.effects=[damage(18+genome.pressure*20)];break;
-        case 'cleanse':action.name='净化';action.target='ally';action.effects=[{type:'cleanse',count:1+random.random(2)}];break;
-        case 'dispel':action.name='破除';action.target='enemy';action.effects=[{type:'dispel',count:1+random.random(2)}];break;
-        case 'reflect':action.name='反射架势';action.kind='status';action.effects=[{type:'status',status:buffId,duration:skeleton.duration}];break;
-      }
-      if(family!=='backbone'){
-        if(action.target==='self'||action.target==='ally'){
-          action.effects=action.effects.map(effect=>({...effect,effectTarget:'actor'}));
-          action.target='enemy';
-        }
-        action.accuracy=round(.72+.24*genome.reliability);
-        action.effects.unshift(damage(1,{formula:anchorFormula,canMiss:true,canReflect:false,strengthAnchor:true,varianceMin:.65,varianceMax:1.35}));
-      }
-      return action;
-    };
-    const actions=skeleton.actionFamilies.map(makeAction);
-    const triggers=[{event:'afterStatusInflicted',target:'enemy',effects:[damage(120,{damageType:skeleton.damageType,canMiss:false,canCrit:false,canReflect:false,tags:['trigger','potency']})]}];
-    const card={id,identity,seed,generatorVersion:7,rarity,level,name:'',displayName:'',stats,actions,statuses:[periodic,stance],triggers,passives:[],resourceRegens:{[skeleton.resource]:1},resources:{ENERGY:{max:8,regen:stats.ENERGY_REGEN},[skeleton.resource]:{max:8,regen:1}},resistances:{[skeleton.damageType]:round(.03+.12*genome.endurance)},affinities:{[skeleton.damageType]:round(.02+.08*genome.sustain)},styleGenome:clone(genome),skeleton:clone(skeleton)};
-    const referenced=N.assembleCardPack(card).statuses;card.statuses=card.statuses.filter(status=>referenced[status.id]);
-    return card;
+  function fillsFromShares(shares,scale){
+    return STAT_SPECS.map((spec,index)=>Math.max(0,shares[index]*scale));
   }
+  function priceOf(fills){
+    return STAT_SPECS.reduce((sum,spec,index)=>{
+      const fill=Math.max(0,fills[index]);
+      if(spec.key==='LUCK')return sum+spec.cost*fill; // LUCK has mid 0; price is linear in its share
+      const raw=spec.mid*Math.pow(fill,1/spec.p);
+      const value=clamp(raw,spec.min,spec.max);
+      return sum+spec.cost*Math.pow(Math.max(1e-9,value)/spec.mid,spec.p);
+    },0);
+  }
+  function allocate(budget,weights){
+    const shares=weights.map(weight=>weight*budget);
+    // find global scale g so that sum(price_i(g*share_i)) == budget
+    const costOf=(g)=>priceOf(fillsFromShares(shares,g));
+    let lo=0,hi=4,steps=0;
+    while(costOf(hi)<budget&&steps++<60)hi*=2;
+    for(let i=0;i<60;i++){
+      const mid=(lo+hi)/2;
+      if(costOf(mid)<budget)lo=mid;else hi=mid;
+    }
+    const g=(lo+hi)/2;
+    const fills=fillsFromShares(shares,g);
+    return {stats:statsFromFills(fills),scale:g,price:priceOf(fills)};
+  }
+  // The allowed one-dimensional global correction: after price-based allocation
+  // all fills are scaled together so the card's GeneralPower lands exactly on the
+  // tier's canonical GeneralPower. Every seed at a given Level/Rarity is thereby
+  // analytically iso-power while keeping its stat shape (diversity preserved).
+  function canonicalGeneralPower(budget){
+    const uniform=STAT_SPECS.map(()=>1/STAT_SPECS.length);
+    const {stats}=allocate(budget,uniform);
+    return N.generalStrengthV7({stats}).generalPower;
+  }
+  function applyPowerCorrection(budget,weights){
+    const base=allocate(budget,weights);
+    const target=canonicalGeneralPower(budget);
+    const shares=weights.map(weight=>weight*budget);
+    const gpOf=fills=>N.generalStrengthV7({stats:statsFromFills(fills)}).generalPower;
+    let lo=.02,hi=4;
+    for(let i=0;i<60;i++){
+      const mid=(lo+hi)/2;
+      if(gpOf(fillsFromShares(shares,base.scale*mid))<target)lo=mid;else hi=mid;
+    }
+    const m=(lo+hi)/2;
+    const fills=fillsFromShares(shares,base.scale*m);
+    const stats=statsFromFills(fills);
+    return {stats,price:priceOf(fills),scale:base.scale*m,powerCorrection:m,targetGeneralPower:target,
+      generalPower:gpOf(fills)};
+  }
+
   function generateCardV7(opts={}){
-    if(opts.generatorVersion!==undefined&&opts.generatorVersion!==7)throw new Error('unsupported generatorVersion: '+opts.generatorVersion);
-    if('archetype' in opts)throw new Error('Generator v7 is classless: archetype is not a valid input');
-    const seed=String(opts.seed??''),rarity=N.toV2RarityId(opts.rarity),level=N.normalizeLevel(opts.level),targetTheta=N.targetThetaV7(level,rarity);
-    const genome=N.styleGenomeV7(seed),skeleton=mechanicSkeletonV7(seed),base=buildUnsolvedCard(seed,rarity,level,skeleton,genome),result=N.solveCardV7(base,genome,targetTheta),card=result.card;
-    if(!result.converged)throw new Error(`v7 solver failed for ${seed}: ${result.predictedTheta} vs ${targetTheta}`);
-    card.targetTheta=round(targetTheta);card.strengthModel={version:7,predictedTheta:round(result.predictedTheta),error:round(result.error)};card.solver={version:7,iterations:result.iterations,converged:result.converged,tolerance:result.tolerance,knobUpdates:result.knobUpdates,telemetry:result.telemetry};
-    card.mechanicFingerprint=N.mechanicFingerprint(card);card.presentation={mechanicFingerprint:card.mechanicFingerprint};
-    const name=N.generateSpeciesName?N.generateSpeciesName(card):seed;card.name=name;card.displayName=name;
-    const validation=N.validateContentPack(N.assembleCardPack(card));if(!validation.ok)throw new Error(validation.errors.join('\n'));
+    if('archetype' in opts)throw new Error('Generator v7 is stat-only and classless: archetype is not a valid input');
+    const seed=String(opts.seed??''),rarity=N.toV2RarityId(opts.rarity),level=N.normalizeLevel(opts.level);
+    const targetTheta=N.targetThetaV7(level,rarity);
+    const budget=totalBudget(targetTheta);
+    const weights=allocationProfile(seed);
+    const result=applyPowerCorrection(budget,weights);
+    const identity=`v7|seed=${seed}|rarity=${rarity}|level=${level}`;
+    const card={
+      id:N.cardId(identity),identity,seed,rarity,level,generatorVersion:7,
+      stats:result.stats,
+      targetTheta:round(targetTheta),budget:round(budget),powerScale:round(result.scale,4),powerCorrection:round(result.powerCorrection,4),
+    };
+    card.name=typeof N.generateSpeciesName==='function'?N.generateSpeciesName(card):seed;
+    card.displayName=card.name;
+    card.strengthModel={version:7,generalPower:round(result.generalPower,2),battlePower:Math.round(N.battlePowerV7(card))};
+    card.presentation={power:card.strengthModel.battlePower};
+    card.power=card.strengthModel.battlePower;
     return card;
   }
-  Object.assign(N,{mechanicSkeletonV7,buildUnsolvedCardV7:buildUnsolvedCard,generateCardV7,CARD_GENERATOR_VERSION_V7:7});
+  Object.assign(N,{STAT_SPECS_V7:STAT_SPECS.map(spec=>({...spec})),
+    v7TotalBudget:totalBudget,v7AllocationProfile:allocationProfile,v7CanonicalGeneralPower:canonicalGeneralPower,
+    generateCardV7,CARD_GENERATOR_VERSION_V7:7});
   if(typeof module!=='undefined')module.exports=N;
 })(typeof globalThis!=='undefined'?globalThis:window);
+
+

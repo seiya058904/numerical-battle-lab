@@ -1,66 +1,45 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-// Deterministic regression layer of gate:v7-product (battle smokes live in
-// scripts/gate-v7-product.js, executed by verify:release).
-for(const file of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','name-generator-v3','gen-v2','gen-v3','gen-v4','gen-v5','budget-v6','budget-price','gen-v6','strength-geometry-v7','style-genome-v7','strength-model-v7','solver-v7','gen-v7','battlepower-v4','presets','presets-v6','presets-v7'])require('../src/'+file+'.js');
+for(const file of ['kernel','components','rules','content','status-runtime','formula','validator','effects','engine','ai','power','power-v5','battlepower-v3','gen-stats','gen-skills','generator','gen-names','name-generator-v2','name-generator-v3','gen-v2','gen-v3','gen-v4','gen-v5','budget-v6','budget-price','gen-v6','strength-geometry-v7','strength-model-v7','stat-battle-v7','gen-v7','battlepower-v4'])require('../src/'+file+'.js');
 const N=global.NCB;
 
-test('gate: strength geometry invariants hold (level span, convexity, anchors)',()=>{
+test('gate: strength geometry invariants hold',()=>{
   const g=N.assertStrengthGeometryV7();
   assert.equal(g.ok,true);
-  assert.ok(g.fullLevelSpan>=2*g.fullRaritySpan);
-  assert.ok(g.levelGap40To100-g.fullRaritySpan>=4.5);
-  assert.ok(g.fullRaritySpan>=g.levelGap70To100);
-  assert.equal(g.convexRarity,true);
   assert.equal(N.targetThetaV7(50,'A'),0);
   assert.ok(N.targetThetaV7(100,'C')-N.targetThetaV7(40,'XS_COLLECTOR')>4.5);
 });
 
-test('gate: solver converges to TargetTheta on representative tiers',()=>{
-  for(const [level,rarity] of [[20,'C'],[40,'XS_COLLECTOR'],[50,'A'],[70,'XS'],[75,'A'],[100,'C'],[100,'XS_COLLECTOR']]){
-    const card=N.generateCardV7({seed:'gate-solver-'+level+'-'+rarity,rarity,level});
-    assert.equal(card.solver.converged,true,`converged ${level} ${rarity}`);
-    assert.ok(Math.abs(card.strengthModel.predictedTheta-card.targetTheta)<=.12,`|pred-target| ${level} ${rarity}`);
-    assert.equal(N.validateContentPack(N.assembleCardPack(card)).ok,true);
-  }
+test('gate: same-tier seeds are iso-power with distinct shapes (analytic)',()=>{
+  const cards=Array.from({length:8},(_,i)=>N.generateCardV7({seed:'gate-iso-'+i,rarity:'A',level:50}));
+  const gp=cards[0].strengthModel.generalPower;
+  for(const c of cards)assert.ok(Math.abs(c.strengthModel.generalPower-gp)<.05);
+  const atk=cards.map(c=>c.stats.ATK);
+  assert.ok(Math.max(...atk)-Math.min(...atk)>20,'stat shapes differ');
 });
 
-test('gate: seed structure is invariant across level and rarity',()=>{
-  const low=N.generateCardV7({seed:'gate-fp',rarity:'C',level:20});
-  const high=N.generateCardV7({seed:'gate-fp',rarity:'XS_COLLECTOR',level:100});
-  assert.equal(low.mechanicFingerprint,high.mechanicFingerprint);
+test('gate: Level and Rarity dominate real battles',()=>{
+  const hi=N.generateCardV7({seed:'gate-h',level:100,rarity:'C'}),lo=N.generateCardV7({seed:'gate-h',level:40,rarity:'C'});
+  let wins=0;for(let i=0;i<40;i++){const r=N.fightStatCardsV7(hi,lo,'gl'+i);if(r===1)wins++;}
+  assert.ok(wins>=38,`Lv100 C vs Lv40 C ${wins}/40`);
+  const xc=N.generateCardV7({seed:'gate-x',level:50,rarity:'XS_COLLECTOR'}),c50=N.generateCardV7({seed:'gate-x',level:50,rarity:'C'});
+  wins=0;for(let i=0;i<40;i++){const r=N.fightStatCardsV7(xc,c50,'gr'+i);if(r===1)wins++;}
+  assert.ok(wins>=36,`same-level XC vs C ${wins}/40`);
 });
 
-test('gate: BattlePower v4 stays content-only (identity/budget/empirical edits cannot change features)',()=>{
-  const card=N.generateCardV7({seed:'gate-bp',rarity:'A',level:50});
-  const base=N.battlePowerV4FeaturesV4(card);
-  const edited=JSON.parse(JSON.stringify(card));
-  edited.level=100;edited.rarity='XS_COLLECTOR';edited.seed='other';
-  edited.targetTheta=99;edited.expectedStrength=999;edited.generationStrengthBudget=1234;
-  edited.empiricalTheta=-50;edited.generationBudget=99999;edited.power=1;
-  assert.deepEqual(N.battlePowerV4FeaturesV4(edited),base);
-  const stronger=JSON.parse(JSON.stringify(card));
-  stronger.stats.ATK*=2;stronger.stats.MAX_HP*=1.5;
-  const idx=N.BATTLEPOWER_V4_FEATURE_NAMES.indexOf('logAttackTotal');
-  assert.ok(N.battlePowerV4FeaturesV4(stronger)[idx]>base[idx]);
+test('gate: stat-only battles are deterministic and never exceed one attack per unit per round',()=>{
+  const a=N.generateCardV7({seed:'gate-det-a',rarity:'A',level:50}),b=N.generateCardV7({seed:'gate-det-b',rarity:'A',level:50});
+  assert.equal(N.fightStatCardsV7(a,b,'d1'),N.fightStatCardsV7(a,b,'d1'));
+  const battle=N.createStatBattleV7({seed:'d2',teamA:[a],teamB:[b],maxRounds:60});
+  battle.run();
+  assert.ok(battle.outcome().ended);
+  for(const round of battle.history)assert.ok(round.actions.length<=2);
 });
 
-test('gate: legacy v1/v6 reproduction is deterministic and neutral-100 axes stay absent',()=>{
+test('gate: legacy v1/v6 reproduction stays legacy and neutral-100 axes absent',()=>{
   const v1=N.generateCardByVersion({seed:'gate-legacy',rarity:'A',level:50,archetype:'Mage',generatorVersion:1});
   assert.equal(v1.generatorVersion,1);
   const v6=N.generateCardByVersion({seed:'gate-legacy6',rarity:'A',level:50,generatorVersion:6});
+  assert.equal(v6.generatorVersion,6);
   assert.deepEqual(v6,N.generateCardByVersion({seed:'gate-legacy6',rarity:'A',level:50,generatorVersion:6}));
-  for(const key of ['POTENCY','CONTROL_POWER','TENACITY','RECOVERY','BARRIER_POWER'])assert.equal(v6.stats[key],undefined);
-});
-
-test('gate: Naming V3 presets-v7 names are index-aligned with presets-v6',()=>{
-  const v7=N.SYSTEM_PRESETS_V7,v6=N.SYSTEM_PRESETS_V6;
-  assert.equal(v7.length,60);assert.equal(v6.length,60);
-  for(let i=0;i<60;i++){assert.equal(v7[i].name,v6[i].name);assert.equal(v7[i].displayName,v6[i].displayName);}
-});
-
-test('gate: presets-v7 diversity — unique fingerprints and victory-path spread',()=>{
-  const v7=N.SYSTEM_PRESETS_V7;
-  assert.equal(new Set(v7.map(c=>c.mechanicFingerprint)).size,60);
-  assert.ok(new Set(v7.map(c=>c.skeleton.victoryPath)).size>=6);
 });

@@ -2,7 +2,7 @@
 
 这不是角色技能表，而是整个战斗系统的“积木盒”。角色、技能、状态只允许组合这些通用积木和参数；新增普通内容不应要求修改 BattleEngine。
 
-当前固定能力面：**96 个参数旋钮 / 18 个 Effect 组件 / 27 个 Condition 组件 / 8 个 Target 组件 / 29 个 Event 插入点 / 8 个 Damage Type**。
+当前固定能力面：**100 个参数旋钮 / 18 个 Effect 组件 / 27 个 Condition 组件 / 8 个 Target 组件 / 29 个 Event 插入点 / 8 个 Damage Type**。
 
 当前内容只是示例组合：20 个实体、63 个技能、33 个状态。理论组合空间远大于这些示例。
 
@@ -36,14 +36,18 @@
 | `CRIT` | 暴击率 | number | % | 10 | 0–80 | 增加可暴击伤害段的暴击概率。 | 与技能 critBonus 和 ModifyCritChance 叠加。 |
 | `CRIT_DMG` | 暴击倍率 | number | % | 160 | 100–500 | 决定暴击时伤害倍率。 | CRIT 触发后将伤害公式结果乘以此倍率。 |
 | `PEN` | 通用穿透 | number | % | 10 | 0–95 | 按比例忽略 DEF/RES。 | 与技能 penetrationBonus 合并后减少有效防御。 |
+| `RES_PEN` | 法术穿透 | number | % | 0 | 0–95 | 按比例忽略目标的 RES。 | Stat-only V7 战斗中作为魔法伤害穿透，与 PEN（物理）互补。 |
 | `LIFESTEAL` | 吸血 | number | % | 0 | 0–100 | 按造成的 HP 伤害回复施法者。 | 根据实际 HP_DAMAGE 回收生命。 |
 | `HEAL_POWER` | 治疗强度 | number | % | 100 | 0–500 | 放大自身施放的治疗。 | 治疗公式结果乘以 HEAL_POWER/100。 |
 | `HEAL_TAKEN` | 受疗倍率 | number | % | 100 | 0–500 | 控制收到治疗的倍率。 | 治疗结算乘以 HEAL_TAKEN/100。 |
+| `HP_REGEN` | 每回合回复 | number | % | 0 | 0–12 | 每回合回复 MAX_HP 的百分比。 | 回合开始时按 MAX_HP×HP_REGEN/100×(HEAL_POWER/100)×(HEAL_TAKEN/100) 回复。 |
 | `POTENCY` | 效能 | number | point | 100 | 0–500 | 放大周期、触发与引爆类非直接数值效果。 | 以 100 为中性值，经有界递减曲线进入非直接伤害。 |
 | `CONTROL_POWER` | 控制强度 | number | point | 100 | 0–500 | 提高敌对非 DoT 状态的成功率和有限持续时间。 | 与目标 TENACITY 在 logit 概率空间对抗。 |
 | `TENACITY` | 韧性 | number | point | 100 | 0–500 | 抵抗敌对控制与弱化状态。 | 作为 CONTROL_POWER 的对抗轴降低最终 chance 和有限 duration。 |
 | `RECOVERY` | 恢复速度 | number | point | 100 | 0–500 | 改变技能冷却准备速度。 | 每回合累积 cooldownProgress 并跨整数减少冷却。 |
 | `BARRIER_POWER` | 屏障强度 | number | point | 100 | 0–500 | 放大 Shield、Ward 与 Barrier 数值。 | 以 100 为中性值，经有界递减曲线放大屏障类效果。 |
+| `TOUGHNESS` | 坚韧 | number | % | 0 | 0–30 | Stat-only V7 的固定伤害减免。 | 对最终伤害乘以 (1 - TOUGHNESS/100)，有界 0–30%。 |
+| `CRIT_RES` | 暴击抵抗 | number | % | 0 | 0–50 | Stat-only V7 中降低受到的暴击加成。 | 敌方暴击时的额外倍率乘以 (1 - CRIT_RES/100)。 |
 
 ## 资源
 
