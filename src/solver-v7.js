@@ -18,14 +18,18 @@
     let predicted=N.predictThetaV7(card),iterations=0;
     while(Math.abs(predicted-targetTheta)>tolerance&&iterations++<maxIterations){
       const error=targetTheta-predicted;
+      const increasing=error>0;
       const candidates=[];
       for(const knob of KNOBS){
         const current=Number(card.stats[knob.key]??0),limits=LIMITS[knob.key];
-        if((error>0&&current>=limits[1])||(error<0&&current<=limits[0]))continue;
+        if((increasing&&current>=limits[1])||(!increasing&&current<=limits[0]))continue;
         const marginal=N.marginalValueV7(card,{kind:'stat',key:knob.key,relativeStep:.025});
         if(!Number.isFinite(marginal)||marginal<=1e-7)continue;
-        const preference=1;
-        candidates.push({knob,marginal,score:marginal*preference/(1+uses[knob.key]*.45)});
+        // Headroom: de-prioritise a knob that is already close to the bound it
+        // would move toward, so saturation cannot silently replace equalisation.
+        // A flatter knob must not win just because every strong knob was used.
+        const headroom=clamp((increasing?limits[1]-current:current-limits[0])/Math.max(1e-9,limits[1]-limits[0]),.05,1);
+        candidates.push({knob,marginal,score:marginal*headroom/(1+uses[knob.key]*.45)});
       }
       candidates.sort((a,b)=>b.score-a.score||a.knob.key.localeCompare(b.knob.key));
       if(!candidates.length)break;
@@ -41,6 +45,7 @@
     return {card,predictedTheta:predicted,targetTheta,error:predicted-targetTheta,iterations,converged:Math.abs(predicted-targetTheta)<=tolerance,knobUpdates:uses,tolerance};
   }
   N.SOLVER_KNOBS_V7=KNOBS.map(knob=>({...knob}));
+  N.SOLVER_LIMITS_V7=Object.fromEntries(Object.entries(LIMITS).map(([key,range])=>[key,range.slice()]));
   N.solveCardV7=solveCardV7;
   if(typeof module!=='undefined')module.exports=N;
 })(typeof globalThis!=='undefined'?globalThis:window);

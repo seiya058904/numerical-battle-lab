@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "generatorVersion": 7,
+  "method": "bound-hit rate of every solver knob over random cards",
+  "cards": 1000,
+  "referenceGeneralPower": 26056.676,
+  "knobs": {
+    "ATK": {
+      "limit": [
+        0.1,
+        1000000000
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "MAX_HP": {
+      "limit": [
+        1,
+        10000000000
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "DEF": {
+      "limit": [
+        10,
+        350
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "RES": {
+      "limit": [
+        10,
+        350
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "SPD": {
+      "limit": [
+        20,
+        300
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "ACC": {
+      "limit": [
+        20,
+        300
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "EVA": {
+      "limit": [
+        0,
+        200
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "CRIT": {
+      "limit": [
+        0,
+        80
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "PEN": {
+      "limit": [
+        0,
+        95
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "HEAL_POWER": {
+      "limit": [
+        10,
+        600
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    },
+    "ENERGY_REGEN": {
+      "limit": [
+        0.1,
+        30
+      ],
+      "atMin": 0,
+      "atMax": 0,
+      "minRate": 0,
+      "maxRate": 0,
+      "boundHitRate": 0,
+      "ok": true,
+      "blocker": false
+    }
+  },
+  "convergence": {
+    "nonConverged": 0,
+    "medianAbsError": 0.00020500000000023277,
+    "p95AbsError": 0.03795700000000046,
+    "maxAbsError": 0.07845499999999994,
+    "medianIterations": 5,
+    "p95Iterations": 14
+  },
+  "gates": {
+    "noKnobAboveTwoPercent": true,
+    "noBlockerAboveFivePercent": true,
+    "allConverged": true,
+    "allValid": true
+  },
+  "failures": [],
+  "blockers": [],
+  "pass": true
+}

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "generatorVersion": 7,
+  "method": "median generalPower of fixed deterministic unsolved base cards at a canonical neutral tier",
+  "anchor": {
+    "level": 50,
+    "rarity": "A"
+  },
+  "population": 256,
+  "referenceGeneralPower": {
+    "previous": 26056.676,
+    "next": 26056.676,
+    "ratio": 1
+  },
+  "generalPower": {
+    "p5": 24273.288145605504,
+    "p25": 25198.116715799904,
+    "median": 26056.67604302077,
+    "p75": 26626.163339232447,
+    "p95": 27559.57344432493,
+    "min": 23411.863036938757,
+    "max": 28652.476857235666
+  },
+  "predictTheta": {
+    "p5": -0.45374536381863617,
+    "p25": -0.21443084263279968,
+    "median": -9.828797243498569e-8,
+    "p75": 0.13836990686183417,
+    "p95": 0.3588859176776072,
+    "min": -0.6849993629958131,
+    "max": 0.6077816315248405
+  },
+  "victoryPathBreakdown": {
+    "burst": {
+      "count": 29,
+      "median": 26070.9953929488
+    },
+    "control": {
+      "count": 39,
+      "median": 26240.27003382306
+    },
+    "direct": {
+      "count": 27,
+      "median": 25479.22537777319
+    },
+    "dot": {
+      "count": 34,
+      "median": 26219.158846762344
+    },
+    "drain": {
+      "count": 36,
+      "median": 25815.769057176658
+    },
+    "reflect": {
+      "count": 34,
+      "median": 26020.039966195913
+    },
+    "resource": {
+      "count": 35,
+      "median": 25913.08979999505
+    },
+    "tempo": {
+      "count": 22,
+      "median": 26121.865690541523
+    }
+  },
+  "gates": {
+    "medianCentred": true,
+    "populationSane": true,
+    "referenceMatchesMedian": true
+  },
+  "pass": true
+}
