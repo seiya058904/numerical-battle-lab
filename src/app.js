@@ -11,7 +11,7 @@
   const M = (typeof module !== 'undefined' && module.exports)
     ? Object.assign({}, require('./power.js'), require('./battle.js'))
     : global.NCB;
-  const { CARDS, RARITY_LIST, RARITY_COLOR, buildUnit, battlePower, fmt, statRows, STAT_LABELS, simulate, applyEvents } = M;
+  const { CARDS, RARITY_LIST, buildUnit, battlePower, fmt, statRows, STAT_LABELS, simulate, applyEvents } = M;
 
   const SPEEDS = { slow: 120, fast: 45, instant: 0 };
 
@@ -107,10 +107,9 @@
     // ---- 渲染一侧 Player Card（identity + BP + BP 差值 + stats） ----
     function renderSide(side, unit, deltaInfo) {
       const card = CARDS[unit.cardId] || currentCard(side);
-      const rc = RARITY_COLOR[unit.rarityName];
       el('name' + side).textContent = card.name;
       el('rar' + side).textContent = unit.rarityName;
-      el('rar' + side).style.background = rc;
+      el('rar' + side).className = 'rar-badge t' + card.rarity;
       el('role' + side).textContent = card.role;
       el('desc' + side).textContent = card.desc;
       el('lvl' + side + 'Val').textContent = 'Lv.' + unit.level;
@@ -266,11 +265,15 @@
       prepareArena(cardA, cardB);
       updateBar('A', result.a.maxHp, result.a.maxHp);
       updateBar('B', result.b.maxHp, result.b.maxHp);
+      if (hudState) hudState.textContent = 'IN BATTLE';
+      if (battleHud) battleHud.classList.add('live');
 
       const delayMs = () => new Promise((r) => setTimeout(r, state.delay));
       await applyEvents(result.events, applyEntry, delayMs);
 
       showResult(result);
+      if (hudState) hudState.textContent = 'FINISHED';
+      if (battleHud) battleHud.classList.remove('live');
       setControlsLocked(false);
       state.playing = false;
     }
