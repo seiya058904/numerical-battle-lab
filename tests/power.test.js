@@ -20,20 +20,23 @@ test('Level 曲线：单调递增，Lv100/Lv40 巨大差距', () => {
   assert.ok(gLevel(100) / gLevel(40) >= 20, `g(100)/g(40) = ${gLevel(100) / gLevel(40)} 应 ≥ 20`);
 });
 
-test('Rarity 曲线：单调递增，C=1，XS Collector≈6', () => {
+test('Rarity 表：单调递增，C=1，XS Collector=13.20，Collector 跳升明显', () => {
+  const EXPECTED = [1.00, 1.15, 1.35, 1.60, 1.90, 2.30, 2.90, 3.75, 4.90, 6.60, 9.10, 13.20];
   let prev = 0;
   for (let i = 0; i < 12; i++) {
     const m = rarityMul(i);
     assert.ok(m > prev, `rarityMul(${i}) 必须严格递增`);
+    assert.equal(Math.round(m * 100) / 100, EXPECTED[i], `rarityMul(${i}) 应为 ${EXPECTED[i]}，实际 ${m}`);
     prev = m;
   }
-  assert.ok(Math.abs(rarityMul(0) - 1) < 1e-9, 'C 稀有度乘数应为 1');
-  assert.ok(rarityMul(11) >= 5.5 && rarityMul(11) <= 6.5, `XS Collector 乘数应为 ≈6，实际 ${rarityMul(11)}`);
+  // Collector 对前一普通档必须是清楚可感知的跳跃
+  assert.ok(rarityMul(9) / rarityMul(8) >= 1.3, `SSS Collector 对 SSS 应有明显跳升: ${rarityMul(9) / rarityMul(8)}`);
+  assert.ok(rarityMul(11) / rarityMul(10) >= 1.4, `XS Collector 对 XS 应有明显跳升: ${rarityMul(11) / rarityMul(10)}`);
 });
 
-test('同 p 悬念设计：g(70) × XS Collector ≈ g(100)', () => {
-  const ratio = gLevel(70) * rarityMul(11) / gLevel(100);
-  assert.ok(ratio >= 0.95 && ratio <= 1.05, `g(70)*rar(11)/g(100) = ${ratio} 应 ≈ 1`);
+test('同 p 悬念设计：g(55) × XS Collector ≈ g(100)（Lv55 XS-C ≈ Lv100 C）', () => {
+  const ratio = gLevel(55) * rarityMul(11) / gLevel(100);
+  assert.ok(ratio >= 1.0 && ratio <= 1.1, `g(55)*rar(11)/g(100) = ${ratio} 应 ≈ 1.045`);
 });
 
 test('buildUnit：数值符合公式且随等级增长（非递减；10 级窗口严格增长）', () => {
@@ -102,7 +105,7 @@ test('Battle Power：同档卡 BP 接近（档内最大/最小 ≤ 1.15）', () 
   }
 });
 
-test('Battle Power 关键产品量级：Lv100 C > Lv40 XS Collector；Lv70 XS Collector ≈ Lv100 C', () => {
+test('Battle Power 关键产品量级：Lv100 C > Lv40 XS Collector；Lv55 XS Collector ≈ Lv100 C', () => {
   const cs = tiers[0];
   const xscs = tiers[11];
   for (const c of cs) {
@@ -110,9 +113,9 @@ test('Battle Power 关键产品量级：Lv100 C > Lv40 XS Collector；Lv70 XS Co
       const bpHigh = battlePower(buildUnit(c, 100));
       const bpLow = battlePower(buildUnit(x, 40));
       assert.ok(bpHigh > bpLow, `Lv100 ${c.id} (${bpHigh}) 应 > Lv40 ${x.id} (${bpLow})`);
-      const bp70 = battlePower(buildUnit(x, 70));
-      const ratio = Math.max(bp70, bpHigh) / Math.min(bp70, bpHigh);
-      assert.ok(ratio <= 1.35, `Lv70 ${x.id} (${bp70}) 与 Lv100 ${c.id} (${bpHigh}) 应接近，比值 ${ratio.toFixed(3)}`);
+      const bp55 = battlePower(buildUnit(x, 55));
+      const ratio = Math.max(bp55, bpHigh) / Math.min(bp55, bpHigh);
+      assert.ok(ratio <= 1.15, `Lv55 ${x.id} (${bp55}) 与 Lv100 ${c.id} (${bpHigh}) 应接近，比值 ${ratio.toFixed(3)}`);
     }
   }
 });

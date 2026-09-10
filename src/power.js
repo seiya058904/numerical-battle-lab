@@ -19,10 +19,14 @@
     return Math.exp(0.02143 * level + 0.0002253 * level * level);
   }
 
-  // ---- Rarity 曲线：C=1.00 → XS Collector=6.00，每档 ≈ 18% 成长（纯指数）----
-  // Lv70 XS Collector 的 p = 13.52 × 6.00 = 81.1 ≈ Lv100 C 的 p = 81.1 → 真正悬念
+  // ---- Rarity 表：显式倍率（C=1.00 → XS Collector=13.20）----
+  // Rarity 越高，相邻档之间实力提升越明显；
+  // Collector 档（SSS Collector / XS Collector）对前一普通档有明显跳升感。
+  // 产品目标：Lv55 XS Collector 的 p = g(55)×13.20 ≈ 84.8 ≈ Lv100 C 的 p ≈ 81.1 → 悬念
+  const RARITY_MULT = [1.00, 1.15, 1.35, 1.60, 1.90, 2.30, 2.90, 3.75, 4.90, 6.60, 9.10, 13.20];
+
   function rarityMul(tier) {
-    return Math.exp(Math.log(6) / 11 * tier);
+    return RARITY_MULT[tier];
   }
 
   // 各档位稀有度乘数（调试/展示用）

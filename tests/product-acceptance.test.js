@@ -38,19 +38,19 @@ test('验收② Lv100 C vs Lv40 XS Collector → Lv100 压倒性（40 场零翻�
   }
 });
 
-test('验收③ Lv70 XS Collector vs Lv100 C → 真正悬念（双方都能赢）', () => {
+test('验收③ Lv55 XS Collector vs Lv100 C → 真正悬念（XS-C 约 45%–65%，双方都能赢）', () => {
   let totalA = 0, totalB = 0;
   for (const x of xscs) for (const c of cs) {
-    const r = winStats(x, 70, c, 100, 150);
+    const r = winStats(x, 55, c, 100, 150);
     totalA += r.a; totalB += r.b;
     const pctA = r.a / r.seeds * 100, pctB = r.b / r.seeds * 100;
     assert.ok(pctA >= 10 && pctB >= 10,
-      `Lv70 ${x.id} vs Lv100 ${c.id} 应双方都能赢，实际 ${pctA.toFixed(1)}% / ${pctB.toFixed(1)}%`);
+      `Lv55 ${x.id} vs Lv100 ${c.id} 应双方都能赢，实际 ${pctA.toFixed(1)}% / ${pctB.toFixed(1)}%`);
   }
   const total = totalA + totalB;
   const winRate = totalA / total * 100;
-  assert.ok(winRate >= 30 && winRate <= 70,
-    `XS Collector 综合胜率 ${winRate.toFixed(1)}% 应接近五五（悬念）`);
+  assert.ok(winRate >= 45 && winRate <= 65,
+    `XS Collector 综合胜率 ${winRate.toFixed(1)}% 应在 45%–65%（悬念）`);
 });
 
 test('验收④ 同等级 C vs XS Collector → 高稀有度压倒性（40 场零翻盘）', () => {
@@ -86,8 +86,8 @@ test('验收⑥ Battle Power 接近的卡双方都能赢', () => {
   }
   for (const c of cs) for (const x of xscs) {
     const bpC = battlePower(buildUnit(c, 100));
-    const bpX = battlePower(buildUnit(x, 70));
-    pairs.push({ a: c, lvlA: 100, b: x, lvlB: 70, gap: Math.abs(bpC - bpX) / Math.min(bpC, bpX) });
+    const bpX = battlePower(buildUnit(x, 55));
+    pairs.push({ a: c, lvlA: 100, b: x, lvlB: 55, gap: Math.abs(bpC - bpX) / Math.min(bpC, bpX) });
   }
   assert.ok(pairs.length >= 8, `应存在至少 8 组 BP 接近的卡对，实际 ${pairs.length}`);
   for (const p of pairs) {
@@ -104,5 +104,37 @@ test('验收⑦ 大差距匹配长期不翻盘（Lv100 vs Lv20 抽查）', () =>
     if (a.rarity === b.rarity) continue;
     const r = winStats(a, 100, b, 20, 30);
     assert.equal(r.b, 0, `Lv100 ${a.id} vs Lv20 ${b.id} 不应翻盘`);
+  }
+});
+
+test('验收⑧ 同等级相邻档：高档总体更强，S 以上优势更明显', () => {
+  const tier = (t) => CARDS.filter(c => c.rarity === t);
+  const pairs = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11]];
+  const highWins = [];
+  for (const [lo, hi] of pairs) {
+    let a = 0, b = 0, tot = 0;
+    for (const h of tier(hi)) for (const l of tier(lo)) {
+      const r = winStats(h, 50, l, 50, 40);
+      a += r.a; b += r.b; tot += r.seeds;
+    }
+    const pctHi = a / (a + b) * 100;
+    highWins.push(pctHi);
+    assert.ok(pctHi >= 55, `${RARITY_LIST[hi]} vs ${RARITY_LIST[lo]} 高档应总体更强，实际 ${pctHi.toFixed(1)}%`);
+    // S 以上相邻档必须是明显优势（高档 ≥ 90%）
+    if (lo >= 5) assert.ok(pctHi >= 90,
+      `S 以上相邻档 ${RARITY_LIST[hi]} vs ${RARITY_LIST[lo]} 高档应明显占优，实际 ${pctHi.toFixed(1)}%`);
+  }
+});
+
+test('验收⑨ Collector 跳升：SSS Collector vs SSS、XS Collector vs XS 明显更强', () => {
+  const tier = (t) => CARDS.filter(c => c.rarity === t);
+  for (const [lo, hi] of [[8, 9], [10, 11]]) {
+    let a = 0, b = 0, tot = 0;
+    for (const h of tier(hi)) for (const l of tier(lo)) {
+      const r = winStats(h, 50, l, 50, 60);
+      a += r.a; b += r.b; tot += r.seeds;
+    }
+    const pctHi = a / tot * 100;
+    assert.ok(pctHi >= 90, `${RARITY_LIST[hi]} vs ${RARITY_LIST[lo]} Collector 应明显强，实际 ${pctHi.toFixed(1)}%`);
   }
 });

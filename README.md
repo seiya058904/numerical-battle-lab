@@ -12,7 +12,7 @@
 输入 —— 决定战斗表现：
 
 - **Level** — 第一实力维度。Lv100 与 Lv40 之间存在巨大差距（超指数成长）。
-- **Rarity** — 第二实力维度。C / C+ / B / B+ / A / A+ / S / SS / SSS / SSS Collector / XS / XS Collector，共 12 档，C→XS Collector 为 6 倍数值差。
+- **Rarity** — 第二实力维度。C / C+ / B / B+ / A / A+ / S / SS / SSS / SSS Collector / XS / XS Collector，共 12 档，使用显式倍率表（C=1.00 → XS Collector=13.20）。Rarity 越高，相邻档之间实力提升越明显；Collector 档对前一普通档有明显跳升。
 - **12 个战斗属性** — 生命 / 攻击 / 防御 / 速度 / 命中 / 闪避 / 暴击率 / 暴击伤害 / 穿透 / 吸血 / 每回合回复 / 波动，是实际战斗内容。
 
 评价 —— 不参与战斗：
@@ -41,9 +41,15 @@
 
 ## 数值公式
 
-- 等级曲线：`g(L) = exp(0.02143·L + 0.0002253·L²)`，g(40)=3.38，g(70)=13.52，g(100)=81.12
-- 稀有度曲线：`rarityMul(t) = exp(ln6/11·t)`，C=1.00 → XS Collector≈6.00
+- 等级曲线：`g(L) = exp(0.02143·L + 0.0002253·L²)`，g(40)=3.38，g(55)=6.42，g(100)=81.12
+- 稀有度表（显式倍率，无公式拟合）：
+
+| Rarity | C | C+ | B | B+ | A | A+ | S | SS | SSS | SSS Collector | XS | XS Collector |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 倍率 | 1.00 | 1.15 | 1.35 | 1.60 | 1.90 | 2.30 | 2.90 | 3.75 | 4.90 | 6.60 | 9.10 | 13.20 |
+
 - 最终属性：`p = g(L) × rarityMul(稀有度)`，HP/ATK/DEF/SPD = 基准 × 卡牌形状 × p
+- 产品关系：`Lv55 XS Collector × g(55) ≈ Lv100 C × g(100)`（p ≈ 84.8 vs 81.1）→ 同级对抗有悬念
 - 基础伤害：`ATK² / (ATK + DEF×(1−PEN))`，再乘暴击与波动
 - Battle Power：12 项最终属性的透明线性加权
 
@@ -55,7 +61,7 @@ npm run verify    # 静态检查 + 全量测试 + 产品实战验收
 npm run serve     # 本地静态服务器
 ```
 
-测试覆盖：Level 单调性、Rarity 层级、Battle Power 排序、同 Match Seed 确定性、播放速度独立、战斗终止、无 NaN、HP 合法、近战力双方都能赢、大差距不翻盘。
+测试覆盖：Level 单调性、Rarity 层级、Battle Power 排序、同 Match Seed 确定性、播放速度独立、战斗终止、无 NaN、HP 合法、近战力双方都能赢、大差距不翻盘、相邻档梯度与 Collector 跳升；`npm run verify` 还包含多等级 BP 审计（Lv25/55/100 循环赛，Spearman ≥ 0.90）。
 
 ## 仓库结构
 
@@ -63,7 +69,7 @@ npm run serve     # 本地静态服务器
 index.html          单页入口（只加载 4 个模块）
 styles.css
 src/cards.js        24 张内置卡 + 12 档稀有度
-src/power.js        Level/Rarity 曲线 + 属性计算 + Battle Power
+src/power.js        Level 曲线 + Rarity 倍率表 + 属性计算 + Battle Power
 src/battle.js       确定性自动战斗引擎（先模拟后播放）
 src/app.js          页面交互与回放
 tests/              node:test 测试
