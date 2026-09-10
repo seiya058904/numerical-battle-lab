@@ -15,6 +15,11 @@
   function solveCardV7(baseCard,genome,targetTheta,options={}){
     const card=clone(baseCard),tolerance=Number(options.tolerance??.08),maxIterations=Number(options.maxIterations??180);
     const uses=Object.fromEntries(KNOBS.map(knob=>[knob.key,0]));
+    // Utilization telemetry (diagnostics only; deterministic, no behaviour change).
+    const telemetry={adjustments:Object.fromEntries(KNOBS.map(k=>[k.key,0])),firstSelected:Object.fromEntries(KNOBS.map(k=>[k.key,0])),
+      marginals:Object.fromEntries(KNOBS.map(k=>[k.key,[]])),statDeltas:Object.fromEntries(KNOBS.map(k=>[k.key,[]])),
+      relativeDeltas:Object.fromEntries(KNOBS.map(k=>[k.key,[]])),thetaDeltas:Object.fromEntries(KNOBS.map(k=>[k.key,[]])),
+      initial:Object.fromEntries(KNOBS.map(k=>[k.key,Number(baseCard.stats[k.key]??0)]))};
     let predicted=N.predictThetaV7(card),iterations=0;
     while(Math.abs(predicted-targetTheta)>tolerance&&iterations++<maxIterations){
       const error=targetTheta-predicted;
@@ -36,13 +41,22 @@
       const chosen=candidates[0],key=chosen.knob.key,current=Math.max(1e-6,Number(card.stats[key]||0));
       const relative=clamp(error/chosen.marginal,-.32,.32);
       const limits=LIMITS[key];
-      card.stats[key]=clamp(current*Math.exp(relative),limits[0],limits[1]);
+      const next=clamp(current*Math.exp(relative),limits[0],limits[1]);
+      const beforeTheta=predicted;
+      card.stats[key]=next;
       uses[key]++;
       predicted=N.predictThetaV7(card);
+      telemetry.adjustments[key]++;
+      telemetry.marginals[key].push(chosen.marginal);
+      telemetry.statDeltas[key].push(Math.abs(next-current));
+      telemetry.relativeDeltas[key].push(Math.abs(next/current-1));
+      telemetry.thetaDeltas[key].push(Math.abs(predicted-beforeTheta));
+      if(iterations===1)telemetry.firstSelected[key]++;
     }
     for(const key of Object.keys(card.stats))if(Number.isFinite(card.stats[key]))card.stats[key]=round(card.stats[key]);
     predicted=N.predictThetaV7(card);
-    return {card,predictedTheta:predicted,targetTheta,error:predicted-targetTheta,iterations,converged:Math.abs(predicted-targetTheta)<=tolerance,knobUpdates:uses,tolerance};
+    telemetry.final=Object.fromEntries(KNOBS.map(k=>[k.key,Number(card.stats[k.key]??0)]));
+    return {card,predictedTheta:predicted,targetTheta,error:predicted-targetTheta,iterations,converged:Math.abs(predicted-targetTheta)<=tolerance,knobUpdates:uses,telemetry,tolerance};
   }
   N.SOLVER_KNOBS_V7=KNOBS.map(knob=>({...knob}));
   N.SOLVER_LIMITS_V7=Object.fromEntries(Object.entries(LIMITS).map(([key,range])=>[key,range.slice()]));

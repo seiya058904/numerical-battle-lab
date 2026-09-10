@@ -1,0 +1,593 @@
+{
+  "schemaVersion": 1,
+  "generatorVersion": 7,
+  "methodology": {
+    "cards": 96,
+    "opponentsPerCard": 8,
+    "pairedMatchSeeds": 3,
+    "edges": 768,
+    "battles": 4608,
+    "mirroredSides": true,
+    "canonicalAI": true,
+    "roundCap": 100,
+    "level": 50,
+    "rarity": "A",
+    "sharedGraph": true,
+    "sharedMatchSeeds": true
+  },
+  "decisionGate": {
+    "c3SpreadReduction": 0.06447063425936639,
+    "interpretation": "<=40%: hypothesis not supported; continue Mechanism-Aware StrengthModel"
+  },
+  "c0": {
+    "spread": 6.642349861089228,
+    "p5": -3.524744382594764,
+    "p95": 3.1176054784944633,
+    "variance": 4.869833337259441,
+    "familyMeans": {
+      "burst|CHRONO": {
+        "count": 4,
+        "mean": -0.1115354707766647,
+        "withinVariance": 1.7136780238709584
+      },
+      "burst|RAGE": {
+        "count": 4,
+        "mean": 1.052260759014845,
+        "withinVariance": 4.398072864425402
+      },
+      "burst|SOUL": {
+        "count": 4,
+        "mean": -0.6168698373775288,
+        "withinVariance": 3.4240147490384447
+      },
+      "control|CHRONO": {
+        "count": 3,
+        "mean": -3.072668789104762,
+        "withinVariance": 2.983485760536307
+      },
+      "control|RAGE": {
+        "count": 6,
+        "mean": -2.466554091727556,
+        "withinVariance": 3.3584491353428727
+      },
+      "control|SOUL": {
+        "count": 3,
+        "mean": -1.7960537321166294,
+        "withinVariance": 2.1712479444436883
+      },
+      "direct|CHRONO": {
+        "count": 4,
+        "mean": 0.2640631557032225,
+        "withinVariance": 2.7207385509899042
+      },
+      "direct|RAGE": {
+        "count": 3,
+        "mean": 2.043485459024746,
+        "withinVariance": 0.009984172871816565
+      },
+      "direct|SOUL": {
+        "count": 4,
+        "mean": 0.47414215193473286,
+        "withinVariance": 2.7704719814752172
+      },
+      "dot|CHRONO": {
+        "count": 3,
+        "mean": 1.2943540579959052,
+        "withinVariance": 3.012898507664977
+      },
+      "dot|RAGE": {
+        "count": 2,
+        "mean": 0.5454076618616743,
+        "withinVariance": 1.563736134635489
+      },
+      "dot|SOUL": {
+        "count": 2,
+        "mean": 1.21011096719292,
+        "withinVariance": 0.5303488805454568
+      },
+      "drain|CHRONO": {
+        "count": 6,
+        "mean": -0.5301422725515563,
+        "withinVariance": 8.609634066574797
+      },
+      "drain|RAGE": {
+        "count": 6,
+        "mean": -0.480133773189831,
+        "withinVariance": 1.4077968141479718
+      },
+      "drain|SOUL": {
+        "count": 4,
+        "mean": 2.0919761313316183,
+        "withinVariance": 4.441158723359223
+      },
+      "reflect|CHRONO": {
+        "count": 7,
+        "mean": -0.5570567526351248,
+        "withinVariance": 3.0364860728098413
+      },
+      "reflect|RAGE": {
+        "count": 3,
+        "mean": -1.4256752006796478,
+        "withinVariance": 4.680673381079445
+      },
+      "reflect|SOUL": {
+        "count": 4,
+        "mean": -0.830624152243275,
+        "withinVariance": 3.885585785911097
+      },
+      "resource|CHRONO": {
+        "count": 6,
+        "mean": 0.1770331559979772,
+        "withinVariance": 4.530643182514598
+      },
+      "resource|RAGE": {
+        "count": 6,
+        "mean": 1.2878435979069693,
+        "withinVariance": 2.090909894811008
+      },
+      "resource|SOUL": {
+        "count": 2,
+        "mean": 1.1995175421343838,
+        "withinVariance": 4.809160396733369
+      },
+      "tempo|CHRONO": {
+        "count": 3,
+        "mean": 1.4858958729828273,
+        "withinVariance": 0.3653534923829001
+      },
+      "tempo|RAGE": {
+        "count": 2,
+        "mean": 1.0804078186003325,
+        "withinVariance": 5.445153899672301
+      },
+      "tempo|SOUL": {
+        "count": 5,
+        "mean": 0.6037131271192233,
+        "withinVariance": 2.063682077251255
+      }
+    }
+  },
+  "variants": {
+    "C1": {
+      "spread": 7.3564802241178775,
+      "p5": -4.279215461504306,
+      "p95": 3.0772647626135723,
+      "variance": 5.125673568997092,
+      "spearmanWithC0": 0.919750406945198,
+      "varianceReduction": -0.05253572638311854,
+      "spreadReduction": -0.10751170564080237,
+      "familyMeans": {
+        "burst|CHRONO": {
+          "count": 4,
+          "mean": -0.3269389150214121
+        },
+        "burst|RAGE": {
+          "count": 4,
+          "mean": 0.6272261450839793
+        },
+        "burst|SOUL": {
+          "count": 4,
+          "mean": -0.7591126612956166
+        },
+        "control|CHRONO": {
+          "count": 3,
+          "mean": -3.3430947484993805
+        },
+        "control|RAGE": {
+          "count": 6,
+          "mean": -2.4276737230016314
+        },
+        "control|SOUL": {
+          "count": 3,
+          "mean": -3.4808557571398455
+        },
+        "direct|CHRONO": {
+          "count": 4,
+          "mean": 0.16532153322388476
+        },
+        "direct|RAGE": {
+          "count": 3,
+          "mean": 1.8826058702174346
+        },
+        "direct|SOUL": {
+          "count": 4,
+          "mean": 0.5657175308883007
+        },
+        "dot|CHRONO": {
+          "count": 3,
+          "mean": 1.5819016234594312
+        },
+        "dot|RAGE": {
+          "count": 2,
+          "mean": -0.033597883213242974
+        },
+        "dot|SOUL": {
+          "count": 2,
+          "mean": 0.9750888927976191
+        },
+        "drain|CHRONO": {
+          "count": 6,
+          "mean": 0.0857297060028388
+        },
+        "drain|RAGE": {
+          "count": 6,
+          "mean": 0.30156564421000126
+        },
+        "drain|SOUL": {
+          "count": 4,
+          "mean": 1.951728116917926
+        },
+        "reflect|CHRONO": {
+          "count": 7,
+          "mean": -0.5968842697073983
+        },
+        "reflect|RAGE": {
+          "count": 3,
+          "mean": -2.850941389110295
+        },
+        "reflect|SOUL": {
+          "count": 4,
+          "mean": -0.8736545539058789
+        },
+        "resource|CHRONO": {
+          "count": 6,
+          "mean": 0.9585261165791205
+        },
+        "resource|RAGE": {
+          "count": 6,
+          "mean": 0.9730537315883573
+        },
+        "resource|SOUL": {
+          "count": 2,
+          "mean": 1.2143580599804356
+        },
+        "tempo|CHRONO": {
+          "count": 3,
+          "mean": 1.8745041639985798
+        },
+        "tempo|RAGE": {
+          "count": 2,
+          "mean": 2.288816418193273
+        },
+        "tempo|SOUL": {
+          "count": 5,
+          "mean": 0.7096283975641985
+        }
+      },
+      "withinFamilyVariance": 2.5621476492893547
+    },
+    "C2": {
+      "spread": 6.1502176760187535,
+      "p5": -3.2445088740452084,
+      "p95": 2.905708801973545,
+      "variance": 4.103709555540008,
+      "spearmanWithC0": 0.9615029842647856,
+      "varianceReduction": 0.15732032877958368,
+      "spreadReduction": 0.07409007284505986,
+      "familyMeans": {
+        "burst|CHRONO": {
+          "count": 4,
+          "mean": 0.06619243447393064
+        },
+        "burst|RAGE": {
+          "count": 4,
+          "mean": 0.9224082365106328
+        },
+        "burst|SOUL": {
+          "count": 4,
+          "mean": -0.30840776912542833
+        },
+        "control|CHRONO": {
+          "count": 3,
+          "mean": -2.859638541553158
+        },
+        "control|RAGE": {
+          "count": 6,
+          "mean": -2.3141802017620767
+        },
+        "control|SOUL": {
+          "count": 3,
+          "mean": -1.4307084196395448
+        },
+        "direct|CHRONO": {
+          "count": 4,
+          "mean": 0.1528237698992016
+        },
+        "direct|RAGE": {
+          "count": 3,
+          "mean": 1.99045974879267
+        },
+        "direct|SOUL": {
+          "count": 4,
+          "mean": 0.7359099368126653
+        },
+        "dot|CHRONO": {
+          "count": 3,
+          "mean": 1.148521828640911
+        },
+        "dot|RAGE": {
+          "count": 2,
+          "mean": 0.159291500750871
+        },
+        "dot|SOUL": {
+          "count": 2,
+          "mean": 1.4109395468257313
+        },
+        "drain|CHRONO": {
+          "count": 6,
+          "mean": -0.48154759334698727
+        },
+        "drain|RAGE": {
+          "count": 6,
+          "mean": -0.41778667043570966
+        },
+        "drain|SOUL": {
+          "count": 4,
+          "mean": 1.834357839864929
+        },
+        "reflect|CHRONO": {
+          "count": 7,
+          "mean": -0.7218161132960328
+        },
+        "reflect|RAGE": {
+          "count": 3,
+          "mean": -1.8829264060748416
+        },
+        "reflect|SOUL": {
+          "count": 4,
+          "mean": -0.7197334187421376
+        },
+        "resource|CHRONO": {
+          "count": 6,
+          "mean": 0.28353034042072983
+        },
+        "resource|RAGE": {
+          "count": 6,
+          "mean": 1.0205157964007145
+        },
+        "resource|SOUL": {
+          "count": 2,
+          "mean": 1.3706819445980247
+        },
+        "tempo|CHRONO": {
+          "count": 3,
+          "mean": 1.4686283590248024
+        },
+        "tempo|RAGE": {
+          "count": 2,
+          "mean": 0.15131283376962035
+        },
+        "tempo|SOUL": {
+          "count": 5,
+          "mean": 0.8575714574352045
+        }
+      },
+      "withinFamilyVariance": 2.4259692386920446
+    },
+    "C3": {
+      "spread": 6.214113352572191,
+      "p5": -3.083763036100839,
+      "p95": 3.1303503164713518,
+      "variance": 3.83342120117905,
+      "spearmanWithC0": 0.8990368963646229,
+      "varianceReduction": 0.21282291698788292,
+      "spreadReduction": 0.06447063425936639,
+      "familyMeans": {
+        "burst|CHRONO": {
+          "count": 4,
+          "mean": -0.6302606635723834
+        },
+        "burst|RAGE": {
+          "count": 4,
+          "mean": 0.5086209971226875
+        },
+        "burst|SOUL": {
+          "count": 4,
+          "mean": -0.6311068632168539
+        },
+        "control|CHRONO": {
+          "count": 3,
+          "mean": -2.974382380087325
+        },
+        "control|RAGE": {
+          "count": 6,
+          "mean": -1.9115814242583056
+        },
+        "control|SOUL": {
+          "count": 3,
+          "mean": -2.9289153471716
+        },
+        "direct|CHRONO": {
+          "count": 4,
+          "mean": -0.2442423803102235
+        },
+        "direct|RAGE": {
+          "count": 3,
+          "mean": 1.4151659897953923
+        },
+        "direct|SOUL": {
+          "count": 4,
+          "mean": 0.4774331248420166
+        },
+        "dot|CHRONO": {
+          "count": 3,
+          "mean": 1.3556657546897564
+        },
+        "dot|RAGE": {
+          "count": 2,
+          "mean": 0.19224859240262193
+        },
+        "dot|SOUL": {
+          "count": 2,
+          "mean": 1.275915319737686
+        },
+        "drain|CHRONO": {
+          "count": 6,
+          "mean": -0.09724606287869604
+        },
+        "drain|RAGE": {
+          "count": 6,
+          "mean": 0.21338480962109854
+        },
+        "drain|SOUL": {
+          "count": 4,
+          "mean": 2.2421863049770483
+        },
+        "reflect|CHRONO": {
+          "count": 7,
+          "mean": -0.48454224083078146
+        },
+        "reflect|RAGE": {
+          "count": 3,
+          "mean": -2.3389653321691153
+        },
+        "reflect|SOUL": {
+          "count": 4,
+          "mean": -0.7644611917077546
+        },
+        "resource|CHRONO": {
+          "count": 6,
+          "mean": 0.3573337275308695
+        },
+        "resource|RAGE": {
+          "count": 6,
+          "mean": 0.9834884188787335
+        },
+        "resource|SOUL": {
+          "count": 2,
+          "mean": 0.9552311641422211
+        },
+        "tempo|CHRONO": {
+          "count": 3,
+          "mean": 1.8643754665316237
+        },
+        "tempo|RAGE": {
+          "count": 2,
+          "mean": 1.9897118399229936
+        },
+        "tempo|SOUL": {
+          "count": 5,
+          "mean": 0.856359054547576
+        }
+      },
+      "withinFamilyVariance": 1.9247179418401892
+    },
+    "C4": {
+      "spread": 6.385834089224634,
+      "p5": -3.651328653479539,
+      "p95": 2.734505435745095,
+      "variance": 4.2161219459608725,
+      "spearmanWithC0": 0.8006918068366793,
+      "varianceReduction": 0.1342369124415359,
+      "spreadReduction": 0.03861822656576086,
+      "familyMeans": {
+        "burst|CHRONO": {
+          "count": 4,
+          "mean": 0.00027379337083427435
+        },
+        "burst|RAGE": {
+          "count": 4,
+          "mean": 0.7141043037505674
+        },
+        "burst|SOUL": {
+          "count": 4,
+          "mean": 0.1773467470916792
+        },
+        "control|CHRONO": {
+          "count": 3,
+          "mean": -2.4803406196791147
+        },
+        "control|RAGE": {
+          "count": 6,
+          "mean": -2.6183201053170744
+        },
+        "control|SOUL": {
+          "count": 3,
+          "mean": -2.229823818749182
+        },
+        "direct|CHRONO": {
+          "count": 4,
+          "mean": -0.3032542520919558
+        },
+        "direct|RAGE": {
+          "count": 3,
+          "mean": 1.8317234545553387
+        },
+        "direct|SOUL": {
+          "count": 4,
+          "mean": 0.789266377994702
+        },
+        "dot|CHRONO": {
+          "count": 3,
+          "mean": 1.7224426648943207
+        },
+        "dot|RAGE": {
+          "count": 2,
+          "mean": 0.3546028821213597
+        },
+        "dot|SOUL": {
+          "count": 2,
+          "mean": 1.6800754496298063
+        },
+        "drain|CHRONO": {
+          "count": 6,
+          "mean": 0.2930321703090308
+        },
+        "drain|RAGE": {
+          "count": 6,
+          "mean": 0.6823356194292621
+        },
+        "drain|SOUL": {
+          "count": 4,
+          "mean": 0.5327365099933792
+        },
+        "reflect|CHRONO": {
+          "count": 7,
+          "mean": -0.4335356478584304
+        },
+        "reflect|RAGE": {
+          "count": 3,
+          "mean": -3.062522229041297
+        },
+        "reflect|SOUL": {
+          "count": 4,
+          "mean": -0.7708036826336614
+        },
+        "resource|CHRONO": {
+          "count": 6,
+          "mean": 0.19227988605520743
+        },
+        "resource|RAGE": {
+          "count": 6,
+          "mean": 1.0351484450474249
+        },
+        "resource|SOUL": {
+          "count": 2,
+          "mean": 0.058830065877490734
+        },
+        "tempo|CHRONO": {
+          "count": 3,
+          "mean": 1.5440045018705268
+        },
+        "tempo|RAGE": {
+          "count": 2,
+          "mean": 1.1986354761612268
+        },
+        "tempo|SOUL": {
+          "count": 5,
+          "mean": 0.48169492856643525
+        }
+      },
+      "withinFamilyVariance": 2.515318843179586,
+      "spearmanWithDonorC0": 0.22893380358111776,
+      "selfC0": 0.8006918068366793
+    }
+  },
+  "attribution": {
+    "scheduling": -0.05253572638311854,
+    "magnitude": 0.15732032877958368,
+    "both": 0.21282291698788292,
+    "remainingTopology": 0.7871770830121171,
+    "note": "variance-reduction attribution is non-additive; remaining = 1 - C3 reduction (topology + interactions + noise)"
+  }
+}

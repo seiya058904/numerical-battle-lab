@@ -9,6 +9,102 @@
 > Every number below comes from an actual run of the committed scripts against
 > the committed artifacts. Nothing is estimated or invented.
 
+## Convergence round 3 — causal variance decomposition (user decision gate)
+
+**The question this round had to answer: is the ~6.6 theta same-tier spread
+"real mechanism value" or "seed randomly drawing strong/weak action numbers"?**
+A deterministic counterfactual experiment on the official 96 unsolved Lv50 A
+dataset (shared graph, 768 edges, 8 opponents/card, same 3 paired Match Seeds per
+variant, 4,608 mirrored battles each, all BT-converged) gives the answer:
+
+| variant | what changed | p95−p5 | variance reduction | Spearman(C0, Ck) |
+|---|---|---|---|---|
+| C0 | baseline | **6.642** | — | — |
+| C1 | cost/cooldown/priority → per-slot medians | **7.356** | −5.3% | 0.920 |
+| C2 | damage/heal/barrier coeffs, accuracy, chance, drainRatio, gain → medians | **6.150** | +15.7% | 0.962 |
+| C3 | C1 + C2 | **6.214** | +21.3% | 0.899 |
+| C4 | scalar bundles deterministically permuted (i ← donor i+1) | **6.386** | +13.4% | 0.801 (donor: **0.229**) |
+
+**Decision gate verdict: C3 spread reduction = 6.4% ≤ 40% → hypothesis not
+supported → continue Mechanism-Aware StrengthModel; no action-numeric solver
+prototype.** Readings:
+
+* Normalising both scheduling and magnitudes leaves ~6.2 theta of 6.64 (≈79% of
+  the variance): the spread is dominated by mechanic topology, not by drawn
+  numbers.
+* C1 (scheduling) *raised* the spread — random scheduling partially equalised
+  classes; it is neither the driver nor a promising knob.
+* C4 is the strongest causal signal: after swapping the scalar bundles, ranking
+  correlates 0.801 with the original cards but only 0.229 with the donor cards —
+  strength stays with the skeleton, not the numbers.
+* Q4: pure mechanic topology still produces **≈6.2 theta** — large, so the
+  StrengthModel must genuinely learn mechanism value.
+
+### Q1 — official 96-card mechanism ranking (three splits)
+
+`qa/v7-mechanism-ranking-96.json`; real spread p95−p5 = 6.642.
+
+| model | overall | seed-family test (official) | random test (reference) | mechanism-family holdout (stress) |
+|---|---|---|---|---|
+| predictTheta | −0.222 | **−0.226** | −0.727 | −0.453 |
+| predictReality (committed ridge) | −0.144 | **−0.248** | +0.064 | −0.262 |
+| BattlePower V4 | −0.183 | **−0.059** | −0.673 | −0.197 |
+
+Spread ratios (predicted/real on test): predictTheta 0.11 (crushed), predictReality
+0.91, BPv4 0.55. **All three models fail the ≥0.85 gate and mostly rank at ~0 or
+negatively on the official seed-family test.** The gate is untouched and the
+Solver/Full-Reality stage stays closed.
+
+### Q5 — why the solver mostly adjusts HP (utilization audit)
+
+`qa/v7-solver-utilization.json`, 1000 cards, 5,525 adjustments (5.5/card):
+
+| knob | adjusted% | first-selected% | adjustments | theta share | marginal median | kept-initial% |
+|---|---|---|---|---|---|---|
+| MAX_HP | 76.3 | **62.1** | 2,005 | **0.379** | 3.20 | 24 |
+| ATK | 65.9 | 0.0 | 1,645 | 0.312 | 3.17 | 34 |
+| ACC | 89.0 | 37.1 | 1,580 | 0.289 | 3.14 | 11 |
+| HEAL_POWER | 23.5 | 0.0 | 247 | 0.018 | 1.23 | 77 |
+| PEN | 4.8 | 0.0 | 48 | 0.002 | 0.64 | 95 |
+| DEF / RES / SPD / EVA / CRIT / ENERGY_REGEN | **0.0** | 0.0 | **0** | 0.000 | — | 100 |
+
+Diagnosis: it is **not** a pure greedy-degeneracy story — MAX_HP's marginal is
+genuinely the largest (it feeds both endurance and sustain, since heal/barrier
+formulas scale with MAX_HP), so picking it first (62%) is rational. But the model
+has a **sensitivity imbalance: 6 of 11 knobs are dead** (DEF/RES/SPD/EVA/CRIT/
+ENERGY_REGEN never selected because their marginals are ~100× smaller than the
+top three and can never win the greedy score), so the iso-power surface is
+effectively driven by three knobs. Any future action-numeric extension must fix
+this imbalance first, otherwise it would just add more dead knobs.
+
+### Q6 — parameter classification
+
+Full table in `docs/V7-MECHANISM-ATTRIBUTION.md`. Summary: damage/heal/barrier
+coefficients, periodic magnitude, drainRatio, effect chance and accuracy are
+continuous, monotonic, strength-only → safe continuous marginal-value knobs; cost
+and cooldown are discrete but monotonic → borderline; **priority is discrete,
+non-monotonic and identity/behavior-affecting (it changes AI action choice and
+initiative order) → NOT a strength knob**; shield/ward kind, control status
+flavour, stacks and all structural fields (family set, effects topology,
+statuses, triggers, targets, damage type, resource) are Frozen Identity.
+
+### Q7 — seed identity invariants (proposal, not approved)
+
+Frozen Identity (never touched): action family set/count, victory path, targets,
+trigger topology, status identity, conditionals, periodic topology, resource
+mechanic, damage type, signature action, shield-vs-ward kind, control flavour.
+Shape-Preserving Numeric Freedom: per-mechanism relative shape kept, only
+family/global scaling allowed. Free Strength Scalars: absolute magnitudes that
+change no relative shape or identity.
+
+### Q8 — recommendation
+
+**A — mainly fix the StrengthModel** (with D-style support: then evaluate a
+bounded, shape-preserving numeric freedom, not free per-action knobs). The C0-C4
+evidence rules out B: scalar numbers explain ≤21% of the variance and the C4
+donor test (0.229) shows strength does not follow the numbers; ~6.2 theta of
+topology-driven spread remains, which only a mechanism-aware model can capture.
+
 ## Convergence round 2 — root causes, fixes, and what still blocks
 
 ### Root Cause Before (measured on the inherited code)

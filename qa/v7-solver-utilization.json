@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "generatorVersion": 7,
+  "cards": 1000,
+  "referenceGeneralPower": 26056.676,
+  "totals": {
+    "adjustments": 5525,
+    "nonConverged": 0,
+    "meanAdjustmentsPerCard": 5.525
+  },
+  "perKnob": {
+    "ATK": {
+      "limit": [
+        0.1,
+        1000000000
+      ],
+      "adjustedCardRate": 0.659,
+      "firstSelectedRate": 0,
+      "totalAdjustments": 1645,
+      "adjustmentShare": 0.29773755656108597,
+      "medianAbsStatDelta": 44.145014772364505,
+      "p95AbsStatDelta": 115.29337940019576,
+      "medianRelativeDelta": 0.37712776433595696,
+      "p95RelativeDelta": 0.37712776433595696,
+      "thetaCorrectionShare": 0.3118537316194351,
+      "marginalMedian": 3.1735442958654936,
+      "marginalP5": 3.163434613797529,
+      "marginalP95": 3.1902272537806837,
+      "boundHitRate": 0,
+      "keptInitialRate": 0.341,
+      "meanInitial": 85
+    },
+    "MAX_HP": {
+      "limit": [
+        1,
+        10000000000
+      ],
+      "adjustedCardRate": 0.763,
+      "firstSelectedRate": 0.621,
+      "totalAdjustments": 2005,
+      "adjustmentShare": 0.36289592760180994,
+      "medianAbsStatDelta": 17658.0059089458,
+      "p95AbsStatDelta": 46117.35176007831,
+      "medianRelativeDelta": 0.37712776433595696,
+      "p95RelativeDelta": 0.37712776433595696,
+      "thetaCorrectionShare": 0.37925808283941626,
+      "marginalMedian": 3.2006669167783253,
+      "marginalP5": 3.200666916778303,
+      "marginalP95": 3.2006669167783564,
+      "boundHitRate": 0,
+      "keptInitialRate": 0.237,
+      "meanInitial": 34000
+    },
+    "DEF": {
+      "limit": [
+        10,
+        350
+      ],
+      "adjustedCardRate": 0,
+      "firstSelectedRate": 0,
+      "totalAdjustments": 0,
+      "adjustmentShare": 0,
+      "medianAbsStatDelta": 0,
+      "p95AbsStatDelta": 0,
+      "medianRelativeDelta": 0,
+      "p95RelativeDelta": 0,
+      "thetaCorrectionShare": 0,
+      "marginalMedian": 0,
+      "marginalP5": 0,
+      "marginalP95": 0,
+      "boundHitRate": 0,
+      "keptInitialRate": 1,
+      "meanInitial": 75
+    },
+    "RES": {
+      "limit": [
+        10,
+        350
+      ],
+      "adjustedCardRate": 0,
+      "firstSelectedRate": 0,
+      "totalAdjustments": 0,
+      "adjustmentShare": 0,
+      "medianAbsStatDelta": 0,
+      "p95AbsStatDelta": 0,
+      "medianRelativeDelta": 0,
+      "p95RelativeDelta": 0,
+      "thetaCorrectionShare": 0,
+      "marginalMedian": 0,
+      "marginalP5": 0,
+      "marginalP95": 0,
+      "boundHitRate": 0,
+      "keptInitialRate": 1,
+      "meanInitial": 75
+    },
+    "SPD": {
+      "limit": [
+        20,
+        300
+      ],
+      "adjustedCardRate": 0,
+      "firstSelectedRate": 0,
+      "totalAdjustments": 0,
+      "adjustmentShare": 0,
+      "medianAbsStatDelta": 0,
+      "p95AbsStatDelta": 0,
+      "medianRelativeDelta": 0,
+      "p95RelativeDelta": 0,
+      "thetaCorrectionShare": 0,
+      "marginalMedian": 0,
+      "marginalP5": 0,
+      "marginalP95": 0,
+      "boundHitRate": 0,
+      "keptInitialRate": 1,
+      "meanInitial": 100
+    },
+    "ACC": {
+      "limit": [
+        20,
+        300
+      ],
+      "adjustedCardRate": 0.89,
+      "firstSelectedRate": 0.371,
+      "totalAdjustments": 1580,
+      "adjustmentShare": 0.285972850678733,
+      "medianAbsStatDelta": 27.385096292630905,
+      "p95AbsStatDelta": 51.9353114968994,
+      "medianRelativeDelta": 0.27385096292630906,
+      "p95RelativeDelta": 0.37712776433595696,
+      "thetaCorrectionShare": 0.2892018543874932,
+      "marginalMedian": 3.1378833433803788,
+      "marginalP5": 3.0836571126892043,
+      "marginalP95": 3.154830411289673,
+      "boundHitRate": 0,
+      "keptInitialRate": 0.11,
+      "meanInitial": 100
+    },
+    "EVA": {
+      "limit": [
+        0,
+        200
+      ],
+      "adjustedCardRate": 0,
+      "firstSelectedRate": 0,
+      "totalAdjustments": 0,
+      "adjustmentShare": 0,
+      "medianAbsStatDelta": 0,
+      "p95AbsStatDelta": 0,
+      "medianRelativeDelta": 0,
+      "p95RelativeDelta": 0,
+      "thetaCorrectionShare": 0,
+      "marginalMedian": 0,
+      "marginalP5": 0,
+      "marginalP95": 0,
+      "boundHitRate": 0,
+      "keptInitialRate": 1,
+      "meanInitial": 30
+    },
+    "CRIT": {
+      "limit": [
+        0,
+        80
+      ],
+      "adjustedCardRate": 0,
+      "firstSelectedRate": 0,
+      "totalAdjustments": 0,
+      "adjustmentShare": 0,
+      "medianAbsStatDelta": 0,
+      "p95AbsStatDelta": 0,
+      "medianRelativeDelta": 0,
+      "p95RelativeDelta": 0,
+      "thetaCorrectionShare": 0,
+      "marginalMedian": 0,
+      "marginalP5": 0,
+      "marginalP95": 0,
+      "boundHitRate": 0,
+      "keptInitialRate": 1,
+      "meanInitial": 17.5
+    },
+    "PEN": {
+      "limit": [
+        0,
+        95
+      ],
+      "adjustedCardRate": 0.048,
+      "firstSelectedRate": 0,
+      "totalAdjustments": 48,
+      "adjustmentShare": 0.008687782805429865,
+      "medianAbsStatDelta": 4.792391851210409,
+      "p95AbsStatDelta": 4.792391851210409,
+      "medianRelativeDelta": 0.27385096292630906,
+      "p95RelativeDelta": 0.27385096292630906,
+      "thetaCorrectionShare": 0.0016956154400422847,
+      "marginalMedian": 0.6400053334133204,
+      "marginalP5": 0.6400053334133027,
+      "marginalP95": 0.6400053334133498,
+      "boundHitRate": 0,
+      "keptInitialRate": 0.952,
+      "meanInitial": 17.5
+    },
+    "HEAL_POWER": {
+      "limit": [
+        10,
+        600
+      ],
+      "adjustedCardRate": 0.235,
+      "firstSelectedRate": 0,
+      "totalAdjustments": 247,
+      "adjustmentShare": 0.04470588235294118,
+      "medianAbsStatDelta": 27.385096292630905,
+      "p95AbsStatDelta": 37.71277643359571,
+      "medianRelativeDelta": 0.27385096292630906,
+      "p95RelativeDelta": 0.37712776433595696,
+      "thetaCorrectionShare": 0.017990715713595506,
+      "marginalMedian": 1.2259173820006364,
+      "marginalP5": 1.067895001535108,
+      "marginalP95": 1.4508900042837067,
+      "boundHitRate": 0,
+      "keptInitialRate": 0.765,
+      "meanInitial": 100
+    },
+    "ENERGY_REGEN": {
+      "limit": [
+        0.1,
+        30
+      ],
+      "adjustedCardRate": 0,
+      "firstSelectedRate": 0,
+      "totalAdjustments": 0,
+      "adjustmentShare": 0,
+      "medianAbsStatDelta": 0,
+      "p95AbsStatDelta": 0,
+      "medianRelativeDelta": 0,
+      "p95RelativeDelta": 0,
+      "thetaCorrectionShare": 0,
+      "marginalMedian": 0,
+      "marginalP5": 0,
+      "marginalP95": 0,
+      "boundHitRate": 0,
+      "keptInitialRate": 1,
+      "meanInitial": 2.603101289999999
+    }
+  },
+  "notes": "thetaCorrectionShare is the knob share of the total |predicted theta| change actually performed by the solver across the population"
+}

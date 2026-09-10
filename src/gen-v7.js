@@ -73,7 +73,7 @@
     const seed=String(opts.seed??''),rarity=N.toV2RarityId(opts.rarity),level=N.normalizeLevel(opts.level),targetTheta=N.targetThetaV7(level,rarity);
     const genome=N.styleGenomeV7(seed),skeleton=mechanicSkeletonV7(seed),base=buildUnsolvedCard(seed,rarity,level,skeleton,genome),result=N.solveCardV7(base,genome,targetTheta),card=result.card;
     if(!result.converged)throw new Error(`v7 solver failed for ${seed}: ${result.predictedTheta} vs ${targetTheta}`);
-    card.targetTheta=round(targetTheta);card.strengthModel={version:7,predictedTheta:round(result.predictedTheta),error:round(result.error)};card.solver={version:7,iterations:result.iterations,converged:result.converged,tolerance:result.tolerance,knobUpdates:result.knobUpdates};
+    card.targetTheta=round(targetTheta);card.strengthModel={version:7,predictedTheta:round(result.predictedTheta),error:round(result.error)};card.solver={version:7,iterations:result.iterations,converged:result.converged,tolerance:result.tolerance,knobUpdates:result.knobUpdates,telemetry:result.telemetry};
     card.mechanicFingerprint=N.mechanicFingerprint(card);card.presentation={mechanicFingerprint:card.mechanicFingerprint};
     const name=N.generateSpeciesName?N.generateSpeciesName(card):seed;card.name=name;card.displayName=name;
     const validation=N.validateContentPack(N.assembleCardPack(card));if(!validation.ok)throw new Error(validation.errors.join('\n'));

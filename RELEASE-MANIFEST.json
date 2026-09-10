@@ -235,8 +235,13 @@
     },
     {
       "path": "docs/V7-DELIVERY-REPORT.md",
-      "size": 15807,
-      "sha256": "7608a45e5b03afa50745f6a7da15ba1a969572ea1ee1cfdc29d2f268aa1d2721"
+      "size": 21203,
+      "sha256": "0c48bfc8ee99755c183f706d957224d873cf4eb0fde4f5ed847c8cbffc798765"
+    },
+    {
+      "path": "docs/V7-MECHANISM-ATTRIBUTION.md",
+      "size": 7151,
+      "sha256": "1bf2e3d00c5d0971dce9d22a6c4278612d0e5672336a1ea49d253508d578954c"
     },
     {
       "path": "docs/numeric-component-catalog.json",
@@ -300,8 +305,8 @@
     },
     {
       "path": "package.json",
-      "size": 3621,
-      "sha256": "ddab4d80377443beb3b202ae8fe30a91282e62475e9f36c0e94195cec930c81f"
+      "size": 3940,
+      "sha256": "dc8732095b1b1f690b5718edefa99554fd190466106d45c657627e83d36674f7"
     },
     {
       "path": "qa/adjacent-rarity-matrix.json",
@@ -844,6 +849,31 @@
       "sha256": "263ab25c4e22940f1d2e1f4c53b1739126dfc1b7ee837b46c137f06b500fcfda"
     },
     {
+      "path": "qa/v7-attribution-C0.json",
+      "size": 134808,
+      "sha256": "1e3798197a2d3316df431f461c7e79359b32350e967b26a787c567eda74596a6"
+    },
+    {
+      "path": "qa/v7-attribution-C1.json",
+      "size": 134818,
+      "sha256": "a586832fa0d5ae75c8117b0e527911183cbe9185f3a43005a2bc5aab4666a698"
+    },
+    {
+      "path": "qa/v7-attribution-C2.json",
+      "size": 134819,
+      "sha256": "f96c0e03e1ebb6774584968a508694e5ea05263efb107163fe8a63ff0eb2e3a7"
+    },
+    {
+      "path": "qa/v7-attribution-C3.json",
+      "size": 134792,
+      "sha256": "2b41b110124cc11d6fb4572717d630318d411e18c454d4f5375230bbb092d875"
+    },
+    {
+      "path": "qa/v7-attribution-C4.json",
+      "size": 134801,
+      "sha256": "25bdb094352cfe79374b3be9783e2d320eb29cdefc2638dd8bacde2850a00a51"
+    },
+    {
       "path": "qa/v7-axis-sensitivity.json",
       "size": 737,
       "sha256": "d985b1d4965fa63952eefffbc6c9adc9423a759337ebd0bce55ada767de91780"
@@ -874,6 +904,11 @@
       "sha256": "7135d739603b89c2f17da8f7ec5d82438943bab919c0d9678b8bfb22441da4ab"
     },
     {
+      "path": "qa/v7-mechanism-ranking-96.json",
+      "size": 3845,
+      "sha256": "487451c9ce848d9e7e5cc8f18a0cd2a25e7403fd25505ea292c53933671a4996"
+    },
+    {
       "path": "qa/v7-mechanism-ranking.json",
       "size": 32269,
       "sha256": "e11aedc3cf1972ad213728a9141ef208c122a78070b6dbfc81e9d31351cdaba2"
@@ -899,6 +934,11 @@
       "sha256": "54b484922ff31c7275b9c243c7cf411e5e5a04a521bb0d912c92044a22d0c5ea"
     },
     {
+      "path": "qa/v7-scheduling-magnitude-attribution.json",
+      "size": 14984,
+      "sha256": "5fd35f293ebeff55081fb440509fcfa4c9fc7c97defa409c490dcb7df10ccea0"
+    },
+    {
       "path": "qa/v7-seed-dispersion.json",
       "size": 17809,
       "sha256": "fab0b902fdfaa018aa8c2aea27ee45870b72c3badcf135a1e497423b1cf76dc9"
@@ -907,6 +947,11 @@
       "path": "qa/v7-solver-saturation.json",
       "size": 2968,
       "sha256": "3448d259453b839b49587804fedce200a80d7a8f0dd4c578fb0dab0e826e08cf"
+    },
+    {
+      "path": "qa/v7-solver-utilization.json",
+      "size": 6649,
+      "sha256": "f0ef1cbf1383779413bc8d092acfe29374b8f0790db17865473800cc0f288d90"
     },
     {
       "path": "qa/v7-stat-sensitivity.json",
@@ -1034,6 +1079,11 @@
       "sha256": "5a24505e42ffdf1ebcca748276cbedfb209f3fb989bb4a51182e4c2c2e4904c2"
     },
     {
+      "path": "scripts/audit-v7-solver-utilization.js",
+      "size": 5029,
+      "sha256": "c8f1805cfdb057919fef2088d11dbcb294519927edb8c3884633803007ef353d"
+    },
+    {
       "path": "scripts/benchmark-gen-v7.js",
       "size": 2284,
       "sha256": "defdce83da23694e3b106ad93983fd69ca3f2b0285a62681b5a07faa06cd1a62"
@@ -1072,6 +1122,16 @@
       "path": "scripts/empirical-strength-audit.js",
       "size": 3491,
       "sha256": "3516a02e09cdeab2daaaf1290ac07d1e10f5ebb83eda412038660dff7178ec2b"
+    },
+    {
+      "path": "scripts/evaluate-v7-mechanism-ranking-96.js",
+      "size": 6370,
+      "sha256": "97e0ceb1d67e929d09ee1e675844e4790800b59e8e4337436f083b84c1c7da7a"
+    },
+    {
+      "path": "scripts/experiment-v7-attribution.js",
+      "size": 17844,
+      "sha256": "48ec468a9fd9aff1e717b9e250819f9f79705f7b2eadf3c7e6a52694bb940811"
     },
     {
       "path": "scripts/explore-v7-mechanism-features-v2.js",
@@ -1170,8 +1230,8 @@
     },
     {
       "path": "scripts/static-check.js",
-      "size": 9424,
-      "sha256": "b3871c40ed86120157f1771e4a9a4dc267d9555b7894cb46c620c97e46f55e31"
+      "size": 9803,
+      "sha256": "4706d73efee46082fc6508ab55b98109603ae73008771838602b38ab7ba53822"
     },
     {
       "path": "scripts/stress-check.js",
@@ -1325,8 +1385,8 @@
     },
     {
       "path": "src/gen-v7.js",
-      "size": 9357,
-      "sha256": "e8e1a0197042924ae6658a2de37b8f0922be9387ab3d94731b5bf045a742b5d0"
+      "size": 9384,
+      "sha256": "90798da935b11ec10e85a972018e621a9279fd83e3721c5afae4c1bee9fa7977"
     },
     {
       "path": "src/generator.js",
@@ -1385,8 +1445,8 @@
     },
     {
       "path": "src/solver-v7.js",
-      "size": 3269,
-      "sha256": "a60e823f8fc4ed23915ec427f876cffe8d7f005ff627b3152c3fceb3b15045ca"
+      "size": 4331,
+      "sha256": "9e47df1f5b2cf542b28ccfe5a2a032c26b1dd2bba51b8d4652ade3235d64a0ba"
     },
     {
       "path": "src/status-runtime.js",
