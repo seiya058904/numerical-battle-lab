@@ -81,6 +81,10 @@
     if((card?.generatorVersion===5||card?.generatorVersion===6)&&typeof NCB.battlePowerV3==='function'){
       const r=NCB.battlePowerV3(card);if(r&&Number.isFinite(r.power))return r.power;
     }
+    // v7 cards use the reality-calibrated content-only BattlePower v4 estimator.
+    if(card?.generatorVersion===7&&typeof NCB.battlePowerV4==='function'){
+      const r=NCB.battlePowerV4(card);if(r&&Number.isFinite(r.power))return r.power;
+    }
     if(card?.generatorVersion===4&&typeof NCB.battlePowerV2==='function'){
       const r=NCB.battlePowerV2(card);if(r&&Number.isFinite(r.power))return r.power;
     }
@@ -92,6 +96,10 @@
         // v3 is a pure function of the card's real numbers; compute it directly so
         // edits to stats/actions always refresh the displayed power (no stale cache).
         const r=NCB.battlePowerV3?.(card);return r&&Number.isFinite(r.power)?Math.round(r.power):null;
+      }
+      if(card?.generatorVersion===7&&typeof NCB.battlePowerV4==='function'){
+        // v4 is likewise a pure function of the card's real content.
+        const r=NCB.battlePowerV4(card);return r&&Number.isFinite(r.power)?Math.round(r.power):null;
       }
       const cached=powerCache.get(card);
       if(cached&&cached.signature===cardPresentationSignature(card))return cached.power;
@@ -257,7 +265,7 @@
   NCB.cachePresetPower=c=>{
     let canonical=null;
     try{
-      const r=(c?.generatorVersion===5||c?.generatorVersion===6)?NCB.battlePowerV3?.(c):(c?.generatorVersion===4?NCB.battlePowerV2?.(c):null);
+      const r=(c?.generatorVersion===5||c?.generatorVersion===6)?NCB.battlePowerV3?.(c):(c?.generatorVersion===7?NCB.battlePowerV4?.(c):(c?.generatorVersion===4?NCB.battlePowerV2?.(c):null));
       if(r&&Number.isFinite(r.power))canonical=Math.round(r.power);
     }catch(_){}
     if(canonical===null&&c?.presentation?.power!=null)canonical=Number(c.presentation.power)||null;
