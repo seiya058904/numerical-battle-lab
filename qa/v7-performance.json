@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "generatorVersion": 7,
+  "methodology": {
+    "cards": 1000,
+    "rarities": 12,
+    "levels": 6,
+    "runtime": "solver+model only; no battles, AI, opponent, Monte Carlo or BattlePower",
+    "os": "win32",
+    "node": "v24.15.0"
+  },
+  "totalMs": 15281.13,
+  "meanMs": 15.281,
+  "medianMs": 11.498,
+  "p95Ms": 42.556,
+  "p99Ms": 45.305,
+  "minMs": 0.49,
+  "maxMs": 50.053,
+  "gates": {
+    "medianUnder10ms": false,
+    "p95Under25ms": false
+  }
+}
