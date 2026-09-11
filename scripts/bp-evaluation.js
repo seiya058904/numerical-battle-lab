@@ -1,6 +1,6 @@
 'use strict';
 const crypto = require('node:crypto');
-const { CARDS } = require('../src/cards.js');
+const { LEGACY_CARDS: CARDS } = require('../src/cards.js');
 const { buildUnit } = require('../src/power.js');
 const { simulate } = require('../src/battle.js');
 const { spearman, pairedInterval512 } = require('./audit-statistics.js');

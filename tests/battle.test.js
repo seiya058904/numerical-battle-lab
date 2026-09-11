@@ -32,7 +32,7 @@ test('确定性：不同 Match Seed 通常产生不同对局（高波动匹配�
   assert.ok(results.size >= 6, `12 个种子应产生至少 6 种不同事件序列，实际 ${results.size}`);
 });
 
-test('战斗终止：全部 24×24 匹配 × 3 种子 均在回合上限内结束', () => {
+test('战斗终止：全部 96×96 匹配 × 3 种子 均在回合上限内结束', () => {
   for (const ca of CARDS) {
     for (const cb of CARDS) {
       for (let i = 0; i < 3; i++) {

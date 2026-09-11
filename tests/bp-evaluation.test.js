@@ -2,7 +2,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { manifest, manifestHash, evaluatePool, evaluateLocal } = require('../scripts/bp-evaluation.js');
-const { CARDS } = require('../src/cards.js');
+const { LEGACY_CARDS: CARDS } = require('../src/cards.js');
 const power = require('../src/power.js');
 test('calibration and holdout have disjoint unordered pairs and seed sets', () => {
   assert.equal(manifestHash, '81a8582a7ac856670a587e6c148f14ccc5fa2aa63a54fcbacd7aa3e9225bf77e', 'Changing frozen evaluation data requires an explicit new audit version');

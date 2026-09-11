@@ -87,7 +87,7 @@
         groups[r].forEach(({ c, i }) => {
           const o = document.createElement('option');
           o.value = i;
-          o.textContent = `${c.name} [${r}] ${c.role}`;
+          o.textContent = `${c.name} [${r}] ${c.role}${c.source ? ` · ${c.source}` : ''}`;
           og.appendChild(o);
         });
         sel.appendChild(og);
@@ -111,7 +111,7 @@
       el('rar' + side).textContent = unit.rarityName;
       el('rar' + side).className = 'rar-badge t' + card.rarity;
       el('role' + side).textContent = card.role;
-      el('desc' + side).textContent = card.desc;
+      el('desc' + side).textContent = card.source ? `${card.source} · ${card.desc}` : card.desc;
       el('lvl' + side + 'Val').textContent = 'Lv.' + unit.level;
       el('bp' + side).textContent = fmt(battlePower(unit));
 

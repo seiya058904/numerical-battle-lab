@@ -1,9 +1,9 @@
 /* =========================================================
-   scripts/static-check.js — 新产品静态架构门禁
+   scripts/static-check.js — 产品静态架构门禁
    1. 运行时文件集合与期望清单完全一致（无死代码/旧系统残留）
    2. index.html 只加载 4 个 src 模块
    3. 战斗引擎不含 Math.random（确定性）
-   4. 卡库 24 张 / 12 档
+   4. 卡库 96 张 / 12 档 / 每档 8 张
    ========================================================= */
 'use strict';
 const fs = require('node:fs');
@@ -21,7 +21,6 @@ function check(name, ok, detail) {
   }
 }
 
-// ---- 1. 运行时文件集合 ----
 const EXPECTED_FILES = [
   '.github/workflows/verify.yml',
   '.gitignore',
@@ -69,23 +68,24 @@ if (tracked) {
   check('git 可用', false, '无法执行 git ls-files');
 }
 
-// ---- 2. index.html 只加载 4 个 src 模块 ----
 const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const scripts = [...html.matchAll(/<script src="([^"]+)"/g)].map(m => m[1]);
 check('index.html 只加载 4 个 src 模块', JSON.stringify(scripts) === JSON.stringify([
   'src/cards.js', 'src/power.js', 'src/battle.js', 'src/app.js'
 ]), `实际: ${scripts.join(', ')}`);
 
-// ---- 3. 战斗引擎确定性 ----
 const battleSrc = fs.readFileSync(path.join(ROOT, 'src/battle.js'), 'utf8');
 check('src/battle.js 不含 Math.random（确定性 PRNG）', !/Math\.random/.test(battleSrc));
 
-// ---- 4. 卡库结构 ----
-const { CARDS, RARITY_LIST } = require(path.join(ROOT, 'src/cards.js'));
-check('卡库 = 24 张', CARDS.length === 24, `实际 ${CARDS.length}`);
+const { CARDS, LEGACY_CARDS, RARITY_LIST } = require(path.join(ROOT, 'src/cards.js'));
+check('卡库 = 96 张', CARDS.length === 96, `实际 ${CARDS.length}`);
+check('legacy BP 参考集 = 24 张', LEGACY_CARDS.length === 24, `实际 ${LEGACY_CARDS.length}`);
 check('稀有度 = 12 档', RARITY_LIST.length === 12, `实际 ${RARITY_LIST.length}`);
+for (let t = 0; t < RARITY_LIST.length; t++) {
+  check(`${RARITY_LIST[t]} = 8 张`, CARDS.filter(c => c.rarity === t).length === 8,
+    `实际 ${CARDS.filter(c => c.rarity === t).length}`);
+}
 
-// ---- 5. 不允许残留的旧系统路径 ----
 const BANNED = [
   'vendor', 'third_party', 'content', 'calibration', 'docs', 'qa',
   'src/engine.js', 'src/formula.js', 'src/ai.js', 'src/kernel.js',
@@ -102,7 +102,6 @@ const BANNED = [
 const bannedFound = BANNED.filter(p => fs.existsSync(path.join(ROOT, p)));
 check('旧系统路径全部删除', bannedFound.length === 0, `残留: ${bannedFound.join(', ') || '无'}`);
 
-// ---- 6. 根目录无旧 QA 日志 ----
 const rootLogs = fs.readdirSync(ROOT).filter(f => f.endsWith('.log'));
 check('根目录无 .log QA 产物', rootLogs.length === 0, `残留: ${rootLogs.join(', ')}`);
 
