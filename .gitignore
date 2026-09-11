@@ -19,3 +19,6 @@ npm-debug.log*
 
 # WorkBuddy workspace data (memory/logs - never commit; breaks static-check file-set gate)
 .workbuddy/
+
+# Codebase memory index (local generated data)
+.codebase-memory/
