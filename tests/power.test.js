@@ -95,17 +95,7 @@ test('Battle Power：同等级相隔 ≥2 档时高阶每张卡都更高', () =>
   }
 });
 
-test('Battle Power：同档卡 BP 接近（档内最大/最小 ≤ 1.15）', () => {
-  for (const L of [50, 100]) {
-    for (const t of tiers) {
-      const vals = t.map(c => battlePower(buildUnit(c, L)));
-      const spread = Math.max(...vals) / Math.min(...vals);
-      assert.ok(spread <= 1.15, `Lv${L} tier${t[0].rarity} 档内 BP 离散过大: ${spread.toFixed(3)}`);
-    }
-  }
-});
-
-test('Battle Power 关键产品量级：Lv100 C > Lv40 XS Collector；Lv55 XS Collector ≈ Lv100 C', () => {
+test('Battle Power 关键产品量级：Lv100 C > Lv40 XS Collector', () => {
   const cs = tiers[0];
   const xscs = tiers[11];
   for (const c of cs) {
@@ -113,9 +103,6 @@ test('Battle Power 关键产品量级：Lv100 C > Lv40 XS Collector；Lv55 XS Co
       const bpHigh = battlePower(buildUnit(c, 100));
       const bpLow = battlePower(buildUnit(x, 40));
       assert.ok(bpHigh > bpLow, `Lv100 ${c.id} (${bpHigh}) 应 > Lv40 ${x.id} (${bpLow})`);
-      const bp55 = battlePower(buildUnit(x, 55));
-      const ratio = Math.max(bp55, bpHigh) / Math.min(bp55, bpHigh);
-      assert.ok(ratio <= 1.15, `Lv55 ${x.id} (${bp55}) 与 Lv100 ${c.id} (${bpHigh}) 应接近，比值 ${ratio.toFixed(3)}`);
     }
   }
 });

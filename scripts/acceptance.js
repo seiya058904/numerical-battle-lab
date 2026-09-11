@@ -4,7 +4,6 @@
    ========================================================= */
 'use strict';
 const { CARDS, RARITY_LIST } = require('../src/cards.js');
-const { buildUnit, battlePower } = require('../src/power.js');
 const { simulate } = require('../src/battle.js');
 
 const idx = {};
@@ -50,7 +49,7 @@ console.log('【核心匹配（关键验收）】');
     const r = winStats(x, 55, c, 100, 200);
     aWins += r.a; bWins += r.b; total += r.seeds;
   }
-  const xRate = aWins / (aWins + bWins) * 100;
+  const xRate = aWins / total * 100;
   report('Lv55 XS Collector vs Lv100 C → 悬念（XS-C 约 45%–65%）',
     bWins > 0 && xRate >= 45 && xRate <= 65,
     `XS-C ${pct(aWins, total)} / C ${pct(bWins, total)}（综合 ${xRate.toFixed(1)}%）`);
@@ -87,7 +86,7 @@ console.log('\n【同等级相邻档（Lv50 × 120 场，高档在前）】');
       const r = winStats(h, 50, l, 50, 60);
       a += r.a; b += r.b; tot += r.seeds;
     }
-    const hiPct = a / (a + b) * 100;
+    const hiPct = a / tot * 100;
     rates.push(hiPct);
     const ok = lo < 5 ? hiPct >= 55 : hiPct >= 90;
     report(`[${RARITY_LIST[hi]} vs ${RARITY_LIST[lo]}] 高档总体更强`, ok,
@@ -99,52 +98,6 @@ console.log('\n【同等级相邻档（Lv50 × 120 场，高档在前）】');
   report('S 以上相邻档优势随档位逐步更明显（单调不减）', increasing, sPlus.map(r => r.toFixed(1) + '%').join(' → '));
 }
 
-// ---- 近战力随机性 ----
-console.log('\n【近 Battle Power 卡对 × 大量 Match Seed（双方都能赢）】');
-const bps = CARDS.map(c => ({ card: c, bp: battlePower(buildUnit(c, 50)) }));
-const near = [];
-for (let i = 0; i < bps.length; i++) for (let j = i + 1; j < bps.length; j++) {
-  const a = bps[i], b = bps[j];
-  const gap = Math.abs(a.bp - b.bp) / Math.min(a.bp, b.bp);
-  if (gap <= 0.06) near.push([a.card, b.card, gap]);
-}
-near.sort((x, y) => x[2] - y[2]);
-const shown = near.slice(0, 8);
-if (shown.length === 0) {
-  report('存在近 BP 卡对', false, '未找到');
-} else {
-  for (const [a, b, gap] of shown) {
-    const r = winStats(a, 50, b, 50, 300);
-    const ok = r.a / r.seeds >= 0.05 && r.b / r.seeds >= 0.05;
-    report(`${a.id} vs ${b.id}（BP 差 ${(gap * 100).toFixed(1)}%）`, ok,
-      `${pct(r.a, r.seeds)} / ${pct(r.b, r.seeds)}`);
-  }
-}
-
-// ---- BP 排序抽查 ----
-console.log('\n【Battle Power 排序抽查（随机 120 组，BP 差 > 25% 应长期占优）】');
-let ordered = 0, audited = 0;
-for (let i = 0; i < 120; i++) {
-  const a = CARDS[i % 24];
-  const b = CARDS[(i * 13 + 7) % 24];
-  if (a.id === b.id) continue;
-  const la = 10 + ((i * 37) % 91);
-  const lb = 10 + ((i * 53 + 5) % 91);
-  const bpA = battlePower(buildUnit(a, la));
-  const bpB = battlePower(buildUnit(b, lb));
-  const hi = bpA > bpB ? a : b;
-  const lo = bpA > bpB ? b : a;
-  const lvHi = bpA > bpB ? la : lb;
-  const lvLo = bpA > bpB ? lb : la;
-  const gap = Math.max(bpA, bpB) / Math.min(bpA, bpB);
-  if (gap < 1.25) continue;
-  audited++;
-  const r = winStats(hi, lvHi, lo, lvLo, 20);
-  if (r.a >= 14) ordered++;
-}
-report('BP 高者长期平均更强（≥70% 胜率）',
-  audited > 40 && ordered >= audited * 0.85,
-  `${ordered}/${audited} 组 BP 高者 ≥70% 胜率`);
-
+// BP evaluation is owned by battlepower-audit.js, using the frozen pools.
 console.log(`\n========== 验收 ${failed ? '失败' : '通过'} ==========`);
 process.exit(failed ? 1 : 0);

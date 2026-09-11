@@ -9,7 +9,7 @@
   const C = (typeof module !== 'undefined' && module.exports) ? require('./cards.js') : global.NCB;
   const { RARITY_LIST, CARDS } = C;
 
-  // 基准属性（C、Lv100、p=1 时的参考值）
+  // 基准属性（p=1 时的参考值；C Lv100 的 p≈81.1257）
   const BASE = { hp: 1200, atk: 200, def: 150, spd: 20 };
 
   // ---- Level 曲线：超指数增长 ----
@@ -60,24 +60,31 @@
     };
   }
 
-  // ---- Battle Power：透明线性综合公式 ----
-  // 只用于展示“综合实力”，不参与战斗、不修改伤害、不强制胜者。
-  // 长期平均：BP 越高越强；实力接近时允许互有胜负。
+  // ---- Battle Power：固定参考属性下的预期输出 × 有限生存能力 ----
+  // Seven logarithmically spaced reference ATKs cover the supported scale range.
+  // References are constants, not opponents selected by card identity or BP.
+  // Reference DEF=8*ATK, HP=6*ATK, SPD=ATK/10, ACC=110, EVA=104,
+  // PEN=.05 and expected crit multiplier=1.06. Coefficients fit calibration only.
+  // Healing contributes at most 5x survival; initiative multiplier is .75..1.25.
+  // Regeneration uses 50% availability: it runs before the action and cannot heal full HP.
+  // Geometric averaging prevents the largest reference from dominating the score.
+  // Volatility has zero mean and is neutral here; tail risk is not represented.
+  const BP_REFERENCES = [2, 20, 200, 2000, 20000, 200000, 2000000];
   function battlePower(u) {
-    return Math.round(
-      u.maxHp * 0.30 +
-      u.atk * 3.40 +
-      u.def * 1.00 +
-      u.spd * 14 +
-      u.acc * 1.60 +
-      u.eva * 1.60 +
-      u.crit * 900 +
-      u.critDmg * 80 +
-      u.pen * 700 +
-      u.lifesteal * 650 +
-      u.hpRegen * 550 +
-      u.volatility * 120
-    );
+    const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+    const hit = clamp(.90 + (u.acc - 104) * .004, .45, .99);
+    const incomingHit = clamp(.90 + (110 - u.eva) * .004, .45, .99);
+    const critMean = 1 + u.crit * (u.critDmg - 1);
+    let logPower = 0;
+    for (const ref of BP_REFERENCES) {
+      const output = u.atk * u.atk / (u.atk + ref * 8 * Math.max(.05, 1 - u.pen)) * hit * critMean;
+      const incoming = ref * ref / (ref + u.def * .95) * incomingHit * 1.06;
+      const healing = Math.min(output, ref * 6) * u.lifesteal + 0.5 * u.maxHp * u.hpRegen;
+      const survival = u.maxHp / incoming * (1 + 4 * healing / (incoming + healing));
+      const initiative = 1 + .5 * (u.spd / (u.spd + ref / 10) - .5);
+      logPower += Math.log(Math.round(Math.sqrt(output * survival * ref) * initiative));
+    }
+    return Math.round(Math.exp(logPower / BP_REFERENCES.length));
   }
 
   function fmt(n) {

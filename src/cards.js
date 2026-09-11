@@ -8,9 +8,9 @@
    2. 百分比属性（命中/闪避/暴击/穿透/吸血/再生/波动）收窄到窄带，
       只表达卡牌“性格”（偏攻击/偏生存/偏速度/偏暴击/偏吸血），
       不制造跨档碾压。
-   稀有度差距完全由 rarityMul（C=1 → XS Collector=6）表达：
-   → 同级 C vs XS Collector = 6 倍碾压；
-   → Lv70 XS Collector vs Lv100 C（同 p）≈ 势均力敌 → 真正悬念；
+   稀有度差距完全由 rarityMul（C=1 → XS Collector=13.20）表达：
+   → 同级 C vs XS Collector = 13.2 倍碾压；
+   → Lv55 XS Collector vs Lv100 C（总体锚点）≈ 势均力敌 → 真正悬念；
    → 同档对抗互有胜负。
    ========================================================= */
 (function (global) {
@@ -38,7 +38,7 @@
   };
 
   // 卡牌字段说明：
-  //   base.hp/atk/def/spd — 相对基准（C Lv100 时 p=1）的形状乘数
+  //   base.hp/atk/def/spd — 相对基准（p=1 时）的形状乘数
   //   acc/eva            — 命中 / 闪避（百分制，等级无关）
   //   crit/critDmg       — 暴击率 / 暴击伤害（等级无关）
   //   pen                — 穿透：无视目标防御的比例

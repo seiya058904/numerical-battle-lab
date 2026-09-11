@@ -39,7 +39,7 @@
     let heal = t.match(/^　(.+?) (?:再生，恢复|吸取) ([\d,]+) HP/);
     if (heal) return { rnd: e.round, kind: 'heal', txt: `${heal[1]} 回复`, amt: `+${heal[2]}` };
     let miss = t.match(/^　(.+?) 闪避了 (.+?) 的攻击/);
-    if (miss) return { rnd: e.round, kind: 'miss', txt: `${miss[1]} 闪避`, amt: '' };
+    if (miss) return { rnd: e.round, kind: 'miss', txt: `${miss[1]} 闪避 ← ${miss[2]}`, amt: '' };
     let death = t.match(/^💀 (.+?) 倒下/);
     if (death) return { rnd: e.round, kind: 'death', txt: `☠ ${death[1]} 倒下`, amt: '' };
     let victory = t.match(/^🏆 (.+?)（Lv\.\d+ .+?）获胜/);

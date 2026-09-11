@@ -42,7 +42,14 @@ const EXPECTED_FILES = [
   'scripts/static-check.js',
   'scripts/acceptance.js',
   'scripts/battlepower-audit.js',
-  'scripts/serve.js'
+  'scripts/serve.js',
+  'scripts/audit-statistics.js',
+  'scripts/bp-evaluation.js',
+  'tests/audit-statistics.test.js',
+  'tests/bp-evaluation.test.js',
+  'tests/bp-contract.test.js',
+  'tests/presentation.test.js',
+  'tests/serve.test.js'
 ].sort();
 
 let tracked;
@@ -54,7 +61,7 @@ try {
 }
 if (tracked) {
   const unexpected = tracked.filter(f => !EXPECTED_FILES.includes(f));
-  const missing = EXPECTED_FILES.filter(f => !tracked.includes(f));
+  const missing = EXPECTED_FILES.filter(f => !tracked.includes(f) || !fs.existsSync(path.join(ROOT, f)));
   check('运行时文件集合 = 期望清单（无旧系统残留/无死文件）',
     unexpected.length === 0 && missing.length === 0,
     `多余: ${unexpected.join(', ') || '无'}；缺失: ${missing.join(', ') || '无'}`);
