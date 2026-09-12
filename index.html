@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>数值卡牌 · 自动 PK</title>
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -25,8 +25,12 @@
     <section class="pcard blue" id="panelA">
       <div class="pcard-top">
         <span class="team">TEAM&nbsp;BLUE</span>
-        <select id="selA" aria-label="蓝方卡牌"></select>
+        <div class="card-picker">
+          <input type="search" id="searchA" aria-label="搜索蓝方卡牌" aria-controls="selA" aria-describedby="searchHintA" placeholder="搜索名称、来源、定位或稀有度" autocomplete="off">
+          <select id="selA" aria-label="蓝方卡牌"></select>
+        </div>
       </div>
+      <p class="search-hint" id="searchHintA" role="status" hidden></p>
       <div class="identity">
         <div class="name-row">
           <span class="cname" id="nameA">—</span>
@@ -38,18 +42,20 @@
       <div class="lvl-block">
         <div class="lvl-head">
           <label for="lvlA">LEVEL</label>
-          <span class="lvl-val" id="lvlAVal">Lv.50</span>
+          <span class="lvl-val">Lv.<input id="lvlAVal" type="text" inputmode="numeric" value="50" aria-label="蓝方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
         </div>
         <input type="range" id="lvlA" min="1" max="100" value="50">
       </div>
       <div class="bp-block">
-        <span class="bp-label">BATTLE POWER</span>
+        <div class="bp-head"><span class="bp-label">BATTLE POWER</span><span class="bp-note">相较对方</span></div>
         <div class="bp-main">
           <span class="bp-value" id="bpA">—</span>
           <span class="bp-delta" id="bpDeltaA"></span>
         </div>
       </div>
-      <div class="stats-grid" id="statsA"></div>
+      <div class="core-stats" id="statsA"></div>
+      <button class="stats-toggle" id="statsToggleA" aria-expanded="false" aria-controls="secondaryStatsA">更多属性 <span aria-hidden="true">＋</span></button>
+      <div class="stats-grid" id="secondaryStatsA" hidden></div>
     </section>
 
     <div class="vs-col" aria-hidden="true">
@@ -61,8 +67,12 @@
     <section class="pcard red" id="panelB">
       <div class="pcard-top">
         <span class="team">TEAM&nbsp;RED</span>
-        <select id="selB" aria-label="红方卡牌"></select>
+        <div class="card-picker">
+          <input type="search" id="searchB" aria-label="搜索红方卡牌" aria-controls="selB" aria-describedby="searchHintB" placeholder="搜索名称、来源、定位或稀有度" autocomplete="off">
+          <select id="selB" aria-label="红方卡牌"></select>
+        </div>
       </div>
+      <p class="search-hint" id="searchHintB" role="status" hidden></p>
       <div class="identity">
         <div class="name-row">
           <span class="cname" id="nameB">—</span>
@@ -74,18 +84,20 @@
       <div class="lvl-block">
         <div class="lvl-head">
           <label for="lvlB">LEVEL</label>
-          <span class="lvl-val" id="lvlBVal">Lv.50</span>
+          <span class="lvl-val">Lv.<input id="lvlBVal" type="text" inputmode="numeric" value="50" aria-label="红方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
         </div>
         <input type="range" id="lvlB" min="1" max="100" value="50">
       </div>
       <div class="bp-block">
-        <span class="bp-label">BATTLE POWER</span>
+        <div class="bp-head"><span class="bp-label">BATTLE POWER</span><span class="bp-note">相较对方</span></div>
         <div class="bp-main">
           <span class="bp-value" id="bpB">—</span>
           <span class="bp-delta" id="bpDeltaB"></span>
         </div>
       </div>
-      <div class="stats-grid" id="statsB"></div>
+      <div class="core-stats" id="statsB"></div>
+      <button class="stats-toggle" id="statsToggleB" aria-expanded="false" aria-controls="secondaryStatsB">更多属性 <span aria-hidden="true">＋</span></button>
+      <div class="stats-grid" id="secondaryStatsB" hidden></div>
     </section>
   </div>
 
@@ -98,13 +110,13 @@
       </div>
       <div class="hud-hp" id="hpTA">— / —</div>
       <div class="hpbar-wrap"><div class="hpbar" id="hpbarA" style="width:100%"></div></div>
-      <div class="hud-pct" id="pctA">100%</div>
+      <div class="hud-foot"><span class="hud-pct" id="pctA">100%</span><span class="hp-state" id="hpStateA"></span></div>
     </div>
 
     <div class="round-center">
       <div class="round-label">ROUND</div>
       <div class="round-value" id="roundTxt">--</div>
-      <div class="hud-state" id="hudState">READY</div>
+      <div class="hud-state" id="hudState" role="status">READY</div>
     </div>
 
     <div class="hud-side red">
@@ -114,7 +126,24 @@
       </div>
       <div class="hud-hp" id="hpTB">— / —</div>
       <div class="hpbar-wrap"><div class="hpbar" id="hpbarB" style="width:100%"></div></div>
-      <div class="hud-pct" id="pctB">100%</div>
+      <div class="hud-foot"><span class="hud-pct" id="pctB">100%</span><span class="hp-state" id="hpStateB"></span></div>
+    </div>
+  </section>
+
+  <!-- ===================== BATTLE RESULT ===================== -->
+  <section class="result-panel" id="resultBox" style="display:none" aria-label="战斗结果" aria-live="polite">
+    <div class="result-left">
+      <div class="result-title" id="resultTitle">VICTORY</div>
+      <div class="result-name" id="resultName">—</div>
+      <div class="result-meta" id="resultMeta"></div>
+    </div>
+    <div class="result-right">
+      <div class="result-hp-block">
+        <div class="result-hp-label">REMAINING HP · 剩余生命</div>
+        <div class="result-hp" id="resultHp">— / —</div>
+        <div class="result-pct" id="resultPct">—</div>
+      </div>
+      <button id="resultAgainBtn" class="btn primary" aria-label="再次战斗">↻ 再战</button>
     </div>
   </section>
 
@@ -122,15 +151,15 @@
   <section class="control-bar">
     <div class="ctrl-inner">
       <div class="ctrl-btns">
-        <button id="startBtn" class="btn primary">▶ 开始战斗</button>
-        <button id="againBtn" class="btn secondary">↻ 再战</button>
+        <button id="startBtn" class="btn primary" aria-label="开始战斗"><span class="desktop-label">▶ 开始战斗</span><span class="mobile-label" aria-hidden="true">▶ 开始</span></button>
+        <button id="againBtn" class="btn secondary" aria-label="再次战斗">↻ 再战</button>
       </div>
       <div class="ctrl-div" aria-hidden="true"></div>
       <div class="speed-seg" role="group" aria-label="播放速度">
         <span class="speed-label">SPEED</span>
-        <button class="spdbtn on" data-speed="slow">慢</button>
-        <button class="spdbtn" data-speed="fast">快</button>
-        <button class="spdbtn" data-speed="instant">瞬</button>
+        <button class="spdbtn on" data-speed="slow" aria-label="慢速播放" aria-pressed="true">慢</button>
+        <button class="spdbtn" data-speed="fast" aria-label="快速播放" aria-pressed="false">快</button>
+        <button class="spdbtn" data-speed="instant" aria-label="瞬间播放" aria-pressed="false">瞬</button>
       </div>
     </div>
   </section>
@@ -141,24 +170,7 @@
       <span>BATTLE&nbsp;LOG</span>
       <span class="log-count" id="logCount">0 EVENTS</span>
     </div>
-    <div class="logbox" id="logbox"><div class="log-empty">STANDBY · 等待战斗开始</div></div>
-  </section>
-
-  <!-- ===================== BATTLE RESULT ===================== -->
-  <section class="result-panel" id="resultBox" style="display:none">
-    <div class="result-left">
-      <div class="result-title" id="resultTitle">🏆 VICTORY</div>
-      <div class="result-name" id="resultName">—</div>
-      <div class="result-meta" id="resultMeta"></div>
-    </div>
-    <div class="result-right">
-      <div class="result-hp-block">
-        <div class="result-hp-label">REMAINING HP</div>
-        <div class="result-hp" id="resultHp">— / —</div>
-        <div class="result-pct" id="resultPct">—</div>
-      </div>
-      <button id="resultAgainBtn" class="btn primary">↻ 再战</button>
-    </div>
+    <div class="logbox" id="logbox" tabindex="0" role="region" aria-label="战斗日志"><div class="log-empty">STANDBY · 等待战斗开始</div></div>
   </section>
 
 </div>
