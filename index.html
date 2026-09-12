@@ -23,15 +23,8 @@
   <!-- ===================== PLAYER CARDS + BATTLE AXIS ===================== -->
   <div class="setup" id="setup">
     <section class="pcard blue" id="panelA">
-      <div class="pcard-top">
-        <span class="team">TEAM&nbsp;BLUE</span>
-        <div class="card-picker">
-          <input type="search" id="searchA" aria-label="搜索蓝方卡牌" aria-controls="selA" aria-describedby="searchHintA" placeholder="搜索名称、来源、定位或稀有度" autocomplete="off">
-          <select id="selA" aria-label="蓝方卡牌"></select>
-        </div>
-      </div>
-      <p class="search-hint" id="searchHintA" role="status" hidden></p>
       <div class="identity">
+        <span class="team">TEAM&nbsp;BLUE</span>
         <div class="name-row">
           <span class="cname" id="nameA">—</span>
           <span class="rar-badge" id="rarA"></span>
@@ -39,18 +32,27 @@
         </div>
         <div class="cdesc" id="descA"></div>
       </div>
-      <div class="lvl-block">
-        <div class="lvl-head">
-          <label for="lvlA">LEVEL</label>
-          <span class="lvl-val">Lv.<input id="lvlAVal" type="text" inputmode="numeric" value="50" aria-label="蓝方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
+      <div class="pcard-top">
+        <div class="card-picker">
+          <input type="search" id="searchA" aria-label="搜索蓝方卡牌" aria-controls="selA" aria-describedby="searchHintA" placeholder="搜索名称、来源、定位或稀有度" autocomplete="off">
+          <select id="selA" aria-label="蓝方卡牌"></select>
         </div>
-        <input type="range" id="lvlA" min="1" max="100" value="50">
       </div>
-      <div class="bp-block">
-        <div class="bp-head"><span class="bp-label">BATTLE POWER</span><span class="bp-note">相较对方</span></div>
-        <div class="bp-main">
-          <span class="bp-value" id="bpA">—</span>
-          <span class="bp-delta" id="bpDeltaA"></span>
+      <p class="search-hint" id="searchHintA" role="status" hidden></p>
+      <div class="power-strip">
+        <div class="lvl-block">
+          <div class="lvl-head">
+            <label for="lvlA">LEVEL</label>
+            <span class="lvl-val">Lv.<input id="lvlAVal" type="text" inputmode="numeric" value="50" aria-label="蓝方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
+          </div>
+          <input type="range" id="lvlA" min="1" max="100" value="50">
+        </div>
+        <div class="bp-block">
+          <div class="bp-head"><span class="bp-label">BATTLE POWER</span></div>
+          <div class="bp-main">
+            <span class="bp-value" id="bpA">—</span>
+            <div class="bp-comparison"><span class="bp-note">相较对方</span><span class="bp-delta" id="bpDeltaA"></span></div>
+          </div>
         </div>
       </div>
       <div class="core-stats" id="statsA"></div>
@@ -65,15 +67,8 @@
     </div>
 
     <section class="pcard red" id="panelB">
-      <div class="pcard-top">
-        <span class="team">TEAM&nbsp;RED</span>
-        <div class="card-picker">
-          <input type="search" id="searchB" aria-label="搜索红方卡牌" aria-controls="selB" aria-describedby="searchHintB" placeholder="搜索名称、来源、定位或稀有度" autocomplete="off">
-          <select id="selB" aria-label="红方卡牌"></select>
-        </div>
-      </div>
-      <p class="search-hint" id="searchHintB" role="status" hidden></p>
       <div class="identity">
+        <span class="team">TEAM&nbsp;RED</span>
         <div class="name-row">
           <span class="cname" id="nameB">—</span>
           <span class="rar-badge" id="rarB"></span>
@@ -81,18 +76,27 @@
         </div>
         <div class="cdesc" id="descB"></div>
       </div>
-      <div class="lvl-block">
-        <div class="lvl-head">
-          <label for="lvlB">LEVEL</label>
-          <span class="lvl-val">Lv.<input id="lvlBVal" type="text" inputmode="numeric" value="50" aria-label="红方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
+      <div class="pcard-top">
+        <div class="card-picker">
+          <input type="search" id="searchB" aria-label="搜索红方卡牌" aria-controls="selB" aria-describedby="searchHintB" placeholder="搜索名称、来源、定位或稀有度" autocomplete="off">
+          <select id="selB" aria-label="红方卡牌"></select>
         </div>
-        <input type="range" id="lvlB" min="1" max="100" value="50">
       </div>
-      <div class="bp-block">
-        <div class="bp-head"><span class="bp-label">BATTLE POWER</span><span class="bp-note">相较对方</span></div>
-        <div class="bp-main">
-          <span class="bp-value" id="bpB">—</span>
-          <span class="bp-delta" id="bpDeltaB"></span>
+      <p class="search-hint" id="searchHintB" role="status" hidden></p>
+      <div class="power-strip">
+        <div class="lvl-block">
+          <div class="lvl-head">
+            <label for="lvlB">LEVEL</label>
+            <span class="lvl-val">Lv.<input id="lvlBVal" type="text" inputmode="numeric" value="50" aria-label="红方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
+          </div>
+          <input type="range" id="lvlB" min="1" max="100" value="50">
+        </div>
+        <div class="bp-block">
+          <div class="bp-head"><span class="bp-label">BATTLE POWER</span></div>
+          <div class="bp-main">
+            <span class="bp-value" id="bpB">—</span>
+            <div class="bp-comparison"><span class="bp-note">相较对方</span><span class="bp-delta" id="bpDeltaB"></span></div>
+          </div>
         </div>
       </div>
       <div class="core-stats" id="statsB"></div>
@@ -132,6 +136,7 @@
 
   <!-- ===================== BATTLE RESULT ===================== -->
   <section class="result-panel" id="resultBox" style="display:none" aria-label="战斗结果" aria-live="polite">
+    <div class="result-verdict" id="resultVerdict" aria-hidden="true">VICTORY</div>
     <div class="result-left">
       <div class="result-title" id="resultTitle">VICTORY</div>
       <div class="result-name" id="resultName">—</div>

@@ -216,6 +216,7 @@
       resultBox.className = 'result-panel';
       roundTxt.textContent = '--';
       hudState.textContent = 'READY';
+      battleHud.classList.remove('finished');
       battleHud.classList.remove('live');
     }
 
@@ -312,6 +313,7 @@
       const a = r.a, b = r.b;
       const winner = r.winner;
       resultBox.style.display = 'flex';
+      el('resultVerdict').textContent = winner === -1 ? 'DRAW' : 'VICTORY';
       if (winner === 0) {
         resultBox.className = 'result-panel win0';
         el('resultTitle').textContent = 'TEAM BLUE / 蓝方获胜';
@@ -331,7 +333,7 @@
         el('resultTitle').textContent = 'DRAW / 平局';
         el('resultName').textContent = '双方平局';
         el('resultMeta').textContent = '';
-        el('resultHp').textContent = `${fmt(a.hp)} / ${fmt(a.maxHp)}  ·  ${fmt(b.hp)} / ${fmt(b.maxHp)}`;
+        el('resultHp').innerHTML = `<span>BLUE · ${fmt(a.hp)} / ${fmt(a.maxHp)}</span><span>RED · ${fmt(b.hp)} / ${fmt(b.maxHp)}</span>`;
         el('resultPct').textContent = `${(a.hp / a.maxHp * 100).toFixed(1)}%  ·  ${(b.hp / b.maxHp * 100).toFixed(1)}%`;
       }
     }
@@ -379,6 +381,7 @@
       updateBar('A', result.a.maxHp, result.a.maxHp);
       updateBar('B', result.b.maxHp, result.b.maxHp);
       hudState.textContent = 'IN BATTLE';
+      battleHud.classList.remove('finished');
       battleHud.classList.add('live');
 
       const delayMs = () => new Promise((r) => setTimeout(r, state.delay));
@@ -386,6 +389,7 @@
 
       showResult(result);
       hudState.textContent = 'FINISHED';
+      battleHud.classList.add('finished');
       battleHud.classList.remove('live');
       setControlsLocked(false);
       state.playing = false;
