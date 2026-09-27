@@ -11,9 +11,9 @@
   const M = (typeof module !== 'undefined' && module.exports)
     ? Object.assign({}, require('./cards.js'), require('./power.js'), require('./battle.js'))
     : global.NCB;
-  const { CARDS, RARITY_LIST, buildUnit, battlePower, fmt, statRows, STAT_LABELS, simulate, applyEvents } = M;
+  const { CARDS, RARITY_LIST, buildUnit, battlePower, fmt, statRows, STAT_LABELS, simulate } = M;
 
-  const SPEEDS = { slow: 120, fast: 45, instant: 0 };
+  const SPEEDS = { slow: 440, fast: 130, instant: 0 };
 
   function matchesCard(card, query) {
     const term = query.trim().toLowerCase();
@@ -60,6 +60,46 @@
     return { rnd: e.round, kind: 'sys', txt: t.replace(/^⚔ /, ''), amt: '' };
   }
 
+  // Presentation metadata derives from immutable snapshots and side-prefixed labels.
+  // It never consumes engine RNG, and remains unambiguous for mirror matches.
+  function describeEvent(e, previous) {
+    const parsed = parseEvent(e);
+    const side = e.text.match(/(?:蓝方|红方)·/);
+    const first = side ? (side[0] === '蓝方·' ? 'A' : 'B') : null;
+    const other = first === 'A' ? 'B' : 'A';
+    const attack = parsed.kind === 'hit' || parsed.kind === 'crit';
+    const target = attack ? other : ['heal', 'miss', 'death'].includes(parsed.kind) ? first : null;
+    const amount = previous && target ? Math.abs(e['hp' + target] - previous['hp' + target]) : 0;
+    return { ...parsed, source: attack ? first : parsed.kind === 'miss' ? other : first,
+      target, amount, drain: parsed.kind === 'heal' && e.text.includes('吸取'),
+      heavy: attack && amount / e['max' + target] >= .18 };
+  }
+
+  function summarizeEvents(events) {
+    const fresh = () => ({ damage: 0, healing: 0, crits: 0, dodges: 0, peak: 0 });
+    const totals = { A: fresh(), B: fresh() };
+    events.forEach((e, i) => {
+      const p = describeEvent(e, events[i - 1]);
+      if ((p.kind === 'hit' || p.kind === 'crit') && p.source) {
+        const t = totals[p.source]; t.damage += p.amount; t.peak = Math.max(t.peak, p.amount);
+        if (p.kind === 'crit') t.crits++;
+      } else if (p.kind === 'heal' && p.target) totals[p.target].healing += p.amount;
+      else if (p.kind === 'miss' && p.target) totals[p.target].dodges++;
+    });
+    return totals;
+  }
+
+  function eventDelay(kind, speed) {
+    if (!speed) return 0;
+    return Math.round(speed * ({ crit: 1.65, death: 1.8, heal: .55, sys: 1.15, draw: 1.5 }[kind] || 1));
+  }
+
+  function parseSeed(value) {
+    const text = value.trim();
+    if (!text) return null;
+    return /^\d+$/.test(text) && Number(text) <= 0xFFFFFFFF ? Number(text) : undefined;
+  }
+
   // ---- DOM 初始化（浏览器端） ----
   function initApp() {
     if (typeof document === 'undefined') return null;
@@ -85,7 +125,147 @@
       pctA: el('pctA'), pctB: el('pctB')
     };
 
-    const state = { playing: false, delay: SPEEDS.slow, events: [], seed: 0, eventCount: 0, selectionKey: '' };
+    const state = { playing: false, delay: SPEEDS.slow, events: [], seed: 0, eventCount: 0, selectionKey: '', previous: null, follow: true, lastRound: -1 };
+    const reduced = global.matchMedia('(prefers-reduced-motion: reduce)');
+    const motions = new Map();
+    const counters = new Map();
+    let counterFrame = 0;
+    function animate(node, frames, options) {
+      if (reduced.matches || state.delay === 0) return;
+      motions.get(node)?.cancel();
+      const animation = node.animate(frames, { duration: 420, easing: 'cubic-bezier(.16,1,.3,1)', ...options });
+      motions.set(node, animation);
+      animation.onfinish = () => { if (motions.get(node) === animation) motions.delete(node); };
+    }
+    function countTo(node, value, suffix = '', immediate = false) {
+      const from = Number(node.dataset.value ?? value);
+      node.dataset.value = value;
+      counters.delete(node);
+      if (immediate || reduced.matches || state.delay === 0 || from === value) { node.textContent = fmt(value) + suffix; return; }
+      counters.set(node, { from, value, suffix, start: performance.now() });
+      if (!counterFrame) counterFrame = requestAnimationFrame(tickCounters);
+    }
+    function tickCounters(now) {
+      for (const [node, c] of counters) {
+        const t = Math.min(1, (now - c.start) / 280);
+        node.textContent = fmt(c.from + (c.value - c.from) * (1 - Math.pow(1 - t, 3))) + c.suffix;
+        if (t === 1) counters.delete(node);
+      }
+      counterFrame = counters.size ? requestAnimationFrame(tickCounters) : 0;
+    }
+
+    // One bounded canvas, active only while transient particles exist. No combat randomness.
+    const canvas = el('battleFx'), ctx = canvas.getContext('2d');
+    let particles = [], fxFrame = 0, geometry = { width: 1, height: 1, A: [0, 0], B: [0, 0] };
+    function resizeFx() {
+      const box = battleHud.getBoundingClientRect();
+      const dpr = Math.min(2, global.devicePixelRatio || 1);
+      canvas.width = Math.round(box.width * dpr); canvas.height = Math.round(box.height * dpr);
+      if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      geometry = { width: box.width, height: box.height };
+      for (const side of ['A', 'B']) {
+        const r = el('fighter' + side).getBoundingClientRect();
+        geometry[side] = [r.left - box.left + r.width / 2, r.top - box.top + r.height / 2];
+      }
+    }
+    new ResizeObserver(resizeFx).observe(battleHud);
+    function burst(p) {
+      if (!ctx || reduced.matches || !state.delay || !p.target) return;
+      const now = performance.now(), target = geometry[p.target];
+      const source = p.drain ? geometry[p.target === 'A' ? 'B' : 'A'] : geometry[p.source] || target;
+      const color = p.kind === 'heal' ? '#77e0b5' : p.kind === 'crit' ? '#ffd180' : p.source === 'A' ? '#72ceff' : '#ff8d9a';
+      const attack = p.kind === 'hit' || p.kind === 'crit' || p.kind === 'miss';
+      if (attack || p.drain) particles.push({ type: 'beam', source, target, color, start: now, life: p.drain ? 380 : 340, miss: p.kind === 'miss', critical: p.kind === 'crit' });
+      const count = p.kind === 'crit' ? 38 : p.kind === 'death' ? 42 : p.kind === 'miss' ? 7 : 18;
+      for (let i = 0; i < count; i++) {
+        const angle = (i * 2.39996 + state.eventCount * .7), force = 25 + (i * 37 % 115);
+        particles.push({ type: 'spark', x: target[0], y: target[1], vx: Math.cos(angle) * force,
+          vy: p.kind === 'heal' ? -30 - (i * 11 % 100) : Math.sin(angle) * force,
+          color, start: now + (attack ? 100 : 0), life: 450 + i % 5 * 70, size: i % 4 === 0 ? 3 : 1.5 });
+      }
+      if (p.kind === 'crit' || p.kind === 'death') particles.push({ type: 'ring', x: target[0], y: target[1], color, start: now + 90, life: 500 });
+      particles = particles.slice(-180);
+      if (!fxFrame) fxFrame = requestAnimationFrame(drawFx);
+    }
+    function drawFx(now) {
+      ctx.clearRect(0, 0, geometry.width, geometry.height);
+      particles = particles.filter(p => now - p.start < p.life);
+      for (const p of particles) {
+        const t = (now - p.start) / p.life; if (t < 0) continue;
+        ctx.globalAlpha = Math.max(0, 1 - t); ctx.strokeStyle = p.color; ctx.fillStyle = p.color;
+        if (p.type === 'beam') {
+          const f = Math.min(1, t * 2), tail = Math.max(0, f - .35);
+          const dx = p.target[0] - p.source[0], dy = p.target[1] - p.source[1];
+          ctx.lineWidth = p.miss ? 1 : p.critical ? 5 : 3;
+          ctx.shadowColor = p.color; ctx.shadowBlur = p.miss ? 0 : 12; ctx.beginPath();
+          ctx.moveTo(p.source[0] + dx * tail, p.source[1] + dy * tail);
+          ctx.lineTo(p.source[0] + dx * f, p.source[1] + dy * f + (p.miss ? -24 : 0)); ctx.stroke(); ctx.shadowBlur = 0;
+        } else if (p.type === 'ring') {
+          ctx.lineWidth = 2 * (1 - t); ctx.beginPath(); ctx.arc(p.x, p.y, 12 + t * 95, 0, Math.PI * 2); ctx.stroke();
+        } else { ctx.fillRect(p.x + p.vx * t, p.y + p.vy * t + (t * t * 18), p.size * (1 - t), p.size); }
+      }
+      ctx.globalAlpha = 1;
+      fxFrame = particles.length ? requestAnimationFrame(drawFx) : 0;
+    }
+    function clearMotion() {
+      for (const a of motions.values()) a.cancel(); motions.clear();
+      for (const [node, c] of counters) node.textContent = fmt(c.value) + c.suffix;
+      counters.clear(); cancelAnimationFrame(counterFrame); counterFrame = 0;
+      particles = []; cancelAnimationFrame(fxFrame); fxFrame = 0;
+      if (ctx) ctx.clearRect(0, 0, geometry.width, geometry.height);
+      document.querySelectorAll('.float-number').forEach(n => n.remove());
+    }
+    reduced.addEventListener('change', () => { if (reduced.matches) clearMotion(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) clearMotion(); });
+    const observer = new IntersectionObserver(entries => entries.forEach(e => e.target.classList.toggle('in-view', e.isIntersecting)));
+    ['A', 'B'].forEach(side => observer.observe(el('panel' + side)));
+
+    function present(p) {
+      ['A', 'B'].forEach(side => { el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
+      const labels = { hit: 'HIT', crit: 'CRITICAL', heal: p.drain ? 'LIFE STEAL' : 'REGEN', miss: 'EVADE', death: 'K.O.', sys: 'ENGAGE', draw: 'DRAW' };
+      const readout = el('eventReadout'); readout.className = 'event-readout ' + p.kind;
+      readout.querySelector('.event-tag').textContent = labels[p.kind];
+      el('eventText').textContent = p.txt;
+      el('eventAmount').textContent = p.amount ? (p.kind === 'heal' ? '+' : '−') + fmt(p.amount) : '';
+      if (!p.target) return;
+      const fighter = el('fighter' + p.target);
+      const action = p.kind === 'heal' ? 'recover' : p.kind === 'miss' ? 'evade' : p.kind === 'death' ? 'fallen' : 'impact';
+      fighter.dataset.action = action; el('panel' + p.target).dataset.action = action;
+      if (p.source !== p.target && p.source && p.kind !== 'heal') {
+        el('panel' + p.source).dataset.action = 'attack'; el('fighter' + p.source).dataset.action = 'attack';
+        animate(el('panel' + p.source).querySelector('.rarity-art'), [{ transform: 'scale(.94)', filter: 'brightness(1.4)' }, { transform: 'scale(1)', filter: 'brightness(1)' }]);
+      }
+      burst(p);
+      const chip = document.createElement('span'); chip.className = 'float-number ' + p.kind;
+      chip.textContent = p.kind === 'miss' ? 'MISS' : p.kind === 'death' ? 'K.O.' : (p.kind === 'crit' ? 'CRIT −' : p.kind === 'heal' ? '+' : '−') + fmt(p.amount);
+      if (!reduced.matches && state.delay) {
+        const layer = el('float' + p.target); if (layer.children.length >= 3) layer.firstChild.remove();
+        layer.appendChild(chip);
+        const float = chip.animate([{ opacity: 0, transform: 'translateY(12px) scale(.8)' }, { opacity: 1, transform: 'translateY(0) scale(1.08)', offset: .18 }, { opacity: 0, transform: 'translateY(-42px) scale(1)' }], { duration: state.delay < 200 ? 540 : 880, easing: 'ease-out' });
+        float.onfinish = () => chip.remove();
+      }
+      if (p.kind === 'miss') animate(fighter, [{ transform: 'translateX(0)' }, { transform: 'translateX(' + (p.target === 'A' ? '-12px' : '12px') + ')', opacity: .5 }, { transform: 'translateX(0)', opacity: 1 }]);
+      else if (p.kind === 'crit' || p.heavy) animate(fighter, [{ transform: 'translateX(0)' }, { transform: 'translateX(-7px)', filter: 'brightness(1.6)', offset: .18 }, { transform: 'translateX(5px)', offset: .32 }, { transform: 'translateX(0)', filter: 'brightness(1)' }]);
+      else if (p.kind === 'heal') animate(fighter, [{ color: '#77e0b5', filter: 'brightness(1.25)' }, { filter: 'brightness(1)' }]);
+      else if (p.kind === 'hit') animate(fighter, [{ filter: 'brightness(1.35)' }, { filter: 'brightness(1)' }]);
+      if (p.kind === 'death') animate(el('panel' + p.target), [{ transform: 'translateY(0)' }, { transform: 'translateY(5px)' }], { duration: 650 });
+    }
+    function announce(text) {
+      const node = el('stageAnnouncement'); node.textContent = text;
+      animate(node, [{ opacity: 0, transform: 'translateY(8px) scale(.96)' }, { opacity: .95, transform: 'translateY(0) scale(1)', offset: .2 }, { opacity: 0, transform: 'translateY(-10px) scale(1.03)' }], { duration: 850 });
+    }
+    function renderSummary(events) {
+      const totals = summarizeEvents(events);
+      const rows = [['damage', '总伤害'], ['healing', '有效治疗'], ['crits', '暴击'], ['dodges', '闪避'], ['peak', '最高单次']];
+      el('summaryBody').innerHTML = rows.map(([key, label]) => '<tr><th scope="row">' + label + '</th><td>' + fmt(totals.A[key]) + '</td><td>' + fmt(totals.B[key]) + '</td></tr>').join('');
+      el('summaryRound').textContent = events.length ? 'ROUND ' + events[events.length - 1].round : '等待战斗';
+    }
+    el('followLog').addEventListener('click', () => { state.follow = !state.follow; syncFollow(); if (state.follow) logbox.scrollTop = logbox.scrollHeight; });
+    function syncFollow() { el('followLog').setAttribute('aria-pressed', String(state.follow)); el('followLog').textContent = state.follow ? '跟随最新' : '已暂停跟随'; }
+    logbox.addEventListener('wheel', e => { if (e.deltaY < 0) { state.follow = false; syncFollow(); } }, { passive: true });
+    logbox.addEventListener('touchstart', () => { state.follow = false; syncFollow(); }, { passive: true });
+    logbox.addEventListener('keydown', e => { if (['ArrowUp', 'PageUp', 'Home'].includes(e.key)) { state.follow = false; syncFollow(); } });
+    renderSummary([]);
 
     // ---- 卡牌下拉：按稀有度分组 ----
     function fillSelect(sel, selected, query = '') {
@@ -124,8 +304,9 @@
       hint.hidden = !query.trim();
       hint.textContent = count ? `${count} 张匹配 · 下拉选择卡牌` : '无匹配卡牌 · 已保留当前选择，清空搜索可查看全部';
     }
-    fillSelect(selA, 0);
-    fillSelect(selB, 5);
+    // The established crossover matchup showcases rarity without a predetermined winner.
+    fillSelect(selA, CARDS.findIndex(card => card.id === 'origin_star'));
+    fillSelect(selB, CARDS.findIndex(card => card.id === 'iron_guard'));
 
     [[searchA, selA], [searchB, selB]].forEach(([search, select]) => {
       search.addEventListener('input', () => fillSelect(select, +select.value, search.value));
@@ -168,7 +349,14 @@
       el('rar' + side).className = 'rar-badge t' + card.rarity;
       el('role' + side).textContent = card.role;
       el('desc' + side).textContent = card.source ? `${card.source} · ${card.desc}` : card.desc;
-      el('bp' + side).textContent = fmt(battlePower(unit));
+      countTo(el('bp' + side), battlePower(unit));
+      const panel = el('panel' + side);
+      panel.dataset.rarity = card.rarity;
+      panel.classList.toggle('collector', card.rarity === 9 || card.rarity === 11);
+      panel.classList.toggle('high-rarity', card.rarity >= 8);
+      panel.classList.toggle('apex', card.rarity >= 10);
+      el('glyph' + side).textContent = unit.rarityName.replace(' Collector', '');
+      el('edition' + side).textContent = unit.rarityName.includes('Collector') ? 'COLLECTOR EDITION' : card.rarity >= 10 ? 'APEX CLASS' : card.rarity >= 6 ? 'PRESTIGE CLASS' : 'STANDARD ISSUE';
 
       const deltaEl = el('bpDelta' + side);
       if (deltaInfo) {
@@ -205,6 +393,14 @@
       renderSide('A', uA, deltaFor(bpA, bpB));
       renderSide('B', uB, deltaFor(bpB, bpA));
       prepareArena(currentCard('A'), currentCard('B'));
+      const ratio = Math.max(bpA, bpB) / Math.min(bpA, bpB);
+      el('matchupHint').textContent = ratio < 1.06 ? 'BP 接近 · 胜负未定' : (bpA > bpB ? '蓝方' : '红方') + ' BP 领先 · ' + (ratio >= 2 ? '实力悬殊' : '等待交锋');
+      el('replayBtn').disabled = true;
+      renderSummary([]);
+      ['A', 'B'].forEach(side => { el('panel' + side).classList.remove('fallen', 'victorious'); el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
+      el('eventReadout').className = 'event-readout';
+      el('eventReadout').querySelector('.event-tag').textContent = 'STANDBY';
+      el('eventText').textContent = '两张卡牌，一场数值交锋。'; el('eventAmount').textContent = '';
       updateBar('A', uA.maxHp, uA.maxHp);
       updateBar('B', uB.maxHp, uB.maxHp);
       state.events = [];
@@ -262,14 +458,19 @@
         b.classList.add('on');
         b.setAttribute('aria-pressed', 'true');
         state.delay = SPEEDS[b.dataset.speed];
+        if (!state.delay) state.finishWait?.();
       });
     });
 
     // ---- Battle HUD ----
     function updateBar(side, hp, max) {
       const pct = Math.max(0, Math.min(100, hp / max * 100));
-      (side === 'A' ? hud.barA : hud.barB).style.width = pct + '%';
-      (side === 'A' ? hud.hpA : hud.hpB).textContent = `${fmt(hp)} / ${fmt(max)}`;
+      const bar = side === 'A' ? hud.barA : hud.barB;
+      bar.style.transform = 'scaleX(' + pct / 100 + ')';
+      el('hpTrail' + side).style.transform = 'scaleX(' + pct / 100 + ')';
+      countTo(side === 'A' ? hud.hpA : hud.hpB, hp, '', !state.playing);
+      el('hpMax' + side).textContent = ' / ' + fmt(max);
+      el('panel' + side).classList.toggle('fallen', hp <= 0);
       (side === 'A' ? hud.pctA : hud.pctB).textContent = pct.toFixed(1) + '%';
       const panel = (side === 'A' ? hud.barA : hud.barB).closest('.hud-side');
       panel.classList.toggle('low', hp > 0 && pct <= 20);
@@ -278,12 +479,18 @@
     }
 
     // ---- Battle Log：结构化行 ----
-    function appendLogRow(parsed) {
+    function appendLogRow(parsed, container = logbox) {
       const div = document.createElement('div');
-      div.className = 'le ' + parsed.kind;
+      div.className = 'le ' + parsed.kind + (parsed.heavy ? ' heavy' : '');
+      if (parsed.rnd !== state.lastRound) {
+        const group = document.createElement('div'); group.className = 'log-round';
+        group.textContent = parsed.rnd ? 'ROUND ' + String(parsed.rnd).padStart(2, '0') : 'MATCH START';
+        container.appendChild(group); state.lastRound = parsed.rnd;
+      }
+      state.currentRow?.classList.remove('current'); div.classList.add('current'); state.currentRow = div;
       const rnd = document.createElement('span');
       rnd.className = 'rnd';
-      rnd.textContent = 'R' + parsed.rnd;
+      rnd.textContent = ({ hit: 'HIT', crit: 'CRIT', heal: parsed.drain ? 'DRAIN' : 'HEAL', miss: 'MISS', death: 'K.O.', sys: 'SYS', draw: 'DRAW' })[parsed.kind];
       const txt = document.createElement('span');
       txt.className = 'txt';
       txt.textContent = parsed.txt;
@@ -295,17 +502,25 @@
         amt.textContent = parsed.amt;
         div.appendChild(amt);
       }
-      logbox.appendChild(div);
-      logbox.scrollTop = logbox.scrollHeight;
+      container.appendChild(div);
+      if (container === logbox && state.follow) logbox.scrollTop = logbox.scrollHeight;
     }
 
     function applyEntry(e) {
-      appendLogRow(parseEvent(e));
+      const parsed = describeEvent(e, state.previous);
+      appendLogRow(parsed);
+      if (state.previous && e.round !== state.previous.round) {
+        animate(roundTxt, [{ transform: 'translateY(8px)', opacity: .4 }, { transform: 'translateY(0)', opacity: 1 }]);
+      }
+      present(parsed);
+      state.previous = e;
       state.eventCount++;
       logCount.textContent = state.eventCount + ' EVENTS';
       updateBar('A', e.hpA, e.maxA);
       updateBar('B', e.hpB, e.maxB);
       roundTxt.textContent = String(e.round).padStart(2, '0');
+      const difference = e.hpA / e.maxA - e.hpB / e.maxB;
+      el('matchupHint').textContent = e.hpA / e.maxA < .2 && e.hpB / e.maxB < .2 ? '双方残血 · 决胜时刻' : Math.abs(difference) < .05 ? '生命比例接近 · 胜负未定' : (difference > 0 ? '蓝方' : '红方') + '生命比例领先';
     }
 
     // ---- Battle Result ----
@@ -350,7 +565,8 @@
       startBtn.disabled = locked;
       againBtn.disabled = locked;
       resultAgainBtn.disabled = locked;
-      document.querySelectorAll('.spdbtn').forEach((b) => { b.disabled = locked; });
+      el('seedInput').disabled = locked;
+      el('replayBtn').disabled = locked || !state.events.length;
     }
 
     function prepareArena(cardA, cardB) {
@@ -360,50 +576,83 @@
       el('sMetaB').textContent = `${RARITY_LIST[cardB.rarity]} · Lv.${lvlB.value}`;
     }
 
-    async function runBattle() {
+    async function runBattle(mode = 'start') {
       if (state.playing) return;
-      state.playing = true;
-      setControlsLocked(true);
-      logbox.innerHTML = '';
-      state.eventCount = 0;
-      logCount.textContent = '0 EVENTS';
-      resultBox.style.display = 'none';
-      roundTxt.textContent = '--';
-
-      const cardA = currentCard('A');
-      const cardB = currentCard('B');
-      state.seed = (Math.random() * 0xFFFFFFFF) >>> 0;
-
-      // 先完整模拟，结果已确定；再按速度回放事件列表
-      const result = simulate(cardA, currentLevel('A'), cardB, currentLevel('B'), state.seed);
-      state.events = result.events;
-      prepareArena(cardA, cardB);
-      updateBar('A', result.a.maxHp, result.a.maxHp);
-      updateBar('B', result.b.maxHp, result.b.maxHp);
-      hudState.textContent = 'IN BATTLE';
-      battleHud.classList.remove('finished');
-      battleHud.classList.add('live');
-
-      const delayMs = () => new Promise((r) => setTimeout(r, state.delay));
-      await applyEvents(result.events, applyEntry, delayMs);
-
-      showResult(result);
-      hudState.textContent = 'FINISHED';
-      battleHud.classList.add('finished');
-      battleHud.classList.remove('live');
-      setControlsLocked(false);
-      state.playing = false;
+      const input = el('seedInput');
+      const seed = mode === 'replay' ? state.seed : mode === 'new' ? null : parseSeed(input.value);
+      if (seed === undefined) {
+        input.setAttribute('aria-invalid', 'true'); el('seedHint').textContent = '请输入 0–4294967295 的整数，或留空随机'; input.focus(); return;
+      }
+      input.removeAttribute('aria-invalid');
+      state.seed = seed === null ? global.crypto.getRandomValues(new Uint32Array(1))[0] : seed;
+      input.value = String(state.seed); el('seedHint').textContent = '当前 Seed · 可重播本局或开始新一局';
+      state.playing = true; clearMotion(); setControlsLocked(true);
+      document.querySelector('.app').classList.add('is-playing');
+      battleHud.classList.toggle('instant', !state.delay);
+      state.follow = true; syncFollow(); state.lastRound = -1; state.previous = null; state.currentRow = null;
+      logbox.innerHTML = ''; state.eventCount = 0; logCount.textContent = '0 EVENTS';
+      resultBox.style.display = 'none'; roundTxt.textContent = '--';
+      ['A', 'B'].forEach(side => el('panel' + side).classList.remove('fallen', 'victorious'));
+      const cardA = currentCard('A'), cardB = currentCard('B');
+      try {
+        // Exactly one simulation. All timing, statistics and effects consume only its snapshots.
+        const result = simulate(cardA, currentLevel('A'), cardB, currentLevel('B'), state.seed);
+        state.events = result.events;
+        prepareArena(cardA, cardB);
+        updateBar('A', result.a.maxHp, result.a.maxHp); updateBar('B', result.b.maxHp, result.b.maxHp);
+        hudState.textContent = 'IN BATTLE'; battleHud.classList.remove('finished'); battleHud.classList.add('live');
+        // Starting from controls below the fold must bring the actual fight into view.
+        battleHud.scrollIntoView({ behavior: 'instant', block: 'start' });
+        resizeFx(); announce('BATTLE START'); renderSummary([]);
+        if (state.delay) await new Promise(resolve => setTimeout(resolve, reduced.matches ? 120 : 650));
+        for (let i = 0; i < result.events.length; i++) {
+          if (!state.delay) {
+            clearMotion(); battleHud.classList.add('instant');
+            const fragment = document.createDocumentFragment();
+            for (; i < result.events.length; i++) {
+              const e = result.events[i]; appendLogRow(describeEvent(e, state.previous), fragment); state.previous = e; state.eventCount++;
+            }
+            logbox.appendChild(fragment); if (state.follow) logbox.scrollTop = logbox.scrollHeight;
+            const last = state.previous; updateBar('A', last.hpA, last.maxA); updateBar('B', last.hpB, last.maxB);
+            roundTxt.textContent = String(last.round).padStart(2, '0'); logCount.textContent = state.eventCount + ' EVENTS';
+            break;
+          }
+          applyEntry(result.events[i]);
+          await new Promise(resolve => {
+            const timer = setTimeout(() => { state.finishWait = null; resolve(); }, eventDelay(result.events[i].cls, state.delay));
+            state.finishWait = () => { clearTimeout(timer); state.finishWait = null; resolve(); };
+          });
+        }
+        showResult(result); renderSummary(result.events);
+        const victor = result.winner === 0 ? 'A' : 'B';
+        if (result.winner !== -1) { el('panel' + victor).classList.add('victorious'); burst({ kind: 'crit', source: victor, target: victor }); }
+        announce(result.winner === -1 ? 'DRAW' : 'VICTORY');
+        el('eventReadout').className = 'event-readout result-event';
+        el('eventReadout').querySelector('.event-tag').textContent = result.winner === -1 ? 'DRAW' : 'VICTORY';
+        el('eventText').textContent = result.winner === -1 ? '势均力敌 · 本局平局' : (result.winner === 0 ? '蓝方 · ' + cardA.name : '红方 · ' + cardB.name) + ' 获胜';
+        el('eventAmount').textContent = result.rounds + ' ROUNDS';
+        hudState.textContent = 'FINISHED'; battleHud.classList.add('finished');
+        el('matchupHint').textContent = '本局结束 · Seed ' + state.seed;
+        animate(resultBox, [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 600 });
+      } catch (error) {
+        hudState.textContent = 'ERROR'; el('eventText').textContent = '播放失败，请重试。'; console.error(error);
+      } finally {
+        state.playing = false; setControlsLocked(false); battleHud.classList.remove('live');
+        ['A', 'B'].forEach(side => { el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
+        document.querySelector('.app').classList.remove('is-playing');
+      }
     }
 
-    startBtn.addEventListener('click', runBattle);
-    againBtn.addEventListener('click', runBattle);
-    resultAgainBtn.addEventListener('click', runBattle);
+    startBtn.addEventListener('click', () => runBattle());
+    againBtn.addEventListener('click', () => runBattle('new'));
+    resultAgainBtn.addEventListener('click', () => runBattle('new'));
+    el('replayBtn').addEventListener('click', () => runBattle('replay'));
 
     refreshAll();
     return { state };
   }
 
-  const API = { createViewState, applyEventToState, parseEvent, matchesCard, normalizeLevel, initApp };
+  const API = { createViewState, applyEventToState, parseEvent, describeEvent, summarizeEvents, eventDelay, parseSeed, matchesCard, normalizeLevel, initApp };
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
   global.NCB = Object.assign(global.NCB || {}, API);
 })(typeof window !== 'undefined' ? window : globalThis);
