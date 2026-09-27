@@ -7,6 +7,25 @@ const { simulate } = require('../src/battle.js');
 const { parseEvent, matchesCard, normalizeLevel } = require('../src/app.js');
 const { describeEvent, summarizeEvents, parseSeed, eventDelay } = require('../src/app.js');
 const { createHash } = require('node:crypto');
+const { rarityFinish, emblemMarkup } = require('../src/app.js');
+
+test('rarity decoration has a bounded resource ladder and distinct premium materials', () => {
+  const finishes = Array.from({ length: 12 }, (_, tier) => rarityFinish(tier));
+  assert.ok(finishes.slice(0, 6).every(f => f.particles === 0));
+  finishes.forEach((f, i) => {
+    assert.ok(Number.isInteger(f.particles) && f.particles <= 18);
+    if (i) assert.ok(f.particles >= finishes[i - 1].particles);
+  });
+  assert.equal(new Set(finishes.slice(8).map(f => f.material)).size, 4);
+  assert.match(emblemMarkup(8, 'A'), /emblem-facets/);
+  assert.doesNotMatch(emblemMarkup(8, 'A'), /emblem-crown/);
+  assert.match(emblemMarkup(9, 'A'), /emblem-crown/);
+  assert.match(emblemMarkup(10, 'A'), /emblem-star/);
+  assert.doesNotMatch(emblemMarkup(10, 'A'), /emblem-crown/);
+  assert.match(emblemMarkup(11, 'B'), /emblem-crown/);
+  assert.match(emblemMarkup(11, 'A'), /id="metalA"/);
+  assert.match(emblemMarkup(11, 'B'), /id="metalB"/);
+});
 
 test('Arena presentation preserves all 1,920 full simulation results from main e9ce5e9', () => {
   // Captured BEFORE the presentation upgrade, including every event, HP snapshot and final unit.

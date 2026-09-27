@@ -18,11 +18,11 @@
   <!-- ===================== HEADER ===================== -->
   <header class="site-header">
     <div class="brand">
-      <h1><span class="brand-mark" aria-hidden="true">N<span>↗</span></span> NUMERICAL <b>BATTLE LAB</b></h1>
+      <h1><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M10 29V11h5l10 13V11h5v18h-5L15 16v13z" fill="currentColor"/><path d="M28 4h8v8M36 4l-9 9" stroke="currentColor" stroke-width="2"/></svg></span> NUMERICAL <b>BATTLE LAB</b></h1>
       <p class="sub">数值卡牌 · 自动 PK <span class="sub-divider">/</span> 选择对手，见证数值交锋。</p>
     </div>
     <div class="header-meta" aria-hidden="true">
-      <span class="system-dot"></span><span>96 CARDS / 12 RARITIES</span><span class="edition">ARENA / 02</span>
+      <span class="system-dot"></span><span>96 CARDS / 12 RARITIES</span><span class="edition">COLLECTOR / 03</span>
     </div>
   </header>
 
@@ -39,8 +39,8 @@
     </div>
 
     <div class="round-center">
-      <div class="round-label">ROUND</div>
-      <div class="round-value" id="roundTxt">--</div>
+      <div class="arena-dial" aria-hidden="true"><i></i><i></i></div><div class="round-label">ROUND</div>
+      <div class="round-value" id="roundTxt">VS</div>
       <div class="hud-state" id="hudState" role="status">READY</div>
     </div>
 
@@ -59,7 +59,10 @@
   <!-- ===================== PLAYER CARDS + BATTLE AXIS ===================== -->
   <div class="setup" id="setup">
     <section class="pcard blue" id="panelA">
-      <div class="identity" data-identity="A"><div class="rarity-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="rarity-glyph" id="glyphA">C</span><span class="edition-mark" id="editionA">STANDARD</span></div>
+      <div class="card-ornament" aria-hidden="true"><div class="card-aura"></div><svg class="card-lattice" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice"><path d="M140 -80 500 280 860 -80M210 -80 500 210 790 -80M280 -80 500 140 720 -80M350 -80 500 70 650 -80M420 -80 500 0 580 -80M280 280 500 60 720 280M350 280 500 130 650 280"/></svg><div class="ambient-particles" id="ambientA"></div></div>
+      <div class="card-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="card-rail"><span class="card-serial" id="cardCodeA"></span><span class="card-material" id="materialA"></span></div>
+      <div class="identity" data-identity="A"><div class="rarity-art" aria-hidden="true"><div class="emblem" id="emblemA"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="rarity-glyph" id="glyphA">C</span><span class="edition-mark" id="editionA">STANDARD</span></div>
         <span class="team">TEAM&nbsp;BLUE</span>
         <div class="name-row">
           <span class="cname" id="nameA">—</span>
@@ -84,16 +87,17 @@
           <input type="range" id="lvlA" min="1" max="100" value="55">
         </div>
         <div class="bp-block">
-          <div class="bp-head"><span class="bp-label">BATTLE POWER</span></div>
+          <div class="bp-head"><span class="bp-label">BATTLE POWER</span><svg class="power-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-8z"/></svg></div>
           <div class="bp-main">
             <span class="bp-value" id="bpA">—</span>
-            <div class="bp-comparison"><span class="bp-note">相较对方</span><span class="bp-delta" id="bpDeltaA"></span></div>
+            <div class="bp-comparison"><span class="bp-note">相较对方 BP</span><span class="bp-delta" id="bpDeltaA"></span></div>
           </div>
         </div>
       </div>
       <div class="core-stats" id="statsA"></div>
       <button class="stats-toggle" id="statsToggleA" aria-expanded="false" aria-controls="secondaryStatsA">更多属性 <span aria-hidden="true">＋</span></button>
       <div class="stats-grid" id="secondaryStatsA" hidden></div>
+      <div class="card-signature"><span>NUMERICAL COLLECTION</span><span id="tierIndexA"></span></div>
     </section>
 
     <div class="vs-col" aria-hidden="true">
@@ -104,7 +108,10 @@
     </div>
 
     <section class="pcard red" id="panelB">
-      <div class="identity" data-identity="B"><div class="rarity-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="rarity-glyph" id="glyphB">C</span><span class="edition-mark" id="editionB">STANDARD</span></div>
+      <div class="card-ornament" aria-hidden="true"><div class="card-aura"></div><svg class="card-lattice" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice"><path d="M140 -80 500 280 860 -80M210 -80 500 210 790 -80M280 -80 500 140 720 -80M350 -80 500 70 650 -80M420 -80 500 0 580 -80M280 280 500 60 720 280M350 280 500 130 650 280"/></svg><div class="ambient-particles" id="ambientB"></div></div>
+      <div class="card-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="card-rail"><span class="card-serial" id="cardCodeB"></span><span class="card-material" id="materialB"></span></div>
+      <div class="identity" data-identity="B"><div class="rarity-art" aria-hidden="true"><div class="emblem" id="emblemB"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="rarity-glyph" id="glyphB">C</span><span class="edition-mark" id="editionB">STANDARD</span></div>
         <span class="team">TEAM&nbsp;RED</span>
         <div class="name-row">
           <span class="cname" id="nameB">—</span>
@@ -129,16 +136,17 @@
           <input type="range" id="lvlB" min="1" max="100" value="100">
         </div>
         <div class="bp-block">
-          <div class="bp-head"><span class="bp-label">BATTLE POWER</span></div>
+          <div class="bp-head"><span class="bp-label">BATTLE POWER</span><svg class="power-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-8z"/></svg></div>
           <div class="bp-main">
             <span class="bp-value" id="bpB">—</span>
-            <div class="bp-comparison"><span class="bp-note">相较对方</span><span class="bp-delta" id="bpDeltaB"></span></div>
+            <div class="bp-comparison"><span class="bp-note">相较对方 BP</span><span class="bp-delta" id="bpDeltaB"></span></div>
           </div>
         </div>
       </div>
       <div class="core-stats" id="statsB"></div>
       <button class="stats-toggle" id="statsToggleB" aria-expanded="false" aria-controls="secondaryStatsB">更多属性 <span aria-hidden="true">＋</span></button>
       <div class="stats-grid" id="secondaryStatsB" hidden></div>
+      <div class="card-signature"><span>NUMERICAL COLLECTION</span><span id="tierIndexB"></span></div>
     </section>
   </div>
 
@@ -165,7 +173,7 @@
   <section class="control-bar">
     <div class="ctrl-inner">
       <div class="ctrl-btns">
-        <button id="startBtn" class="btn primary" aria-label="开始战斗"><span class="desktop-label">开始战斗 <span aria-hidden="true">↗</span></span><span class="mobile-label" aria-hidden="true">开始</span></button>
+        <button id="startBtn" class="btn primary" aria-label="开始战斗"><span class="desktop-label">开始战斗 <svg class="button-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M6 5h13v13"/></svg></span><span class="mobile-label" aria-hidden="true">开始</span></button>
         <button id="againBtn" class="btn secondary" aria-label="再次战斗">新一局</button>
       </div>
       <div class="ctrl-div" aria-hidden="true"></div>

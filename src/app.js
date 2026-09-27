@@ -100,6 +100,25 @@
     return /^\d+$/.test(text) && Number(text) <= 0xFFFFFFFF ? Number(text) : undefined;
   }
 
+  // Visual complexity is an explicit rarity ladder, unrelated to engine strength or RNG.
+  function rarityFinish(tier) {
+    const particles = [0, 0, 0, 0, 0, 0, 4, 5, 8, 12, 14, 18][tier];
+    const material = tier === 11 ? 'CELESTIAL GOLD' : tier === 10 ? 'SOLAR FOIL' :
+      tier === 9 ? 'COLLECTOR COPPER' : tier === 8 ? 'AURIC FOIL' : tier >= 6 ? 'PRISM ALLOY' : 'BRUSHED ALLOY';
+    return { particles, material, tier: String(tier + 1).padStart(2, '0') };
+  }
+
+  function emblemMarkup(tier, side) {
+    const ticks = Array.from({ length: tier >= 8 ? 48 : 24 }, (_, i) => {
+      const angle = i * (tier >= 8 ? 7.5 : 15);
+      return `<path d="M100 8v${i % 4 === 0 ? 8 : 3}" transform="rotate(${angle} 100 100)"/>`;
+    }).join('');
+    const facets = tier >= 8 ? '<path class="emblem-facets" d="m100 22 55 23 23 55-23 55-55 23-55-23-23-55 23-55Z M100 22l55 133H45L100 22 M22 100h156 M45 45l110 110 M155 45 45 155"/>' : '';
+    const star = tier >= 10 ? '<path class="emblem-star" d="m100 12 18 63 70 25-70 25-18 63-18-63-70-25 70-25Z"/>' : '';
+    const collector = tier === 9 || tier === 11 ? '<path class="emblem-crown" d="m82 44 5 10h26l5-10-10 4-8-10-8 10z"/><circle class="emblem-gems" cx="100" cy="5" r="2"/><circle class="emblem-gems" cx="195" cy="100" r="2"/><circle class="emblem-gems" cx="100" cy="195" r="2"/><circle class="emblem-gems" cx="5" cy="100" r="2"/>' : '';
+    return `<svg viewBox="0 0 200 200" fill="none"><defs><linearGradient id="metal${side}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="currentColor"/><stop offset=".3" stop-color="currentColor" stop-opacity=".22"/><stop offset=".5" stop-color="#fff0d0"/><stop offset=".7" stop-color="currentColor" stop-opacity=".25"/><stop offset="1" stop-color="currentColor"/></linearGradient></defs><g class="emblem-ticks">${ticks}</g><circle class="emblem-rim" cx="100" cy="100" r="85" stroke="url(#metal${side})"/><circle class="emblem-inner" cx="100" cy="100" r="64"/>${facets}${star}${collector}</svg>`;
+  }
+
   // ---- DOM 初始化（浏览器端） ----
   function initApp() {
     if (typeof document === 'undefined') return null;
@@ -131,24 +150,29 @@
     const counters = new Map();
     let counterFrame = 0;
     function animate(node, frames, options) {
-      if (reduced.matches || state.delay === 0) return;
+      if (reduced.matches || document.hidden || state.delay === 0) return;
       motions.get(node)?.cancel();
       const animation = node.animate(frames, { duration: 420, easing: 'cubic-bezier(.16,1,.3,1)', ...options });
       motions.set(node, animation);
       animation.onfinish = () => { if (motions.get(node) === animation) motions.delete(node); };
     }
     function countTo(node, value, suffix = '', immediate = false) {
-      const from = Number(node.dataset.value ?? value);
+      if (!immediate && counters.get(node)?.value === value) return;
+      const from = Number(node.dataset.displayValue ?? value);
       node.dataset.value = value;
       counters.delete(node);
-      if (immediate || reduced.matches || state.delay === 0 || from === value) { node.textContent = fmt(value) + suffix; return; }
+      if (immediate || reduced.matches || document.hidden || (state.playing && state.delay === 0) || from === value) {
+        node.dataset.displayValue = value; node.textContent = fmt(value) + suffix; return;
+      }
       counters.set(node, { from, value, suffix, start: performance.now() });
       if (!counterFrame) counterFrame = requestAnimationFrame(tickCounters);
     }
     function tickCounters(now) {
       for (const [node, c] of counters) {
         const t = Math.min(1, (now - c.start) / 280);
-        node.textContent = fmt(c.from + (c.value - c.from) * (1 - Math.pow(1 - t, 3))) + c.suffix;
+        const value = c.from + (c.value - c.from) * (1 - Math.pow(1 - t, 3));
+        node.dataset.displayValue = value;
+        node.textContent = fmt(value) + c.suffix;
         if (t === 1) counters.delete(node);
       }
       counterFrame = counters.size ? requestAnimationFrame(tickCounters) : 0;
@@ -170,7 +194,7 @@
     }
     new ResizeObserver(resizeFx).observe(battleHud);
     function burst(p) {
-      if (!ctx || reduced.matches || !state.delay || !p.target) return;
+      if (!ctx || reduced.matches || document.hidden || !stageVisible || !state.delay || !p.target) return;
       const now = performance.now(), target = geometry[p.target];
       const source = p.drain ? geometry[p.target === 'A' ? 'B' : 'A'] : geometry[p.source] || target;
       const color = p.kind === 'heal' ? '#77e0b5' : p.kind === 'crit' ? '#ffd180' : p.source === 'A' ? '#72ceff' : '#ff8d9a';
@@ -209,16 +233,29 @@
     }
     function clearMotion() {
       for (const a of motions.values()) a.cancel(); motions.clear();
-      for (const [node, c] of counters) node.textContent = fmt(c.value) + c.suffix;
+      for (const [node, c] of counters) { node.textContent = fmt(c.value) + c.suffix; node.dataset.displayValue = c.value; }
       counters.clear(); cancelAnimationFrame(counterFrame); counterFrame = 0;
       particles = []; cancelAnimationFrame(fxFrame); fxFrame = 0;
       if (ctx) ctx.clearRect(0, 0, geometry.width, geometry.height);
       document.querySelectorAll('.float-number').forEach(n => n.remove());
     }
     reduced.addEventListener('change', () => { if (reduced.matches) clearMotion(); });
-    document.addEventListener('visibilitychange', () => { if (document.hidden) clearMotion(); });
+    document.addEventListener('visibilitychange', () => {
+      document.documentElement.classList.toggle('page-hidden', document.hidden);
+      if (document.hidden) clearMotion();
+    });
     const observer = new IntersectionObserver(entries => entries.forEach(e => e.target.classList.toggle('in-view', e.isIntersecting)));
     ['A', 'B'].forEach(side => observer.observe(el('panel' + side)));
+    let stageVisible = true;
+    const stageObserver = new IntersectionObserver(([entry]) => {
+      stageVisible = entry.isIntersecting;
+      battleHud.classList.toggle('in-view', stageVisible);
+      if (!stageVisible) {
+        particles = []; cancelAnimationFrame(fxFrame); fxFrame = 0;
+        if (ctx) ctx.clearRect(0, 0, geometry.width, geometry.height);
+      }
+    });
+    stageObserver.observe(battleHud);
 
     function present(p) {
       ['A', 'B'].forEach(side => { el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
@@ -238,7 +275,7 @@
       burst(p);
       const chip = document.createElement('span'); chip.className = 'float-number ' + p.kind;
       chip.textContent = p.kind === 'miss' ? 'MISS' : p.kind === 'death' ? 'K.O.' : (p.kind === 'crit' ? 'CRIT −' : p.kind === 'heal' ? '+' : '−') + fmt(p.amount);
-      if (!reduced.matches && state.delay) {
+      if (!reduced.matches && !document.hidden && stageVisible && state.delay) {
         const layer = el('float' + p.target); if (layer.children.length >= 3) layer.firstChild.remove();
         layer.appendChild(chip);
         const float = chip.animate([{ opacity: 0, transform: 'translateY(12px) scale(.8)' }, { opacity: 1, transform: 'translateY(0) scale(1.08)', offset: .18 }, { opacity: 0, transform: 'translateY(-42px) scale(1)' }], { duration: state.delay < 200 ? 540 : 880, easing: 'ease-out' });
@@ -257,7 +294,7 @@
     function renderSummary(events) {
       const totals = summarizeEvents(events);
       const rows = [['damage', '总伤害'], ['healing', '有效治疗'], ['crits', '暴击'], ['dodges', '闪避'], ['peak', '最高单次']];
-      el('summaryBody').innerHTML = rows.map(([key, label]) => '<tr><th scope="row">' + label + '</th><td>' + fmt(totals.A[key]) + '</td><td>' + fmt(totals.B[key]) + '</td></tr>').join('');
+      el('summaryBody').innerHTML = rows.map(([key, label]) => '<tr><th scope="row">' + label + '</th><td>' + (events.length ? fmt(totals.A[key]) : '—') + '</td><td>' + (events.length ? fmt(totals.B[key]) : '—') + '</td></tr>').join('');
       el('summaryRound').textContent = events.length ? 'ROUND ' + events[events.length - 1].round : '等待战斗';
     }
     el('followLog').addEventListener('click', () => { state.follow = !state.follow; syncFollow(); if (state.follow) logbox.scrollTop = logbox.scrollHeight; });
@@ -351,7 +388,18 @@
       el('desc' + side).textContent = card.source ? `${card.source} · ${card.desc}` : card.desc;
       countTo(el('bp' + side), battlePower(unit));
       const panel = el('panel' + side);
+      const finish = rarityFinish(card.rarity);
+      if (panel.dataset.rarity !== String(card.rarity)) {
+        el('emblem' + side).innerHTML = emblemMarkup(card.rarity, side);
+        el('ambient' + side).innerHTML = Array.from({ length: finish.particles }, (_, i) =>
+          `<i style="--x:${8 + i * 43 % 85}%;--y:${6 + i * 29 % 64}%;--drift:${(i % 3 - 1) * 14}px;--duration:${8 + i % 7}s;--delay:-${i * 1.7}s;--size:${i % 5 === 0 ? 3 : 1.5}px"></i>`).join('');
+      }
       panel.dataset.rarity = card.rarity;
+      el('cardCode' + side).textContent = 'N° ' + String(CARDS.indexOf(card) + 1).padStart(3, '0') + ' / 096';
+      el('material' + side).textContent = finish.material;
+      el('tierIndex' + side).textContent = 'RARITY ' + finish.tier + ' / 12';
+      panel.style.setProperty('--power-light', Math.min(.24, Math.max(.03, Math.log10(battlePower(unit)) / 32)));
+      el('lvl' + side).style.setProperty('--level-fill', (unit.level - 1) / 99 * 100 + '%');
       panel.classList.toggle('collector', card.rarity === 9 || card.rarity === 11);
       panel.classList.toggle('high-rarity', card.rarity >= 8);
       panel.classList.toggle('apex', card.rarity >= 10);
@@ -407,10 +455,10 @@
       state.eventCount = 0;
       state.seed = 0;
       logCount.textContent = '0 EVENTS';
-      logbox.innerHTML = '<div class="log-empty">STANDBY · 等待战斗开始</div>';
+      logbox.innerHTML = '<div class="log-empty"><svg viewBox="0 0 160 32" aria-hidden="true"><path d="M0 16h52l8-8 12 16 16-24 12 24 8-8h52"/></svg><strong>等待第一场交锋</strong><span>选择卡牌与等级，开始后逐回合记录。</span></div>';
       resultBox.style.display = 'none';
       resultBox.className = 'result-panel';
-      roundTxt.textContent = '--';
+      roundTxt.textContent = 'VS';
       hudState.textContent = 'READY';
       battleHud.classList.remove('finished');
       battleHud.classList.remove('live');
@@ -526,6 +574,7 @@
     // ---- Battle Result ----
     function showResult(r) {
       const a = r.a, b = r.b;
+      countTo(hud.hpA, a.hp, '', true); countTo(hud.hpB, b.hp, '', true);
       const winner = r.winner;
       resultBox.style.display = 'flex';
       el('resultVerdict').textContent = winner === -1 ? 'DRAW' : 'VICTORY';
@@ -652,7 +701,7 @@
     return { state };
   }
 
-  const API = { createViewState, applyEventToState, parseEvent, describeEvent, summarizeEvents, eventDelay, parseSeed, matchesCard, normalizeLevel, initApp };
+  const API = { createViewState, applyEventToState, parseEvent, describeEvent, summarizeEvents, eventDelay, parseSeed, rarityFinish, emblemMarkup, matchesCard, normalizeLevel, initApp };
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
   global.NCB = Object.assign(global.NCB || {}, API);
 })(typeof window !== 'undefined' ? window : globalThis);
