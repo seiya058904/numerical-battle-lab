@@ -25,6 +25,22 @@ test('rarity decoration has a bounded resource ladder and distinct premium mater
   assert.match(emblemMarkup(11, 'B'), /emblem-crown/);
   assert.match(emblemMarkup(11, 'A'), /id="metalA"/);
   assert.match(emblemMarkup(11, 'B'), /id="metalB"/);
+  assert.match(emblemMarkup(11, 'A'), /emblem-astrolabe/);
+  assert.doesNotMatch(emblemMarkup(10, 'A'), /emblem-astrolabe/);
+  assert.match(emblemMarkup(9, 'A'), /emblem-wings/);
+  assert.doesNotMatch(emblemMarkup(8, 'A'), /emblem-wings/);
+  for (const finish of finishes) assert.match(finish.color, /^#[0-9a-f]{6}$/);
+});
+
+test('material and emblem construction is repeatable without consuming random numbers', () => {
+  const original = Math.random;
+  try {
+    Math.random = () => { throw new Error('visual identity must not consume RNG'); };
+    for (let tier = 0; tier < 12; tier++) {
+      assert.deepEqual(rarityFinish(tier), rarityFinish(tier));
+      assert.equal(emblemMarkup(tier, 'A'), emblemMarkup(tier, 'A'));
+    }
+  } finally { Math.random = original; }
 });
 
 test('Arena presentation preserves all 1,920 full simulation results from main e9ce5e9', () => {

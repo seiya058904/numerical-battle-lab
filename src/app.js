@@ -105,7 +105,8 @@
     const particles = [0, 0, 0, 0, 0, 0, 4, 5, 8, 12, 14, 18][tier];
     const material = tier === 11 ? 'CELESTIAL GOLD' : tier === 10 ? 'SOLAR FOIL' :
       tier === 9 ? 'COLLECTOR COPPER' : tier === 8 ? 'AURIC FOIL' : tier >= 6 ? 'PRISM ALLOY' : 'BRUSHED ALLOY';
-    return { particles, material, tier: String(tier + 1).padStart(2, '0') };
+    const color = ['#92a3b7', '#c2d0de', '#8dc9a9', '#8de6c0', '#93c5f8', '#aab8ff', '#c3abf2', '#e5a9d3', '#e6c18b', '#f3b891', '#f5d994', '#f7dcb3'][tier];
+    return { particles, material, color, tier: String(tier + 1).padStart(2, '0') };
   }
 
   function emblemMarkup(tier, side) {
@@ -116,7 +117,10 @@
     const facets = tier >= 8 ? '<path class="emblem-facets" d="m100 22 55 23 23 55-23 55-55 23-55-23-23-55 23-55Z M100 22l55 133H45L100 22 M22 100h156 M45 45l110 110 M155 45 45 155"/>' : '';
     const star = tier >= 10 ? '<path class="emblem-star" d="m100 12 18 63 70 25-70 25-18 63-18-63-70-25 70-25Z"/>' : '';
     const collector = tier === 9 || tier === 11 ? '<path class="emblem-crown" d="m82 44 5 10h26l5-10-10 4-8-10-8 10z"/><circle class="emblem-gems" cx="100" cy="5" r="2"/><circle class="emblem-gems" cx="195" cy="100" r="2"/><circle class="emblem-gems" cx="100" cy="195" r="2"/><circle class="emblem-gems" cx="5" cy="100" r="2"/>' : '';
-    return `<svg viewBox="0 0 200 200" fill="none"><defs><linearGradient id="metal${side}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="currentColor"/><stop offset=".3" stop-color="currentColor" stop-opacity=".22"/><stop offset=".5" stop-color="#fff0d0"/><stop offset=".7" stop-color="currentColor" stop-opacity=".25"/><stop offset="1" stop-color="currentColor"/></linearGradient></defs><g class="emblem-ticks">${ticks}</g><circle class="emblem-rim" cx="100" cy="100" r="85" stroke="url(#metal${side})"/><circle class="emblem-inner" cx="100" cy="100" r="64"/>${facets}${star}${collector}</svg>`;
+    const shield = tier >= 8 ? `<path class="emblem-shield" d="m100 30 62 35v70l-62 35-62-35V65Z" fill="url(#metal${side})"/><path d="m100 38 55 32v60l-55 32-55-32V70Z" fill="#111a23" stroke="currentColor" stroke-opacity=".45"/>` : '';
+    const wings = tier >= 9 ? `<g class="emblem-wings" fill="url(#metal${side})"><path d="M30 53 9 81v38l21 28-10-47ZM170 53l21 28v38l-21 28 10-47ZM37 34l-16 7-11 19 20-12ZM163 34l16 7 11 19-20-12ZM37 166l-16-7-11-19 20 12ZM163 166l16-7 11-19-20 12Z"/></g>` : '';
+    const apex = tier === 11 ? `<g class="emblem-astrolabe" stroke="url(#metal${side})"><ellipse cx="100" cy="100" rx="98" ry="68" transform="rotate(-35 100 100)"/><ellipse cx="100" cy="100" rx="98" ry="68" transform="rotate(35 100 100)"/><path d="M100 0v19m0 162v19M0 100h19m162 0h19" stroke-width="2"/></g>` : '';
+    return `<svg viewBox="0 0 200 200" fill="none"><defs><linearGradient id="metal${side}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="currentColor"/><stop offset=".22" stop-color="#fff0d0"/><stop offset=".42" stop-color="currentColor" stop-opacity=".25"/><stop offset=".6" stop-color="currentColor"/><stop offset=".82" stop-color="currentColor" stop-opacity=".15"/><stop offset="1" stop-color="#fff0d0"/></linearGradient></defs>${apex}${wings}<g class="emblem-ticks">${ticks}</g><circle class="emblem-rim" cx="100" cy="100" r="85" stroke="url(#metal${side})"/><circle class="emblem-inner" cx="100" cy="100" r="64"/>${shield}${facets}${star}${collector}</svg>`;
   }
 
   // ---- DOM 初始化（浏览器端） ----
@@ -149,8 +153,9 @@
     const motions = new Map();
     const counters = new Map();
     let counterFrame = 0;
-    function animate(node, frames, options) {
-      if (reduced.matches || document.hidden || state.delay === 0) return;
+    function animate(node, frames, options, playback = true) {
+      const surface = node.closest('.pcard, .battle-hud');
+      if (reduced.matches || document.hidden || (playback && state.delay === 0) || (surface && !surface.classList.contains('in-view'))) return;
       motions.get(node)?.cancel();
       const animation = node.animate(frames, { duration: 420, easing: 'cubic-bezier(.16,1,.3,1)', ...options });
       motions.set(node, animation);
@@ -197,7 +202,8 @@
       if (!ctx || reduced.matches || document.hidden || !stageVisible || !state.delay || !p.target) return;
       const now = performance.now(), target = geometry[p.target];
       const source = p.drain ? geometry[p.target === 'A' ? 'B' : 'A'] : geometry[p.source] || target;
-      const color = p.kind === 'heal' ? '#77e0b5' : p.kind === 'crit' ? '#ffd180' : p.source === 'A' ? '#72ceff' : '#ff8d9a';
+      const rarityColor = rarityFinish(currentCard(p.source || p.target).rarity).color;
+      const color = p.kind === 'heal' ? '#77e0b5' : p.kind === 'crit' ? rarityColor : p.source === 'A' ? '#72ceff' : '#ff8d9a';
       const attack = p.kind === 'hit' || p.kind === 'crit' || p.kind === 'miss';
       if (attack || p.drain) particles.push({ type: 'beam', source, target, color, start: now, life: p.drain ? 380 : 340, miss: p.kind === 'miss', critical: p.kind === 'crit' });
       const count = p.kind === 'crit' ? 38 : p.kind === 'death' ? 42 : p.kind === 'miss' ? 7 : 18;
@@ -240,6 +246,7 @@
       document.querySelectorAll('.float-number').forEach(n => n.remove());
     }
     reduced.addEventListener('change', () => { if (reduced.matches) clearMotion(); });
+    document.documentElement.classList.toggle('page-hidden', document.hidden);
     document.addEventListener('visibilitychange', () => {
       document.documentElement.classList.toggle('page-hidden', document.hidden);
       if (document.hidden) clearMotion();
@@ -256,6 +263,41 @@
       }
     });
     stageObserver.observe(battleHud);
+
+    // Event-driven reflection: one pending frame, no permanent pointer animation loop.
+    const finePointer = global.matchMedia('(hover: hover) and (pointer: fine)');
+    let pointerFrame = 0, pointerPanel = null, pointerBox = null, pointerX = 0, pointerY = 0;
+    function resetPointer() {
+      cancelAnimationFrame(pointerFrame); pointerFrame = 0;
+      if (pointerPanel) {
+        pointerPanel.classList.remove('pointer-active');
+        pointerPanel.style.removeProperty('--lean-x'); pointerPanel.style.removeProperty('--lean-y');
+      }
+      pointerPanel = null; pointerBox = null;
+    }
+    ['A', 'B'].forEach(side => {
+      const panel = el('panel' + side);
+      panel.addEventListener('pointerenter', () => {
+        if (!finePointer.matches || reduced.matches || document.hidden || state.playing) return;
+        resetPointer(); pointerPanel = panel; pointerBox = panel.getBoundingClientRect();
+        panel.classList.add('pointer-active');
+      });
+      panel.addEventListener('pointermove', e => {
+        if (pointerPanel !== panel || !pointerBox) return;
+        pointerX = e.clientX - pointerBox.left; pointerY = e.clientY - pointerBox.top;
+        if (!pointerFrame) pointerFrame = requestAnimationFrame(() => {
+          pointerFrame = 0;
+          panel.style.setProperty('--lean-x', ((pointerX / pointerBox.width - .5) * 5).toFixed(2) + 'px');
+          panel.style.setProperty('--lean-y', ((pointerY / pointerBox.height - .5) * 4).toFixed(2) + 'px');
+          panel.querySelector('.card-reflection').style.transform = `translate3d(${pointerX - 110}px,${pointerY - 110}px,0)`;
+        });
+      });
+      panel.addEventListener('pointerleave', resetPointer);
+    });
+    global.addEventListener('scroll', resetPointer, { passive: true });
+    global.addEventListener('resize', resetPointer, { passive: true });
+    document.addEventListener('visibilitychange', resetPointer);
+    reduced.addEventListener('change', resetPointer);
 
     function present(p) {
       ['A', 'B'].forEach(side => { el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
@@ -379,15 +421,20 @@
     }
 
     // ---- 渲染一侧 Player Card（identity + BP + BP 差值 + stats） ----
-    function renderSide(side, unit, deltaInfo) {
+    function renderSide(side, unit, deltaInfo, power) {
       const card = CARDS[unit.cardId] || currentCard(side);
-      el('name' + side).textContent = card.name;
-      el('rar' + side).textContent = unit.rarityName;
-      el('rar' + side).className = 'rar-badge t' + card.rarity;
-      el('role' + side).textContent = card.role;
-      el('desc' + side).textContent = card.source ? `${card.source} · ${card.desc}` : card.desc;
-      countTo(el('bp' + side), battlePower(unit));
       const panel = el('panel' + side);
+      const changedCard = panel.dataset.card !== card.id;
+      const changedLevel = panel.dataset.level !== String(unit.level);
+      const mounted = panel.dataset.card !== undefined;
+      if (changedCard) {
+        el('name' + side).textContent = card.name;
+        el('rar' + side).textContent = unit.rarityName;
+        el('rar' + side).className = 'rar-badge t' + card.rarity;
+        el('role' + side).textContent = card.role;
+        el('desc' + side).textContent = card.source ? `${card.source} · ${card.desc}` : card.desc;
+      }
+      countTo(el('bp' + side), power);
       const finish = rarityFinish(card.rarity);
       if (panel.dataset.rarity !== String(card.rarity)) {
         el('emblem' + side).innerHTML = emblemMarkup(card.rarity, side);
@@ -395,10 +442,13 @@
           `<i style="--x:${8 + i * 43 % 85}%;--y:${6 + i * 29 % 64}%;--drift:${(i % 3 - 1) * 14}px;--duration:${8 + i % 7}s;--delay:-${i * 1.7}s;--size:${i % 5 === 0 ? 3 : 1.5}px"></i>`).join('');
       }
       panel.dataset.rarity = card.rarity;
+      panel.dataset.card = card.id; panel.dataset.level = unit.level;
       el('cardCode' + side).textContent = 'N° ' + String(CARDS.indexOf(card) + 1).padStart(3, '0') + ' / 096';
       el('material' + side).textContent = finish.material;
       el('tierIndex' + side).textContent = 'RARITY ' + finish.tier + ' / 12';
-      panel.style.setProperty('--power-light', Math.min(.24, Math.max(.03, Math.log10(battlePower(unit)) / 32)));
+      panel.style.setProperty('--power-light', Math.min(.24, Math.max(.03, Math.log10(power) / 32)));
+      el('fighter' + side).style.setProperty('--rarity-accent', finish.color);
+      battleHud.style.setProperty('--foil-' + side.toLowerCase(), finish.color);
       el('lvl' + side).style.setProperty('--level-fill', (unit.level - 1) / 99 * 100 + '%');
       panel.classList.toggle('collector', card.rarity === 9 || card.rarity === 11);
       panel.classList.toggle('high-rarity', card.rarity >= 8);
@@ -416,18 +466,31 @@
         deltaEl.className = 'bp-delta';
       }
 
-      const rows = statRows(unit);
-      const codes = { maxHp: 'HP', atk: 'ATK', def: 'DEF', spd: 'SPD' };
-      el('stats' + side).innerHTML = rows.slice(0, 4)
-        .map(([k, v]) => `<div class="stat-tile"><span class="k">${STAT_LABELS[k]} <span class="stat-code">${codes[k]}</span></span><span class="v">${v}</span></div>`).join('');
-      el('secondaryStats' + side).innerHTML = rows.slice(4)
-        .map(([k, v]) => `<div class="stat-row"><span class="k">${STAT_LABELS[k]}</span><span class="v">${v}</span></div>`).join('');
+      if (changedCard || changedLevel) {
+        const rows = statRows(unit);
+        const codes = { maxHp: 'HP', atk: 'ATK', def: 'DEF', spd: 'SPD' };
+        if (!mounted) {
+          el('stats' + side).innerHTML = rows.slice(0, 4)
+            .map(([k, v]) => `<div class="stat-tile"><span class="k">${STAT_LABELS[k]} <span class="stat-code">${codes[k]}</span></span><span class="v">${v}</span></div>`).join('');
+          el('secondaryStats' + side).innerHTML = rows.slice(4)
+            .map(([k, v]) => `<div class="stat-row"><span class="k">${STAT_LABELS[k]}</span><span class="v">${v}</span></div>`).join('');
+        } else {
+          [...el('stats' + side).querySelectorAll('.v'), ...el('secondaryStats' + side).querySelectorAll('.v')].forEach((node, i) => {
+            if (node.textContent !== rows[i][1]) node.textContent = rows[i][1];
+          });
+          animate(panel.querySelector(changedCard ? '.identity' : '.power-pulse'), changedCard ?
+            [{ opacity: .35, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }] :
+            [{ opacity: 0, transform: 'translateX(-100%)' }, { opacity: .65, offset: .35 }, { opacity: 0, transform: 'translateX(100%)' }],
+          { duration: changedCard ? 520 : 600 }, false);
+        }
+      }
     }
 
     // ---- 双侧刷新 + BP 百分比差值（presentation-only） ----
     function refreshAll() {
       const key = [selA.value, lvlA.value, selB.value, lvlB.value].join(':');
       if (state.playing || key === state.selectionKey) return;
+      const needsReset = !state.selectionKey || state.events.length > 0;
       state.selectionKey = key;
       const uA = buildUnit(currentCard('A'), currentLevel('A'));
       const uB = buildUnit(currentCard('B'), currentLevel('B'));
@@ -438,11 +501,17 @@
         if (Math.abs(pct) < 0.05) return { sign: '±0.0%', cls: 'neu' };
         return pct > 0 ? { sign: `+${pct.toFixed(1)}%`, cls: 'pos' } : { sign: `${pct.toFixed(1)}%`, cls: 'neg' };
       };
-      renderSide('A', uA, deltaFor(bpA, bpB));
-      renderSide('B', uB, deltaFor(bpB, bpA));
+      renderSide('A', uA, deltaFor(bpA, bpB), bpA);
+      renderSide('B', uB, deltaFor(bpB, bpA), bpB);
+      el('powerFillA').style.transform = 'scaleX(' + bpA / (bpA + bpB) + ')';
+      el('powerFillB').style.transform = 'scaleX(' + bpB / (bpA + bpB) + ')';
       prepareArena(currentCard('A'), currentCard('B'));
       const ratio = Math.max(bpA, bpB) / Math.min(bpA, bpB);
       el('matchupHint').textContent = ratio < 1.06 ? 'BP 接近 · 胜负未定' : (bpA > bpB ? '蓝方' : '红方') + ' BP 领先 · ' + (ratio >= 2 ? '实力悬殊' : '等待交锋');
+      if (!needsReset) {
+        updateBar('A', uA.maxHp, uA.maxHp); updateBar('B', uB.maxHp, uB.maxHp);
+        return;
+      }
       el('replayBtn').disabled = true;
       renderSummary([]);
       ['A', 'B'].forEach(side => { el('panel' + side).classList.remove('fallen', 'victorious'); el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
@@ -506,6 +575,7 @@
         b.classList.add('on');
         b.setAttribute('aria-pressed', 'true');
         state.delay = SPEEDS[b.dataset.speed];
+        document.querySelector('.app').dataset.playback = b.dataset.speed;
         if (!state.delay) state.finishWait?.();
       });
     });
@@ -576,6 +646,9 @@
       const a = r.a, b = r.b;
       countTo(hud.hpA, a.hp, '', true); countTo(hud.hpB, b.hp, '', true);
       const winner = r.winner;
+      const winningCard = winner === -1 ? null : currentCard(winner === 0 ? 'A' : 'B');
+      resultBox.style.setProperty('--foil', winningCard ? rarityFinish(winningCard.rarity).color : '#b9c6d5');
+      el('resultMedal').innerHTML = winningCard ? emblemMarkup(winningCard.rarity, 'Result') + '<span>' + RARITY_LIST[winningCard.rarity].replace(' Collector', '') + '</span>' : '<span>VS</span>';
       resultBox.style.display = 'flex';
       el('resultVerdict').textContent = winner === -1 ? 'DRAW' : 'VICTORY';
       if (winner === 0) {
@@ -635,7 +708,7 @@
       input.removeAttribute('aria-invalid');
       state.seed = seed === null ? global.crypto.getRandomValues(new Uint32Array(1))[0] : seed;
       input.value = String(state.seed); el('seedHint').textContent = '当前 Seed · 可重播本局或开始新一局';
-      state.playing = true; clearMotion(); setControlsLocked(true);
+      state.playing = true; resetPointer(); clearMotion(); setControlsLocked(true);
       document.querySelector('.app').classList.add('is-playing');
       battleHud.classList.toggle('instant', !state.delay);
       state.follow = true; syncFollow(); state.lastRound = -1; state.previous = null; state.currentRow = null;
