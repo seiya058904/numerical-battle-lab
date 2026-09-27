@@ -18,17 +18,17 @@
 
   <!-- ===================== HEADER ===================== -->
   <header class="site-header">
-    <div class="brand"><span class="brand-overline">THE NUMERICAL COLLECTION</span>
+    <div class="brand">
       <h1><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M10 29V11h5l10 13V11h5v18h-5L15 16v13z" fill="currentColor"/><path d="M28 4h8v8M36 4l-9 9" stroke="currentColor" stroke-width="2"/></svg></span> NUMERICAL <b>BATTLE LAB</b></h1>
       <p class="sub">数值卡牌 · 自动 PK <span class="sub-divider">/</span> 选择对手，见证数值交锋。</p>
     </div>
     <div class="header-meta" aria-hidden="true">
-      <span class="system-dot"></span><span>96 CARDS / 12 RARITIES</span><span class="edition">COLLECTOR / V</span>
+      <span class="system-dot"></span><span>96 CARDS / 12 RARITIES</span><span class="edition">COLLECTOR / VI</span>
     </div>
   </header>
 
   <!-- ===================== BATTLE ARENA / HP HUD ===================== -->
-  <section class="battle-hud" id="battleHud" aria-label="战斗舞台"><svg class="arena-wiring" viewBox="0 0 1400 240" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30h360l60 60h155m250 0h155l60-60h360M0 210h360l60-60h155m250 0h155l60 60h360M700 0v35m0 170v35"/><circle cx="700" cy="120" r="103"/></svg><canvas id="battleFx" aria-hidden="true"></canvas><div class="stage-heading"><span>LIVE ARENA <span class="stage-slash">/</span> 对决现场</span><span id="matchupHint">等待就绪</span></div><div class="stage-announcement" id="stageAnnouncement" aria-hidden="true"></div>
+  <section class="battle-hud" id="battleHud" aria-label="战斗舞台"><svg class="arena-wiring" viewBox="0 0 1400 240" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30h360l60 60h155m250 0h155l60-60h360M0 210h360l60-60h155m250 0h155l60 60h360M700 0v35m0 170v35"/><circle cx="700" cy="120" r="103"/></svg><div class="arena-ambient" aria-hidden="true"><i></i><i></i></div><canvas id="battleFx" aria-hidden="true"></canvas><div class="stage-heading"><span>LIVE ARENA <span class="stage-slash">/</span> 对决现场</span><span id="matchupHint">等待就绪</span></div><div class="stage-announcement" id="stageAnnouncement" aria-hidden="true"></div>
     <div class="hud-side blue" id="fighterA"><span class="fighter-label">BLUE / 蓝方</span><div class="float-layer" id="floatA" aria-hidden="true"></div>
       <div class="hud-head">
         <span class="hud-name" id="sNameA">—</span>
@@ -80,9 +80,9 @@
     <section class="pcard blue" id="panelA">
       <div class="card-ornament" aria-hidden="true"><div class="card-aura"></div><div class="card-reflection"></div><svg class="foil-plates" viewBox="0 0 600 310" preserveAspectRatio="none"><defs><linearGradient id="foilA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="currentColor" stop-opacity=".06"/><stop offset=".48" stop-color="currentColor" stop-opacity=".35"/><stop offset=".5" stop-color="currentColor" stop-opacity=".06"/><stop offset="1" stop-color="currentColor" stop-opacity=".2"/></linearGradient></defs><path fill="url(#foilA)" d="M250 0h350v310L440 180ZM340 0h120L600 140v170L400 120Z"/><path d="M250 0 440 180 600 310M340 0l60 120 200 190M460 0l140 140" fill="none" stroke="currentColor" stroke-opacity=".35"/></svg><svg class="card-lattice" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice"><path d="M140 -80 500 280 860 -80M210 -80 500 210 790 -80M280 -80 500 140 720 -80M350 -80 500 70 650 -80M420 -80 500 0 580 -80M280 280 500 60 720 280M350 280 500 130 650 280"/></svg></div>
       <div class="ambient-particles" id="ambientA"></div>
-      <div class="card-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="card-edge-light" aria-hidden="true"></div><div class="card-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       <div class="card-rail"><span class="card-serial" id="cardCodeA"></span><span class="card-material" id="materialA"></span></div>
-      <div class="identity" data-identity="A"><div class="rarity-art" aria-hidden="true"><div class="emblem" id="emblemA"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div></div>
+      <div class="identity" data-identity="A"><div class="rarity-art" aria-hidden="true"><div class="seal-flare"></div><div class="emblem" id="emblemA"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div></div>
         <span class="team">TEAM&nbsp;BLUE</span>
         <div class="name-row">
           <span class="cname" id="nameA">—</span>
@@ -104,7 +104,7 @@
             <label for="lvlA">LEVEL</label>
             <span class="lvl-val">Lv.<input id="lvlAVal" type="text" inputmode="numeric" value="55" aria-label="蓝方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
           </div>
-          <input type="range" id="lvlA" min="1" max="100" value="55">
+          <input type="range" id="lvlA" min="1" max="100" value="55"><div class="level-scale" aria-hidden="true"><span>01</span><span>50</span><span>100</span></div>
         </div>
         <div class="bp-block">
           <div class="bp-head"><span class="bp-label">BATTLE POWER</span><svg class="power-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-8z"/></svg></div>
@@ -122,7 +122,7 @@
 
     <div class="vs-col" aria-hidden="true">
       <div class="axis-line"></div>
-      <div class="vs"><span>VS</span></div>
+      <svg class="axis-mark" viewBox="0 0 32 80"><path d="m16 1 12 19-12 19L4 20Zm0 20v39m-6-10 6 10 6-10m-6 14v15"/></svg><div class="vs"><span>VS</span></div>
       <span class="axis-caption">POWER<br>MEETS<br>PROBABILITY</span>
       <div class="axis-line"></div>
     </div>
@@ -130,9 +130,9 @@
     <section class="pcard red" id="panelB">
       <div class="card-ornament" aria-hidden="true"><div class="card-aura"></div><div class="card-reflection"></div><svg class="foil-plates" viewBox="0 0 600 310" preserveAspectRatio="none"><defs><linearGradient id="foilB" x1="0" y1="0" x2="1" y2="1"><stop stop-color="currentColor" stop-opacity=".06"/><stop offset=".48" stop-color="currentColor" stop-opacity=".35"/><stop offset=".5" stop-color="currentColor" stop-opacity=".06"/><stop offset="1" stop-color="currentColor" stop-opacity=".2"/></linearGradient></defs><path fill="url(#foilB)" d="M250 0h350v310L440 180ZM340 0h120L600 140v170L400 120Z"/><path d="M250 0 440 180 600 310M340 0l60 120 200 190M460 0l140 140" fill="none" stroke="currentColor" stroke-opacity=".35"/></svg><svg class="card-lattice" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice"><path d="M140 -80 500 280 860 -80M210 -80 500 210 790 -80M280 -80 500 140 720 -80M350 -80 500 70 650 -80M420 -80 500 0 580 -80M280 280 500 60 720 280M350 280 500 130 650 280"/></svg></div>
       <div class="ambient-particles" id="ambientB"></div>
-      <div class="card-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="card-edge-light" aria-hidden="true"></div><div class="card-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       <div class="card-rail"><span class="card-serial" id="cardCodeB"></span><span class="card-material" id="materialB"></span></div>
-      <div class="identity" data-identity="B"><div class="rarity-art" aria-hidden="true"><div class="emblem" id="emblemB"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div></div>
+      <div class="identity" data-identity="B"><div class="rarity-art" aria-hidden="true"><div class="seal-flare"></div><div class="emblem" id="emblemB"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div></div>
         <span class="team">TEAM&nbsp;RED</span>
         <div class="name-row">
           <span class="cname" id="nameB">—</span>
@@ -154,7 +154,7 @@
             <label for="lvlB">LEVEL</label>
             <span class="lvl-val">Lv.<input id="lvlBVal" type="text" inputmode="numeric" value="100" aria-label="红方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
           </div>
-          <input type="range" id="lvlB" min="1" max="100" value="100">
+          <input type="range" id="lvlB" min="1" max="100" value="100"><div class="level-scale" aria-hidden="true"><span>01</span><span>50</span><span>100</span></div>
         </div>
         <div class="bp-block">
           <div class="bp-head"><span class="bp-label">BATTLE POWER</span><svg class="power-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-8z"/></svg></div>

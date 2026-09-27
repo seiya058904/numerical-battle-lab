@@ -1,7 +1,7 @@
 'use strict';
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { CARDS } = require('../src/cards.js');
+const { CARDS, RARITY_LIST } = require('../src/cards.js');
 const power = require('../src/power.js');
 const { simulate } = require('../src/battle.js');
 const { parseEvent, matchesCard, normalizeLevel } = require('../src/app.js');
@@ -11,9 +11,10 @@ const { rarityFinish, emblemMarkup } = require('../src/app.js');
 
 test('rarity decoration has a bounded resource ladder and distinct premium materials', () => {
   const finishes = Array.from({ length: 12 }, (_, tier) => rarityFinish(tier));
-  assert.ok(finishes.slice(0, 6).every(f => f.particles === 0));
+  assert.ok(finishes.slice(0, 6).every(f => f.particles >= 3 && f.particles <= 5));
+  assert.equal(new Set([finishes[0].material, finishes[2].material, finishes[4].material]).size, 3);
   finishes.forEach((f, i) => {
-    assert.ok(Number.isInteger(f.particles) && f.particles <= 18);
+    assert.ok(Number.isInteger(f.particles) && f.particles <= 22);
     if (i) assert.ok(f.particles >= finishes[i - 1].particles);
   });
   assert.equal(new Set(finishes.slice(8).map(f => f.material)).size, 4);
@@ -35,7 +36,8 @@ test('rarity decoration has a bounded resource ladder and distinct premium mater
     const ids = new Set();
     for (const side of ['A', 'B', 'Result']) {
       const svg = emblemMarkup(tier, side);
-      assert.match(svg, new RegExp('>' + require('../src/cards.js').RARITY_LIST[tier].replace(' Collector', '').replace('+', '\\+') + '</text>'));
+      assert.ok(svg.includes('data-mark="' + RARITY_LIST[tier].replace(' Collector', '') + '"'));
+      assert.doesNotMatch(svg, /d="undefined"/);
       for (const [, id] of svg.matchAll(/id="([^"]+)"/g)) {
         assert.ok(!ids.has(id), 'independent medals must not share a gradient ID');
         ids.add(id);

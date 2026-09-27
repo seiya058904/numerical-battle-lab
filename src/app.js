@@ -102,31 +102,67 @@
 
   // Visual complexity is an explicit rarity ladder, unrelated to engine strength or RNG.
   function rarityFinish(tier) {
-    const particles = [0, 0, 0, 0, 0, 0, 4, 5, 8, 12, 14, 18][tier];
+    const particles = [3, 3, 4, 4, 5, 5, 7, 8, 12, 16, 18, 22][tier];
     const material = tier === 11 ? 'CELESTIAL GOLD' : tier === 10 ? 'SOLAR FOIL' :
-      tier === 9 ? 'COLLECTOR COPPER' : tier === 8 ? 'AURIC FOIL' : tier >= 6 ? 'PRISM ALLOY' : 'BRUSHED ALLOY';
-    const color = ['#92a3b7', '#c2d0de', '#8dc9a9', '#8de6c0', '#93c5f8', '#aab8ff', '#c3abf2', '#e5a9d3', '#e6c18b', '#f3b891', '#f5d994', '#f7dcb3'][tier];
+      tier === 9 ? 'COLLECTOR COPPER' : tier === 8 ? 'AURIC FOIL' : tier >= 6 ? 'PRISM ALLOY' : tier >= 4 ? 'SAPPHIRE ENAMEL' : tier >= 2 ? 'CHROMA TITANIUM' : 'PLATINUM ALLOY';
+    const color = ['#b5ccda', '#d4e3ee', '#8dc9a9', '#8de6c0', '#93c5f8', '#aab8ff', '#c3abf2', '#e5a9d3', '#e6c18b', '#f3b891', '#f5d994', '#f7dcb3'][tier];
     return { particles, material, color, tier: String(tier + 1).padStart(2, '0') };
   }
 
   function emblemMarkup(tier, side) {
-    const collector = tier === 9 || tier === 11;
-    const premium = tier >= 8;
+    const collector = tier === 9 || tier === 11, premium = tier >= 8;
     const glyph = RARITY_LIST[tier].replace(' Collector', '');
-    const metal = 'url(#metal' + side + ')';
-    const highlight = premium ? '#fff0d2' : '#ecf3fb';
-    const shadow = premium ? '#a18252' : '#6e8196';
-    const ticks = Array.from({ length: premium ? 60 : 24 }, (_, i) =>
-      '<path d="M120 12v' + (i % 5 === 0 ? 7 : 2) + '" transform="rotate(' + i * (premium ? 6 : 15) + ' 120 120)"/>').join('');
-    // Geometry belongs to the perimeter. The opaque face and its lettering are drawn last,
-    // in the same SVG coordinate system, so no orbit, facet or crown can cross the label.
-    const facets = premium ? '<path class="emblem-facets" d="M120 26 186 54 214 120 186 186 120 214 54 186 26 120 54 54Z M120 35 179 61 205 120 179 179 120 205 61 179 35 120 61 61Z"/>' : '';
-    const wings = collector ? '<g class="emblem-wings" fill="' + metal + '"><path d="m47 70-20 17 7 18 12-10-10-6Zm-8 35-17 16 13 16 8-10-9-7Zm4 34-10 17 20 15 4-12-13-7Zm14 31-4 16 23 9-1-13-13-5ZM193 70l20 17-7 18-12-10 10-6Zm8 35 17 16-13 16-8-10 9-7Zm-4 34 10 17-20 15-4-12 13-7Zm-14 31 4 16-23 9 1-13 13-5Z"/></g>' : '';
-    const star = tier >= 10 ? '<path class="emblem-star" fill="' + metal + '" d="m120 0 8 25-8 14-8-14ZM240 120l-25 8-14-8 14-8ZM120 240l-8-25 8-14 8 14ZM0 120l25-8 14 8-14 8Z"/>' : '';
-    const astrolabe = tier === 11 ? '<g class="emblem-astrolabe" stroke="' + metal + '"><path d="M49 30a114 114 0 0 1 142 0M210 49a114 114 0 0 1 0 142M191 210a114 114 0 0 1-142 0M30 191a114 114 0 0 1 0-142"/><circle cx="41" cy="41" r="3"/><circle cx="199" cy="41" r="3"/><circle cx="199" cy="199" r="3"/><circle cx="41" cy="199" r="3"/></g>' : '';
-    const face = premium ? 'M120 48 176 72 187 120 176 166 120 190 64 166 53 120 64 72Z' : 'M86 61h68l25 25v68l-25 25H86l-25-25V86Z';
-    const crown = collector ? '<path class="emblem-crown" d="m101 72 5 11h28l5-11-11 5-8-10-8 10Z" fill="' + metal + '"/>' : '<path class="emblem-insignia" d="m120 69 4 7-4 7-4-7Z" fill="' + metal + '"/>';
-    return '<svg viewBox="0 0 240 240" fill="none" aria-hidden="true"><defs><linearGradient id="metal' + side + '" x1="0" y1="0" x2="1" y2="1"><stop stop-color="' + highlight + '"/><stop offset=".22" stop-color="currentColor"/><stop offset=".43" stop-color="' + shadow + '"/><stop offset=".49" stop-color="' + highlight + '"/><stop offset=".66" stop-color="currentColor"/><stop offset="1" stop-color="' + shadow + '"/></linearGradient><linearGradient id="face' + side + '" x2=".75" y2="1"><stop stop-color="#29343c"/><stop offset=".45" stop-color="#111d29"/><stop offset="1" stop-color="#060d16"/></linearGradient></defs><g class="emblem-ticks">' + ticks + '</g><circle class="emblem-rim" cx="120" cy="120" r="98" stroke="' + metal + '"/><circle class="emblem-inner" cx="120" cy="120" r="91"/>' + facets + wings + astrolabe + star + (premium ? '<circle class="emblem-glint" cx="120" cy="120" r="98" stroke="#fff0d2" stroke-width="1.6" stroke-dasharray="18 598"/>' : '') + '<g class="emblem-face"><path d="' + face + '" fill="' + metal + '"/><path d="' + face + '" transform="translate(120 120) scale(.93) translate(-120 -120)" fill="url(#face' + side + ')" stroke="currentColor" stroke-width=".5"/>' + crown + '<path d="M87 145h66M103 149h34" stroke="currentColor" opacity=".35"/><text class="emblem-letter" x="120" y="134" text-anchor="middle" fill="' + metal + '" font-size="' + (glyph.length > 2 ? 39 : 50) + '">' + glyph + '</text><text class="emblem-number" x="120" y="166" text-anchor="middle" fill="currentColor">' + String(tier + 1).padStart(2, '0') + ' / XII</text></g><text class="emblem-edition" x="120" y="224" text-anchor="middle" fill="currentColor">' + (collector ? 'COLLECTOR' : tier >= 10 ? 'APEX' : premium ? 'PRESTIGE' : 'NUMERICAL') + '</text></svg>';
+    const metal = `url(#metal${side})`, enamel = `url(#face${side})`;
+    const highlight = premium ? '#fff0d2' : '#f0f8ff';
+    const shadow = premium ? '#9c7b47' : '#738e9f';
+    // Authored, cut-metal lettering shares the seal's bevel and geometry. Paths stay inside
+    // the opaque face; rings, bridges and moving light are painted behind that face.
+    const letters = {
+      C: 'M27 0H8L1 7v22l7 7h19v-8H12l-3-3V11l3-3h15Z',
+      B: 'M1 0h18l9 8v7l-5 3 5 3v7l-9 8H1Zm8 8v6h9l2-2-2-4Zm0 14v6h9l2-4-2-2Z',
+      A: 'M1 36 11 0h9l10 36h-9l-2-8h-8l-2 8Zm12-16h4l-2-10Z',
+      S: 'M28 0 25 8H12Q9 8 9 11q0 2 4 3l7 3q9 3 9 10 0 9-11 9H1l3-8h13q4 0 4-3 0-2-4-3l-7-3Q1 16 1 9 1 0 12 0Z',
+      X: 'M0 0h10l5 11L20 0h10L20 18l10 18H20l-5-11-5 11H0l10-18Z',
+      '+': 'M3 14h8V6h7v8h8v7h-8v8h-7v-8H3Z'
+    };
+    const scale = glyph.length > 2 ? 1 : 1.23;
+    const width = (glyph.length * 34 - 4) * scale;
+    const mark = [...glyph].map((letter, i) => `<path d="${letters[letter]}" transform="translate(${i * 34} 0)"/>`).join('');
+    const ticks = Array.from({ length: 60 }, (_, i) =>
+      `<path d="M120 13v${i % 5 === 0 ? 7 : 2}" transform="rotate(${i * 6} 120 120)"/>`).join('');
+    const mounts = Array.from({ length: premium ? 8 : 4 }, (_, i) =>
+      `<g transform="rotate(${i * (premium ? 45 : 90) + 45} 120 120)"><path d="m115 22 5-4 5 4v9l-5 3-5-3Z" fill="${metal}"/><path d="M117 25h6" stroke="#101a23"/></g>`).join('');
+    const family = tier < 2 ? 'M78 54h84l27 27v78l-27 27H78l-27-27V81Z' :
+      tier < 4 ? 'M120 44 189 81v78l-69 38-69-38V81Z' :
+      tier < 6 ? 'M120 38 195 120 120 200 45 120Z' : 'M120 43 180 69 195 120 180 171 120 197 60 171 45 120 60 69Z';
+    const bridges = tier < 2 ? 'M30 87h15v66H30l-7-9V96ZM210 87h-15v66h15l7-9V96Z' :
+      tier < 4 ? 'M36 66 51 58v21L35 92ZM36 174l15 8v-21l-16-13ZM204 66l-15-8v21l16 13ZM204 174l-15 8v-21l16-13Z' :
+      'M120 20 130 35l-10 10-10-10ZM220 120l-15 10-10-10 10-10ZM120 220l-10-15 10-10 10 10ZM20 120l15-10 10 10-10 10Z';
+    const facets = premium ? `<g class="emblem-facets" stroke="${metal}"><path d="M120 23 188 52 217 120 188 188 120 217 52 188 23 120 52 52Z M120 30 183 57 210 120 183 183 120 210 57 183 30 120 57 57Z"/></g>` : '';
+    const wings = collector ? `<g class="emblem-wings" fill="${metal}"><path d="m42 61-20 20 8 14 15-16-12-1Zm-10 34-18 19 11 17 14-18-12-4Zm1 35-13 23 17 15 8-19-12-2Zm12 31-5 23 23 11 1-19-12 1Zm23 22 2 20 27 4-8-15-11 3ZM198 61l20 20-8 14-15-16 12-1Zm10 34 18 19-11 17-14-18 12-4Zm-1 35 13 23-17 15-8-19 12-2Zm-12 31 5 23-23 11-1-19 12 1Zm-23 22-2 20-27 4 8-15 11 3Z"/></g>` : '';
+    const star = tier >= 10 ? `<g class="emblem-star" fill="${metal}"><path d="m120 0 9 27-9 15-9-15ZM240 120l-27 9-15-9 15-9ZM120 240l-9-27 9-15 9 15ZM0 120l27-9 15 9-15 9Z"/><path d="M52 52 69 60 60 69ZM188 52l-17 8 9 9ZM188 188l-17-8 9-9ZM52 188l17-8-9-9Z"/></g>` : '';
+    const astrolabe = tier === 11 ? `<g class="emblem-astrolabe" stroke="${metal}"><path d="M43 28a120 120 0 0 1 154 0M212 43a120 120 0 0 1 0 154M197 212a120 120 0 0 1-154 0M28 197a120 120 0 0 1 0-154"/><path d="m37 37 8-2-2 8-8 2ZM203 37l-8-2 2 8 8 2ZM203 203l-8 2 2-8 8-2ZM37 203l8 2-2-8-8-2Z" fill="${metal}"/></g>` : '';
+    const crown = collector ? `<path class="emblem-crown" d="m100 70 5 12h30l5-12-12 5-8-12-8 12Z" fill="${metal}"/>` :
+      `<path class="emblem-insignia" d="m107 73 13-8 13 8-13 8Z" fill="${metal}"/><path d="M120 68v10" stroke="#14202c"/>`;
+    return `<svg viewBox="0 0 240 240" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="metal${side}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${highlight}"/><stop offset=".2" stop-color="currentColor"/><stop offset=".43" stop-color="${shadow}"/><stop offset=".49" stop-color="${highlight}"/><stop offset=".7" stop-color="currentColor"/><stop offset="1" stop-color="${shadow}"/></linearGradient>
+        <linearGradient id="face${side}" x2=".8" y2="1"><stop stop-color="#3a4b58"/><stop offset=".43" stop-color="#172632"/><stop offset=".44" stop-color="#111e2c"/><stop offset="1" stop-color="#070f1a"/></linearGradient>
+      </defs>
+      <circle class="emblem-base" cx="120" cy="120" r="102" fill="${enamel}" stroke="${metal}" stroke-width="3"/>
+      <g class="emblem-ticks">${ticks}</g><circle class="emblem-rim" cx="120" cy="120" r="91" stroke="${metal}"/>
+      <circle class="emblem-inner" cx="120" cy="120" r="85"/><g class="emblem-mounts">${mounts}</g>
+      <path class="emblem-bridges" d="${bridges}" fill="${metal}"/>${facets}${wings}${astrolabe}${star}
+      <circle class="emblem-glint" cx="120" cy="120" r="102" stroke="${highlight}" stroke-width="1.8" stroke-dasharray="24 617"/>
+      <path d="${family}" transform="translate(0 4)" fill="#020812" opacity=".65"/>
+      <g class="emblem-face"><path d="${family}" fill="${metal}"/><path d="${family}" transform="translate(120 120) scale(.91) translate(-120 -120)" fill="${enamel}" stroke="currentColor" stroke-width=".5"/>
+        <path d="${family}" transform="translate(120 120) scale(.83) translate(-120 -120)" stroke="currentColor" opacity=".15"/>
+        ${crown}<g class="emblem-letter" data-mark="${glyph}" transform="translate(${120 - width / 2} ${134 - 36 * scale}) scale(${scale})" fill="${metal}" fill-rule="evenodd">${mark}</g>
+        <path d="M83 146h25l12 5 12-5h25M105 155h30" stroke="currentColor" opacity=".5"/>
+        <text class="emblem-number" x="120" y="171" text-anchor="middle" fill="currentColor">${String(tier + 1).padStart(2, '0')} / XII</text>
+      </g>
+      <text class="emblem-edition" x="120" y="225" text-anchor="middle" fill="currentColor">${collector ? 'COLLECTOR' : tier >= 10 ? 'APEX' : premium ? 'PRESTIGE' : tier >= 4 ? 'PRISM' : tier >= 2 ? 'CHROMA' : 'PLATINUM'}</text>
+    </svg>`;
   }
 
   // ---- DOM 初始化（浏览器端） ----
@@ -482,6 +518,9 @@
           [...el('stats' + side).querySelectorAll('.v'), ...el('secondaryStats' + side).querySelectorAll('.v')].forEach((node, i) => {
             if (node.textContent !== rows[i][1]) node.textContent = rows[i][1];
           });
+          if (changedCard) animate(panel.querySelector('.seal-flare'),
+            [{ opacity: 0, transform: 'scale(.65)' }, { opacity: .7, offset: .25 }, { opacity: 0, transform: 'scale(1.18)' }],
+            { duration: 850 }, false);
           animate(panel.querySelector(changedCard ? '.identity' : '.power-pulse'), changedCard ?
             [{ opacity: .35, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }] :
             [{ opacity: 0, transform: 'translateX(-100%)' }, { opacity: .65, offset: .35 }, { opacity: 0, transform: 'translateX(100%)' }],
