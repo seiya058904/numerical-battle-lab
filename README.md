@@ -1,5 +1,9 @@
 # 数值卡牌 · 自动 PK
 
+
+<img width="1672" height="941" alt="ChatGPT 图像 2026年9月27日 22_38_27" src="https://github.com/user-attachments/assets/7ca1b5eb-2d0e-47a2-bd7f-1e668e39ee11" />
+
+
 这是一个自动数值卡牌 PK 游戏。
 
 - 选两张卡。
