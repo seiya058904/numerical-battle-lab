@@ -110,17 +110,23 @@
   }
 
   function emblemMarkup(tier, side) {
-    const ticks = Array.from({ length: tier >= 8 ? 48 : 24 }, (_, i) => {
-      const angle = i * (tier >= 8 ? 7.5 : 15);
-      return `<path d="M100 8v${i % 4 === 0 ? 8 : 3}" transform="rotate(${angle} 100 100)"/>`;
-    }).join('');
-    const facets = tier >= 8 ? '<path class="emblem-facets" d="m100 22 55 23 23 55-23 55-55 23-55-23-23-55 23-55Z M100 22l55 133H45L100 22 M22 100h156 M45 45l110 110 M155 45 45 155"/>' : '';
-    const star = tier >= 10 ? '<path class="emblem-star" d="m100 12 18 63 70 25-70 25-18 63-18-63-70-25 70-25Z"/>' : '';
-    const collector = tier === 9 || tier === 11 ? '<path class="emblem-crown" d="m82 44 5 10h26l5-10-10 4-8-10-8 10z"/><circle class="emblem-gems" cx="100" cy="5" r="2"/><circle class="emblem-gems" cx="195" cy="100" r="2"/><circle class="emblem-gems" cx="100" cy="195" r="2"/><circle class="emblem-gems" cx="5" cy="100" r="2"/>' : '';
-    const shield = tier >= 8 ? `<path class="emblem-shield" d="m100 30 62 35v70l-62 35-62-35V65Z" fill="url(#metal${side})"/><path d="m100 38 55 32v60l-55 32-55-32V70Z" fill="#111a23" stroke="currentColor" stroke-opacity=".45"/>` : '';
-    const wings = tier >= 9 ? `<g class="emblem-wings" fill="url(#metal${side})"><path d="M30 53 9 81v38l21 28-10-47ZM170 53l21 28v38l-21 28 10-47ZM37 34l-16 7-11 19 20-12ZM163 34l16 7 11 19-20-12ZM37 166l-16-7-11-19 20 12ZM163 166l16-7 11-19-20 12Z"/></g>` : '';
-    const apex = tier === 11 ? `<g class="emblem-astrolabe" stroke="url(#metal${side})"><ellipse cx="100" cy="100" rx="98" ry="68" transform="rotate(-35 100 100)"/><ellipse cx="100" cy="100" rx="98" ry="68" transform="rotate(35 100 100)"/><path d="M100 0v19m0 162v19M0 100h19m162 0h19" stroke-width="2"/></g>` : '';
-    return `<svg viewBox="0 0 200 200" fill="none"><defs><linearGradient id="metal${side}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="currentColor"/><stop offset=".22" stop-color="#fff0d0"/><stop offset=".42" stop-color="currentColor" stop-opacity=".25"/><stop offset=".6" stop-color="currentColor"/><stop offset=".82" stop-color="currentColor" stop-opacity=".15"/><stop offset="1" stop-color="#fff0d0"/></linearGradient></defs>${apex}${wings}<g class="emblem-ticks">${ticks}</g><circle class="emblem-rim" cx="100" cy="100" r="85" stroke="url(#metal${side})"/><circle class="emblem-inner" cx="100" cy="100" r="64"/>${shield}${facets}${star}${collector}</svg>`;
+    const collector = tier === 9 || tier === 11;
+    const premium = tier >= 8;
+    const glyph = RARITY_LIST[tier].replace(' Collector', '');
+    const metal = 'url(#metal' + side + ')';
+    const highlight = premium ? '#fff0d2' : '#ecf3fb';
+    const shadow = premium ? '#a18252' : '#6e8196';
+    const ticks = Array.from({ length: premium ? 60 : 24 }, (_, i) =>
+      '<path d="M120 12v' + (i % 5 === 0 ? 7 : 2) + '" transform="rotate(' + i * (premium ? 6 : 15) + ' 120 120)"/>').join('');
+    // Geometry belongs to the perimeter. The opaque face and its lettering are drawn last,
+    // in the same SVG coordinate system, so no orbit, facet or crown can cross the label.
+    const facets = premium ? '<path class="emblem-facets" d="M120 26 186 54 214 120 186 186 120 214 54 186 26 120 54 54Z M120 35 179 61 205 120 179 179 120 205 61 179 35 120 61 61Z"/>' : '';
+    const wings = collector ? '<g class="emblem-wings" fill="' + metal + '"><path d="m47 70-20 17 7 18 12-10-10-6Zm-8 35-17 16 13 16 8-10-9-7Zm4 34-10 17 20 15 4-12-13-7Zm14 31-4 16 23 9-1-13-13-5ZM193 70l20 17-7 18-12-10 10-6Zm8 35 17 16-13 16-8-10 9-7Zm-4 34 10 17-20 15-4-12 13-7Zm-14 31 4 16-23 9 1-13 13-5Z"/></g>' : '';
+    const star = tier >= 10 ? '<path class="emblem-star" fill="' + metal + '" d="m120 0 8 25-8 14-8-14ZM240 120l-25 8-14-8 14-8ZM120 240l-8-25 8-14 8 14ZM0 120l25-8 14 8-14 8Z"/>' : '';
+    const astrolabe = tier === 11 ? '<g class="emblem-astrolabe" stroke="' + metal + '"><path d="M49 30a114 114 0 0 1 142 0M210 49a114 114 0 0 1 0 142M191 210a114 114 0 0 1-142 0M30 191a114 114 0 0 1 0-142"/><circle cx="41" cy="41" r="3"/><circle cx="199" cy="41" r="3"/><circle cx="199" cy="199" r="3"/><circle cx="41" cy="199" r="3"/></g>' : '';
+    const face = premium ? 'M120 48 176 72 187 120 176 166 120 190 64 166 53 120 64 72Z' : 'M86 61h68l25 25v68l-25 25H86l-25-25V86Z';
+    const crown = collector ? '<path class="emblem-crown" d="m101 72 5 11h28l5-11-11 5-8-10-8 10Z" fill="' + metal + '"/>' : '<path class="emblem-insignia" d="m120 69 4 7-4 7-4-7Z" fill="' + metal + '"/>';
+    return '<svg viewBox="0 0 240 240" fill="none" aria-hidden="true"><defs><linearGradient id="metal' + side + '" x1="0" y1="0" x2="1" y2="1"><stop stop-color="' + highlight + '"/><stop offset=".22" stop-color="currentColor"/><stop offset=".43" stop-color="' + shadow + '"/><stop offset=".49" stop-color="' + highlight + '"/><stop offset=".66" stop-color="currentColor"/><stop offset="1" stop-color="' + shadow + '"/></linearGradient><linearGradient id="face' + side + '" x2=".75" y2="1"><stop stop-color="#29343c"/><stop offset=".45" stop-color="#111d29"/><stop offset="1" stop-color="#060d16"/></linearGradient></defs><g class="emblem-ticks">' + ticks + '</g><circle class="emblem-rim" cx="120" cy="120" r="98" stroke="' + metal + '"/><circle class="emblem-inner" cx="120" cy="120" r="91"/>' + facets + wings + astrolabe + star + (premium ? '<circle class="emblem-glint" cx="120" cy="120" r="98" stroke="#fff0d2" stroke-width="1.6" stroke-dasharray="18 598"/>' : '') + '<g class="emblem-face"><path d="' + face + '" fill="' + metal + '"/><path d="' + face + '" transform="translate(120 120) scale(.93) translate(-120 -120)" fill="url(#face' + side + ')" stroke="currentColor" stroke-width=".5"/>' + crown + '<path d="M87 145h66M103 149h34" stroke="currentColor" opacity=".35"/><text class="emblem-letter" x="120" y="134" text-anchor="middle" fill="' + metal + '" font-size="' + (glyph.length > 2 ? 39 : 50) + '">' + glyph + '</text><text class="emblem-number" x="120" y="166" text-anchor="middle" fill="currentColor">' + String(tier + 1).padStart(2, '0') + ' / XII</text></g><text class="emblem-edition" x="120" y="224" text-anchor="middle" fill="currentColor">' + (collector ? 'COLLECTOR' : tier >= 10 ? 'APEX' : premium ? 'PRESTIGE' : 'NUMERICAL') + '</text></svg>';
   }
 
   // ---- DOM 初始化（浏览器端） ----
@@ -453,8 +459,6 @@
       panel.classList.toggle('collector', card.rarity === 9 || card.rarity === 11);
       panel.classList.toggle('high-rarity', card.rarity >= 8);
       panel.classList.toggle('apex', card.rarity >= 10);
-      el('glyph' + side).textContent = unit.rarityName.replace(' Collector', '');
-      el('edition' + side).textContent = unit.rarityName.includes('Collector') ? 'COLLECTOR EDITION' : card.rarity >= 10 ? 'APEX CLASS' : card.rarity >= 6 ? 'PRESTIGE CLASS' : 'STANDARD ISSUE';
 
       const deltaEl = el('bpDelta' + side);
       if (deltaInfo) {
@@ -648,7 +652,7 @@
       const winner = r.winner;
       const winningCard = winner === -1 ? null : currentCard(winner === 0 ? 'A' : 'B');
       resultBox.style.setProperty('--foil', winningCard ? rarityFinish(winningCard.rarity).color : '#b9c6d5');
-      el('resultMedal').innerHTML = winningCard ? emblemMarkup(winningCard.rarity, 'Result') + '<span>' + RARITY_LIST[winningCard.rarity].replace(' Collector', '') + '</span>' : '<span>VS</span>';
+      el('resultMedal').innerHTML = winningCard ? emblemMarkup(winningCard.rarity, 'Result') : '<span>VS</span>';
       resultBox.style.display = 'flex';
       el('resultVerdict').textContent = winner === -1 ? 'DRAW' : 'VICTORY';
       if (winner === 0) {

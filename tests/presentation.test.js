@@ -30,6 +30,19 @@ test('rarity decoration has a bounded resource ladder and distinct premium mater
   assert.match(emblemMarkup(9, 'A'), /emblem-wings/);
   assert.doesNotMatch(emblemMarkup(8, 'A'), /emblem-wings/);
   for (const finish of finishes) assert.match(finish.color, /^#[0-9a-f]{6}$/);
+  // All three displayed medals must own unique paint-server IDs and include their labels.
+  for (let tier = 0; tier < 12; tier++) {
+    const ids = new Set();
+    for (const side of ['A', 'B', 'Result']) {
+      const svg = emblemMarkup(tier, side);
+      assert.match(svg, new RegExp('>' + require('../src/cards.js').RARITY_LIST[tier].replace(' Collector', '').replace('+', '\\+') + '</text>'));
+      for (const [, id] of svg.matchAll(/id="([^"]+)"/g)) {
+        assert.ok(!ids.has(id), 'independent medals must not share a gradient ID');
+        ids.add(id);
+      }
+      for (const [, id] of svg.matchAll(/url\(#([^)]+)\)/g)) assert.ok(ids.has(id), 'every paint reference must resolve');
+    }
+  }
 });
 
 test('material and emblem construction is repeatable without consuming random numbers', () => {
