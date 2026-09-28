@@ -115,6 +115,16 @@
     const metal = `url(#metal${side})`, enamel = `url(#face${side})`;
     const highlight = premium ? '#fff0d2' : '#f0f8ff';
     const shadow = premium ? '#9c7b47' : '#738e9f';
+    // A shared faceted cut: increasing rank adds ribs and longer ceremonial points.
+    // Geometry is deterministic; these are optical surfaces, never combat inputs.
+    const polar = (radius, angle) => [120 + radius * Math.cos(angle), 120 + radius * Math.sin(angle)].map(v => v.toFixed(2)).join(' ');
+    const ribs = Array.from({ length: premium ? 12 : 8 }, (_, i) => {
+      const count = premium ? 12 : 8, a = i * Math.PI * 2 / count - Math.PI / 2;
+      const reach = tier >= 10 && i % 3 === 0 ? 124 : collector && i % 3 === 0 ? 117 : 105;
+      return `<path d="M${polar(82, a - .12)} L${polar(reach, a)} L${polar(92, a + .13)} Z" fill="${metal}"/>
+        <path d="M${polar(82, a - .12)} L${polar(reach, a)} L${polar(85, a)} Z" fill="${highlight}" opacity=".55"/>
+        <path d="M${polar(85, a)} L${polar(reach, a)} L${polar(92, a + .13)} Z" fill="${shadow}" opacity=".7"/>`;
+    }).join('');
     // Authored, cut-metal lettering shares the seal's bevel and geometry. Paths stay inside
     // the opaque face; rings, bridges and moving light are painted behind that face.
     const letters = {
@@ -135,7 +145,7 @@
     const family = tier < 2 ? 'M78 54h84l27 27v78l-27 27H78l-27-27V81Z' :
       tier < 4 ? 'M120 44 189 81v78l-69 38-69-38V81Z' :
       tier < 6 ? 'M120 38 195 120 120 200 45 120Z' : 'M120 43 180 69 195 120 180 171 120 197 60 171 45 120 60 69Z';
-    const bridges = tier < 2 ? 'M30 87h15v66H30l-7-9V96ZM210 87h-15v66h15l7-9V96Z' :
+    const bridges = tier < 2 ? 'M25 98 42 85v70l-17-13 7-22ZM215 98l-17-13v70l17-13-7-22Z' :
       tier < 4 ? 'M36 66 51 58v21L35 92ZM36 174l15 8v-21l-16-13ZM204 66l-15-8v21l16 13ZM204 174l-15 8v-21l16-13Z' :
       'M120 20 130 35l-10 10-10-10ZM220 120l-15 10-10-10 10-10ZM120 220l-10-15 10-10 10 10ZM20 120l15-10 10 10-10 10Z';
     const facets = premium ? `<g class="emblem-facets" stroke="${metal}"><path d="M120 23 188 52 217 120 188 188 120 217 52 188 23 120 52 52Z M120 30 183 57 210 120 183 183 120 210 57 183 30 120 57 57Z"/></g>` : '';
@@ -150,14 +160,17 @@
         <linearGradient id="face${side}" x2=".8" y2="1"><stop stop-color="#3a4b58"/><stop offset=".43" stop-color="#172632"/><stop offset=".44" stop-color="#111e2c"/><stop offset="1" stop-color="#070f1a"/></linearGradient>
       </defs>
       <circle class="emblem-base" cx="120" cy="120" r="102" fill="${enamel}" stroke="${metal}" stroke-width="3"/>
+      <g class="emblem-engine">${Array.from({ length: 12 + tier * 2 }, (_, i) => `<path d="M120 24v12m-3-8h6" transform="rotate(${i * 360 / (12 + tier * 2)} 120 120)"/>`).join('')}<circle cx="120" cy="120" r="96" stroke-dasharray="2 6"/></g>
       <g class="emblem-ticks">${ticks}</g><circle class="emblem-rim" cx="120" cy="120" r="91" stroke="${metal}"/>
       <circle class="emblem-inner" cx="120" cy="120" r="85"/><g class="emblem-mounts">${mounts}</g>
       <path class="emblem-bridges" d="${bridges}" fill="${metal}"/>${facets}${wings}${astrolabe}${star}
+      <g class="emblem-prism">${ribs}</g>
       <circle class="emblem-glint" cx="120" cy="120" r="102" stroke="${highlight}" stroke-width="1.8" stroke-dasharray="24 617"/>
       <path d="${family}" transform="translate(0 4)" fill="#020812" opacity=".65"/>
       <g class="emblem-face"><path d="${family}" fill="${metal}"/><path d="${family}" transform="translate(120 120) scale(.91) translate(-120 -120)" fill="${enamel}" stroke="currentColor" stroke-width=".5"/>
         <path d="${family}" transform="translate(120 120) scale(.83) translate(-120 -120)" stroke="currentColor" opacity=".15"/>
-        ${crown}<g class="emblem-letter" data-mark="${glyph}" transform="translate(${120 - width / 2} ${134 - 36 * scale}) scale(${scale})" fill="${metal}" fill-rule="evenodd">${mark}</g>
+        ${crown}<path d="M66 118 120 55 174 118 120 184Z" stroke="currentColor" opacity=".12"/>
+        <g class="emblem-letter" data-mark="${glyph}" transform="translate(${120 - width / 2} ${134 - 36 * scale}) scale(${scale})" fill="${metal}" fill-rule="evenodd">${mark}</g>
         <path d="M83 146h25l12 5 12-5h25M105 155h30" stroke="currentColor" opacity=".5"/>
         <text class="emblem-number" x="120" y="171" text-anchor="middle" fill="currentColor">${String(tier + 1).padStart(2, '0')} / XII</text>
       </g>
@@ -183,6 +196,7 @@
     const roundTxt = el('roundTxt');
     const hudState = el('hudState');
     const battleHud = el('battleHud');
+    const app = document.querySelector('.app');
 
     const hud = {
       barA: el('hpbarA'), barB: el('hpbarB'),
@@ -230,14 +244,22 @@
     let particles = [], fxFrame = 0, geometry = { width: 1, height: 1, A: [0, 0], B: [0, 0] };
     function resizeFx() {
       const box = battleHud.getBoundingClientRect();
-      const dpr = Math.min(2, global.devicePixelRatio || 1);
-      canvas.width = Math.round(box.width * dpr); canvas.height = Math.round(box.height * dpr);
+      // A single surface with a strict pixel budget, including 4K and mobile stages.
+      const dpr = Math.min(1.5, global.devicePixelRatio || 1, Math.sqrt(3500000 / Math.max(1, box.width * box.height)));
+      canvas.width = Math.floor(box.width * dpr); canvas.height = Math.floor(box.height * dpr);
       if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       geometry = { width: box.width, height: box.height };
       for (const side of ['A', 'B']) {
-        const r = el('fighter' + side).getBoundingClientRect();
+        const r = el('panel' + side).querySelector('.rarity-art').getBoundingClientRect();
         geometry[side] = [r.left - box.left + r.width / 2, r.top - box.top + r.height / 2];
+        const life = el('fighter' + side).getBoundingClientRect();
+        const layer = el('float' + side);
+        layer.style.top = r.top - life.top + r.height / 2 + 'px';
+        layer.style.left = r.left - life.left - r.width * .15 + 'px';
+        layer.style.width = r.width * 1.3 + 'px';
       }
+      const dial = document.querySelector('.round-center').getBoundingClientRect();
+      battleHud.style.setProperty('--announcement-y', dial.bottom - box.top + 12 + 'px');
     }
     new ResizeObserver(resizeFx).observe(battleHud);
     function burst(p) {
@@ -313,7 +335,7 @@
       cancelAnimationFrame(pointerFrame); pointerFrame = 0;
       if (pointerPanel) {
         pointerPanel.classList.remove('pointer-active');
-        pointerPanel.style.removeProperty('--lean-x'); pointerPanel.style.removeProperty('--lean-y');
+        pointerPanel.style.removeProperty('--tilt-x'); pointerPanel.style.removeProperty('--tilt-y');
       }
       pointerPanel = null; pointerBox = null;
     }
@@ -329,8 +351,8 @@
         pointerX = e.clientX - pointerBox.left; pointerY = e.clientY - pointerBox.top;
         if (!pointerFrame) pointerFrame = requestAnimationFrame(() => {
           pointerFrame = 0;
-          panel.style.setProperty('--lean-x', ((pointerX / pointerBox.width - .5) * 5).toFixed(2) + 'px');
-          panel.style.setProperty('--lean-y', ((pointerY / pointerBox.height - .5) * 4).toFixed(2) + 'px');
+          panel.style.setProperty('--tilt-y', ((pointerX / pointerBox.width - .5) * 3).toFixed(2) + 'deg');
+          panel.style.setProperty('--tilt-x', ((.5 - pointerY / pointerBox.height) * 2).toFixed(2) + 'deg');
           panel.querySelector('.card-reflection').style.transform = `translate3d(${pointerX - 110}px,${pointerY - 110}px,0)`;
         });
       });
@@ -350,13 +372,26 @@
       el('eventAmount').textContent = p.amount ? (p.kind === 'heal' ? '+' : '−') + fmt(p.amount) : '';
       if (!p.target) return;
       const fighter = el('fighter' + p.target);
+      const targetCard = el('panel' + p.target);
       const action = p.kind === 'heal' ? 'recover' : p.kind === 'miss' ? 'evade' : p.kind === 'death' ? 'fallen' : 'impact';
       fighter.dataset.action = action; el('panel' + p.target).dataset.action = action;
       if (p.source !== p.target && p.source && p.kind !== 'heal') {
         el('panel' + p.source).dataset.action = 'attack'; el('fighter' + p.source).dataset.action = 'attack';
-        animate(el('panel' + p.source).querySelector('.rarity-art'), [{ transform: 'scale(.94)', filter: 'brightness(1.4)' }, { transform: 'scale(1)', filter: 'brightness(1)' }]);
+        const direction = p.source === 'A' ? 1 : -1;
+        animate(el('panel' + p.source).querySelector('.rarity-art'),
+          [{ transform: 'translateX(0) scale(1)' }, { transform: `translateX(${-direction * 4}px) scale(.96)`, offset: .22 },
+            { transform: `translateX(${direction * 9}px) scale(1.025)`, offset: .42 }, { transform: 'translateX(0) scale(1)' }],
+          { duration: p.kind === 'crit' ? 620 : 440 });
       }
       burst(p);
+      if (p.kind === 'hit' || p.kind === 'crit') {
+        const force = p.kind === 'crit' ? 7 : 3;
+        const direction = p.target === 'A' ? -1 : 1;
+        animate(targetCard, [{ transform: 'translateX(0)' },
+          { transform: `translateX(${direction * force}px) rotate(${direction * force / 12}deg)`, offset: .2 },
+          { transform: `translateX(${-direction * force / 3}px)`, offset: .48 }, { transform: 'translateX(0)' }],
+          { duration: p.kind === 'crit' ? 650 : 400 });
+      }
       const chip = document.createElement('span'); chip.className = 'float-number ' + p.kind;
       chip.textContent = p.kind === 'miss' ? 'MISS' : p.kind === 'death' ? 'K.O.' : (p.kind === 'crit' ? 'CRIT −' : p.kind === 'heal' ? '+' : '−') + fmt(p.amount);
       if (!reduced.matches && !document.hidden && stageVisible && state.delay) {
@@ -518,6 +553,13 @@
           [...el('stats' + side).querySelectorAll('.v'), ...el('secondaryStats' + side).querySelectorAll('.v')].forEach((node, i) => {
             if (node.textContent !== rows[i][1]) node.textContent = rows[i][1];
           });
+          if (changedCard) {
+            animate(panel.querySelector('.rarity-art'),
+              [{ transform: 'perspective(600px) rotateY(-32deg) translateY(9px)', opacity: .25 },
+                { transform: 'perspective(600px) rotateY(3deg) translateY(-2px)', opacity: 1, offset: .72 },
+                { transform: 'perspective(600px) rotateY(0) translateY(0)', opacity: 1 }], { duration: 780 }, false);
+            animate(el('stats' + side), [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 520, delay: 100 }, false);
+          }
           if (changedCard) animate(panel.querySelector('.seal-flare'),
             [{ opacity: 0, transform: 'scale(.65)' }, { opacity: .7, offset: .25 }, { opacity: 0, transform: 'scale(1.18)' }],
             { duration: 850 }, false);
@@ -555,6 +597,8 @@
         updateBar('A', uA.maxHp, uA.maxHp); updateBar('B', uB.maxHp, uB.maxHp);
         return;
       }
+      app.dataset.phase = 'ready';
+      el('seedHint').textContent = '同卡牌、等级与 Seed，重现同一场战斗';
       el('replayBtn').disabled = true;
       renderSummary([]);
       ['A', 'B'].forEach(side => { el('panel' + side).classList.remove('fallen', 'victorious'); el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
@@ -752,6 +796,7 @@
       state.seed = seed === null ? global.crypto.getRandomValues(new Uint32Array(1))[0] : seed;
       input.value = String(state.seed); el('seedHint').textContent = '当前 Seed · 可重播本局或开始新一局';
       state.playing = true; resetPointer(); clearMotion(); setControlsLocked(true);
+      app.dataset.phase = state.delay && !reduced.matches ? 'engage' : 'battle';
       document.querySelector('.app').classList.add('is-playing');
       battleHud.classList.toggle('instant', !state.delay);
       state.follow = true; syncFollow(); state.lastRound = -1; state.previous = null; state.currentRow = null;
@@ -770,6 +815,7 @@
         battleHud.scrollIntoView({ behavior: 'instant', block: 'start' });
         resizeFx(); announce('BATTLE START'); renderSummary([]);
         if (state.delay) await new Promise(resolve => setTimeout(resolve, reduced.matches ? 120 : 650));
+        app.dataset.phase = 'battle';
         for (let i = 0; i < result.events.length; i++) {
           if (!state.delay) {
             clearMotion(); battleHud.classList.add('instant');
@@ -788,7 +834,9 @@
             state.finishWait = () => { clearTimeout(timer); state.finishWait = null; resolve(); };
           });
         }
+        app.dataset.phase = 'result';
         showResult(result); renderSummary(result.events);
+        resizeFx();
         const victor = result.winner === 0 ? 'A' : 'B';
         if (result.winner !== -1) { el('panel' + victor).classList.add('victorious'); burst({ kind: 'crit', source: victor, target: victor }); }
         announce(result.winner === -1 ? 'DRAW' : 'VICTORY');
@@ -798,8 +846,11 @@
         el('eventAmount').textContent = result.rounds + ' ROUNDS';
         hudState.textContent = 'FINISHED'; battleHud.classList.add('finished');
         el('matchupHint').textContent = '本局结束 · Seed ' + state.seed;
-        animate(resultBox, [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 600 });
+        animate(resultBox, [{ clipPath: 'inset(0 50% 0 50%)', opacity: .6 }, { clipPath: 'inset(0 0 0 0)', opacity: 1 }], { duration: 800 });
+        animate(el('resultMedal'), [{ transform: 'translateY(-12px) rotate(-12deg)', opacity: .1 }, { transform: 'translateY(0) rotate(0)', opacity: 1 }], { duration: 950, delay: 180 });
+        animate(document.querySelector('.telemetry'), [{ opacity: .4, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 650, delay: 220 });
       } catch (error) {
+        app.dataset.phase = 'ready';
         hudState.textContent = 'ERROR'; el('eventText').textContent = '播放失败，请重试。'; console.error(error);
       } finally {
         state.playing = false; setControlsLocked(false); battleHud.classList.remove('live');
@@ -811,6 +862,12 @@
     startBtn.addEventListener('click', () => runBattle());
     againBtn.addEventListener('click', () => runBattle('new'));
     resultAgainBtn.addEventListener('click', () => runBattle('new'));
+    el('resultEditBtn').addEventListener('click', () => {
+      if (state.playing) return;
+      clearMotion(); state.selectionKey = ''; refreshAll();
+      searchA.focus({ preventScroll: true });
+      el('panelA').scrollIntoView({ behavior: 'instant', block: 'start' });
+    });
     el('replayBtn').addEventListener('click', () => runBattle('replay'));
 
     refreshAll();

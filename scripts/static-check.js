@@ -34,6 +34,8 @@ const EXPECTED_FILES = [
   'assets/icon-512.png',
   'AGENTS.md',
   'README.md',
+  'PRODUCT.md',
+  'DESIGN.md',
   'index.html',
   'package.json',
   'styles.css',
