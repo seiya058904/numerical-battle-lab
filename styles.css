@@ -774,6 +774,10 @@ input[type=range]::-moz-range-thumb {
   background:url('assets/dial.webp') center/100% 100% no-repeat;
   transition:transform 650ms var(--settle)
 }
+.round-value,.hud-state {
+  position:relative;
+  top:-5%
+}
 .round-value {
   font:400 4.2rem/1.2 var(--display);
   color:#f1d49b;
