@@ -154,11 +154,13 @@
     const astrolabe = tier === 11 ? `<g class="emblem-astrolabe" stroke="${metal}"><path d="M43 28a120 120 0 0 1 154 0M212 43a120 120 0 0 1 0 154M197 212a120 120 0 0 1-154 0M28 197a120 120 0 0 1 0-154"/><path d="m37 37 8-2-2 8-8 2ZM203 37l-8-2 2 8 8 2ZM203 203l-8 2 2-8 8-2ZM37 203l8 2-2-8-8-2Z" fill="${metal}"/></g>` : '';
     const crown = collector ? `<path class="emblem-crown" d="m100 70 5 12h30l5-12-12 5-8-12-8 12Z" fill="${metal}"/>` :
       `<path class="emblem-insignia" d="m107 73 13-8 13 8-13 8Z" fill="${metal}"/><path d="M120 68v10" stroke="#14202c"/>`;
-    return `<svg viewBox="0 0 240 240" fill="none" aria-hidden="true">
+    const hero = tier < 2 ? 'shield' : tier >= 10 ? 'star' : null;
+    return `<svg data-sculpture="${hero || 'engraved'}" viewBox="0 0 240 240" fill="none" aria-hidden="true">
       <defs>
         <linearGradient id="metal${side}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${highlight}"/><stop offset=".2" stop-color="currentColor"/><stop offset=".43" stop-color="${shadow}"/><stop offset=".49" stop-color="${highlight}"/><stop offset=".7" stop-color="currentColor"/><stop offset="1" stop-color="${shadow}"/></linearGradient>
         <linearGradient id="face${side}" x2=".8" y2="1"><stop stop-color="#3a4b58"/><stop offset=".43" stop-color="#172632"/><stop offset=".44" stop-color="#111e2c"/><stop offset="1" stop-color="#070f1a"/></linearGradient>
       </defs>
+      ${hero ? `<image class="sculpture" href="assets/${hero}.webp" width="240" height="240"/>` : ''}
       <circle class="emblem-base" cx="120" cy="120" r="102" fill="${enamel}" stroke="${metal}" stroke-width="3"/>
       <g class="emblem-engine">${Array.from({ length: 12 + tier * 2 }, (_, i) => `<path d="M120 24v12m-3-8h6" transform="rotate(${i * 360 / (12 + tier * 2)} 120 120)"/>`).join('')}<circle cx="120" cy="120" r="96" stroke-dasharray="2 6"/></g>
       <g class="emblem-ticks">${ticks}</g><circle class="emblem-rim" cx="120" cy="120" r="91" stroke="${metal}"/>
@@ -254,9 +256,10 @@
         geometry[side] = [r.left - box.left + r.width / 2, r.top - box.top + r.height / 2];
         const life = el('fighter' + side).getBoundingClientRect();
         const layer = el('float' + side);
+        const floatWidth = Math.min(r.width * 1.3, el('panel' + side).clientWidth - 16);
         layer.style.top = r.top - life.top + r.height / 2 + 'px';
-        layer.style.left = r.left - life.left - r.width * .15 + 'px';
-        layer.style.width = r.width * 1.3 + 'px';
+        layer.style.left = r.left - life.left + (r.width - floatWidth) / 2 + 'px';
+        layer.style.width = floatWidth + 'px';
       }
       const dial = document.querySelector('.round-center').getBoundingClientRect();
       battleHud.style.setProperty('--announcement-y', dial.bottom - box.top + 12 + 'px');
@@ -412,6 +415,10 @@
     }
     function renderSummary(events) {
       const totals = summarizeEvents(events);
+      el('metricRounds').textContent = events.length ? Math.max(...events.map(e => e.round || 0)) : '—';
+      el('metricBlue').textContent = events.length ? fmt(totals.A.damage) : '—';
+      el('metricRatio').textContent = events.length && totals.B.damage ? (totals.A.damage / totals.B.damage).toFixed(2) + ' : 1' : '—';
+      if (!events.length) el('metricWinner').textContent = '—';
       const rows = [['damage', '总伤害'], ['healing', '有效治疗'], ['crits', '暴击'], ['dodges', '闪避'], ['peak', '最高单次']];
       el('summaryBody').innerHTML = rows.map(([key, label]) => '<tr><th scope="row">' + label + '</th><td>' + (events.length ? fmt(totals.A[key]) : '—') + '</td><td>' + (events.length ? fmt(totals.B[key]) : '—') + '</td></tr>').join('');
       el('summaryRound').textContent = events.length ? 'ROUND ' + events[events.length - 1].round : '等待战斗';
@@ -468,15 +475,15 @@
       search.addEventListener('input', () => fillSelect(select, +select.value, search.value));
     });
 
-    // 桌面总是展开；手机偏好独立保存，渲染卡牌不会覆盖它。
+    // Detailed attributes live in each card's expandable configuration.
     const mobile = global.matchMedia('(max-width: 760px)');
     const expanded = { A: false, B: false };
     function syncStatsVisibility() {
       ['A', 'B'].forEach((side) => {
-        const open = !mobile.matches || expanded[side];
+        const open = expanded[side];
         const button = el('statsToggle' + side);
         el('secondaryStats' + side).hidden = !open;
-        button.hidden = !mobile.matches;
+        button.hidden = false;
         button.setAttribute('aria-expanded', String(open));
         button.innerHTML = `${open ? '收起属性' : '更多属性'} <span aria-hidden="true">${open ? '−' : '＋'}</span>`;
       });
@@ -506,6 +513,9 @@
       const mounted = panel.dataset.card !== undefined;
       if (changedCard) {
         el('name' + side).textContent = card.name;
+        panel.dataset.longName = String(card.name.length > 8);
+        el('letter' + side).textContent = unit.rarityName.replace(' Collector', '');
+        el('english' + side).textContent = card.id === 'origin_star' ? 'THE STAR OF ORIGIN' : card.id === 'iron_guard' ? 'IRON SHIELD GUARD' : card.id.replaceAll('_', ' ').toUpperCase();
         el('rar' + side).textContent = unit.rarityName;
         el('rar' + side).className = 'rar-badge t' + card.rarity;
         el('role' + side).textContent = card.role;
@@ -520,7 +530,7 @@
       }
       panel.dataset.rarity = card.rarity;
       panel.dataset.card = card.id; panel.dataset.level = unit.level;
-      el('cardCode' + side).textContent = 'N° ' + String(CARDS.indexOf(card) + 1).padStart(3, '0') + ' / 096';
+      el('cardCode' + side).textContent = unit.rarityName.replace(' Collector', '') + '-096 / ' + String(CARDS.indexOf(card) + 1).padStart(4, '0');
       el('material' + side).textContent = finish.material;
       el('tierIndex' + side).textContent = 'RARITY ' + finish.tier + ' / 12';
       panel.style.setProperty('--power-light', Math.min(.24, Math.max(.03, Math.log10(power) / 32)));
@@ -544,9 +554,10 @@
       if (changedCard || changedLevel) {
         const rows = statRows(unit);
         const codes = { maxHp: 'HP', atk: 'ATK', def: 'DEF', spd: 'SPD' };
+        const icons = {"maxHp":"M12 20 3 11C-2 3 8-1 12 6c4-7 14-3 9 5Z","atk":"m4 21 3-7L18 2l4 0 0 4L10 17l-7 3m2-9 8 8","def":"M12 2 3 6v8l9 8 9-8V6Z M12 5v14","spd":"m14 1-9 13h7l-2 9L21 9h-8Z"};
         if (!mounted) {
           el('stats' + side).innerHTML = rows.slice(0, 4)
-            .map(([k, v]) => `<div class="stat-tile"><span class="k">${STAT_LABELS[k]} <span class="stat-code">${codes[k]}</span></span><span class="v">${v}</span></div>`).join('');
+            .map(([k, v]) => `<div class="stat-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${icons[k]}"/></svg><span class="k">${STAT_LABELS[k]} <span class="stat-code">${codes[k]}</span></span><span class="v">${v}</span></div>`).join('');
           el('secondaryStats' + side).innerHTML = rows.slice(4)
             .map(([k, v]) => `<div class="stat-row"><span class="k">${STAT_LABELS[k]}</span><span class="v">${v}</span></div>`).join('');
         } else {
@@ -795,6 +806,9 @@
       input.removeAttribute('aria-invalid');
       state.seed = seed === null ? global.crypto.getRandomValues(new Uint32Array(1))[0] : seed;
       input.value = String(state.seed); el('seedHint').textContent = '当前 Seed · 可重播本局或开始新一局';
+      document.querySelectorAll('.card-config').forEach(node => { node.open = false; });
+      app.classList.remove('seed-open');
+      el('seedToggle').setAttribute('aria-expanded', 'false');
       state.playing = true; resetPointer(); clearMotion(); setControlsLocked(true);
       app.dataset.phase = state.delay && !reduced.matches ? 'engage' : 'battle';
       document.querySelector('.app').classList.add('is-playing');
@@ -836,6 +850,7 @@
         }
         app.dataset.phase = 'result';
         showResult(result); renderSummary(result.events);
+        el('metricWinner').textContent = result.winner === -1 ? '平局' : result.winner === 0 ? '蓝方' : '红方';
         resizeFx();
         const victor = result.winner === 0 ? 'A' : 'B';
         if (result.winner !== -1) { el('panel' + victor).classList.add('victorious'); burst({ kind: 'crit', source: victor, target: victor }); }
@@ -865,10 +880,17 @@
     el('resultEditBtn').addEventListener('click', () => {
       if (state.playing) return;
       clearMotion(); state.selectionKey = ''; refreshAll();
+      el('configA').open = true;
       searchA.focus({ preventScroll: true });
       el('panelA').scrollIntoView({ behavior: 'instant', block: 'start' });
     });
     el('replayBtn').addEventListener('click', () => runBattle('replay'));
+    el('seedToggle').addEventListener('click', () => {
+      if (state.playing) return;
+      const open = app.classList.toggle('seed-open');
+      el('seedToggle').setAttribute('aria-expanded', String(open));
+      if (open) el('seedInput').focus({ preventScroll: true });
+    });
 
     refreshAll();
     return { state };
