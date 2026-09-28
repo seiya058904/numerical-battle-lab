@@ -17,10 +17,15 @@
 <aside class="wall-copy wall-left" aria-hidden="true"><p>用 数 字<br>看 见<br>更 大 的 可 能</p><small>FOR A MORE<br>RATIONAL TOMORROW</small><div>COLLECT<br>ANALYZE<br>BATTLE<br>IMPROVE</div><p>NUMBERS<br>MAKE<br>BETTER<br>PLAYERS</p></aside>
 <aside class="wall-copy wall-right" aria-hidden="true"><small>A<br>SMALLER WORLD<br>OF<br>BIGGER NUMBERS</small><div>SAME RULES<br>DIFFERENT<br>OUTCOMES<br>INFINITE<br>POSSIBILITIES</div><p>A MORE<br>RATIONAL<br>PLAYGROUND</p></aside>
 <main class="app" data-phase="ready">
- <header class="site-header"><h1>NUMERICAL BATTLE LAB</h1><p>数 字 卡 牌 对 战 实 验 室</p><div class="brand-motto">NUMBERS REVEAL A DEEPER TRUTH<small>SIMULATE · COMPARE · EVOLVE</small></div></header>
+ <header class="site-header"><h1>NUMERICAL BATTLE LAB</h1><p>数值卡牌对战实验室</p><div class="brand-motto">NUMBERS REVEAL A DEEPER TRUTH<small>96 CARDS · 12 RARITIES · INFINITE POSSIBILITIES</small></div></header>
  <section class="battle-hud" id="battleHud" aria-label="战斗舞台">
   <div class="arena-ambient" aria-hidden="true"><i></i><i></i></div><canvas id="battleFx" aria-hidden="true"></canvas><div class="stage-announcement" id="stageAnnouncement" aria-hidden="true"></div>
-  <div class="setup" id="setup"><section class="pcard blue" id="panelA">
+  <div class="setup" id="setup"><section class="pcard blue" id="panelA"><div class="selection-bar"><div class="selection-heading"><label for="selA">蓝方 · 选择卡牌</label><span>96 张 / 12 阶</span></div><div class="pcard-top">
+        <div class="card-picker">
+          <input type="search" id="searchA" aria-label="搜索蓝方卡牌" aria-controls="selA" aria-describedby="searchHintA" placeholder="搜索英雄、来源、定位或稀有度" autocomplete="off">
+          <select id="selA" aria-label="蓝方卡牌"></select>
+        </div>
+      </div><p class="search-hint" id="searchHintA" role="status" hidden></p></div><div class="card-face">
       <div class="card-ornament" aria-hidden="true"><div class="card-aura"></div><div class="card-reflection"></div><svg class="foil-plates" viewBox="0 0 600 310" preserveAspectRatio="none"><defs><linearGradient id="foilA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="currentColor" stop-opacity=".06"/><stop offset=".48" stop-color="currentColor" stop-opacity=".35"/><stop offset=".5" stop-color="currentColor" stop-opacity=".06"/><stop offset="1" stop-color="currentColor" stop-opacity=".2"/></linearGradient></defs><path fill="url(#foilA)" d="M250 0h350v310L440 180ZM340 0h120L600 140v170L400 120Z"/><path d="M250 0 440 180 600 310M340 0l60 120 200 190M460 0l140 140" fill="none" stroke="currentColor" stroke-opacity=".35"/></svg><svg class="card-lattice" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice"><path d="M140 -80 500 280 860 -80M210 -80 500 210 790 -80M280 -80 500 140 720 -80M350 -80 500 70 650 -80M420 -80 500 0 580 -80M280 280 500 60 720 280M350 280 500 130 650 280"/></svg></div>
       <div class="ambient-particles" id="ambientA"></div>
       <div class="card-edge-light" aria-hidden="true"></div><div class="card-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
@@ -37,13 +42,13 @@
       <div class="power-strip">
         <div class="lvl-block">
           <div class="lvl-head">
-            <label for="lvlA">LEVEL</label>
+            <label for="lvlA">等级</label>
             <span class="lvl-val">Lv.<input id="lvlAVal" type="text" inputmode="numeric" value="55" aria-label="蓝方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
           </div>
           <input type="range" id="lvlA" min="1" max="100" value="55"><div class="level-scale" aria-hidden="true"><span>01</span><span>50</span><span>100</span></div>
         </div>
         <div class="bp-block">
-          <div class="bp-head"><span class="bp-label">BATTLE POWER</span><svg class="power-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-8z"/></svg></div>
+          <div class="bp-head"><span class="bp-label">战力 <span class="bp-code">BATTLE POWER</span></span><svg class="power-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-8z"/></svg></div>
           <div class="power-pulse" aria-hidden="true"></div><div class="bp-main">
             <span class="bp-value" id="bpA">—</span>
             <div class="bp-comparison"><span class="bp-note">相较对方 BP</span><span class="bp-delta" id="bpDeltaA"></span></div><div class="power-ruler" aria-hidden="true"><i id="powerFillA"></i><span></span></div>
@@ -52,14 +57,7 @@
       </div>
       <div class="core-stats" id="statsA"></div>
 
-      <div class="card-signature"><span>ALL THINGS ORIGINATE FROM NUMBERS</span><span id="tierIndexA"></span></div><details class="card-config" id="configA"><summary>更换卡牌 / 属性</summary><div class="config-content"><div class="pcard-top">
-        <div class="card-picker">
-          <input type="search" id="searchA" aria-label="搜索蓝方卡牌" aria-controls="selA" aria-describedby="searchHintA" placeholder="搜索名称、来源、定位或稀有度" autocomplete="off">
-          <select id="selA" aria-label="蓝方卡牌"></select>
-        </div>
-      </div><p class="search-hint" id="searchHintA" role="status" hidden></p><div class="cdesc" id="descA"></div><button class="stats-toggle" id="statsToggleA" aria-expanded="false" aria-controls="secondaryStatsA">更多属性 <span aria-hidden="true">＋</span></button><div class="stats-grid" id="secondaryStatsA" hidden></div></div></details>
-    </section>
-   <div class="command-core"><div class="simulation-number" aria-hidden="true">01</div><div class="core-caption">B A T T L E<br>S I M U L A T I O N</div><div class="hud-side blue" id="fighterA"><span class="fighter-label">BLUE / 蓝方</span><div class="float-layer" id="floatA" aria-hidden="true"></div>
+      <div class="hud-side blue" id="fighterA"><span class="fighter-label">BLUE / 蓝方</span><div class="float-layer" id="floatA" aria-hidden="true"></div>
       <div class="hud-head">
         <span class="hud-name" id="sNameA">—</span>
         <span class="hud-meta" id="sMetaA"></span>
@@ -67,20 +65,28 @@
       <div class="hud-hp"><span id="hpTA">—</span><small id="hpMaxA"> / —</small></div>
       <div class="hpbar-wrap"><div class="hp-trail" id="hpTrailA"></div><div class="hpbar" id="hpbarA"></div></div>
       <div class="hud-foot"><span class="hud-pct" id="pctA">100%</span><span class="hp-state" id="hpStateA"></span></div>
-    </div><div class="round-center">
+    </div><div class="card-signature"><span>ALL THINGS ORIGINATE FROM NUMBERS</span><span id="tierIndexA"></span></div></div><section class="card-config" id="configA" aria-label="蓝方详细属性"><div class="archive-heading">作战档案 <span>COMBAT PROFILE</span></div><div class="config-content"><div class="cdesc" id="descA"></div><button class="stats-toggle" id="statsToggleA" aria-expanded="false" aria-controls="secondaryStatsA">更多属性 <span aria-hidden="true">＋</span></button><div class="stats-grid" id="secondaryStatsA" hidden></div></div></section>
+    </section>
+   <div class="command-core"><div class="simulation-number" aria-hidden="true">01</div><div class="core-caption">B A T T L E<br>S I M U L A T I O N</div><div class="round-center">
       <div class="arena-dial" aria-hidden="true"><i></i><i></i></div><div class="round-label">ROUND</div>
       <div class="round-value" id="roundTxt">VS</div>
       <div class="hud-state" id="hudState" role="status">READY</div>
-    </div><div class="hud-side red" id="fighterB"><span class="fighter-label">RED / 红方</span><div class="float-layer" id="floatB" aria-hidden="true"></div>
-      <div class="hud-head">
-        <span class="hud-name" id="sNameB">—</span>
-        <span class="hud-meta" id="sMetaB"></span>
+    </div><div class="core-footnote">SAME NUMBERS<br>DIFFERENT STORIES</div><span id="matchupHint" role="status"></span><section class="control-bar" aria-label="战斗控制">
+      <div class="ctrl-btns"><button id="startBtn" class="btn primary" aria-label="开始战斗"><span class="start-chevron" aria-hidden="true">»</span><span><span id="startLabel">开始战斗</span><small>START BATTLE</small></span><span class="start-chevron" aria-hidden="true">»</span></button></div>
+      <div class="speed-seg" role="group" aria-label="播放速度">
+        <span class="speed-label">战斗速度 <small>SPEED</small></span>
+        <button class="spdbtn on" data-speed="slow" aria-label="慢速播放" aria-pressed="true">慢速</button>
+        <button class="spdbtn" data-speed="fast" aria-label="快速播放" aria-pressed="false">快速</button>
+        <button class="spdbtn" data-speed="instant" aria-label="瞬间播放" aria-pressed="false">瞬间</button>
       </div>
-      <div class="hud-hp"><span id="hpTB">—</span><small id="hpMaxB"> / —</small></div>
-      <div class="hpbar-wrap"><div class="hp-trail" id="hpTrailB"></div><div class="hpbar" id="hpbarB"></div></div>
-      <div class="hud-foot"><span class="hud-pct" id="pctB">100%</span><span class="hp-state" id="hpStateB"></span></div>
-    </div><div class="core-footnote">SAME NUMBERS<br>DIFFERENT STORIES</div><span id="matchupHint" role="status"></span></div>
-   <section class="pcard red" id="panelB">
+      <div class="match-config" id="seedConfig"><label for="seedInput">SEED</label><input id="seedInput" type="text" inputmode="numeric" placeholder="留空随机" maxlength="10" aria-describedby="seedHint" autocomplete="off"><span id="seedHint" role="status">同卡牌、等级与 Seed，重现同一场战斗</span><button id="replayBtn" class="text-btn" disabled>重播本局</button></div>
+    </section><div class="console-status"><span id="consoleHint">同卡牌、等级与 Seed，重现同一场战斗</span><button id="againBtn" class="text-btn" aria-label="再次战斗">新一局</button></div><p class="core-note">同一套规则<br>每一次交锋，都是新的可能。<small>BP 是综合评价，不是胜率。</small></p></div>
+   <section class="pcard red" id="panelB"><div class="selection-bar"><div class="selection-heading"><label for="selB">红方 · 选择卡牌</label><span>96 张 / 12 阶</span></div><div class="pcard-top">
+        <div class="card-picker">
+          <input type="search" id="searchB" aria-label="搜索红方卡牌" aria-controls="selB" aria-describedby="searchHintB" placeholder="搜索英雄、来源、定位或稀有度" autocomplete="off">
+          <select id="selB" aria-label="红方卡牌"></select>
+        </div>
+      </div><p class="search-hint" id="searchHintB" role="status" hidden></p></div><div class="card-face">
       <div class="card-ornament" aria-hidden="true"><div class="card-aura"></div><div class="card-reflection"></div><svg class="foil-plates" viewBox="0 0 600 310" preserveAspectRatio="none"><defs><linearGradient id="foilB" x1="0" y1="0" x2="1" y2="1"><stop stop-color="currentColor" stop-opacity=".06"/><stop offset=".48" stop-color="currentColor" stop-opacity=".35"/><stop offset=".5" stop-color="currentColor" stop-opacity=".06"/><stop offset="1" stop-color="currentColor" stop-opacity=".2"/></linearGradient></defs><path fill="url(#foilB)" d="M250 0h350v310L440 180ZM340 0h120L600 140v170L400 120Z"/><path d="M250 0 440 180 600 310M340 0l60 120 200 190M460 0l140 140" fill="none" stroke="currentColor" stroke-opacity=".35"/></svg><svg class="card-lattice" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid slice"><path d="M140 -80 500 280 860 -80M210 -80 500 210 790 -80M280 -80 500 140 720 -80M350 -80 500 70 650 -80M420 -80 500 0 580 -80M280 280 500 60 720 280M350 280 500 130 650 280"/></svg></div>
       <div class="ambient-particles" id="ambientB"></div>
       <div class="card-edge-light" aria-hidden="true"></div><div class="card-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
@@ -97,13 +103,13 @@
       <div class="power-strip">
         <div class="lvl-block">
           <div class="lvl-head">
-            <label for="lvlB">LEVEL</label>
+            <label for="lvlB">等级</label>
             <span class="lvl-val">Lv.<input id="lvlBVal" type="text" inputmode="numeric" value="100" aria-label="红方等级，1 至 100" autocomplete="off" spellcheck="false"></span>
           </div>
           <input type="range" id="lvlB" min="1" max="100" value="100"><div class="level-scale" aria-hidden="true"><span>01</span><span>50</span><span>100</span></div>
         </div>
         <div class="bp-block">
-          <div class="bp-head"><span class="bp-label">BATTLE POWER</span><svg class="power-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-8z"/></svg></div>
+          <div class="bp-head"><span class="bp-label">战力 <span class="bp-code">BATTLE POWER</span></span><svg class="power-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-8z"/></svg></div>
           <div class="power-pulse" aria-hidden="true"></div><div class="bp-main">
             <span class="bp-value" id="bpB">—</span>
             <div class="bp-comparison"><span class="bp-note">相较对方 BP</span><span class="bp-delta" id="bpDeltaB"></span></div><div class="power-ruler" aria-hidden="true"><i id="powerFillB"></i><span></span></div>
@@ -112,12 +118,15 @@
       </div>
       <div class="core-stats" id="statsB"></div>
 
-      <div class="card-signature"><span>STABILITY CREATES A LONGER TOMORROW</span><span id="tierIndexB"></span></div><details class="card-config" id="configB"><summary>更换卡牌 / 属性</summary><div class="config-content"><div class="pcard-top">
-        <div class="card-picker">
-          <input type="search" id="searchB" aria-label="搜索红方卡牌" aria-controls="selB" aria-describedby="searchHintB" placeholder="搜索名称、来源、定位或稀有度" autocomplete="off">
-          <select id="selB" aria-label="红方卡牌"></select>
-        </div>
-      </div><p class="search-hint" id="searchHintB" role="status" hidden></p><div class="cdesc" id="descB"></div><button class="stats-toggle" id="statsToggleB" aria-expanded="false" aria-controls="secondaryStatsB">更多属性 <span aria-hidden="true">＋</span></button><div class="stats-grid" id="secondaryStatsB" hidden></div></div></details>
+      <div class="hud-side red" id="fighterB"><span class="fighter-label">RED / 红方</span><div class="float-layer" id="floatB" aria-hidden="true"></div>
+      <div class="hud-head">
+        <span class="hud-name" id="sNameB">—</span>
+        <span class="hud-meta" id="sMetaB"></span>
+      </div>
+      <div class="hud-hp"><span id="hpTB">—</span><small id="hpMaxB"> / —</small></div>
+      <div class="hpbar-wrap"><div class="hp-trail" id="hpTrailB"></div><div class="hpbar" id="hpbarB"></div></div>
+      <div class="hud-foot"><span class="hud-pct" id="pctB">100%</span><span class="hp-state" id="hpStateB"></span></div>
+    </div><div class="card-signature"><span>STABILITY CREATES A LONGER TOMORROW</span><span id="tierIndexB"></span></div></div><section class="card-config" id="configB" aria-label="红方详细属性"><div class="archive-heading">作战档案 <span>COMBAT PROFILE</span></div><div class="config-content"><div class="cdesc" id="descB"></div><button class="stats-toggle" id="statsToggleB" aria-expanded="false" aria-controls="secondaryStatsB">更多属性 <span aria-hidden="true">＋</span></button><div class="stats-grid" id="secondaryStatsB" hidden></div></div></section>
     </section>
   </div>
   <section class="result-panel" id="resultBox" style="display:none" aria-label="战斗结果" aria-live="polite">
@@ -133,31 +142,26 @@
         <div class="result-hp" id="resultHp">— / —</div>
         <div class="result-pct" id="resultPct">—</div>
       </div>
-      <div class="result-actions"><button id="resultAgainBtn" class="btn primary" aria-label="再次战斗">再战 · 新 Seed</button><button id="resultEditBtn" class="text-btn">调整对阵</button></div>
+      <div class="result-actions"><button id="resultAgainBtn" class="btn primary" aria-label="再次战斗">再战 · 新 Seed</button><button id="resultReplayBtn" class="text-btn">重播 · 同 Seed</button><button id="resultEditBtn" class="text-btn">调整对阵</button></div>
     </div>
   </section><div class="event-readout" id="eventReadout"><span class="event-tag">STANDBY</span><span id="eventText">两张卡牌，一场数值交锋。</span><strong id="eventAmount"></strong></div>
  </section>
- <section class="control-bar" aria-label="战斗控制"><div class="console-bevel"></div><div class="match-config" id="seedConfig"><label for="seedInput">SEED</label><input id="seedInput" type="text" inputmode="numeric" placeholder="留空随机" maxlength="10" aria-describedby="seedHint" autocomplete="off"><span id="seedHint" role="status">同卡牌、等级与 Seed，重现同一场战斗</span><button id="replayBtn" class="text-btn" disabled>重播本局</button></div><div class="ctrl-btns"><button id="startBtn" class="btn primary" aria-label="开始战斗"><span class="start-chevron" aria-hidden="true">»</span><span>开始战斗<small>START BATTLE</small></span><span class="start-chevron" aria-hidden="true">»</span></button></div><div class="speed-seg" role="group" aria-label="播放速度">
-        <span class="speed-label">战斗速度 <small>SPEED</small></span>
-        <button class="spdbtn on" data-speed="slow" aria-label="慢速播放" aria-pressed="true">SLOW</button>
-        <button class="spdbtn" data-speed="fast" aria-label="快速播放" aria-pressed="false">FAST</button>
-        <button class="spdbtn" data-speed="instant" aria-label="瞬间播放" aria-pressed="false">INSTANT</button>
-      </div></section>
- <div class="console-status"><button id="seedToggle" class="text-btn seed-toggle" aria-expanded="false" aria-controls="seedConfig">Seed / 重播</button><span id="consoleHint">同卡牌、等级与 Seed，重现同一场战斗</span><button id="againBtn" class="text-btn" aria-label="再次战斗">新一局</button></div>
+
+
  <div class="telemetry"><section class="log-panel">
     <div class="log-head">
       <span>战斗日志 <small>BATTLE LOG</small></span>
       <div class="log-actions"><button id="followLog" class="text-btn" aria-pressed="true">跟随最新</button><span class="log-count" id="logCount">0 EVENTS</span></div>
     </div>
     <div class="logbox" id="logbox" tabindex="0" role="region" aria-label="战斗日志"><div class="log-empty">STANDBY · 等待战斗开始</div></div>
-  </section><section class="simulation-summary"><div class="log-head">本次模拟 <small>SIMULATION SUMMARY</small></div><div class="summary-metrics"><div>回合数<small>ROUNDS</small><strong id="metricRounds">—</strong></div><div>蓝方伤害<small>BLUE DAMAGE</small><strong id="metricBlue">—</strong></div><div>胜者<small>WINNER</small><strong id="metricWinner">—</strong></div><div>伤害比<small>DMG RATIO</small><strong id="metricRatio">—</strong></div></div><details class="summary-details"><summary>完整战斗统计</summary><section class="summary-panel" aria-label="战斗统计">
+  </section><section class="simulation-summary"><div class="log-head">本次模拟 <small>SIMULATION SUMMARY</small></div><div class="summary-metrics"><div>回合数<small>ROUNDS</small><strong id="metricRounds">—</strong></div><div>蓝方伤害<small>BLUE DAMAGE</small><strong id="metricBlue">—</strong></div><div>胜者<small>WINNER</small><strong id="metricWinner">—</strong></div><div>伤害比<small>DMG RATIO</small><strong id="metricRatio">—</strong></div></div><div class="summary-details"><section class="summary-panel" aria-label="战斗统计">
     <div class="log-head"><span>战斗简报</span><span id="summaryRound">等待战斗</span></div>
     <table>
       <caption>本局累计 · 仅统计实际伤害与有效治疗</caption>
       <thead><tr><th scope="col">指标</th><th scope="col" class="blue-text">蓝方</th><th scope="col" class="red-text">红方</th></tr></thead>
       <tbody id="summaryBody"></tbody>
     </table>
-  </section></details></section><blockquote>数不说谎，<br>只是呈现一种可能。<cite>— NUMERICAL BATTLE LAB</cite></blockquote></div>
+  </section></div></section><blockquote>数不说谎，<br>只是呈现一种可能。<cite>— NUMERICAL BATTLE LAB</cite></blockquote></div>
  <footer class="site-footer"><span>A<br>MORE RATIONAL<br>TOMORROW</span><span>NUMERICAL BATTLE LAB<br>96 CARDS · 12 RARITIES</span></footer>
 </main>
 <script src="src/cards.js"></script><script src="src/power.js"></script><script src="src/battle.js"></script><script src="src/app.js"></script><script>NCB.initApp();</script>

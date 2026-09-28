@@ -475,15 +475,15 @@
       search.addEventListener('input', () => fillSelect(select, +select.value, search.value));
     });
 
-    // Detailed attributes live in each card's expandable configuration.
-    const mobile = global.matchMedia('(max-width: 760px)');
+    // Desktop archives stay visible; mobile can disclose secondary attributes.
+    const mobile = global.matchMedia('(max-width: 1000px)');
     const expanded = { A: false, B: false };
     function syncStatsVisibility() {
       ['A', 'B'].forEach((side) => {
-        const open = expanded[side];
+        const open = !mobile.matches || expanded[side];
         const button = el('statsToggle' + side);
         el('secondaryStats' + side).hidden = !open;
-        button.hidden = false;
+        button.hidden = !mobile.matches;
         button.setAttribute('aria-expanded', String(open));
         button.innerHTML = `${open ? '收起属性' : '更多属性'} <span aria-hidden="true">${open ? '−' : '＋'}</span>`;
       });
@@ -783,10 +783,12 @@
       searchA.disabled = locked;
       searchB.disabled = locked;
       startBtn.disabled = locked;
+      el('startLabel').textContent = locked ? '交锋进行中' : '开始战斗';
       againBtn.disabled = locked;
       resultAgainBtn.disabled = locked;
       el('seedInput').disabled = locked;
       el('replayBtn').disabled = locked || !state.events.length;
+      el('resultReplayBtn').disabled = locked || !state.events.length;
     }
 
     function prepareArena(cardA, cardB) {
@@ -806,9 +808,6 @@
       input.removeAttribute('aria-invalid');
       state.seed = seed === null ? global.crypto.getRandomValues(new Uint32Array(1))[0] : seed;
       input.value = String(state.seed); el('seedHint').textContent = '当前 Seed · 可重播本局或开始新一局';
-      document.querySelectorAll('.card-config').forEach(node => { node.open = false; });
-      app.classList.remove('seed-open');
-      el('seedToggle').setAttribute('aria-expanded', 'false');
       state.playing = true; resetPointer(); clearMotion(); setControlsLocked(true);
       app.dataset.phase = state.delay && !reduced.matches ? 'engage' : 'battle';
       document.querySelector('.app').classList.add('is-playing');
@@ -861,6 +860,11 @@
         el('eventAmount').textContent = result.rounds + ' ROUNDS';
         hudState.textContent = 'FINISHED'; battleHud.classList.add('finished');
         el('matchupHint').textContent = '本局结束 · Seed ' + state.seed;
+        // The complete result must be discoverable even below a tall card archive.
+        const resultRect = resultBox.getBoundingClientRect();
+        if (resultRect.top < 0 || resultRect.bottom > global.innerHeight - (mobile.matches ? 88 : 24)) {
+          resultBox.scrollIntoView({ behavior: reduced.matches || !state.delay ? 'instant' : 'smooth', block: 'center' });
+        }
         animate(resultBox, [{ clipPath: 'inset(0 50% 0 50%)', opacity: .6 }, { clipPath: 'inset(0 0 0 0)', opacity: 1 }], { duration: 800 });
         animate(el('resultMedal'), [{ transform: 'translateY(-12px) rotate(-12deg)', opacity: .1 }, { transform: 'translateY(0) rotate(0)', opacity: 1 }], { duration: 950, delay: 180 });
         animate(document.querySelector('.telemetry'), [{ opacity: .4, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 650, delay: 220 });
@@ -880,17 +884,11 @@
     el('resultEditBtn').addEventListener('click', () => {
       if (state.playing) return;
       clearMotion(); state.selectionKey = ''; refreshAll();
-      el('configA').open = true;
       searchA.focus({ preventScroll: true });
       el('panelA').scrollIntoView({ behavior: 'instant', block: 'start' });
     });
     el('replayBtn').addEventListener('click', () => runBattle('replay'));
-    el('seedToggle').addEventListener('click', () => {
-      if (state.playing) return;
-      const open = app.classList.toggle('seed-open');
-      el('seedToggle').setAttribute('aria-expanded', String(open));
-      if (open) el('seedInput').focus({ preventScroll: true });
-    });
+    el('resultReplayBtn').addEventListener('click', () => runBattle('replay'));
 
     refreshAll();
     return { state };

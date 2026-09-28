@@ -1,12 +1,14 @@
-# Reference edition — Numerical Battle Lab
+# Collector workbench — Numerical Battle Lab
 
 ## Visual authority
 
-The user-approved 1536 × 1024 ceremonial hall reference is the composition and material specification. Preserve its black marble architecture, gold and platinum collectible cards, centered title, sculptural emblems, circular VS instrument, horizontal bottom console and compact telemetry. Do not reinterpret this as a generic dashboard or substitute flat geometry for the rendered metal assets.
+The approved ceremonial hall establishes the material language: black marble architecture, gold and platinum collectible cards, centered title, sculptural emblems and a brass VS instrument. The user's subsequent comparison supersedes a rigid screenshot composition: combine those materials with the earlier version's visible selection, complete attributes and useful controls. The product must work with all 96 cards, not just the two reference heroes.
 
-Master layout: cards approximately 400 × 640 at x164 and x970, title centered at the top, instrument centered around x768/y410, console around y744 and telemetry below. Proportions scale together on large displays; mobile uses a vertical arrangement and a fixed transport. Mobile combat contracts the cards so both contenders and the instrument remain visible.
+Desktop uses two flowing card columns and a central command instrument. Each column begins with a persistent search and card selector, followed by the collectible face and its complete combat archive. BP comparison, editable level, primary attributes and exact HP remain on the card. The center provides start, speed, Seed, replay and a new match; full log and statistics remain visible below. Search feedback stays next to its input. Nothing essential depends on hovering over tiny decoration or opening an unlabeled drawer.
 
-Live values remain authoritative. The reference's illustrative levels, HP, stats, seed and English rarity labels do not override the real 96-card / 12-rarity product. Search and the eight secondary stats live in clearly labelled expandable card archives. Detailed battle statistics remain available under the compact result summary. All interactions are real DOM controls.
+Use Segoe UI / Microsoft YaHei / PingFang for controls, Chinese names, labels and data. Reserve serif type for the English masthead, BP, large rarity lettering and VS. Root type never shrinks with viewport height. Above 2000px it scales within a bounded 16–28px range. Below 1000px, stack cards rather than compressing values into three columns; primary stats use two columns, secondary stats have an explicit disclosure, and transport stays fixed with 44px targets. Input type remains 16px on narrow screens. During mobile combat, compact identity/HP plates keep both contenders and the instrument visible. Result actions include same-Seed replay, new-Seed battle and adjustment.
+
+Live values remain authoritative. The reference's illustrative levels, HP, stats, seed and English rarity labels do not override the real 96-card / 12-rarity product. The existing card pool and rarity assignment are read-only; users search/select heroes and change their levels. All visible controls are functional DOM elements.
 
 ## Materials and assets
 
@@ -25,9 +27,9 @@ Silver frames use grayscale only on the material layer. Data and semantic team c
 
 ## Motion and accessibility
 
-Keep the existing READY → ENGAGE → BATTLE → RESULT presentation states, attack anticipation and impulse, HP interpolation, selection reveal and result choreography. Environmental motion is subordinate to the two cards. The instrument paints above transient particles; HP text paints above the instrument edge. The event-driven particle canvas remains capped at 180 particles / 3.5 million pixels. Hidden pages clear transient work. Reduced motion disables particles, transforms and ambient loops without changing any combat output.
+Keep the existing READY → ENGAGE → BATTLE → RESULT presentation states, attack anticipation and impulse, HP interpolation, selection reveal and result choreography. Hover tilts the collectible face only, leaving selection and attribute controls stationary; focused controls suppress tilt. HP follows its own card rather than floating beside the instrument. The start label announces the locked playback state. Environmental motion is subordinate to the two cards. The event-driven particle canvas remains capped at 180 particles / 3.5 million pixels. Hidden pages clear transient work. Reduced motion disables particles, transforms and ambient loops without changing any combat output.
 
-Native details disclosures, labelled inputs, keyboard focus and three playback speeds remain functional. Mobile Seed/replay has an explicit toggle; configuration closes before combat. Long names shrink within the same card geometry.
+Labelled inputs, native selectors, keyboard focus and all three playback speeds remain functional. Seed is directly visible in READY without a focus-driven toggle. Card names wrap in flow when needed. Disabled controls stay visible on desktop during playback. Full stats do not require a separate overlay. Maintain regression checks for all 96 heroes at level 100, all 12 rarity emblems, 320/390/768/1024/1536/3840 widths, repeated mobile replay and reduced motion.
 
 ## Numerical boundary
 
