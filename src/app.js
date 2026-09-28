@@ -242,7 +242,7 @@
       pctA: el('pctA'), pctB: el('pctB')
     };
 
-    const state = { playing: false, delay: SPEEDS.slow, events: [], seed: 0, eventCount: 0, selectionKey: '', previous: null, follow: true, lastRound: -1 };
+    const state = { playing: false, delay: SPEEDS.slow, events: [], seed: 0, seedEdited: false, eventCount: 0, selectionKey: '', previous: null, follow: true, lastRound: -1 };
     const reduced = global.matchMedia('(prefers-reduced-motion: reduce)');
     const motions = new Map();
     const counters = new Map();
@@ -682,7 +682,7 @@
         return;
       }
       app.dataset.phase = 'ready';
-      el('seedHint').textContent = '同卡牌、等级与 Seed，重现同一场战斗';
+      el('seedHint').textContent = state.seedEdited ? '下次战斗使用手动输入的 Seed' : '开始战斗默认新 Seed · 手动输入可指定对局';
       el('replayBtn').disabled = true;
       renderSummary([]);
       ['A', 'B'].forEach(side => { el('panel' + side).classList.remove('fallen', 'victorious'); el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
@@ -874,13 +874,14 @@
     async function runBattle(mode = 'start') {
       if (state.playing) return;
       const input = el('seedInput');
-      const seed = mode === 'replay' ? state.seed : mode === 'new' ? null : parseSeed(input.value);
+      const seed = mode === 'replay' ? state.seed : mode === 'new' || !state.seedEdited ? null : parseSeed(input.value);
       if (seed === undefined) {
         input.setAttribute('aria-invalid', 'true'); el('seedHint').textContent = '请输入 0–4294967295 的整数，或留空随机'; input.focus(); return;
       }
       input.removeAttribute('aria-invalid');
       state.seed = seed === null ? global.crypto.getRandomValues(new Uint32Array(1))[0] : seed;
-      input.value = String(state.seed); el('seedHint').textContent = '当前 Seed · 可重播本局或开始新一局';
+      state.seedEdited = false;
+      input.value = String(state.seed); el('seedHint').textContent = '开始战斗换新 Seed · 重播保留当前 Seed';
       state.playing = true; resetPointer(); clearMotion(); setControlsLocked(true);
       app.dataset.phase = state.delay && !reduced.matches ? 'engage' : 'battle';
       document.querySelector('.app').classList.add('is-playing');
@@ -952,6 +953,10 @@
       }
     }
 
+    el('seedInput').addEventListener('input', () => {
+      state.seedEdited = true;
+      el('seedHint').textContent = '下次战斗使用手动输入的 Seed';
+    });
     startBtn.addEventListener('click', () => runBattle());
     againBtn.addEventListener('click', () => runBattle('new'));
     resultAgainBtn.addEventListener('click', () => runBattle('new'));
