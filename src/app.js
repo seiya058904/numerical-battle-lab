@@ -100,33 +100,64 @@
     return /^\d+$/.test(text) && Number(text) <= 0xFFFFFFFF ? Number(text) : undefined;
   }
 
-  // Visual complexity is an explicit rarity ladder, unrelated to engine strength or RNG.
+  // Presentation tokens only. Each tier shares one manufacturing language; rank
+  // controls the cut, assembly and field budget, never simulation strength.
+  const RARITY_FINISHES = Object.freeze([
+    { material: 'PLATINUM ALLOY', color: '#becbd3', light: '#f3f4ed', dark: '#485b69', enamel: '#14212b', spokes: 4, reach: 102, rings: 1, aura: .14, period: 76, particles: 3 },
+    { material: 'POLISHED PLATINUM', color: '#d3dce1', light: '#fcfcf2', dark: '#536975', enamel: '#172831', spokes: 4, reach: 108, rings: 1, aura: .18, period: 72, particles: 3 },
+    { material: 'CHROMA TITANIUM', color: '#a9c6b8', light: '#edf4d9', dark: '#46695f', enamel: '#102820', spokes: 6, reach: 108, rings: 2, aura: .21, period: 68, particles: 4 },
+    { material: 'VERDIGRIS TITANIUM', color: '#bad9bd', light: '#f2f6d9', dark: '#54795c', enamel: '#192a23', spokes: 6, reach: 113, rings: 2, aura: .25, period: 64, particles: 4 },
+    { material: 'SAPPHIRE ENAMEL', color: '#aec9dd', light: '#ecf4f2', dark: '#476a8c', enamel: '#11283c', spokes: 8, reach: 113, rings: 2, aura: .29, period: 60, particles: 5 },
+    { material: 'LUNAR ENAMEL', color: '#c3d0ea', light: '#f4f3ff', dark: '#626d98', enamel: '#1b2540', spokes: 8, reach: 117, rings: 2, aura: .33, period: 56, particles: 5 },
+    { material: 'AMETHYST IRIDIUM', color: '#c9b8dc', light: '#f7ecfa', dark: '#74608c', enamel: '#251c35', spokes: 8, reach: 120, rings: 3, aura: .39, period: 52, particles: 7 },
+    { material: 'IMPERIAL IRIDIUM', color: '#ddc3d3', light: '#fff0eb', dark: '#886078', enamel: '#301d2b', spokes: 10, reach: 123, rings: 3, aura: .44, period: 48, particles: 8 },
+    { material: 'AURIC FOIL', color: '#e6c18b', light: '#fff3d4', dark: '#896139', enamel: '#2a2114', spokes: 12, reach: 125, rings: 3, aura: .50, period: 44, particles: 12 },
+    { material: 'COLLECTOR ELECTRUM', color: '#edc7a5', light: '#fff4df', dark: '#936746', enamel: '#2d2019', spokes: 12, reach: 128, rings: 4, aura: .57, period: 40, particles: 16 },
+    { material: 'SOLAR GOLD', color: '#edd08d', light: '#fff8df', dark: '#947133', enamel: '#2c2512', spokes: 12, reach: 133, rings: 4, aura: .65, period: 36, particles: 18 },
+    { material: 'CELESTIAL GOLD', color: '#f2d6a2', light: '#fff9e5', dark: '#9c763b', enamel: '#312715', spokes: 16, reach: 137, rings: 5, aura: .76, period: 32, particles: 22 }
+  ].map(Object.freeze));
+
   function rarityFinish(tier) {
-    const particles = [3, 3, 4, 4, 5, 5, 7, 8, 12, 16, 18, 22][tier];
-    const material = tier === 11 ? 'CELESTIAL GOLD' : tier === 10 ? 'SOLAR FOIL' :
-      tier === 9 ? 'COLLECTOR COPPER' : tier === 8 ? 'AURIC FOIL' : tier >= 6 ? 'PRISM ALLOY' : tier >= 4 ? 'SAPPHIRE ENAMEL' : tier >= 2 ? 'CHROMA TITANIUM' : 'PLATINUM ALLOY';
-    const color = ['#b5ccda', '#d4e3ee', '#8dc9a9', '#8de6c0', '#93c5f8', '#aab8ff', '#c3abf2', '#e5a9d3', '#e6c18b', '#f3b891', '#f5d994', '#f7dcb3'][tier];
-    return { particles, material, color, tier: String(tier + 1).padStart(2, '0') };
+    if (!Number.isInteger(tier) || tier < 0 || tier >= RARITY_FINISHES.length) throw new RangeError('Unknown rarity tier');
+    return { ...RARITY_FINISHES[tier], tier: String(tier + 1).padStart(2, '0') };
   }
 
   function emblemMarkup(tier, side) {
-    const collector = tier === 9 || tier === 11, premium = tier >= 8;
+    const f = rarityFinish(tier), collector = tier === 9 || tier === 11, premium = tier >= 8;
     const glyph = RARITY_LIST[tier].replace(' Collector', '');
-    const metal = `url(#metal${side})`, enamel = `url(#face${side})`;
-    const highlight = premium ? '#fff0d2' : '#f0f8ff';
-    const shadow = premium ? '#9c7b47' : '#738e9f';
-    // A shared faceted cut: increasing rank adds ribs and longer ceremonial points.
-    // Geometry is deterministic; these are optical surfaces, never combat inputs.
-    const polar = (radius, angle) => [120 + radius * Math.cos(angle), 120 + radius * Math.sin(angle)].map(v => v.toFixed(2)).join(' ');
-    const ribs = Array.from({ length: premium ? 12 : 8 }, (_, i) => {
-      const count = premium ? 12 : 8, a = i * Math.PI * 2 / count - Math.PI / 2;
-      const reach = tier >= 10 && i % 3 === 0 ? 124 : collector && i % 3 === 0 ? 117 : 105;
-      return `<path d="M${polar(82, a - .12)} L${polar(reach, a)} L${polar(92, a + .13)} Z" fill="${metal}"/>
-        <path d="M${polar(82, a - .12)} L${polar(reach, a)} L${polar(85, a)} Z" fill="${highlight}" opacity=".55"/>
-        <path d="M${polar(85, a)} L${polar(reach, a)} L${polar(92, a + .13)} Z" fill="${shadow}" opacity=".7"/>`;
+    const metal = `url(#metal${side})`, enamel = `url(#face${side})`, bevel = `url(#bevel${side})`;
+    const point = (r, a) => [120 + r * Math.cos(a), 120 + r * Math.sin(a)];
+    const xy = p => p.map(v => v.toFixed(2)).join(' ');
+    const polygon = points => 'M' + points.map(xy).join('L') + 'Z';
+    const regular = (radius, count = 8, rotation = Math.PI / 8) => Array.from({ length: count }, (_, i) => point(radius, i * Math.PI * 2 / count + rotation));
+    const arc = (r, start, length) => `M${xy(point(r, start))}A${r} ${r} 0 ${length > Math.PI ? 1 : 0} 1 ${xy(point(r, start + length))}`;
+    // Each bevel is a real plane, with a stable upper-left light direction.
+    const cutBand = (outer, inner, count, rotation = Math.PI / 8) => {
+      const a = regular(outer, count, rotation), b = regular(inner, count, rotation);
+      return a.map((p, i) => {
+        const next = (i + 1) % count, angle = (i + .5) * Math.PI * 2 / count + rotation;
+        const light = Math.cos(angle + Math.PI * .7);
+        return `<path d="${polygon([p, a[next], b[next], b[i]])}" fill="${light > .25 ? f.light : light < -.3 ? f.dark : f.color}" stroke="#080e10" stroke-width=".45"/>`;
+      }).join('');
+    };
+    // Common reverse, milled rings and radial bridges anchor every silhouette.
+    const rays = Array.from({ length: f.spokes }, (_, i) => {
+      const angle = i * Math.PI * 2 / f.spokes - Math.PI / 2;
+      const reach = f.reach - (i % 2 ? tier >= 10 ? 24 : 13 : 0);
+      const a = point(79, angle - .115), tip = point(reach, angle), b = point(79, angle + .115), ridge = point(91, angle);
+      return `<g><path d="${polygon([a, tip, b, ridge])}" fill="${metal}" stroke="${f.dark}" stroke-width=".6"/><path d="${polygon([a, tip, ridge])}" fill="${f.light}" opacity=".83"/><path d="${polygon([ridge, tip, b])}" fill="${f.dark}"/><path d="M${xy(ridge)}L${xy(tip)}" stroke="${f.light}" stroke-width=".65"/></g>`;
     }).join('');
-    // Authored, cut-metal lettering shares the seal's bevel and geometry. Paths stay inside
-    // the opaque face; rings, bridges and moving light are painted behind that face.
+    const tickCount = 48 + tier * 4;
+    const ticks = Array.from({ length: tickCount }, (_, i) => `<path d="M120 16v${i % 4 ? 2.2 : 5}" transform="rotate(${i * 360 / tickCount} 120 120)"/>`).join('');
+    const bolts = Array.from({ length: tier >= 6 ? 8 : 4 }, (_, i) => `<g transform="rotate(${i * (tier >= 6 ? 45 : 90) + 22.5} 120 120)"><circle cx="120" cy="28" r="2.9" fill="${metal}" stroke="#05090c" stroke-width="1"/><path d="M118.5 28h3" stroke="${f.dark}" stroke-width=".7"/></g>`).join('');
+    const facets = premium ? `<g class="emblem-facets">${cutBand(106, 101, 12, 0)}<path d="${polygon(regular(109, 12, 0))}" stroke="${f.light}" stroke-width=".45" opacity=".55"/></g>` : '';
+    const wings = collector ? `<g class="emblem-wings">${[-1, 1].map(sign => Array.from({ length: 6 }, (_, i) => {
+      const angle = (sign < 0 ? Math.PI : 0) + sign * (.76 - i * .26);
+      const a = point(100, angle), b = point(128 - i * 1.4, angle - sign * .14), c = point(119, angle + sign * .14);
+      return `<path d="${polygon([a, b, c])}" fill="${metal}" stroke="${f.dark}" stroke-width=".6"/><path d="M${xy(a)}L${xy(b)}" stroke="${f.light}" stroke-width=".7"/>`;
+    }).join('')).join('')}</g>` : '';
+    const star = tier >= 10 ? `<g class="emblem-star">${Array.from({ length: 4 }, (_, i) => `<g transform="rotate(${i * 90} 120 120)"><path d="M120 -17 130 18 120 43 110 18Z" fill="${metal}" stroke="${f.dark}" stroke-width=".7"/><path d="M120 -17v60l-10-25Z" fill="${f.light}"/><path d="M120 -9v45" stroke="#fff9dc" stroke-width=".6"/></g>`).join('')}</g>` : '';
+    const crown = collector ? `<g class="emblem-crown"><path d="M95 70 99 85h42l4-15-14 7-11-18-11 18Z" fill="${metal}" stroke="${f.dark}"/><path d="m100 73 3 9h34l3-9-11 8-9-16-9 16Z" stroke="${f.light}" stroke-width=".7"/><path d="m120 68 3 6-3 5-3-5Z" fill="${f.light}"/></g>` : `<g class="emblem-insignia"><path d="m120 68 12 8-12 8-12-8Z" fill="${metal}"/><path d="m120 69 0 14-11-7Z" fill="${f.light}"/></g>`;
     const letters = {
       C: 'M27 0H8L1 7v22l7 7h19v-8H12l-3-3V11l3-3h15Z',
       B: 'M1 0h18l9 8v7l-5 3 5 3v7l-9 8H1Zm8 8v6h9l2-2-2-4Zm0 14v6h9l2-4-2-2Z',
@@ -135,48 +166,53 @@
       X: 'M0 0h10l5 11L20 0h10L20 18l10 18H20l-5-11-5 11H0l10-18Z',
       '+': 'M3 14h8V6h7v8h8v7h-8v8h-7v-8H3Z'
     };
-    const scale = glyph.length > 2 ? 1 : 1.23;
+    const scale = glyph.length > 2 ? 1.1 : glyph.length === 2 ? 1.4 : 1.55;
     const width = (glyph.length * 34 - 4) * scale;
     const mark = [...glyph].map((letter, i) => `<path d="${letters[letter]}" transform="translate(${i * 34} 0)"/>`).join('');
-    const ticks = Array.from({ length: 60 }, (_, i) =>
-      `<path d="M120 13v${i % 5 === 0 ? 7 : 2}" transform="rotate(${i * 6} 120 120)"/>`).join('');
-    const mounts = Array.from({ length: premium ? 8 : 4 }, (_, i) =>
-      `<g transform="rotate(${i * (premium ? 45 : 90) + 45} 120 120)"><path d="m115 22 5-4 5 4v9l-5 3-5-3Z" fill="${metal}"/><path d="M117 25h6" stroke="#101a23"/></g>`).join('');
-    const family = tier < 2 ? 'M78 54h84l27 27v78l-27 27H78l-27-27V81Z' :
-      tier < 4 ? 'M120 44 189 81v78l-69 38-69-38V81Z' :
-      tier < 6 ? 'M120 38 195 120 120 200 45 120Z' : 'M120 43 180 69 195 120 180 171 120 197 60 171 45 120 60 69Z';
-    const bridges = tier < 2 ? 'M25 98 42 85v70l-17-13 7-22ZM215 98l-17-13v70l17-13-7-22Z' :
-      tier < 4 ? 'M36 66 51 58v21L35 92ZM36 174l15 8v-21l-16-13ZM204 66l-15-8v21l16 13ZM204 174l-15 8v-21l16-13Z' :
-      'M120 20 130 35l-10 10-10-10ZM220 120l-15 10-10-10 10-10ZM120 220l-10-15 10-10 10 10ZM20 120l15-10 10 10-10 10Z';
-    const facets = premium ? `<g class="emblem-facets" stroke="${metal}"><path d="M120 23 188 52 217 120 188 188 120 217 52 188 23 120 52 52Z M120 30 183 57 210 120 183 183 120 210 57 183 30 120 57 57Z"/></g>` : '';
-    const wings = collector ? `<g class="emblem-wings" fill="${metal}"><path d="m42 61-20 20 8 14 15-16-12-1Zm-10 34-18 19 11 17 14-18-12-4Zm1 35-13 23 17 15 8-19-12-2Zm12 31-5 23 23 11 1-19-12 1Zm23 22 2 20 27 4-8-15-11 3ZM198 61l20 20-8 14-15-16 12-1Zm10 34 18 19-11 17-14-18 12-4Zm-1 35 13 23-17 15-8-19 12-2Zm-12 31 5 23-23 11-1-19 12 1Zm-23 22-2 20-27 4 8-15 11 3Z"/></g>` : '';
-    const star = tier >= 10 ? `<g class="emblem-star" fill="${metal}"><path d="m120 0 9 27-9 15-9-15ZM240 120l-27 9-15-9 15-9ZM120 240l-9-27 9-15 9 15ZM0 120l27-9 15 9-15 9Z"/><path d="M52 52 69 60 60 69ZM188 52l-17 8 9 9ZM188 188l-17-8 9-9ZM52 188l17-8-9-9Z"/></g>` : '';
-    const astrolabe = tier === 11 ? `<g class="emblem-astrolabe" stroke="${metal}"><path d="M43 28a120 120 0 0 1 154 0M212 43a120 120 0 0 1 0 154M197 212a120 120 0 0 1-154 0M28 197a120 120 0 0 1 0-154"/><path d="m37 37 8-2-2 8-8 2ZM203 37l-8-2 2 8 8 2ZM203 203l-8 2 2-8 8-2ZM37 203l8 2-2-8-8-2Z" fill="${metal}"/></g>` : '';
-    const crown = collector ? `<path class="emblem-crown" d="m100 70 5 12h30l5-12-12 5-8-12-8 12Z" fill="${metal}"/>` :
-      `<path class="emblem-insignia" d="m107 73 13-8 13 8-13 8Z" fill="${metal}"/><path d="M120 68v10" stroke="#14202c"/>`;
-    const hero = tier < 2 ? 'shield' : tier >= 10 ? 'star' : null;
-    return `<svg data-sculpture="${hero || 'engraved'}" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+    const face = polygon(regular(76, 8));
+    // A fixed geometry field: at most five rings, three moving surfaces and two
+    // energy arcs. No random values, SVG filters or frame-by-frame path mutation.
+    const field = Array.from({ length: f.rings }, (_, i) => `<circle cx="120" cy="120" r="${112 + i * 7}" stroke="${f.color}" stroke-width="${i % 2 ? .35 : .65}" opacity="${.4 - i * .04}"${i % 2 ? ' stroke-dasharray="1 6"' : ''}/>`).join('');
+    const anchors = Array.from({ length: tier >= 8 ? 12 : 4 }, (_, i) => `<g transform="rotate(${i * 360 / (tier >= 8 ? 12 : 4)} 120 120)"><path d="m120 ${tier >= 8 ? -14 : 5}-2 4 2 4 2-4Z" fill="${f.light}"/><path d="M120 ${tier >= 8 ? -21 : -1}v4" stroke="${f.color}"/></g>`).join('');
+    const astrolabe = tier === 11 ? `<g class="emblem-astrolabe"><ellipse cx="120" cy="120" rx="143" ry="126" transform="rotate(-28 120 120)" stroke="${f.color}" stroke-width=".7"/><ellipse cx="120" cy="120" rx="143" ry="126" transform="rotate(28 120 120)" stroke="${f.color}" stroke-width=".4" opacity=".5"/></g>` : '';
+    const wave = tier >= 8 ? `<g class="field-energy"><path d="M5 93C-17 23 66-13 99-6C35 11 16 38 17 76"/><path d="M235 147c22 70-61 106-94 99c64-17 83-44 82-82"/></g>` : '';
+    return `<svg data-sculpture="procedural" data-tier="${tier}" viewBox="-30 -30 300 300" fill="none" aria-hidden="true">
       <defs>
-        <linearGradient id="metal${side}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${highlight}"/><stop offset=".2" stop-color="currentColor"/><stop offset=".43" stop-color="${shadow}"/><stop offset=".49" stop-color="${highlight}"/><stop offset=".7" stop-color="currentColor"/><stop offset="1" stop-color="${shadow}"/></linearGradient>
-        <linearGradient id="face${side}" x2=".8" y2="1"><stop stop-color="#3a4b58"/><stop offset=".43" stop-color="#172632"/><stop offset=".44" stop-color="#111e2c"/><stop offset="1" stop-color="#070f1a"/></linearGradient>
+        <linearGradient id="metal${side}" x1=".1" y1="0" x2=".85" y2="1"><stop stop-color="${f.light}"/><stop offset=".16" stop-color="${f.color}"/><stop offset=".35" stop-color="${f.dark}"/><stop offset=".48" stop-color="${f.color}"/><stop offset=".51" stop-color="${f.light}"/><stop offset=".62" stop-color="${f.color}"/><stop offset=".84" stop-color="${f.dark}"/><stop offset="1" stop-color="${f.color}"/></linearGradient>
+        <linearGradient id="bevel${side}" x1="0" y1="0" x2="1" y2=".8"><stop stop-color="${f.light}"/><stop offset=".23" stop-color="${f.color}"/><stop offset=".47" stop-color="${f.dark}"/><stop offset=".5" stop-color="${f.light}"/><stop offset=".74" stop-color="${f.color}"/><stop offset="1" stop-color="${f.dark}"/></linearGradient>
+        <radialGradient id="face${side}" cx=".27" cy=".14" r=".94"><stop stop-color="${f.enamel}"/><stop offset=".5" stop-color="#101b20"/><stop offset="1" stop-color="#03090d"/></radialGradient>
+        <radialGradient id="field${side}"><stop offset=".36" stop-color="${f.color}" stop-opacity="0"/><stop offset=".64" stop-color="${f.color}" stop-opacity="${f.aura * .36}"/><stop offset="1" stop-color="${f.color}" stop-opacity="0"/></radialGradient>
+        <linearGradient id="crestFoil${side}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${f.light}" stop-opacity=".22"/><stop offset=".46" stop-color="${f.light}" stop-opacity=".03"/><stop offset=".5" stop-color="${f.light}" stop-opacity=".13"/><stop offset=".53" stop-color="${f.light}" stop-opacity="0"/></linearGradient>
+        <clipPath id="crestClip${side}"><path d="${face}"/></clipPath>
       </defs>
-      ${hero ? `<image class="sculpture" href="assets/${hero}.webp" width="240" height="240"/>` : ''}
-      <circle class="emblem-base" cx="120" cy="120" r="102" fill="${enamel}" stroke="${metal}" stroke-width="3"/>
-      <g class="emblem-engine">${Array.from({ length: 12 + tier * 2 }, (_, i) => `<path d="M120 24v12m-3-8h6" transform="rotate(${i * 360 / (12 + tier * 2)} 120 120)"/>`).join('')}<circle cx="120" cy="120" r="96" stroke-dasharray="2 6"/></g>
-      <g class="emblem-ticks">${ticks}</g><circle class="emblem-rim" cx="120" cy="120" r="91" stroke="${metal}"/>
-      <circle class="emblem-inner" cx="120" cy="120" r="85"/><g class="emblem-mounts">${mounts}</g>
-      <path class="emblem-bridges" d="${bridges}" fill="${metal}"/>${facets}${wings}${astrolabe}${star}
-      <g class="emblem-prism">${ribs}</g>
-      <circle class="emblem-glint" cx="120" cy="120" r="102" stroke="${highlight}" stroke-width="1.8" stroke-dasharray="24 617"/>
-      <path d="${family}" transform="translate(0 4)" fill="#020812" opacity=".65"/>
-      <g class="emblem-face"><path d="${family}" fill="${metal}"/><path d="${family}" transform="translate(120 120) scale(.91) translate(-120 -120)" fill="${enamel}" stroke="currentColor" stroke-width=".5"/>
-        <path d="${family}" transform="translate(120 120) scale(.83) translate(-120 -120)" stroke="currentColor" opacity=".15"/>
-        ${crown}<path d="M66 118 120 55 174 118 120 184Z" stroke="currentColor" opacity=".12"/>
-        <g class="emblem-letter" data-mark="${glyph}" transform="translate(${120 - width / 2} ${134 - 36 * scale}) scale(${scale})" fill="${metal}" fill-rule="evenodd">${mark}</g>
-        <path d="M83 146h25l12 5 12-5h25M105 155h30" stroke="currentColor" opacity=".5"/>
-        <text class="emblem-number" x="120" y="171" text-anchor="middle" fill="currentColor">${String(tier + 1).padStart(2, '0')} / XII</text>
+      <g class="emblem-field"><circle class="field-volume" cx="120" cy="120" r="150" fill="url(#field${side})"/>${field}${astrolabe}
+        <g class="field-orbit field-orbit-primary"><path d="${arc(112, -.9, 1.1)}" stroke="${f.light}" stroke-width="1.4"/><path d="${arc(112, 2.4, .4)}" stroke="${f.color}" stroke-width="1.6"/>${anchors}</g>
+        ${tier >= 4 ? `<g class="field-orbit field-orbit-secondary"><path d="${arc(126, 1, 1.8)}" stroke="${f.light}" stroke-width=".9"/><path d="${arc(126, 4.2, .65)}" stroke="${f.color}" stroke-width="1.2"/></g>` : ''}${wave}
       </g>
-      <text class="emblem-edition" x="120" y="225" text-anchor="middle" fill="currentColor">${collector ? 'COLLECTOR' : tier >= 10 ? 'APEX' : premium ? 'PRESTIGE' : tier >= 4 ? 'PRISM' : tier >= 2 ? 'CHROMA' : 'PLATINUM'}</text>
+      <circle class="crest-activation" cx="120" cy="120" r="119" stroke="${f.light}" stroke-width="1.4" opacity="0"/>
+      <g class="emblem-chassis">
+        <circle cx="120" cy="124" r="101" fill="#020508" opacity=".85"/>
+        <circle class="emblem-base" cx="120" cy="120" r="103" fill="${enamel}" stroke="${bevel}" stroke-width="3"/>
+        <circle cx="120" cy="120" r="99" stroke="${f.dark}" stroke-width="1.3"/>
+        <g class="emblem-ticks" stroke="${f.color}" stroke-width=".7" opacity=".6">${ticks}</g>
+        <circle cx="120" cy="120" r="91" stroke="${metal}" stroke-width="4"/><circle cx="120" cy="120" r="86" stroke="${f.light}" stroke-width=".5" opacity=".55"/>
+        <g class="emblem-mounts">${bolts}</g>${facets}${wings}${star}
+        <g class="emblem-prism">${rays}</g>
+        <g class="emblem-face">
+          <path d="${face}" transform="translate(0 4)" fill="#010508" stroke="#010508" stroke-width="4"/>
+          ${cutBand(79, 73, 8)}<path d="${face}" transform="translate(120 120) scale(.93) translate(-120 -120)" fill="${enamel}" stroke="${f.dark}" stroke-width="1.3"/>
+          ${cutBand(71, 68.5, 8)}<path d="${polygon(regular(64, 8))}" stroke="${f.color}" opacity=".23" stroke-width=".5"/>
+          <g clip-path="url(#crestClip${side})"><path d="M36 48h126L51 170Z" fill="url(#crestFoil${side})"/><path class="emblem-polish" d="M22 0h26l180 240h-26Z" fill="url(#crestFoil${side})"/></g>
+          ${crown}
+          <g class="emblem-letter" data-mark="${glyph}" transform="translate(${120 - width / 2} ${137 - 36 * scale}) scale(${scale})" fill-rule="evenodd">
+            <g transform="translate(0 2.2)" fill="#02080b" stroke="#02080b" stroke-width="1.4">${mark}</g>
+            <g fill="${metal}" stroke="${f.light}" stroke-width=".25">${mark}</g>
+          </g>
+          <path d="M91 148h17l12 5 12-5h17M104 157h32" stroke="${f.color}" opacity=".62" stroke-width=".65"/>
+          <text class="emblem-number" x="120" y="172" text-anchor="middle" fill="${f.color}">${f.tier} / XII</text>
+        </g>
+      </g>
+      <g class="emblem-certification"><path d="M82 216h22m32 0h22" stroke="${f.color}" stroke-width=".5" opacity=".6"/><path d="m120 209 5 7-5 7-5-7Z" fill="${metal}"/><text class="emblem-edition" x="120" y="237" text-anchor="middle" fill="${f.color}">${collector ? 'COLLECTOR' : tier >= 10 ? 'SOVEREIGN' : premium ? 'PRESTIGE' : tier >= 6 ? 'IMPERIAL' : tier >= 4 ? 'ENAMEL' : tier >= 2 ? 'TITANIUM' : 'PLATINUM'}</text></g>
     </svg>`;
   }
 
@@ -270,7 +306,7 @@
       const now = performance.now(), target = geometry[p.target];
       const source = p.drain ? geometry[p.target === 'A' ? 'B' : 'A'] : geometry[p.source] || target;
       const rarityColor = rarityFinish(currentCard(p.source || p.target).rarity).color;
-      const color = p.kind === 'heal' ? '#77e0b5' : p.kind === 'crit' ? rarityColor : p.source === 'A' ? '#72ceff' : '#ff8d9a';
+      const color = p.kind === 'heal' ? '#77e0b5' : rarityColor;
       const attack = p.kind === 'hit' || p.kind === 'crit' || p.kind === 'miss';
       if (attack || p.drain) particles.push({ type: 'beam', source, target, color, start: now, life: p.drain ? 380 : 340, miss: p.kind === 'miss', critical: p.kind === 'crit' });
       const count = p.kind === 'crit' ? 38 : p.kind === 'death' ? 42 : p.kind === 'miss' ? 7 : 18;
@@ -366,6 +402,31 @@
     document.addEventListener('visibilitychange', resetPointer);
     reduced.addEventListener('change', resetPointer);
 
+    // A crest activation has three beats: a held core, the assembled chassis,
+    // then a field release. One cancellable animation per surface, no timers.
+    function activateCrest(side, kind = 'selection') {
+      const panel = el('panel' + side), tier = currentCard(side).rarity;
+      const playback = kind !== 'selection';
+      const release = panel.querySelector('.crest-activation');
+      animate(release, [
+        { opacity: 0, transform: 'scale(.72)' },
+        { opacity: .8, transform: 'scale(.92)', offset: .28 },
+        { opacity: 0, transform: 'scale(1.14)' }
+      ], { duration: kind === 'crit' ? 760 : 1060, delay: playback ? 0 : 140 }, playback);
+      if (kind === 'selection') {
+        animate(panel.querySelector('.emblem-chassis'), [
+          { transform: 'translateY(8px) scale(.94)', opacity: .5 },
+          { transform: 'translateY(-1px) scale(1.006)', opacity: 1, offset: .72 },
+          { transform: 'translateY(0) scale(1)', opacity: 1 }
+        ], { duration: 760 + tier * 24 }, false);
+        animate(panel.querySelector('.emblem-field'), [
+          { opacity: .15, transform: 'scale(.88) rotate(-9deg)' },
+          { opacity: 1, transform: 'scale(1.025) rotate(1deg)', offset: .64 },
+          { opacity: 1, transform: 'scale(1) rotate(0)' }
+        ], { duration: 1080 + tier * 20, delay: 100 }, false);
+      }
+    }
+
     function present(p) {
       ['A', 'B'].forEach(side => { el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
       const labels = { hit: 'HIT', crit: 'CRITICAL', heal: p.drain ? 'LIFE STEAL' : 'REGEN', miss: 'EVADE', death: 'K.O.', sys: 'ENGAGE', draw: 'DRAW' };
@@ -387,6 +448,8 @@
           { duration: p.kind === 'crit' ? 620 : 440 });
       }
       burst(p);
+      if (p.kind === 'crit' && p.source) activateCrest(p.source, 'crit');
+      else if (p.kind === 'heal') activateCrest(p.target, 'heal');
       if (p.kind === 'hit' || p.kind === 'crit') {
         const force = p.kind === 'crit' ? 7 : 3;
         const direction = p.target === 'A' ? -1 : 1;
@@ -524,11 +587,20 @@
       countTo(el('bp' + side), power);
       const finish = rarityFinish(card.rarity);
       if (panel.dataset.rarity !== String(card.rarity)) {
+        for (const [node, motion] of motions) {
+          if (el('emblem' + side).contains(node)) { motion.cancel(); motions.delete(node); }
+        }
         el('emblem' + side).innerHTML = emblemMarkup(card.rarity, side);
         el('ambient' + side).innerHTML = Array.from({ length: finish.particles }, (_, i) =>
           `<i style="--x:${8 + i * 43 % 85}%;--y:${6 + i * 29 % 64}%;--drift:${(i % 3 - 1) * 14}px;--duration:${8 + i % 7}s;--delay:-${i * 1.7}s;--size:${i % 5 === 0 ? 3 : 1.5}px"></i>`).join('');
       }
       panel.dataset.rarity = card.rarity;
+      panel.style.setProperty('--foil', finish.color);
+      panel.style.setProperty('--crest-light', finish.light);
+      panel.style.setProperty('--crest-dark', finish.dark);
+      panel.style.setProperty('--crest-enamel', finish.enamel);
+      panel.style.setProperty('--field-strength', finish.aura);
+      panel.style.setProperty('--orbit-period', finish.period + 's');
       panel.dataset.card = card.id; panel.dataset.level = unit.level;
       el('cardCode' + side).textContent = unit.rarityName.replace(' Collector', '') + '-096 / ' + String(CARDS.indexOf(card) + 1).padStart(4, '0');
       el('material' + side).textContent = finish.material;
@@ -565,10 +637,11 @@
             if (node.textContent !== rows[i][1]) node.textContent = rows[i][1];
           });
           if (changedCard) {
+            activateCrest(side);
             animate(panel.querySelector('.rarity-art'),
-              [{ transform: 'perspective(600px) rotateY(-32deg) translateY(9px)', opacity: .25 },
+              [{ transform: 'perspective(600px) rotateY(-12deg) translateY(6px)', opacity: .55 },
                 { transform: 'perspective(600px) rotateY(3deg) translateY(-2px)', opacity: 1, offset: .72 },
-                { transform: 'perspective(600px) rotateY(0) translateY(0)', opacity: 1 }], { duration: 780 }, false);
+                { transform: 'perspective(600px) rotateY(0) translateY(0)', opacity: 1 }], { duration: 900 }, false);
             animate(el('stats' + side), [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 520, delay: 100 }, false);
           }
           if (changedCard) animate(panel.querySelector('.seal-flare'),
@@ -827,6 +900,7 @@
         // Starting from controls below the fold must bring the actual fight into view.
         battleHud.scrollIntoView({ behavior: 'instant', block: 'start' });
         resizeFx(); announce('BATTLE START'); renderSummary([]);
+        activateCrest('A', 'engage'); activateCrest('B', 'engage');
         if (state.delay) await new Promise(resolve => setTimeout(resolve, reduced.matches ? 120 : 650));
         app.dataset.phase = 'battle';
         for (let i = 0; i < result.events.length; i++) {

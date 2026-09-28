@@ -23,11 +23,23 @@ Final production prompt briefs:
 - `assets/dial.webp`: reproduce the concentric brass VS instrument and blank black enamel face, tick marks and metallic glints; remove VS/READY lettering and surrounding UI; transparent outside the dial.
 - `assets/console.webp`: reproduce the wide blackened-brass console with a worn gold central button plate and black side plates; retain bevels and end caps, remove all text, inputs, buttons and icons; transparent background.
 
-Silver frames use grayscale only on the material layer. Data and semantic team colors retain their original colors. Intermediate rarity seals preserve the existing deterministic engraved geometry; C/C+ and XS tiers use the physical hero sculptures. Rarity letters and actual labels remain visible independently of artwork.
+Silver frames use grayscale only on the material layer. Data and semantic team colors retain their original colors. The two raster sculptures remain reference assets only; runtime emblems load no bitmap. Hall, frame, dial and console materials remain as established in the collector workbench.
+
+## Procedural rarity assets
+
+`RARITY_FINISHES` in `src/app.js` is the presentation-only source of truth for all 12 tiers. Each token row owns metal highlight/shadow, enamel, radial assembly count/reach, ring count, aura strength, orbital period and bounded dust count. These values do not read or change the numerical rarity multiplier.
+
+All crests share one manufacturing language: a machined reverse, indexed concentric rings, recessed fasteners, eight-sided bevel planes, enamel inset, extruded path lettering and certification engraving. Polished cuts and a fixed upper-left light make the material recognizable without raster textures. C/C+ start complete; titanium and enamel ranks gain bridges and secondary orbits; S/SS add an imperial field; SSS adds a faceted outer mount; Collector variants add wings and a crown; XS extends cardinal spires; XS Collector adds crossed astrolabe ellipses and the strongest field. Labels and silhouettes carry rank in addition to color.
+
+`emblemMarkup(tier, side)` generates self-contained SVG. Every paint/clip ID is namespaced for A, B or Result. It uses no external references, random values, SVG blur filters or frame-by-frame path mutation. Contract tests cap a crest at 400 nodes / 32 KB, five field rings and 22 ambient dust elements. Unknown tiers fail explicitly; callers receive copies of frozen material tokens. To iterate, change the token row for material/field behavior or the shared geometry helper for the common construction; do not add tier-specific bitmap exceptions.
+
+The field has three responsibilities: a static volumetric ring behind the crest, slower secondary orbital light, and restrained high-tier energy arcs. Rank increases geometry and surrounding space rather than turning up every surface. Card corners, inner rails, certification plates, enamel reflection and the BP plate inherit the same tokens. The eight gameplay attributes retain their typography and interaction layout.
 
 ## Motion and accessibility
 
 Keep the existing READY → ENGAGE → BATTLE → RESULT presentation states, attack anticipation and impulse, HP interpolation, selection reveal and result choreography. Hover tilts the collectible face only, leaving selection and attribute controls stationary; focused controls suppress tilt. HP follows its own card rather than floating beside the instrument. The start label announces the locked playback state. Environmental motion is subordinate to the two cards. The event-driven particle canvas remains capped at 180 particles / 3.5 million pixels. Hidden pages clear transient work. Reduced motion disables particles, transforms and ambient loops without changing any combat output.
+
+Crest selection has three timed beats: held core, assembled chassis, released field. `activateCrest` reuses the field pulse for engagement, critical attacks and recovery; attack beams inherit the source rarity metal, with green reserved for healing and team colors reserved for HP/identity. Victory settles orbital speed and retained light; defeated fields recede. The motion registry cancels removed crest surfaces before replacing their SVG. Offscreen cards pause both descendants and pseudo-elements. Reduced-motion changes also cancel in-flight Web Animations; the complete static crest remains present.
 
 Labelled inputs, native selectors, keyboard focus and all three playback speeds remain functional. Seed is directly visible in READY without a focus-driven toggle. Card names wrap in flow when needed. Disabled controls stay visible on desktop during playback. Full stats do not require a separate overlay. Maintain regression checks for all 96 heroes at level 100, all 12 rarity emblems, 320/390/768/1024/1536/3840 widths, repeated mobile replay and reduced motion.
 

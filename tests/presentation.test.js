@@ -58,6 +58,36 @@ test('material and emblem construction is repeatable without consuming random nu
   } finally { Math.random = original; }
 });
 
+test('all crests are self-contained vector assets with bounded geometry and field budgets', () => {
+  const assets = new Set();
+  for (let tier = 0; tier < 12; tier++) {
+    const svg = emblemMarkup(tier, 'Budget');
+    assets.add(svg);
+    assert.doesNotMatch(svg, /<(?:image|foreignObject|script|filter|animate)\b/);
+    assert.doesNotMatch(svg, /NaN|Infinity|undefined|href=/);
+    assert.ok((svg.match(/<[a-z]/g) || []).length <= 400, 'crest node budget');
+    assert.ok(Buffer.byteLength(svg) <= 32000, 'crest transfer/DOM string budget');
+    const finish = rarityFinish(tier);
+    assert.ok(finish.rings >= 1 && finish.rings <= 5);
+    assert.ok(finish.aura > 0 && finish.aura < 1);
+    assert.ok(finish.period >= 32);
+    if (tier) {
+      const previous = rarityFinish(tier - 1);
+      assert.ok(finish.reach >= previous.reach);
+      assert.ok(finish.rings >= previous.rings);
+      assert.ok(finish.aura > previous.aura);
+    }
+  }
+  assert.equal(assets.size, 12);
+});
+
+test('rarity tokens cannot be mutated through returned finishes; unknown ranks fail explicitly', () => {
+  const finish = rarityFinish(11), original = finish.color;
+  finish.color = '#000000';
+  assert.equal(rarityFinish(11).color, original);
+  for (const rank of [-1, 12, 1.5, NaN, '11']) assert.throws(() => rarityFinish(rank), RangeError);
+});
+
 test('Arena presentation preserves all 1,920 full simulation results from main e9ce5e9', () => {
   // Captured BEFORE the presentation upgrade, including every event, HP snapshot and final unit.
   const hash = createHash('sha256');
