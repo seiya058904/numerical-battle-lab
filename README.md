@@ -1,113 +1,79 @@
-# 数值卡牌 · 自动 PK
+# ⚔️ 数值卡牌 · 自动 PK
+
+**Pick two cards. Set their levels. Let the numbers settle the fight.**
+
+一场由等级、稀有度与十二项战斗属性驱动的自动对战实验。玩家决定对手和参数，系统模拟战斗，再以具有节奏的视觉演出回放结果。
+
+**[▶ Play the battle lab](https://seiya058904.github.io/numerical-battle-lab/)** · [Three-step guide](#三步开战) · [Combat rules](#during-combat) · [Verification](#run-and-verify)
+
+<img width="740" alt="Numerical Battle Lab fantasy card artwork" src="https://github.com/user-attachments/assets/7ca1b5eb-2d0e-47a2-bd7f-1e668e39ee11" />
 
 
-<img width="1672" height="941" alt="ChatGPT 图像 2026年9月27日 22_38_27" src="https://github.com/user-attachments/assets/7ca1b5eb-2d0e-47a2-bd7f-1e668e39ee11" />
+## 三步开战
 
+1. **选卡**：蓝方、红方分别选择一张固定卡牌。
+2. **设定等级**：Lv 1–100；观察 HP、攻击、防御、速度和 Battle Power 随之变化。
+3. **开始战斗**：系统先完整模拟，再按「慢 / 快 / 瞬」播放事件，查看胜者、日志与战后简报。
 
-这是一个自动数值卡牌 PK 游戏。
+无需注册。直接打开 [`index.html`](index.html)，或在本地启动 `npm run serve` 后访问 `http://127.0.0.1:8774/`。
 
-- 选两张卡。
-- 调等级（1–100）。
-- 开始战斗。
-- 看谁赢。
+## What determines a match
 
-实力体系分两类：**输入**（决定战斗表现）与**评价**（事后衡量）。
+**Level and Rarity influence combat attributes. BP does not.** It is an observational score computed *after* final attributes are known, never an extra hidden damage multiplier.
 
-输入 —— 决定战斗表现：
+| Dimension | What it changes |
+| --- | --- |
+| **Level** | 从 Lv1 到 Lv100 的非线性成长，显著影响核心属性 |
+| **Rarity** | 12 档离散稀有度倍率，从 C 到 XS Collector |
+| **12 attributes** | HP、ATK、DEF、SPD、命中、闪避、暴击率、暴伤、穿透、吸血、再生、波动 |
+| **Battle Power** | 对当前最终属性作只读综合评价，不介入伤害计算或强制决定胜负 |
+| **Match Seed** | 同卡、同等级和同 Seed 可重现同一完整战斗事件序列 |
 
-- **Level** — 第一实力维度。Lv100 与 Lv40 之间存在巨大差距（超指数成长）。
-- **Rarity** — 第二实力维度。C / C+ / B / B+ / A / A+ / S / SS / SSS / SSS Collector / XS / XS Collector，共 12 档，使用显式倍率表（C=1.00 → XS Collector=13.20）。Rarity 越高，相邻档之间实力提升越明显；Collector 档对前一普通档有明显跳升。
-- **12 个战斗属性** — 生命 / 攻击 / 防御 / 速度 / 命中 / 闪避 / 暴击率 / 暴击伤害 / 穿透 / 吸血 / 每回合回复 / 波动，是实际战斗内容。
+卡库为 **96 张固定卡牌**（12 档 × 8 张），不包含自由编辑卡牌或额外技能编辑器。BP 是辅助比较指标，**不是胜率百分比**。
 
-评价 —— 不参与战斗：
+### 稀有度阶梯
 
-- **Battle Power** — 只读最终属性计算的综合数字，帮你快速判断两张卡谁更强。它不参与战斗、不修改伤害、不强制胜者；BP 越高长期平均越强，实力接近时互有胜负。
+| C | C+ | B | B+ | A | A+ | S | SS | SSS | SSS Collector | XS | XS Collector |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1.00× | 1.15× | 1.35× | 1.60× | 1.90× | 2.30× | 2.90× | 3.75× | 4.90× | 6.60× | 9.10× | 13.20× |
 
-## 怎么玩
+不同档位有不同材质与徽章层次，Collector 增加更明显的装饰结构；所有档位共享可读的战力与生命信息。
 
-1. 打开 `index.html`（或 `npm run serve` 后访问 http://127.0.0.1:8774）。
-2. 左侧选蓝方卡，右侧选红方卡。
-3. 拖动等级滑条，双方 HP / 攻击 / 防御 / 速度 / Battle Power 实时变化。
-4. 点「开始战斗」：先完整模拟，再按 慢 / 快 / 瞬 回放事件。
-5. 看战斗日志、回合数、双方 HP、胜者，点「新一局」换一个 Match Seed 再来。
-6. Match Seed 留空随机，也可输入 0–4294967295；「重播本局」使用同一 Seed。战斗中可切换慢 / 快 / 瞬。
-
-## Collector VI · 珐琅卡面与精密徽章
-
-默认展示经典悬念对局：Lv55「起源之星」XS Collector 对 Lv100「铁盾卫兵」C，Seed 随机；所有选卡与等级仍可自由调整。
-
-- **战斗舞台**：双方 HP 同屏、延迟伤害残影、数字缓动、方向攻击光束、暴击冲击波、闪避偏移、回复粒子、吸血回流、击倒与胜利演出。生命比例提示表达当前局势，不预测胜率。
-- **双通道构图**：Live Arena 和双方生命条恢复至卡牌上方，桌面生命通道与卡牌左右对齐；下方是选卡、战力与参数控制台。开始战斗自动定位舞台，结束后结果紧邻舞台显示，保留完整日志和简报。
-- **全卡池材质**：所有档位共享抛光包边、珐琅面层、金属肩部和底部铭牌。C 系铂金夹座、B 系钛金属六角骨架、A 系蓝宝石菱形面层，都有完整的精密徽章；SSS 在此基础上增加金箔外框，Collector 增加冠饰和月桂翼片，XS 使用四极光矛，XS Collector 叠加外缘星仪。蓝红仍表示队伍，稀有度材质贯穿卡面、BP、Arena 局部饰光、暴击粒子和胜者徽记。
-- **一体化徽章**：字标由定制切割路径构成，与徽章共享金属渐变、倒角和几何语言，不依赖系统字体。全部外缘几何先绘制，中心字标始终在不透明面层上；没有轨道穿过字标。卡牌与结果区使用同一套徽章，独立的渐变 ID 避免相互污染。
-- **READY 动态**：全档位拥有缓慢轨道、间歇边缘弧光和包边流光，Arena 增加双向环境光带。低中档每卡 3–5 个微粒节点，其中 3 个运动；高档逐级增加，最多 22 个节点、8 个运动。动态集中在外缘，不在文字上反复扫光，无常驻 Canvas 环境循环。鼠标反射和徽记视差仅在精细指针交互时运行，离开、滚动、战斗或隐藏后取消。
-- **统一交互节奏**：短按钮响应、平滑调级、换卡显现与局部扩散光环、胜利收尾；进入战斗时 Arena 刻线与卡牌读数面板响应事件。减弱动态模式关闭所有运动，保留完整材质和信息。
-- **战力读数**：BP 与 Level 整合在同一玻璃仪表中，保留金属数字、比较尺与独立等级刻度；尺长表示该卡 BP 占双方 BP 总和的比例，仅用于比较，**不是胜率**。连续调级从当前显示值平滑过渡，并产生局部高光响应；播放节奏不会影响 READY 数字缓动。
-- **战斗日志**：按回合分组，区分 HIT / CRIT / MISS / HEAL / DRAIN / K.O.，高亮当前事件；向上滚动、键盘翻页或触摸浏览会暂停自动跟随，可点「跟随最新」恢复。单次伤害达到目标最大 HP 的 18% 时标记重点伤害。
-- **战后简报**：双方实际总伤害、有效治疗、暴击、闪避、最高单次伤害；不计溢出伤害或溢出治疗。
-- **响应式**：移动端固定播放控制、双方生命同屏、可展开属性；4K 同步放大舞台与文字。开始战斗自动定位舞台。
-- **性能与可访问性**：零新增依赖；单 Canvas 最多 180 个瞬时粒子，DPR 上限 2，粒子结束、舞台离屏或页面隐藏后停止绘制；离屏卡牌停止装饰动画，页面隐藏时暂停所有 CSS 循环。修复隐藏后后续战斗事件重新创建特效的问题。支持 `prefers-reduced-motion`，关闭粒子、位移、数字缓动与循环流光，保留事件文字和结果。瞬间播放一次批量写入剩余日志，不逐事件等待。
-- **DOM 生命周期**：调级只更新变化的属性读数，不重建属性节点、另一方的属性或日志空态；更换同稀有度卡牌复用徽记和粒子。选卡/等级改变会清除旧战斗结果，搜索不会改变当前选择。
-- **4K 合成**：徽章厚度用静态偏移轮廓绘制，避免在动画 SVG 中嵌套模糊阴影滤镜。实测该滤镜会让 Arena 与双高阶卡同时可见的 4K 首屏出现掉帧，因此保留结构和光效、移除滤镜重绘成本。
-
-本轮只修改页面和回放展示，没有修改卡库、等级曲线、Rarity 倍率、Battle Power、战斗 RNG 或胜负规则。测试以 main `e9ce5e9` 的 **1,920 组完整模拟输出 SHA-256** 锁定行为，而非仅比较胜者。
-
-内置 **96 张固定卡牌**（12 档 × 8 张）：保留原始 24 张，并新增 72 张来自动漫、游戏、电影、神话与流行文化的角色/人物名。所有新增卡仍只使用现有 12 项战斗属性，不增加技能系统；玩家不需要创建卡牌。
-
-## 战斗规则（就这些）
-
-每回合双方各行动一次，速度（SPD）决定先后手：
-
-```
-再生 → 命中判断 → 暴击判断 → 防御/穿透修正 → 伤害 → 吸血 → 下一回合
-```
-
-直到一方 HP = 0。战斗保留随机性（命中/闪避、暴击、伤害波动、速度先手概率），但全部随机来自内部确定性 PRNG：同两张卡 + 同 Match Seed → 完全相同的对局。播放速度（慢/快/瞬）只改变事件之间的延迟，绝不改变结果。
-
-## 数值公式
-
-- 等级曲线：`g(L) = exp(0.02143·L + 0.0002253·L²)`，g(40)=3.38，g(55)=6.42，g(100)=81.12
-- 稀有度表（显式倍率，无公式拟合）：
-
-| Rarity | C | C+ | B | B+ | A | A+ | S | SS | SSS | SSS Collector | XS | XS Collector |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 倍率 | 1.00 | 1.15 | 1.35 | 1.60 | 1.90 | 2.30 | 2.90 | 3.75 | 4.90 | 6.60 | 9.10 | 13.20 |
-
-- 最终属性：`p = g(L) × rarityMul(稀有度)`，HP/ATK/DEF/SPD = 基准 × 卡牌形状 × p
-- 产品关系：`Lv55 XS Collector × g(55) ≈ Lv100 C × g(100)`（p ≈ 84.8 vs 81.1）→ 总体对抗有悬念
-- 基础伤害：`ATK² / (ATK + DEF×(1−PEN))`，再乘暴击与波动
-- Battle Power：12 项最终属性的透明非线性评价
-
-## 测试与验证
-
-```bash
-npm test          # node:test 全量测试（零依赖）
-npm run verify    # 静态检查 + 全量测试 + 产品实战验收
-npm run serve     # 本地静态服务器
-```
-
-测试覆盖：Level 单调性、Rarity 层级、Battle Power 排序、同 Match Seed 确定性、播放速度独立、战斗终止、无 NaN、HP 合法、近战力双方都能赢、大差距不翻盘、相邻档梯度与 Collector 跳升；`npm run verify` 还包含多等级 BP 审计（Lv25/55/100 循环赛，Spearman ≥ 0.90）。
-
-## 仓库结构
+## During combat
 
 ```text
-index.html          单页入口（只加载 4 个模块）
-styles.css
-src/cards.js        96 张内置卡 + 12 档稀有度（含 24 张 legacy BP 参考卡）
-src/power.js        Level 曲线 + Rarity 倍率表 + 属性计算 + Battle Power
-src/battle.js       确定性自动战斗引擎（先模拟后播放）
-src/app.js          页面交互与回放
-tests/              node:test 测试
-scripts/            静态检查 / 产品验收 / 本地服务器
+再生 → 命中 / 闪避 → 暴击 → 防御 / 穿透 → 实际伤害 → 吸血 → 下一回合
 ```
 
-## BP 评价与验证
+SPD 影响行动先后，随机性统一由确定性 PRNG 驱动。慢/快/瞬只改变回放等待时间，**不会改变伤害、RNG 或胜负**。
 
-BP 对七组固定参考属性估计命中、穿透后伤害、暴击期望、生存与有限续航，再取几何平均；只用最终属性，不读等级、稀有度、身份或当前 HP。速度仅估计先手价值，波动取中性，单一 BP 不表达尾部风险，也不是胜率百分比。公式及参考常量见 `src/power.js`。
+视觉层包括方向攻击光束、暴击与回复反馈、生命残影、分回合战斗日志与结果统计。支持 `prefers-reduced-motion`，关闭繁复运动时保留核心战斗信息。
 
-`scripts/bp-evaluation.js` 固定卡对划分、等级组合、seeds 与门槛，输出 SHA-256。BP v4 的冻结深度审计继续只运行在原始 24 张 `LEGACY_CARDS` 上；扩展后的 96 张全卡池另由产品验收执行轻量循环赛与 BP 相关性检查，因此扩卡不会偷偷重写历史校准集。校准和保留池卡对、seed 隔离；历史全卡池诊断已被查看，因此保留池是系数拟合独立数据，不声称卡牌身份从未被观察。全共同对手仅作最终回归：Lv25/55/100 分别 rho≥0.90，每 seed 聚合 22 对手和两个座位，用 512 个配对差计算 t 区间；按实测及用户批准，显著差门槛为 1 个百分点。
+<details>
+<summary><strong>📐 Numerical reference (for readers who want the model)</strong></summary>
 
-近/中/远 BP 分别为 ≤1.06、(1.06,1.25)、≥1.25。近 BP 全部检查双方 wins/total≥5%（total 包括平局），同时约束数量和类别/等级覆盖。远 BP 要求总体得分≥70%，且至少85%组合的高BP方实际胜率≥70%。常数、Level×Rarity、反向负面对照必须按预期原因失败。保留集一旦用于调参，永久转为回归集，不可继续称为保留集。完整审计失败意味着 BP 尚未完成，不得降低门槛。
+The level multiplier is `g(L) = exp(0.02143·L + 0.0002253·L²)`; the four scaled core stats follow the card's base values and shape, multiplied by `g(L) × rarityMul`. Rarity uses the explicit table above, not an interpolated formula. An illustrative damage term is `ATK² / (ATK + DEF×(1−PEN))` before critical and variance factors.
 
+Exact source of truth: [`src/power.js`](src/power.js) and [`src/battle.js`](src/battle.js). The BP audit's historical pools are deliberately separated from current full-card regression; **no BP score is a human win-rate estimate**.
 
-评价清单 v4：v2、v3 保留池永久转为历史回归并全量保留。新保留池使用 [14,31,57,81,94] 级锚点与新的 seeds，排除参与拟合的全部修复卡对；保持与校准/修复卡对隔离，并与历史池的单位等级组合及 seeds 不重叠。历史上出现过的卡牌身份不被宣称为从未观察。先手收益与参考属性已重新校准；再生采用 50% 的可用性估计系数，模拟器规则不变。
+</details>
+
+## Run and verify
+
+本项目是零运行时依赖的静态 Web 项目，使用 Node 内置测试工具。
+
+```bash
+npm run serve    # Local server at 127.0.0.1:8774
+npm test         # Node regression suite
+npm run verify   # Static checks + tests + product/BP audits
+```
+
+| Source | Responsibility |
+| --- | --- |
+| [`src/cards.js`](src/cards.js) | 固定卡库和稀有度定义 |
+| [`src/power.js`](src/power.js) | 等级、属性与 BP 评价 |
+| [`src/battle.js`](src/battle.js) | 确定性战斗模拟 |
+| [`src/app.js`](src/app.js) | 用户界面和回放流程 |
+| [`tests/`](tests/) | 数值与战斗契约测试 |
+
+计算与视觉边界以 [`PRODUCT.md`](PRODUCT.md)、[`DESIGN.md`](DESIGN.md) 和 [`AGENTS.md`](AGENTS.md) 为准。BP 的深度校准方法和历史回归门槛在源码及测试中维护，不将自动模拟的观察结果伪装成真实玩家胜率。
