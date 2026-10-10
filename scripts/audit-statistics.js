@@ -24,7 +24,7 @@ function spearman(xs, ys) {
 }
 // Two-sided Student t 0.975 quantile, df=511. Observations are seed clusters.
 function pairedInterval512(differences) {
-  if (differences.length !== 512 || !differences.every(Number.isFinite)) throw new Error('Expected 512 finite seed differences');
+  if (differences.length !== 512 || !Array.from(differences).every(Number.isFinite)) throw new Error('Expected 512 finite seed differences');
   const average = mean(differences);
   const variance = differences.reduce((s, d) => s + (d - average) ** 2, 0) / 511;
   const margin = 1.964617 * Math.sqrt(variance / 512);

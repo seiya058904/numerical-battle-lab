@@ -36,6 +36,9 @@
 
   // ---- 由固定卡牌 + 等级构建最终单位 ----
   function buildUnit(card, level) {
+    if (!Number.isInteger(level) || level < 1 || level > 100) {
+      throw new RangeError('Level must be an integer from 1 to 100');
+    }
     const p = gLevel(level) * rarityMul(card.rarity);
     return {
       cardId: card.id,

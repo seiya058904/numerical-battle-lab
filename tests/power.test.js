@@ -6,9 +6,25 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { CARDS, RARITY_LIST } = require('../src/cards.js');
 const { gLevel, rarityMul, buildUnit, battlePower } = require('../src/power.js');
+const { simulate } = require('../src/battle.js');
 
 const LEVELS = [1, 25, 50, 75, 100];
 const tiers = RARITY_LIST.map((_, t) => CARDS.filter(c => c.rarity === t));
+
+test('非法等级必须显式拒绝，不能生成 NaN 事件或假性胜者', () => {
+  const invalid = [undefined, null, NaN, Infinity, -Infinity, -1, 0, 101,
+    1e6, 1.5, '50', '', true, [], {}, 50n, Symbol('level')];
+  for (const level of invalid) {
+    assert.throws(() => buildUnit(CARDS[0], level), RangeError);
+    assert.throws(() => simulate(CARDS[0], level, CARDS[1], 1, 1234), RangeError);
+    assert.throws(() => simulate(CARDS[0], 1, CARDS[1], level, 1234), RangeError);
+  }
+  for (const level of [1, 100]) {
+    const unit = buildUnit(CARDS[0], level);
+    assert.equal(unit.level, level);
+    assert.ok(Number.isSafeInteger(unit.maxHp) && unit.maxHp > 0);
+  }
+});
 
 test('Level 曲线：单调递增，Lv100/Lv40 巨大差距', () => {
   let prev = 0;

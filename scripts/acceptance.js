@@ -35,13 +35,13 @@ console.log('========== 数值卡牌 · 自动 PK — 96 卡产品实战验收 =
 
 console.log('【核心锚点】');
 {
-  let upsets = 0, total = 0;
+  let wins = 0, upsets = 0, draws = 0, total = 0;
   for (const c of cs) for (const x of xscs) {
     const r = winStats(c, 100, x, 40, 24);
-    upsets += r.b; total += r.seeds;
+    wins += r.a; upsets += r.b; draws += r.d; total += r.seeds;
   }
-  report('Lv100 C vs Lv40 XS Collector → Lv100 压倒性',
-    upsets === 0, `高等级 ${pct(total - upsets, total)} / 翻盘 ${pct(upsets, total)}`);
+  report('Lv100 C vs Lv40 XS Collector → Lv100 零败回归',
+    upsets === 0, `高等级胜 ${pct(wins, total)} / 负 ${pct(upsets, total)} / 平 ${pct(draws, total)}`);
 }
 {
   let xWins = 0, cWins = 0, draws = 0, total = 0;
@@ -55,13 +55,13 @@ console.log('【核心锚点】');
     `XS-C ${pct(xWins, total)} / C ${pct(cWins, total)} / draw ${pct(draws, total)}`);
 }
 {
-  let upsets = 0, total = 0;
+  let wins = 0, upsets = 0, draws = 0, total = 0;
   for (const x of xscs) for (const c of cs) {
     const r = winStats(x, 50, c, 50, 24);
-    upsets += r.b; total += r.seeds;
+    wins += r.a; upsets += r.b; draws += r.d; total += r.seeds;
   }
-  report('同等级 C vs XS Collector → 高稀有度压倒性',
-    upsets === 0, `XS-C ${pct(total - upsets, total)} / C ${pct(upsets, total)}`);
+  report('同等级 C vs XS Collector → 高稀有度零败回归',
+    upsets === 0, `XS-C 胜 ${pct(wins, total)} / 负 ${pct(upsets, total)} / 平 ${pct(draws, total)}`);
 }
 
 console.log('\n【同档 8 卡全组合】');

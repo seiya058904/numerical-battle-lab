@@ -1,9 +1,18 @@
 'use strict';
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { manifest, manifestHash, evaluatePool, evaluateLocal } = require('../scripts/bp-evaluation.js');
+const { manifest, manifestHash, evaluatePool, evaluateLocal, observeLocal } = require('../scripts/bp-evaluation.js');
 const { LEGACY_CARDS: CARDS } = require('../src/cards.js');
 const power = require('../src/power.js');
+test('local regression rejects fabricated sample counts and duplicate or invalid seeds', () => {
+  const valid = manifest.seeds.regression;
+  const hole = valid.slice(); delete hole[17];
+  const invalid = [[], [0, 1], valid.slice(1), [...valid, 0], Array(512), null,
+    hole, Array(512).fill(0), new Uint32Array(512),
+    ...[NaN, Infinity, -1, 0x100000000, .5, '1', undefined].map(value => [value, ...valid.slice(1)])];
+  for (const seeds of invalid) assert.throws(() => observeLocal(seeds), RangeError);
+});
+
 test('calibration and holdout have disjoint unordered pairs and seed sets', () => {
   assert.equal(manifestHash, '81a8582a7ac856670a587e6c148f14ccc5fa2aa63a54fcbacd7aa3e9225bf77e', 'Changing frozen evaluation data requires an explicit new audit version');
   const keys = split => new Set(manifest.pools[split].map(([a,,b]) => [a,b].sort().join('|')));

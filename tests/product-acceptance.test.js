@@ -4,6 +4,10 @@
 'use strict';
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const { createRequire } = require('node:module');
 const { CARDS, RARITY_LIST } = require('../src/cards.js');
 const { simulate } = require('../src/battle.js');
 
@@ -110,4 +114,35 @@ test('验收⑨ Collector 跳升：SSS Collector / XS Collector 对前档明显�
     assert.ok(pctHi >= 90,
       `${RARITY_LIST[hi]} vs ${RARITY_LIST[lo]} Collector 应明显强，实际 ${pctHi.toFixed(1)}%`);
   }
+});
+
+test('验收报表：零败锚点显示真实平局比例，保留既有零败门槛', () => {
+  const filename = path.join(__dirname, '../scripts/acceptance.js');
+  const localRequire = createRequire(filename);
+  const lines = [];
+  let exitCode = null, highLevelDraws = 0, highRarityDraws = 0;
+  const injectedBattle = {
+    simulate(a, la, b, lb, seed) {
+      const highLevel = (a.rarity === 0 && la === 100 && b.rarity === 11 && lb === 40)
+        || (b.rarity === 0 && lb === 100 && a.rarity === 11 && la === 40);
+      const highRarity = la === 50 && lb === 50
+        && ((a.rarity === 0 && b.rarity === 11) || (a.rarity === 11 && b.rarity === 0));
+      if (highLevel) { highLevelDraws++; return { winner: -1 }; }
+      if (highRarity) { highRarityDraws++; return { winner: -1 }; }
+      return simulate(a, la, b, lb, seed);
+    }
+  };
+  vm.runInNewContext(fs.readFileSync(filename, 'utf8'), {
+    require(name) { return name === '../src/battle.js' ? injectedBattle : localRequire(name); },
+    console: { log(...args) { lines.push(args.join(' ')); } },
+    process: { exit(code) { exitCode = code; } }
+  }, { filename });
+  assert.ok(highLevelDraws > 0 && highRarityDraws > 0, '两个锚点都应收到平局测试结果');
+  for (const prefix of ['✓ Lv100 C vs Lv40 XS Collector', '✓ 同等级 C vs XS Collector']) {
+    const line = lines.find(value => value.startsWith(prefix));
+    assert.ok(line, '原有零败门槛仍应通过');
+    assert.match(line, /胜 0\.0% \/ 负 0\.0% \/ 平 100\.0%/);
+    assert.match(line, /零败回归/);
+  }
+  assert.equal(exitCode, 0, '本修复只纠正报表，不提高既有胜率或零败门槛');
 });

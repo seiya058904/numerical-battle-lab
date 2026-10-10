@@ -18,3 +18,12 @@ test('paired interval counts seeds, not opponents or seats', () => {
   const r = pairedInterval512(Array.from({ length: 512 }, (_, i) => i % 2 ? 1 : -1));
   assert.equal(r.mean, 0); assert.ok(r.low < 0 && r.high > 0);
 });
+test('paired interval rejects missing observations instead of padding them with zero', () => {
+  const hole = Array(512).fill(.1); delete hole[17];
+  for (const values of [Array(512), hole, [...Array(511).fill(.1), undefined],
+    [...Array(511).fill(.1), NaN], [...Array(511).fill(.1), Infinity]]) {
+    assert.throws(() => pairedInterval512(values), /512 finite seed differences/);
+  }
+  const dense = Array.from({ length: 512 }, (_, i) => i % 2 ? .25 : -.25);
+  assert.deepEqual(pairedInterval512(new Float64Array(dense)), pairedInterval512(dense));
+});

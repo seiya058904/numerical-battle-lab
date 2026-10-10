@@ -59,13 +59,18 @@ const manifest = {
 const manifestHash = crypto.createHash('sha256').update(JSON.stringify(manifest)).digest('hex');
 function points(winner, side) { return winner === -1 ? .5 : winner === side ? 1 : 0; }
 function observeLocal(seeds = manifest.seeds.regression) {
+  // The fixed t interval treats exactly 512 distinct uint32 seeds as clusters.
+  // Copy all slots: sparse arrays must not fabricate missing observations.
+  const samples = seeds && seeds.length === 512 ? Array.from(seeds) : [];
+  if (samples.length !== 512 || samples.some(s => !Number.isInteger(s) || s < 0 || s > 0xFFFFFFFF)
+    || new Set(samples).size !== 512) throw new RangeError('Expected 512 distinct uint32 seeds');
   return LEVELS.map(level => {
     const scores = CARDS.map(() => Array(512).fill(0));
     const allScores = CARDS.map(() => 0);
     for (let i = 0; i < CARDS.length; i++) for (let j = i + 1; j < CARDS.length; j++) {
-      for (let s = 0; s < seeds.length; s++) {
-        const f = simulate(CARDS[i], level, CARDS[j], level, seeds[s]);
-        const r = simulate(CARDS[j], level, CARDS[i], level, seeds[s]);
+      for (let s = 0; s < samples.length; s++) {
+        const f = simulate(CARDS[i], level, CARDS[j], level, samples[s]);
+        const r = simulate(CARDS[j], level, CARDS[i], level, samples[s]);
         const a = (points(f.winner, 0) + points(r.winner, 1)) / 2;
         allScores[i] += a / (512 * 23); allScores[j] += (1 - a) / (512 * 23);
         if (CARDS[i].rarity !== CARDS[j].rarity) {

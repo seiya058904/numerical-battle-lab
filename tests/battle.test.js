@@ -5,6 +5,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { CARDS } = require('../src/cards.js');
+const { BASE, gLevel } = require('../src/power.js');
 const { simulate, applyEvents, createRng, hitChance, MAX_ROUNDS } = require('../src/battle.js');
 const { createViewState, applyEventToState } = require('../src/app.js');
 
@@ -12,6 +13,26 @@ const idx = {};
 CARDS.forEach(c => idx[c.id] = c);
 
 function seed(i) { return 1000003 + i * 7919; }
+
+function assertWinnerConsistent(result) {
+  const last = result.events[result.events.length - 1];
+  assert.equal(last.hpA, result.a.hp);
+  assert.equal(last.hpB, result.b.hp);
+  assert.equal(last.aliveA, result.a.alive);
+  assert.equal(last.aliveB, result.b.alive);
+  if (last.aliveA && last.aliveB) {
+    assert.equal(result.rounds, MAX_ROUNDS, '双方存活只能在回合上限结算');
+    // Independent integer-ratio oracle; supported HP products remain safe integers.
+    const gap = last.hpA * last.maxB - last.hpB * last.maxA;
+    assert.equal(result.winner, Math.abs(gap) * 100 < last.maxA * last.maxB ? -1 : gap > 0 ? 0 : 1,
+      '超时胜负由剩余生命比例决定，双方存活不一定是平局');
+  } else {
+    assert.notEqual(last.aliveA, last.aliveB, '当前规则不会同时倒下');
+    assert.equal(result.winner, last.aliveA ? 0 : 1);
+    assert.equal(last.aliveA ? last.hpB : last.hpA, 0);
+    assert.ok((last.aliveA ? last.hpA : last.hpB) > 0);
+  }
+}
 
 test('确定性：同 Match Seed → 完整事件序列完全一致', () => {
   const a = idx.iron_guard, b = idx.avatar_of_the_end;
@@ -38,7 +59,7 @@ test('战斗终止：全部 96×96 匹配 × 3 种子 均在回合上限内结�
       for (let i = 0; i < 3; i++) {
         const r = simulate(ca, 50, cb, 50, seed(i * 31 + ca.rarity * 7 + cb.rarity));
         assert.ok(r.rounds <= MAX_ROUNDS, `${ca.id} vs ${cb.id} 超过回合上限`);
-        assert.ok(!r.a.alive || !r.b.alive || r.winner === -1, '平局必须显式判定');
+        assertWinnerConsistent(r);
       }
     }
   }
@@ -68,18 +89,40 @@ test('胜者一致性：胜者与最终存活状态、HP 吻合', () => {
   for (let i = 0; i < 40; i++) {
     const a = CARDS[i % 24], b = CARDS[(i * 7) % 24];
     const r = simulate(a, 60, b, 60, seed(i));
-    const last = r.events[r.events.length - 1];
-    if (r.winner === 0) {
-      assert.equal(last.aliveB, false, `${a.id} 获胜但 B 未倒下`);
-      assert.equal(last.hpB, 0);
-      assert.equal(last.aliveA, true);
-    } else if (r.winner === 1) {
-      assert.equal(last.aliveA, false, `${b.id} 获胜但 A 未倒下`);
-      assert.equal(last.hpA, 0);
-      assert.equal(last.aliveB, true);
-    } else {
-      assert.equal(last.aliveA, true);
-      assert.equal(last.aliveB, true);
+    assertWinnerConsistent(r);
+  }
+});
+
+test('120 回合兜底：双方存活时可判蓝胜、红胜或平局', () => {
+  // 合成夹具只覆盖实卡样本难以触发的引擎兜底；不加入或修改固定 96 张卡库。
+  const fixture = (maxHp) => {
+    const scale = gLevel(1);
+    return {
+      ...CARDS[0], id: 'timeout_fixture', name: '超时分支夹具', rarity: 0,
+      base: { hp: maxHp / (BASE.hp * scale), atk: 1 / (BASE.atk * scale),
+        def: 1 / (BASE.def * scale), spd: 1 },
+      acc: 100, eva: 100, crit: 0, critDmg: 1, pen: 0,
+      lifesteal: 0, hpRegen: 0, volatility: 0
+    };
+  };
+  // 固定 Seed=0；低攻击产生 1 点有效伤害，120 回合双方均能存活。
+  for (const [hpA, hpB, winner, finalA, finalB] of [
+    [10000, 1000, 0, 9895, 894],
+    [1000, 10000, 1, 895, 9894],
+    [1000, 1000, -1, 895, 894]
+  ]) {
+    const r = simulate(fixture(hpA), 1, fixture(hpB), 1, 0);
+    assert.equal(r.rounds, MAX_ROUNDS);
+    assert.equal(r.a.alive, true);
+    assert.equal(r.b.alive, true);
+    assert.equal(r.winner, winner);
+    assert.equal(r.a.hp, finalA);
+    assert.equal(r.b.hp, finalB);
+    assertWinnerConsistent(r);
+    const actions = r.events.filter(e => e.cls === 'hit' || e.cls === 'miss');
+    assert.equal(actions.length, MAX_ROUNDS * 2, '每回合双方各行动一次');
+    for (let round = 1; round <= MAX_ROUNDS; round++) {
+      assert.equal(actions.filter(e => e.round === round).length, 2);
     }
   }
 });
@@ -145,5 +188,18 @@ test('PRNG：mulberry32 输出确定且在 [0,1)', () => {
   const rng2 = createRng(12345);
   for (let i = 0; i < 100; i++) {
     assert.equal(rng2(), seq[i], '同种子 PRNG 序列必须一致');
+  }
+});
+
+test('PRNG：uint32 两端和符号位边界符合独立算术参考向量', () => {
+  // 由独立无符号 BigInt 实现核对；固定向量可发现可重复但错误的 PRNG 改动。
+  const vectors = [
+    [0, [1144304738, 1416247, 958946056, 627933444, 2007157716, 2340967985]],
+    [0x80000000, [3524353788, 1924613307, 3365584844, 2199219949, 3602660773, 1806097541]],
+    [0xFFFFFFFF, [3850105811, 813802916, 3073704848, 4054706436, 3630262831, 2315588663]]
+  ];
+  for (const [matchSeed, expected] of vectors) {
+    const rng = createRng(matchSeed);
+    assert.deepEqual(expected.map(() => rng() * 4294967296), expected);
   }
 });
