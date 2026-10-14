@@ -42,6 +42,8 @@ No account, deck-building process, or character editor is required. Every conten
 2. **Set their levels.** Adjust each card from **Lv. 1 to Lv. 100** and compare the resulting attributes and Battle Power (BP).
 3. **Start the duel.** Watch the simulated match at **Slow**, **Fast**, or **Instant** speed. Explore the round-by-round log and post-battle summary afterward.
 
+Use the header **视觉主题** selector to choose **Collector / 典藏**, **LUMEN / 光谱**, **FOLIO / 印记**, or **PULSE / 脉冲** directly, including during playback. The native selector supports keyboard arrows and touch. Your choice is saved locally; the first visit defaults to Collector, and blocked storage still allows switching for the current session. Switching preserves cards, levels, Seed, HP, playback speed, log following and statistics. Collector keeps twelve V3 rank silhouettes. LUMEN restores its circular optical dial; FOLIO its square print frame and diamond; PULSE its rounded oscilloscope cartridge and waveform. All three preserve their V1 progression marks and matching card/result medals. The four editions keep their own materials and team colors.
+
 **[Play now →](https://seiya058904.github.io/numerical-battle-lab/)**
 
 ### ✨ Inside the Arena
@@ -54,7 +56,7 @@ No account, deck-building process, or character editor is required. Every conten
     </td>
     <td width="50%" valign="top">
       <h3>💎 The Collector Finish</h3>
-      <p>Machined frames, enamel, tier-specific crests, and restrained light effects give the collection a shared visual language—from C to XS Collector.</p>
+      <p>Machined frames, independent rank silhouettes, enamel, and restrained light effects give the collection a shared visual language—from C to XS Collector.</p>
     </td>
   </tr>
   <tr>
@@ -159,6 +161,8 @@ npm run verify   # Static checks, regression tests, acceptance, and BP audit
 | [`src/power.js`](src/power.js) | Level scaling, final attributes, and Battle Power |
 | [`src/battle.js`](src/battle.js) | Seeded simulation and event generation |
 | [`src/app.js`](src/app.js) | Card selection, presentation, and replay |
+| [`styles.css`](styles.css) · [`themes.css`](themes.css) | Original Collector materials, four scoped editions and accessible controls |
+| [`assets/`](assets/) | Preserved Collector/LUMEN art, FOLIO paper and PULSE polymer backgrounds |
 | [`tests/`](tests/) · [`scripts/`](scripts/) | Regression tests, acceptance checks, and local tooling |
 
 The GitHub Actions verification workflow runs on pushes and pull requests to `main`. Its checks protect the numeric model, deterministic output, and the separation between simulation and visual replay.
@@ -169,7 +173,7 @@ The project supports keyboard interaction, responsive layouts, and `prefers-redu
 
 ## 📚 Design & Source Notes
 
-- **[Design system](DESIGN.md)** — the collector workbench, card materials, layout, motion, and accessibility rules.
+- **[Design system](DESIGN.md)** — four visual editions, shared architecture, material provenance, layout, motion and accessibility rules.
 - **[Product definition](PRODUCT.md)** — what the game does, and the boundaries it deliberately keeps.
 - **[Agent guidance](AGENTS.md)** — project-specific engineering and verification constraints.
 
@@ -183,3 +187,5 @@ The project supports keyboard interaction, responsive layouts, and `prefers-redu
   <sub>A small experiment in the relationship between numbers, presentation, and competition.</sub><br>
   <sub>No repository-wide open-source license has been declared.</sub>
 </p>
+
+The final visual selection keeps Collector V3 and restores the V1 overall forms for LUMEN, FOLIO, and PULSE, with larger rarity marks and the current layout and interaction improvements. Collector certification and long `SSS` marks remain legible. Card selection, Seed, combat rules and replay behavior are unchanged.

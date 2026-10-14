@@ -4,6 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#090e14">
+<script>
+// Resolve before CSS/first paint. Storage failure always leaves Collector usable.
+window.NCB_THEME = (() => {
+  const themes = Object.freeze([
+    Object.freeze({ id: 'collector', name: '典藏', label: 'COLLECTOR', color: '#090e14', scheme: 'dark' }),
+    Object.freeze({ id: 'lumen', name: '光谱', label: 'LUMEN', color: '#edf2f5', scheme: 'light' }),
+    Object.freeze({ id: 'folio', name: '印记', label: 'FOLIO', color: '#eee8d9', scheme: 'light' }),
+    Object.freeze({ id: 'pulse', name: '脉冲', label: 'PULSE', color: '#18121d', scheme: 'dark' })
+  ]);
+  const key = 'nbl.visual-theme';
+  const resolve = id => themes.find(theme => theme.id === id) || themes[0];
+  const apply = id => {
+    const theme = resolve(id);
+    document.documentElement.dataset.theme = theme.id;
+    document.documentElement.style.colorScheme = theme.scheme;
+    document.querySelector('meta[name="theme-color"]').content = theme.color;
+    return theme;
+  };
+  let saved;
+  try { saved = localStorage.getItem(key); } catch (_) { /* Private/blocked storage. */ }
+  apply(saved);
+  return Object.freeze({ themes, key, apply });
+})();
+</script>
 <title>数值卡牌 · 自动 PK</title>
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png?v=20260927b">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png?v=20260927b">
@@ -11,13 +35,14 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=20260927b">
 <link rel="manifest" href="site.webmanifest?v=20260927b">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="themes.css">
 </head>
 <body>
 <div class="lab-backdrop" aria-hidden="true"></div>
 <aside class="wall-copy wall-left" aria-hidden="true"><p>用 数 字<br>看 见<br>更 大 的 可 能</p><small>FOR A MORE<br>RATIONAL TOMORROW</small><div>COLLECT<br>ANALYZE<br>BATTLE<br>IMPROVE</div><p>NUMBERS<br>MAKE<br>BETTER<br>PLAYERS</p></aside>
 <aside class="wall-copy wall-right" aria-hidden="true"><small>A<br>SMALLER WORLD<br>OF<br>BIGGER NUMBERS</small><div>SAME RULES<br>DIFFERENT<br>OUTCOMES<br>INFINITE<br>POSSIBILITIES</div><p>A MORE<br>RATIONAL<br>PLAYGROUND</p></aside>
 <main class="app" data-phase="ready">
- <header class="site-header"><h1>NUMERICAL BATTLE LAB</h1><p>数值卡牌对战实验室</p><div class="brand-motto">NUMBERS REVEAL A DEEPER TRUTH<small>96 CARDS · 12 RARITIES · INFINITE POSSIBILITIES</small></div></header>
+ <header class="site-header"><h1>NUMERICAL BATTLE LAB</h1><p>数值卡牌对战实验室</p><div class="brand-motto">NUMBERS REVEAL A DEEPER TRUTH<small>96 CARDS · 12 RARITIES · INFINITE POSSIBILITIES</small></div><div class="theme-picker"><label for="themeSelect"><span class="theme-swatch" aria-hidden="true"></span>视觉主题</label><select id="themeSelect" aria-label="视觉主题"><option value="collector">典藏 / COLLECTOR</option><option value="lumen">光谱 / LUMEN</option><option value="folio">印记 / FOLIO</option><option value="pulse">脉冲 / PULSE</option></select></div></header>
  <section class="battle-hud" id="battleHud" aria-label="战斗舞台">
   <div class="arena-ambient" aria-hidden="true"><i></i><i></i></div><canvas id="battleFx" aria-hidden="true"></canvas><div class="stage-announcement" id="stageAnnouncement" aria-hidden="true"></div>
   <div class="setup" id="setup"><section class="pcard blue" id="panelA"><div class="selection-bar"><div class="selection-heading"><label for="selA">蓝方 · 选择卡牌</label><span>96 张 / 12 阶</span></div><div class="pcard-top">

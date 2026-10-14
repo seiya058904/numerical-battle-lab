@@ -1,4 +1,78 @@
-# Collector workbench — Numerical Battle Lab
+---
+name: Numerical Battle Lab — four visual editions
+description: One deterministic duel, four complete material systems.
+colors:
+  collector-bg: "#080c0d"
+  collector-ink: "#e6e7df"
+  collector-accent: "#e8c98c"
+  lumen-bg: "#edf2f5"
+  lumen-ink: "#1c3547"
+  lumen-accent: "#275eb0"
+  folio-bg: "#eee8d9"
+  folio-ink: "#203c32"
+  folio-accent: "#26503c"
+  pulse-bg: "#18121d"
+  pulse-ink: "#f4e6d8"
+  pulse-accent: "#ffc28b"
+typography:
+  body:
+    fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
+    fontSize: "0.875rem"
+    lineHeight: 1.6
+rounded:
+  folio: "2px"
+  lumen-card: "14px"
+  pulse-card: "12px"
+---
+
+# Four editions — Numerical Battle Lab
+
+## Overview
+
+The current product has exactly four peer editions: **典藏 / Collector**, **光谱 / LUMEN**, **印记 / FOLIO**, and **脉冲 / PULSE**. Preserve one DOM, one card pool, one simulation and one playback state. The material world changes; the match never does. First visits still use Collector. The original material sources below remain preserved history and the authority for Collector, not a requirement to make every edition metallic.
+
+## Colors
+
+`styles.css` owns the original Collector system. `themes.css` owns shared accessibility refinements and scoped edition rules. Semantic `--blue`, `--red`, `--green` always mean teams and healing; `--gold` is the existing compatibility name for the edition's action accent. New editions additionally use `--surface`, `--surface-muted`, `--edition`, `--shape` and `--panel-shadow`. Native color-scheme, theme-color, caret, selection, focus, scrollbar and disabled states belong to the edition too. Canvas feedback reads the same semantic palette.
+
+## Typography
+
+Collector keeps serif ceremonial lettering; LUMEN uses light optical sans numerals; FOLIO pairs Songti/SimSun names with Georgia figures and left-aligned identities; PULSE uses tabular Consolas/Cascadia instrument figures with readable Chinese sans labels. Local fallbacks avoid font-loading dependencies. Key functional annotations use a 12px floor at normal root size; compact battle rarity/role labels use 11px, while engraving and redundant attribute abbreviations can be smaller. Losing a match dims the crest, never the card's identity text.
+
+## Layout
+
+Two cards, the central controller and lower settlement/log/statistics retain their locations. At 1000px and below, retain the established stacked cards and compact battle identities. A named inline-size container on `.app` adds a 50rem space check above 1000px: enlarged text falls back to a centered single column, rather than squeezing cards around a fixed-width instrument. This is separate from browser zoom's normal viewport reflow. The native theme select is compact and in normal flow on small screens; it contains all four names and uses platform keyboard/touch behavior.
+
+## Elevation & Depth
+
+Collector retains photographed metal, marble and restrained foil fields. Its background wash is slightly stronger to protect data contrast. LUMEN retains optical glass behind opaque porcelain cards, with a clearer directional card shadow. FOLIO uses quiet generated cotton paper with fine inset ink rules and minimal paper lift. PULSE uses dark polymer, inset signal windows and top/bottom cartridge seams; the thick seams intentionally express that enclosure rather than an alert accent.
+
+## Shapes
+
+| Edition | Card / rank | Central instrument | Settlement and feedback |
+| --- | --- | --- | --- |
+| Collector | Beveled metal frame, rank-specific metal die and reliquary | Brass circular dial | Metal medal, foil glow and radial impact |
+| LUMEN | Porcelain card and V1 circular optical instrument with graded ticks | Pearl circular dial | Open light panel and spectral team ink |
+| FOLIO | Paper stock and V1 square print frame with a quiet central diamond | Printed mark with twelve rank pips | Printed verdict, ink strike and square impact |
+| PULSE | Dark polymer card and V1 rounded oscilloscope cartridge | Amber monospaced mark over one waveform | Signal readout, trace pulse and square impact |
+
+All 12 ranks retain their exact names and numbered progression. Collector has twelve distinct rank dies; LUMEN progresses through dial markings, and FOLIO/PULSE use their original progress pips. No rank glyph or business value is baked into a bitmap.
+
+## Components
+
+The frozen head registry resolves `collector`, `lumen`, `folio`, `pulse` before first paint. `initTheme()` binds one native select `change` listener and applies only visual root attributes plus best-effort persistence. It cannot access the game state, simulate, refresh cards, replace the log, or create a timer. Native options support direct selection, arrows, Enter/Space and platform dismissal/focus behavior. Storage read/write exceptions keep the session usable.
+
+`themedEmblemMarkup()` mounts the four SVGs when rarity changes; CSS exposes exactly one. Collector retains twelve V3 silhouettes. LUMEN progresses through its dial and ring marks; FOLIO and PULSE retain their V1 forms and twelve pips. `editionEmblemMarkup()` stays below 40 nodes / 5KB, validates rank and edition, and never consumes randomness. Existing SVG namespace and Collector budgets stay enforced. The only canvas remains bounded to 180 particles / 3.5 million pixels. FOLIO/PULSE use the existing event lifecycle; no extra RAF loop is introduced. Hidden/offscreen/reduced-motion handling remains shared.
+
+## Do's and Don'ts
+
+- Extend the registry, scoped CSS, bounded rank generator, native options and tests together for a future fifth edition. Do not copy the page or initialize a second battle.
+- Keep real controls and values in DOM/SVG/Canvas. Images contain only material, light and peripheral space.
+- Preserve `src/cards.js`, `src/power.js`, `src/battle.js`, all original assets and the frozen 1,920-simulation digest.
+- Keep exact static file manifests in sync. Evidence and exploratory concepts stay outside the production root.
+- Distinguish a synthetic DRAW UI fixture from a natural simulated draw; neither the fixture nor instrumentation ships.
+
+## Retained Collector provenance and construction
 
 ## Visual authority
 
@@ -25,11 +99,11 @@ Final production prompt briefs:
 
 Silver frames use grayscale only on the material layer. Data and semantic team colors retain their original colors. The two raster sculptures remain reference assets only; runtime emblems load no bitmap. Hall, frame, dial and console materials remain as established in the collector workbench.
 
-## Procedural rarity assets
+## Collector procedural rarity assets
 
 `RARITY_FINISHES` in `src/app.js` is the presentation-only source of truth for all 12 tiers. Each token row owns metal highlight/shadow, enamel, radial assembly count/reach, ring count, aura strength, orbital period and bounded dust count. These values do not read or change the numerical rarity multiplier.
 
-All crests share one manufacturing language: a machined reverse, indexed concentric rings, recessed fasteners, eight-sided bevel planes, enamel inset, extruded path lettering and certification engraving. Polished cuts and a fixed upper-left light make the material recognizable without raster textures. C/C+ start complete; titanium and enamel ranks gain bridges and secondary orbits; S/SS add an imperial field; SSS adds a faceted outer mount; Collector variants add wings and a crown; XS extends cardinal spires; XS Collector adds crossed astrolabe ellipses and the strongest field. Labels and silhouettes carry rank in addition to color.
+Collector crests share one manufacturing language: a machined reverse, indexed concentric rings, recessed fasteners, eight-sided bevel planes, enamel inset, extruded path lettering and certification engraving. Polished cuts and a fixed upper-left light make the material recognizable without raster textures. C/C+ start complete; titanium and enamel ranks gain bridges and secondary orbits; S/SS add an imperial field; SSS adds a faceted outer mount; Collector variants add wings and a crown; XS extends cardinal spires; XS Collector adds crossed astrolabe ellipses and the strongest field. Labels and silhouettes carry rank in addition to color.
 
 `emblemMarkup(tier, side)` generates self-contained SVG. Every paint/clip ID is namespaced for A, B or Result. It uses no external references, random values, SVG blur filters or frame-by-frame path mutation. Contract tests cap a crest at 400 nodes / 32 KB, five field rings and 22 ambient dust elements. Unknown tiers fail explicitly; callers receive copies of frozen material tokens. To iterate, change the token row for material/field behavior or the shared geometry helper for the common construction; do not add tier-specific bitmap exceptions.
 
@@ -39,10 +113,104 @@ The field has three responsibilities: a static volumetric ring behind the crest,
 
 Keep the existing READY → ENGAGE → BATTLE → RESULT presentation states, attack anticipation and impulse, HP interpolation, selection reveal and result choreography. Hover tilts the collectible face only, leaving selection and attribute controls stationary; focused controls suppress tilt. HP follows its own card rather than floating beside the instrument. The start label announces the locked playback state. Environmental motion is subordinate to the two cards. The event-driven particle canvas remains capped at 180 particles / 3.5 million pixels. Hidden pages clear transient work. Reduced motion disables particles, transforms and ambient loops without changing any combat output.
 
-Crest selection has three timed beats: held core, assembled chassis, released field. `activateCrest` reuses the field pulse for engagement, critical attacks and recovery; attack beams inherit the source rarity metal, with green reserved for healing and team colors reserved for HP/identity. Victory settles orbital speed and retained light; defeated fields recede. The motion registry cancels removed crest surfaces before replacing their SVG. Offscreen cards pause both descendants and pseudo-elements. Reduced-motion changes also cancel in-flight Web Animations; the complete static crest remains present.
+Collector selection keeps its three timed beats: held core, assembled chassis, released field. Restored LUMEN activates its orbit and PULSE its signal trace; FOLIO uses a bounded card reveal. `activateCrest` reuses available theme details for engagement, critical attacks and recovery; attack beams inherit the source rarity metal, with green reserved for healing and team colors reserved for HP/identity. Victory settles Collector's orbital speed and defeated metal recedes. The motion registry cancels removed crest surfaces before replacing their SVG. Offscreen cards pause both descendants and pseudo-elements. Reduced-motion changes also cancel in-flight Web Animations; every static crest remains present.
 
 Labelled inputs, native selectors, keyboard focus and all three playback speeds remain functional. Seed is directly visible in READY without a focus-driven toggle. Card names wrap in flow when needed. Disabled controls stay visible on desktop during playback. Full stats do not require a separate overlay. Maintain regression checks for all 96 heroes at level 100, all 12 rarity emblems, 320/390/768/1024/1536/3840 widths, repeated mobile replay and reduced motion.
 
 ## Numerical boundary
 
 Do not change `src/cards.js`, `src/power.js` or `src/battle.js` for this presentation task. Preserve the frozen 1,920-simulation digest and identical event lists across playback speeds. Compact summary metrics derive only from the same immutable battle events as the full summary table.
+
+## Multi-theme extension — 2026-10-14 (previous visual iteration)
+
+The hall/frame/dial/console files and rarity material tokens are retained. This section records the earlier multi-theme proposal; the final visual decision below is authoritative for crest geometry. Shared refinements in `themes.css` improve annotation size, text zoom, defeated identity readability and theme selection. The existing blue/red identities, card selection, input, playback and summary remain authoritative in all four editions.
+
+**LUMEN / 光谱实验室** adds an optical workbench: porcelain cards, pearl glass, cool blue measurement instruments, dark ink data, and matte open archives. ION was rejected for being too close to the existing dark scene; SIGNAL was rejected because a flat editorial treatment would give up too much of the card-as-object experience. LUMEN changes the material world, typography, crest geometry, control instrument, feedback and settlement, with the original two-card composition intact.
+
+### LUMEN tokens and components
+
+`themes.css` owns the surface, scoped to `html[data-theme=lumen]`. The original `styles.css` is unchanged. Tokens: background `#edf2f5`; solid surface `#fafdff`; muted surface `#e7eff4`; ink `#1c3547`; secondary `#4c6373`; annotation `#566c7b`; separator `#bacbd6`; focus `#174ea5`; blue team `#2463a6`; red team `#af3d4b`; healing `#166d50`. Existing `--gold` is a compatibility alias for LUMEN's blue action accent `#275eb0`, not a gold material. Sans typography uses local Segoe UI / Microsoft YaHei / PingFang, without a font download. BP is light-weight tabular type, names medium-weight; functional annotation text now has a 12px floor. Small SVG engravings are decorative, with the complete rarity repeated in DOM text.
+
+Cards have a 14px porcelain edge, subtle directional shadow, visible team index line and opaque numeric surface. The V1 optical instrument has 60 measuring ticks, 12 rank indicators, one to five outer rings and Collector diamond fiducials. `lumenEmblemMarkup()` stays below 110 nodes / 12KB per crest, namespaces its paint ID and rejects invalid namespaces/ranks. The previous iteration's additional geometric editions are retained in this history; the final visual decision below restores the original print and signal forms.
+
+The central instrument is a pearl lens with a fine rotating index. The action button is solid cobalt, speed state has both fill and a bottom indicator, form fields are opaque white. Logs, summary metrics, tables and result actions use the same surface/ink system. Red and blue victories carry the winner's semantic color; draw uses neutral slate and a paired VS seal. Live attack beams use the source team's ink; healing uses green and explicit text. All effects use the existing bounded canvas, motion registry and visibility/reduced-motion handling. No new permanent animation loop or dependency is added.
+
+### Theme state and startup
+
+The small inline head bootstrap is intentionally before both stylesheets. Its frozen four-entry registry contains labels, browser color and color scheme. Missing, obsolete or inaccessible `localStorage['nbl.visual-theme']` defaults to Collector. The native select applies `data-theme`, native `color-scheme` and `meta theme-color`, then attempts persistence. Storage write failure leaves the current session usable. The selected native option exposes the current theme to assistive technology. `initTheme()` has a binding guard and does not call `initApp`, `refreshAll`, `simulate`, a timer or navigation. Battle state, inputs, event queue, log, HP and seed are outside its ownership.
+
+To add another theme, add one registry entry and a separately scoped material system with an explicitly bounded emblem if needed; extend the behavioral/browser matrix and exact static file manifest. Do not put battle state in the theme registry. Do not switch through page reload or reconstruct the main DOM.
+
+### Generated image and fallback
+
+Two separate images were generated with the built-in imagegen tool. Candidate A was a symmetrical white architectural hall; candidate B was a close optical-glass composition. B was selected because the peripheral glass disks leave a quiet central field and reduce competition with the two card instruments. The actual UI places data on opaque panels. Candidate A stays outside the repository as design exploration, not a shipped unused resource.
+
+`assets/lumen-optics.webp` is the selected 1672×941 image, 48,478 bytes, encoded by FFmpeg/libwebp at quality 82. It contains no text or fake UI. Desktop uses a centered cover crop; mobile uses a 60% horizontal crop. A pearl base color and translucent lower wash remain readable if the image is slow or missing. All URLs are relative and work beneath a Pages subpath. Original Collector assets are untouched.
+
+Exact production generation prompt (candidate B):
+
+> Use case: stylized-concept. Production background for LUMEN, precision optical experiment web game. One seamless wide 16:9 image. Composition B, unlike a symmetrical palace: an abstract macro photograph of a huge layered milky optical glass disk sweeping into frame from the upper RIGHT corner and cropped beyond the image; a second thin blue translucent lens at the far lower LEFT. Oblique overhead view, matte pearl ceramic laboratory table, fine brushed aluminium edges, gentle physically rendered caustic light. Overall dominant warm porcelain white with desaturated pale blue. Center 75 percent of composition quiet empty pearl surface, no distracting edges. Foreground webpage contains dense left/right cards and central battle instrument, so decoration confined to outer margins. Art-directed high-end optical equipment advertisement, tactile, restrained, no room or palace, no neon, no dark areas, no rainbow blobs. Mobile center crop calm. NO TEXT, LETTERS, NUMBERS, CARDS, BUTTONS, CHARTS, ICONS, WATERMARK OR FAKE UI.
+
+### Validation boundary
+
+Theme tests cover all four prepaint restorations, invalid IDs, blocked reads/writes, repeated single-listener activation, asset paths and all 12 rank contracts. Browser evidence, matrix results and acceptance logs are stored outside this Git root under the task's Codex visualizations directory. The fixed engine digest is unchanged. Natural draw samples must come from the real engine. Clearly labelled, isolated synthetic DRAW UI fixtures may verify presentation and controls; they are not natural browser draw evidence.
+
+### FOLIO and PULSE generated sources — 2026-10-14
+
+Each new edition has a separately generated material concept and production background, using the built-in imagegen tool (four actual calls). Concept boards stay in the external evidence directory; only the following selected material backgrounds ship. No old asset was replaced. Both have CSS base-color fallbacks and relative paths.
+
+- `assets/folio-paper.webp`: 1672×941, 114,424 bytes; warm cotton print stock, restrained forest ink at extreme corners, empty center. Encoded with libwebp quality 82. Card faces use a mostly opaque wash over this material to protect numbers.
+- `assets/pulse-surface.webp`: 1672×941, 15,894 bytes; matte aubergine polymer with peripheral layered edges and a tiny amber reflection. Encoded with libwebp quality 82. Cards use opaque signal surfaces.
+
+Production generation prompts:
+
+> FOLIO: Use case: texture asset. Production wide 16:9 web background for FOLIO letterpress numerical card archive. Top down macro photograph of warm uncoated ivory cotton paper spread across an entire large printmaker work surface. Very subtle fine paper fibers, cream #eee8d9, neutral diffuse daylight, almost uniform, broad quiet central 85 percent for live UI. Only at extreme upper left and lower right edges: cropped overlapping edges of ivory paper sheets with a tiny deep forest-green ink trace, gentle paper-thin physical shadow. No recognizable symbols, no text, numbers, letters, grid, cards, tools, fake UI, frames, vignettes, dark areas or buttons. Extremely restrained texture, crafted high quality print stock, not yellow parchment or stained antique paper. Calm center crop must work on phone.
+
+> PULSE: Use case: texture asset. Production wide 16:9 background for PULSE numerical battle web application. Abstract close up flat rectilinear surfaces of vintage precision electronic test equipment: matte aubergine-black polymer #18121d with very subtle fine ceramic texture, softly beveled dark plum horizontal layers ONLY cropped in far upper right and far lower left margins; a narrow restrained amber light reflection on a single outer bevel. Entire central 85 percent quiet uniform almost-black plum, no objects or patterns in center. Sophisticated industrial material photography with warm grazing light, low contrast, finely crafted. No metal gold circles, neon, cities, stars, screens, buttons, cards, UI, symbols, graphs, lettering, numbers, text or watermark. Not a moodboard, one continuous background with no split panels. Mobile center crop must stay quiet.
+
+## Retained V2 rarity identity evolution — 2026-10-14
+
+This section records the V2 construction for history. Its geometry and lettering are superseded by the final visual decision below.
+
+This revision supersedes the concentric-crest construction described in the provenance sections above. No numerical metadata, gameplay phase, playback timing or engine file changes. The original four material worlds and all raster assets stay intact.
+
+| Rank | Collector | LUMEN | FOLIO | PULSE |
+| --- | --- | --- | --- | --- |
+| C / C+ | milled token / transverse clamps | lens / lateral mounts | stamp / registration bars | chip / contact buses |
+| B / B+ | shield / side braces | prism / satellite feet | hexagonal die / side registration | tall cartridge / buses |
+| A / A+ | diamond enamel / detached facets | refractive diamond / offset lenses | lozenge / corner registration | octagonal case / top and bottom rails |
+| S | ceremonial long shield | separated triangular optical assembly | heraldic shield | four-way processor |
+| SS | paired metal wings | opposed curved lenses | workshop plate and ribbon | duplex separated processors |
+| SSS | eight-point radiant die | hexagonal multi-axis prism | scalloped engraved rosette | six-way signal hub |
+| SSS Collector | crown and archival ribbons | registered optical specimen | archival sheet and separate seal | certified instrument enclosure |
+| XS | detached satellites and elongated star | four-axis refractor | six-point geometric die | diagonal core and isolated corner buses |
+| XS Collector | twin-spire reliquary and suspended core | exploded optical stack | bound folio with authentication seal | twin-tower signal laboratory |
+
+The wrappers preserve deterministic markup and independent A/B/Result paint IDs. Collector has real bevel strokes, directional metal gradients and die-clipped engraving; LUMEN uses light refractive planes and darker edges; FOLIO uses compound engraved curves with quiet paper fills; PULSE uses separated signal paths and restrained amber. All silhouettes and inner geometry survive removal of labels and color.
+
+Activation now targets the currently visible theme, not a hidden Collector chassis. Paper reveals as an impression, electronics as a centered scan, optics and metal assemble from a bounded inset. Higher ranks receive a slightly longer reveal without locking selection or changing event timing. Switching themes cancels only old crest Web Animations; event queues, counters, HP and logs are untouched. Ambient detail uses CSS only, pauses offscreen/hidden, and is disabled under reduced motion. The compact battle crest fits inside a 5.4rem minimum identity region so it cannot extend into HP; long names may grow the region naturally.
+
+One real imagegen concept board explored metal reliquaries, optical stacks, paper certification and split electronics. It informed material/structure only; it is not a runtime bitmap or a browser screenshot. No production image added. Browser evidence, baseline source copies, scripts and the Chinese handoff report live outside the repository in the current task visualizations directory.
+
+The previous assertion that SSS Collector must have wings changes intentionally: wings identify SS, while SSS Collector has its own crown/ribbon die. All original node, byte, RNG, namespace and engine-digest budgets remain. Added tests require twelve distinct dies per theme and shared animation hooks; screenshot judgment, not string inequality, establishes visible differentiation.
+
+## Superseded V3 reading hierarchy draft (historical)
+
+The primary rank always occupies a quiet, opaque focal plane; outer shells carry the second-level identity. Collector combines the original custom extruded path letters with broad enamel/octagonal metal centers and the twelve V2 peripheral dies. LUMEN keeps its prisms, split lenses and separated optical modules, with a clean porcelain lens and dark sans reading. FOLIO restores large serif inscriptions within enlarged print dies; its book carries a separate paper title band. PULSE restores bold amber instrument readings with a dark display window and peripheral traces. Collector editions have a separate certification strip; the normal accessible rarity badge remains present at compact sizes.
+
+`rankLabel` sizes by theme and string length; it must not be overridden by a small shared CSS font size. `collectorLetter` owns its custom paths and uses `crestLetter{side}` paint IDs: namespace checks must include surrounding HTML IDs, not only other SVGs. The last reading plane is independent of animated shell details, so a reveal or optical motion cannot move crossing lines over the letters. No new animation scheduler, asset, simulation call or dependency is added.
+
+Regression evidence measures real desktop and compact DOM bounds, compares all 48 ranks against the retained V1 snapshot, and checks full-page paint references. Bounding-box size is a guard against shrinking letters, not an aesthetic score. Review all tiers in color, grayscale with lettering, and silhouettes, then actual READY/BATTLE/RESULT scenes before accepting a visual change. This draft was superseded by the final selection below.
+
+## Final visual decision — 2026-10-14
+
+Collector retains the V3 metal silhouettes, custom lettering, and reveal choreography. LUMEN, FOLIO, and PULSE restore their V1 overall visual forms while keeping the newer larger rarity marks and the later functional, layout, accessibility, and performance fixes.
+
+| Edition | Final crest form | Rank progression |
+| --- | --- | --- |
+| Collector | V3 beveled metal die with enamel face and custom path lettering | Twelve V3 rank-specific silhouettes |
+| LUMEN | V1 porcelain optical instrument with circular lens, measuring dial, fine ticks, and orbit | Sixty dial ticks, twelve graded marks, one to five finish rings |
+| FOLIO | V1 paper-print frame with a quiet central diamond and serif mark | Twelve progress pips; Collector label on the two Collector tiers |
+| PULSE | V1 dark rounded oscilloscope cartridge with one waveform and monospaced mark | Twelve progress pips and the original high-tier signal accents |
+
+The updated LUMEN, FOLIO, and PULSE marks remain larger than their V1 counterparts. Their simple V1 structures remain intact around those marks; no V3 reading plane, rank die, or extra module is added. Theme switching, READY/BATTLE/RESULT presentation, card selection, Seed, playback, and summaries keep their current behavior. `src/cards.js`, `src/power.js`, and `src/battle.js` remain outside the change, and the frozen battle digest remains `a947f05e621e8223e5828f6d4235cd74cf6c34f0b4ad6f3d4a3a4c5699313743`.

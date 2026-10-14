@@ -1,0 +1,467 @@
+/* Theme entry is shared; the established Collector material rules stay in styles.css. */
+.theme-picker { position:absolute; right:0; top:0; text-align:left; width:12rem }
+.theme-picker label { display:flex; align-items:center; gap:.45rem; color:var(--text-2); font-size:.75rem; margin-bottom:.3rem }
+.theme-picker select { width:100%; min-height:44px; padding:.5rem .65rem; border:1px solid var(--line); border-radius:4px; background:var(--bg); color:var(--text); cursor:pointer; font-size:.8125rem }
+.theme-picker select:hover { border-color:var(--gold) }
+.theme-swatch { width:1.1rem; height:.65rem; border:1px solid var(--gold); background:linear-gradient(90deg,var(--gold) 50%,var(--bg) 50%) }
+.lumen-emblem { display:none }
+.emblem .lumen-emblem { display:none }
+.result-medal { position:relative }
+@media(max-width:1200px) {
+  .theme-picker { position:relative; margin:1rem auto 0; width:12rem }
+}
+
+/* LUMEN — porcelain instruments / optical glass / measured spectral color.
+   Scope contains palette, materials, hierarchy, combat and responsive variants. */
+html[data-theme=lumen] {
+  color-scheme:light;
+  --bg:#edf2f5; --text:#1c3547; --text-2:#4c6373; --text-3:#566c7b;
+  --gold:#275eb0; --blue:#2463a6; --red:#af3d4b; --green:#166d50;
+  --line:#bacbd6; --surface:#fafdff; --surface-muted:#e7eff4;
+  --focus:#174ea5; --shadow:0 12px 32px #27435b1a;
+  --display:"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+}
+[data-theme=lumen] * { scrollbar-color:#8aabbf #e8eff4 }
+[data-theme=lumen] ::selection { background:#c0d9f3; color:#173757 }
+[data-theme=lumen] input { caret-color:var(--focus) }
+[data-theme=lumen] :is(button,input,select,[tabindex]):focus-visible { outline-color:var(--focus) }
+[data-theme=lumen] input[aria-invalid=true] { outline-color:var(--red) }
+[data-theme=lumen] .lab-backdrop {
+  background:#edf2f5 url('assets/lumen-optics.webp') center top/cover no-repeat;
+}
+[data-theme=lumen] .lab-backdrop::after {
+  background:linear-gradient(180deg,#edf2f522 0%,#edf2f577 60%,#edf2f5e8 100%);
+}
+[data-theme=lumen] .app { padding-top:1.8rem }
+[data-theme=lumen] .site-header { margin-bottom:2rem }
+[data-theme=lumen] .site-header h1 {
+  font:600 1.6rem/1.3 var(--font); letter-spacing:.15em; color:var(--text);
+}
+[data-theme=lumen] .site-header h1::before,[data-theme=lumen] .site-header h1::after { background:#8aa6b9; width:2rem }
+[data-theme=lumen] .site-header p { color:var(--text-2); letter-spacing:.25em }
+[data-theme=lumen] .brand-motto { color:var(--text-2); font-family:var(--font); letter-spacing:.14em }
+[data-theme=lumen] .theme-picker select { background:var(--surface) }
+[data-theme=lumen] .selection-bar { margin:0 0 .8rem }
+[data-theme=lumen] .card-picker { border-color:var(--line); border-radius:6px; background:var(--line); box-shadow:none }
+[data-theme=lumen] .card-picker :is(input,select) { background:var(--surface); color:var(--text); border-radius:5px }
+[data-theme=lumen] input::placeholder { color:var(--text-3); opacity:1 }
+[data-theme=lumen] .card-picker:focus-within { border-color:var(--focus) }
+[data-theme=lumen] .pcard { color:var(--text) }
+[data-theme=lumen] .card-face {
+  padding:1.3rem 1.8rem 1.2rem; border-radius:14px;
+  background:linear-gradient(145deg,#ffffff 18%,#f6fafd 60%,#e5eef4);
+  box-shadow:var(--shadow),inset 0 1px 0 #fff; filter:none;
+}
+[data-theme=lumen] .card-face::before {
+  inset:0; background:none; border:1px solid #b7cbd9; border-radius:14px;
+  filter:none; z-index:0; clip-path:none; box-shadow:none;
+}
+[data-theme=lumen] .card-rail { color:var(--text-3); padding:0; min-height:1.8rem }
+[data-theme=lumen] .micro-brand { margin:0; font-family:var(--font); letter-spacing:.1em }
+[data-theme=lumen] .card-serial::before { color:var(--text-3) }
+[data-theme=lumen] .rarity-letter { top:3.2rem; left:1.8rem; color:var(--lumen-rank); font-size:1.7rem; text-shadow:none; font-weight:300; opacity:1 }
+[data-theme=lumen] .card-ornament { inset:2.8rem 1rem 48%; opacity:.35 }
+[data-theme=lumen] .card-ornament::before { background:linear-gradient(110deg,transparent 30%,#d7e8f455 50%,transparent 70%); animation:none }
+[data-theme=lumen] .card-reflection { background:radial-gradient(circle,#d4e5f3aa,transparent 65%) }
+[data-theme=lumen] .card-frame { inset:.8rem; color:#94b2c5; opacity:.5 }
+[data-theme=lumen] .card-frame i { width:.7rem; height:.7rem }
+[data-theme=lumen] .card-frame i::after { display:none }
+[data-theme=lumen] .card-edge-light { inset:2.6rem 1.8rem auto; height:1px; border:0; background:var(--team); clip-path:none }
+[data-theme=lumen] .ambient-particles { display:none }
+[data-theme=lumen] .rarity-art { max-width:17rem; margin:.5rem auto .1rem }
+[data-theme=lumen] .rarity-art::before { background:radial-gradient(ellipse,#c5dfef66,transparent 65%); animation:none; opacity:.6 }
+[data-theme=lumen] .emblem { filter:drop-shadow(0 9px 7px #365a7218) }
+[data-theme=lumen] .collector-emblem { display:none }
+[data-theme=lumen] .emblem .lumen-emblem,[data-theme=lumen] .result-medal .lumen-emblem { display:block }
+[data-theme=lumen] .cname { color:var(--text); font-size:1.6rem; font-weight:600; letter-spacing:.03em }
+[data-theme=lumen] .rar-badge { color:var(--lumen-rank); font-weight:600; letter-spacing:.06em }
+[data-theme=lumen] .rar-badge::before { box-shadow:none; background:var(--lumen-rank); width:5px; height:5px }
+[data-theme=lumen] .card-english { color:var(--text-3); font-family:var(--font); letter-spacing:.13em }
+[data-theme=lumen] .power-strip { background:none; border-color:var(--line); padding:.8rem 0; margin-top:1rem }
+[data-theme=lumen] .bp-value { color:var(--text); font-family:var(--font); font-weight:300; font-size:2.25rem; letter-spacing:-.04em }
+[data-theme=lumen] .lvl-val input { border-color:#9db4c3; background:#fff; color:var(--text); min-height:36px }
+[data-theme=lumen] input[type=range]::-webkit-slider-runnable-track { height:3px; background:linear-gradient(90deg,var(--blue) var(--level-fill),#c5d3df var(--level-fill)) }
+[data-theme=lumen] input[type=range]::-webkit-slider-thumb { width:17px; height:17px; border:2px solid #fff; background:var(--blue); border-radius:50%; box-shadow:0 1px 4px #31577866 }
+[data-theme=lumen] input[type=range]::-moz-range-track { background:#b9cbd8 }
+[data-theme=lumen] input[type=range]::-moz-range-thumb { border:2px solid #fff; background:var(--blue); border-radius:50% }
+[data-theme=lumen] .power-pulse { background:linear-gradient(90deg,transparent,#307acb22,transparent) }
+[data-theme=lumen] .core-stats { border-color:var(--line) }
+[data-theme=lumen] .stat-code { color:var(--text-3) }
+[data-theme=lumen] .stat-tile .v,[data-theme=lumen] .stat-row .v { color:var(--text) }
+[data-theme=lumen] .hpbar-wrap { background:#d9e3ea; box-shadow:none; height:.4rem; border-radius:2px }
+[data-theme=lumen] .hpbar { background:var(--team) }
+[data-theme=lumen] .hp-trail { background:#8ca3b2 }
+[data-theme=lumen] .card-signature { border-color:var(--line); color:var(--text-3) }
+[data-theme=lumen] .card-material { font-size:0 }
+[data-theme=lumen] .card-signature .card-material { font-size:0 }
+[data-theme=lumen] .card-material::after { content:'OPTICAL CERAMIC'; font-size:.52rem; letter-spacing:.12em }
+[data-theme=lumen] .card-config { margin:1rem 0 0; background:#f8fbfce8; box-shadow:none; border-color:var(--line); border-radius:6px }
+[data-theme=lumen] .archive-heading { color:var(--text) }
+[data-theme=lumen] .command-core { padding-top:4rem }
+[data-theme=lumen] .simulation-number { display:none }
+[data-theme=lumen] .core-caption { color:var(--text-2); margin-bottom:1.7rem; letter-spacing:.2em }
+[data-theme=lumen] .round-center {
+  background:radial-gradient(circle at 35% 25%,#fff 10%,#f4f9fc 60%,#d5e2ec);
+  border:1px solid #adc3d2; border-radius:50%; box-shadow:0 12px 26px #2d577423,inset 0 0 0 7px #ffffffa0;
+}
+[data-theme=lumen] .round-center::before {
+  content:''; position:absolute; inset:14%; border:1px solid #a9bfce; border-radius:50%;
+}
+[data-theme=lumen] .round-value { color:var(--text); font-weight:300; text-shadow:none; top:0 }
+[data-theme=lumen] .hud-state { color:var(--blue); top:0; margin-top:.35rem; font-weight:600 }
+[data-theme=lumen] .arena-dial { inset:5%; border-color:#a7bed0; border-style:dashed }
+[data-theme=lumen] .arena-dial::after { width:5px; height:5px; border-radius:50%; box-shadow:none; background:var(--blue) }
+[data-theme=lumen] .core-footnote,[data-theme=lumen] .core-note { color:var(--text-2) }
+[data-theme=lumen] .core-footnote { margin-top:1.2rem }
+[data-theme=lumen] .btn.primary,[data-theme=lumen] #startBtn {
+  background:#275eb0; color:#fff; border:1px solid #275eb0; border-radius:6px;
+  box-shadow:0 5px 12px #234e8c24; clip-path:none;
+}
+[data-theme=lumen] #startBtn { font-size:1.2rem; letter-spacing:.08em; min-height:4rem }
+[data-theme=lumen] #startBtn small { font-family:var(--font); opacity:.85 }
+[data-theme=lumen] .spdbtn { background:#f7fbfd; color:var(--text-2); border-color:var(--line); border-radius:4px; min-height:44px }
+[data-theme=lumen] .spdbtn.on { color:#1b509a; background:#dceaf7; border-color:#6997c7; box-shadow:inset 0 -2px #275eb0 }
+[data-theme=lumen] .spdbtn:hover:not(.on) { background:#e7f0f7 }
+[data-theme=lumen] .match-config input { color:var(--text); background:#fff; border-color:#9db4c3; border-radius:4px }
+[data-theme=lumen] .text-btn:hover { color:#173757; text-decoration:underline; text-underline-offset:4px }
+[data-theme=lumen] .text-btn:disabled:hover { text-decoration:none }
+[data-theme=lumen] .event-readout { background:#f8fbfbe6; border:1px solid var(--line); border-radius:6px; padding:.6rem 1rem }
+[data-theme=lumen] .event-readout.heal :is(.event-tag,#eventAmount) { color:var(--green) }
+[data-theme=lumen] .event-readout.crit :is(.event-tag,#eventAmount) { color:#935216 }
+[data-theme=lumen] .event-readout.miss .event-tag { color:#6d5095 }
+[data-theme=lumen] .float-number { color:#184f87; text-shadow:0 2px 2px #fff,0 0 7px #fff; background:#ffffffdc; border-radius:4px }
+[data-theme=lumen] .float-number.crit { color:#934a16 }
+[data-theme=lumen] .float-number.heal { color:var(--green) }
+[data-theme=lumen] .float-number.miss { color:#6d5095 }
+[data-theme=lumen] .pcard[data-action=impact] .card-face { filter:none; box-shadow:0 8px 24px #aa4d4626 }
+[data-theme=lumen] .pcard[data-action=recover] .card-face { filter:none; box-shadow:0 8px 24px #24745926 }
+[data-theme=lumen] .pcard[data-action=fallen] .card-face { filter:saturate(.5) }
+[data-theme=lumen] .victorious .card-face::before { filter:none; border-color:var(--team); box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--team) 12%,transparent) }
+[data-theme=lumen] .fallen .identity { opacity:.55 }
+[data-theme=lumen] .telemetry { background:#fbfdfeeF; border-color:var(--line); border-radius:10px; box-shadow:none; padding:1.2rem 1.5rem }
+[data-theme=lumen] .log-head { color:var(--text) }
+[data-theme=lumen] .log-empty svg { stroke:#8daec4 }
+[data-theme=lumen] .le { color:var(--text-2); border-color:#dce6ec }
+[data-theme=lumen] .le.current { background:#edf4fa }
+[data-theme=lumen] .le.crit .amt { color:#90501a }
+[data-theme=lumen] .le.death { color:var(--red) }
+[data-theme=lumen] .summary-panel :is(th,td) { border-color:#dce6ec }
+[data-theme=lumen] .summary-metrics strong { color:var(--text) }
+[data-theme=lumen] .result-panel {
+  background:linear-gradient(110deg,#fff,#edf5fb); color:var(--text); border:1px solid #98b7cd;
+  border-radius:10px; box-shadow:var(--shadow); --result-accent:var(--blue);
+}
+[data-theme=lumen] .result-panel.win1 { --result-accent:var(--red); background:linear-gradient(110deg,#fff,#fcf0f1); border-color:#c8a1a6 }
+[data-theme=lumen] .result-panel.draw { --result-accent:var(--text-2); background:#f5f8fa; border-color:#adbfc9 }
+[data-theme=lumen] .result-panel::before { content:''; position:absolute; top:0; left:1.5rem; right:1.5rem; height:2px; background:var(--result-accent) }
+[data-theme=lumen] .result-verdict { color:var(--result-accent); font-size:1.8rem; font-weight:300; letter-spacing:.04em }
+[data-theme=lumen] .result-title { color:var(--result-accent); font-weight:600 }
+[data-theme=lumen] .result-medal { color:var(--result-accent) }
+[data-theme=lumen] .result-medal>span { display:grid; place-items:center; height:100%; font-size:1.8rem; border:1px solid var(--line); border-radius:50% }
+[data-theme=lumen] .result-hp>span { display:block }
+[data-theme=lumen] .site-footer { color:var(--text-2) }
+/* Functional annotations remain readable; tiny engraving is confined to the SVG. */
+[data-theme=lumen] :is(.selection-heading>span,.lvl-head label,.fighter-label,.hud-foot,.hud-hp small,.log-count,.summary-metrics small,.summary-panel caption,.archive-heading span,.card-english,.brand-motto small,.site-footer) { font-size:.6875rem }
+[data-theme=lumen] :is(.rar-badge,.role-badge,.bp-comparison,.text-btn) { font-size:.75rem }
+[data-theme=lumen] .stats-grid .stat-row { font-size:.75rem }
+
+@media(min-width:1001px) and (max-width:1200px) {
+  [data-theme=lumen] .card-face { padding:1.2rem }
+  [data-theme=lumen] .bp-value { font-size:1.8rem }
+  [data-theme=lumen] .rarity-letter { left:1.2rem; font-size:1.4rem }
+  [data-theme=lumen] .cname { font-size:1.35rem }
+}
+@media(max-width:1000px) {
+  [data-theme=lumen] .app { padding-top:1.25rem }
+  [data-theme=lumen] .site-header { margin-bottom:1.5rem }
+  [data-theme=lumen] .site-header h1 { font-size:1.05rem; letter-spacing:.08em }
+  [data-theme=lumen] .lab-backdrop { background-position:60% top; background-size:auto 100vh }
+  [data-theme=lumen] .lab-backdrop::after { background:#edf2f577 }
+  [data-theme=lumen] .card-face { padding:1.2rem 1.35rem }
+  [data-theme=lumen] .bp-value { font-size:2rem }
+  [data-theme=lumen] .rarity-letter { left:1.35rem }
+  [data-theme=lumen] .command-core { padding-top:0 }
+  [data-theme=lumen] .match-config { background:#f8fbfc; border-radius:6px }
+  [data-theme=lumen] :is(.ctrl-btns,.speed-seg) { background:#f5f9fc; border-top-color:#a9bfce; box-shadow:0 -4px 16px #2e547318 }
+  [data-theme=lumen] #startBtn { min-height:3.7rem; font-size:1.05rem }
+  [data-theme=lumen] .round-value { font-size:2.6rem }
+  [data-theme=lumen] .telemetry { padding:.75rem 1rem }
+  [data-theme=lumen] .app:not([data-phase=ready]) .card-face::before {
+    inset:0; background:none; border:1px solid #afc5d4; border-radius:14px; box-shadow:none; clip-path:none;
+  }
+  [data-theme=lumen] .app:not([data-phase=ready]) .rarity-art { margin:0 }
+  [data-theme=lumen] .app:not([data-phase=ready]) :is(.rar-badge,.role-badge) { font-size:.6875rem }
+  [data-theme=lumen] .result-right { flex-wrap:wrap }
+  [data-theme=lumen] .result-actions { min-width:8rem }
+  [data-theme=lumen] #replayBtn,[data-theme=lumen] .lvl-val input { min-height:44px }
+}
+@media(max-width:370px) {
+  [data-theme=lumen] .site-header h1 { font-size:.9rem }
+  [data-theme=lumen] .card-face { padding:1.1rem }
+  [data-theme=lumen] .bp-value { font-size:1.65rem }
+  [data-theme=lumen] #startBtn { font-size:.95rem }
+  [data-theme=lumen] .summary-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem }
+}
+
+/* Shared finishing: functional information has a readable floor in every world.
+   Engraving remains decorative; no gameplay value is hidden inside an image. */
+html[data-theme=collector] { --text-3:#a4afaa }
+html[data-theme=collector] .lab-backdrop::after { background:linear-gradient(#050a0c22,#050a0c66 75%,#050a0cb3) }
+html[data-theme] :is(.selection-heading>span,.lvl-head label,.fighter-label,.hud-foot,.hud-hp small,.log-count,.summary-metrics small,.summary-panel caption,.archive-heading span,.card-english,.site-footer,.speed-label,.match-config label,.round-label,.hud-state,.result-hp-label,.result-meta) { font-size:.75rem }
+html[data-theme] :is(.text-btn,.stats-toggle,.spdbtn,.lvl-val input) { min-height:44px }
+html[data-theme] #replayBtn { min-height:44px }
+html[data-theme] :is(.text-btn,#replayBtn) { font-size:.75rem }
+html[data-theme] .summary-panel :is(th,td) { font-size:.8125rem }
+html[data-theme] :is(.bp-value,.hud-hp,.stat-tile .v,.summary-metrics strong) { font-variant-numeric:tabular-nums }
+html[data-theme=lumen] .card-face { box-shadow:0 14px 30px #27435b21,inset 0 1px 0 #fff }
+html[data-theme=lumen] .card-english { letter-spacing:.08em }
+html[data-theme=lumen] .card-material::after { font-size:.625rem }
+/* Defeat is conveyed by HP and the crest; identity text must stay readable. */
+html[data-theme] .fallen .identity { opacity:1 }
+html[data-theme] .fallen .rarity-art { opacity:.45 }
+.emblem .edition-emblem,.result-medal .edition-emblem { display:none }
+
+/* FOLIO — uncoated print stock, forest ink, registration and ranked impressions. */
+html[data-theme=folio] {
+  --bg:#eee8d9; --surface:#faf6eb; --surface-muted:#e6e0d0;
+  --text:#203c32; --text-2:#4d5d4f; --text-3:#596353; --line:#b5b9a7;
+  --gold:#26503c; --blue:#245c83; --red:#a13836; --green:#29653d;
+  --focus:#224c38; --edition:#29513b; --display:Georgia,"Songti SC",SimSun,serif;
+  --shape:2px; --panel-shadow:0 7px 18px #51462a16;
+}
+/* PULSE — polymer cartridges, amber phosphor and discrete signal gates. */
+html[data-theme=pulse] {
+  --bg:#18121d; --surface:#241c2c; --surface-muted:#312536;
+  --text:#f4e6d8; --text-2:#cbbbcb; --text-3:#b7a6b7; --line:#65516b;
+  --gold:#ffc28b; --blue:#97d5f4; --red:#ffa6a8; --green:#b3e2ac;
+  --focus:#ffe0bd; --edition:#ffc28b; --display:Consolas,"Cascadia Mono",monospace;
+  --shape:12px; --panel-shadow:0 14px 25px #07050d55;
+}
+[data-theme=folio] .lab-backdrop { background:var(--bg) url('assets/folio-paper.webp') center top/cover no-repeat }
+[data-theme=pulse] .lab-backdrop { background:var(--bg) url('assets/pulse-surface.webp') center top/cover no-repeat }
+:is([data-theme=folio],[data-theme=pulse]) .lab-backdrop::after { background:linear-gradient(transparent,var(--bg)) }
+:is([data-theme=folio],[data-theme=pulse]) * { scrollbar-color:var(--line) var(--surface) }
+:is([data-theme=folio],[data-theme=pulse]) ::selection { background:var(--gold); color:var(--bg) }
+:is([data-theme=folio],[data-theme=pulse]) input { caret-color:var(--focus) }
+:is([data-theme=folio],[data-theme=pulse]) :is(button,input,select,[tabindex]):focus-visible { outline-color:var(--focus) }
+:is([data-theme=folio],[data-theme=pulse]) .app { padding-top:1.7rem }
+:is([data-theme=folio],[data-theme=pulse]) .site-header { margin-bottom:2rem }
+:is([data-theme=folio],[data-theme=pulse]) .site-header h1 { color:var(--text); font-size:1.7rem; letter-spacing:.08em }
+:is([data-theme=folio],[data-theme=pulse]) :is(.brand-motto,.site-header p,.core-caption,.core-note,.core-footnote) { color:var(--text-2) }
+:is([data-theme=folio],[data-theme=pulse]) .site-header h1::before,
+:is([data-theme=folio],[data-theme=pulse]) .site-header h1::after { background:var(--line); width:2rem }
+:is([data-theme=folio],[data-theme=pulse]) :is(.wall-copy,.simulation-number,.card-aside,.arena-ambient) { display:none }
+:is([data-theme=folio],[data-theme=pulse]) .selection-bar { margin:0 0 .8rem }
+:is([data-theme=folio],[data-theme=pulse]) .card-picker { border:1px solid var(--line); background:var(--line); border-radius:var(--shape); box-shadow:none; overflow:hidden }
+:is([data-theme=folio],[data-theme=pulse]) .card-picker :is(input,select) { background:var(--surface); color:var(--text); min-height:44px; border-radius:0 }
+:is([data-theme=folio],[data-theme=pulse]) input::placeholder { color:var(--text-3); opacity:1 }
+:is([data-theme=folio],[data-theme=pulse]) .card-picker:focus-within { border-color:var(--focus) }
+:is([data-theme=folio],[data-theme=pulse]) .card-face {
+  padding:1.3rem 1.8rem; border-radius:var(--shape); background:var(--surface);
+  box-shadow:var(--panel-shadow); filter:none;
+}
+:is([data-theme=folio],[data-theme=pulse]) .card-face::before { inset:0; background:none; border:1px solid var(--line); border-radius:var(--shape); filter:none; clip-path:none; box-shadow:none }
+:is([data-theme=folio],[data-theme=pulse]) :is(.card-ornament,.ambient-particles,.card-frame,.card-edge-light) { display:none }
+:is([data-theme=folio],[data-theme=pulse]) .card-rail { color:var(--text-3); min-height:1.8rem; padding:0; border-bottom:1px solid var(--line) }
+:is([data-theme=folio],[data-theme=pulse]) .micro-brand { margin:0; letter-spacing:.07em }
+:is([data-theme=folio],[data-theme=pulse]) .card-serial::before { color:var(--text-3) }
+:is([data-theme=folio],[data-theme=pulse]) .rarity-letter { display:none }
+:is([data-theme=folio],[data-theme=pulse]) .rarity-art { max-width:17rem; margin:.8rem auto .2rem }
+:is([data-theme=folio],[data-theme=pulse]) .rarity-art::before { display:none }
+:is([data-theme=folio],[data-theme=pulse]) .emblem { filter:none; color:var(--edition) }
+:is([data-theme=folio],[data-theme=pulse]) .collector-emblem { display:none }
+[data-theme=folio] :is(.emblem,.result-medal) .folio-emblem,
+[data-theme=pulse] :is(.emblem,.result-medal) .pulse-emblem { display:block; color:var(--edition) }
+[data-theme=folio] .edition-glyph { font-family:Georgia,"Times New Roman",serif }
+[data-theme=pulse] .edition-glyph { font-family:Consolas,"Cascadia Mono",monospace; letter-spacing:-.04em }
+:is([data-theme=folio],[data-theme=pulse]) .cname { color:var(--text); font-size:1.65rem; letter-spacing:.03em; font-weight:650 }
+:is([data-theme=folio],[data-theme=pulse]) .rar-badge { color:var(--edition); font-size:.75rem }
+:is([data-theme=folio],[data-theme=pulse]) .rar-badge::before { background:var(--edition); box-shadow:none; width:5px; height:5px }
+:is([data-theme=folio],[data-theme=pulse]) .card-english { color:var(--text-3); letter-spacing:.08em }
+:is([data-theme=folio],[data-theme=pulse]) .power-strip { background:none; border-color:var(--line); margin-top:1rem; padding:1rem 0 }
+:is([data-theme=folio],[data-theme=pulse]) .bp-value { font-family:var(--display); color:var(--text); font-size:2.3rem; letter-spacing:-.04em }
+:is([data-theme=folio],[data-theme=pulse]) .lvl-val input { color:var(--text); background:var(--surface); border-color:var(--line) }
+:is([data-theme=folio],[data-theme=pulse]) input[type=range]::-webkit-slider-runnable-track { background:var(--line); height:3px }
+:is([data-theme=folio],[data-theme=pulse]) input[type=range]::-webkit-slider-thumb { background:var(--gold); border:2px solid var(--surface); width:16px; height:20px; border-radius:2px; box-shadow:0 1px 3px #0003 }
+:is([data-theme=folio],[data-theme=pulse]) input[type=range]::-moz-range-track { background:var(--line) }
+:is([data-theme=folio],[data-theme=pulse]) input[type=range]::-moz-range-thumb { background:var(--gold); border-color:var(--surface); border-radius:2px }
+:is([data-theme=folio],[data-theme=pulse]) .core-stats { border-color:var(--line) }
+:is([data-theme=folio],[data-theme=pulse]) .stat-code { color:var(--text-3) }
+:is([data-theme=folio],[data-theme=pulse]) :is(.stat-tile .v,.stat-row .v) { color:var(--text) }
+:is([data-theme=folio],[data-theme=pulse]) .hpbar-wrap { background:var(--surface-muted); height:6px; box-shadow:none; border-radius:0 }
+:is([data-theme=folio],[data-theme=pulse]) .hpbar { background:var(--team) }
+:is([data-theme=folio],[data-theme=pulse]) .hp-trail { background:var(--text-3) }
+:is([data-theme=folio],[data-theme=pulse]) .card-signature { border-color:var(--line); color:var(--text-3) }
+:is([data-theme=folio],[data-theme=pulse]) .card-signature .card-material { font-size:0 }
+:is([data-theme=folio],[data-theme=pulse]) .card-material::after { font-size:.625rem; letter-spacing:.1em }
+[data-theme=folio] .card-material::after { content:'棉纸压印 / COTTON STOCK' }
+[data-theme=pulse] .card-material::after { content:'信号卡匣 / SIGNAL MODULE' }
+:is([data-theme=folio],[data-theme=pulse]) .card-config { margin:1rem 0 0; background:var(--surface); border-color:var(--line); border-radius:var(--shape); box-shadow:none }
+:is([data-theme=folio],[data-theme=pulse]) .archive-heading { color:var(--text) }
+:is([data-theme=folio],[data-theme=pulse]) .command-core { padding-top:4rem }
+:is([data-theme=folio],[data-theme=pulse]) .core-caption { margin-bottom:1.7rem; letter-spacing:.16em }
+:is([data-theme=folio],[data-theme=pulse]) .round-center { background:var(--surface); border:1px solid var(--line); border-radius:var(--shape); box-shadow:var(--panel-shadow) }
+:is([data-theme=folio],[data-theme=pulse]) .round-center::before { content:''; position:absolute; inset:7%; border:1px solid var(--line); border-radius:var(--shape) }
+:is([data-theme=folio],[data-theme=pulse]) .arena-dial { display:none }
+:is([data-theme=folio],[data-theme=pulse]) .round-value { color:var(--gold); font-family:var(--display); text-shadow:none; top:0 }
+:is([data-theme=folio],[data-theme=pulse]) .hud-state { top:0; margin-top:.35rem; color:var(--gold) }
+:is([data-theme=folio],[data-theme=pulse]) .core-footnote { margin-top:1.2rem }
+:is([data-theme=folio],[data-theme=pulse]) .btn.primary,
+:is([data-theme=folio],[data-theme=pulse]) #startBtn { color:var(--surface); background:var(--gold); border:1px solid var(--gold); border-radius:var(--shape); clip-path:none; box-shadow:0 5px 10px #0002; min-height:4rem; font-size:1.2rem; letter-spacing:.05em }
+:is([data-theme=folio],[data-theme=pulse]) #startBtn small { opacity:.85 }
+:is([data-theme=folio],[data-theme=pulse]) .spdbtn { background:var(--surface); color:var(--text-2); border-color:var(--line); border-radius:var(--shape) }
+:is([data-theme=folio],[data-theme=pulse]) .spdbtn.on { color:var(--text); background:var(--surface-muted); border-color:var(--gold); box-shadow:inset 0 -2px var(--gold) }
+:is([data-theme=folio],[data-theme=pulse]) .match-config input { background:var(--surface); color:var(--text); border-color:var(--line); border-radius:var(--shape) }
+:is([data-theme=folio],[data-theme=pulse]) .text-btn:hover { color:var(--text); text-decoration:underline; text-underline-offset:4px }
+:is([data-theme=folio],[data-theme=pulse]) .event-readout { background:var(--surface); border:1px solid var(--line); border-radius:var(--shape); padding:.7rem 1rem }
+:is([data-theme=folio],[data-theme=pulse]) .float-number { color:var(--blue); background:var(--surface); padding:0 .3rem; text-shadow:none }
+:is([data-theme=folio],[data-theme=pulse]) .float-number.crit { color:var(--red) }
+:is([data-theme=folio],[data-theme=pulse]) .float-number.heal { color:var(--green) }
+:is([data-theme=folio],[data-theme=pulse]) .float-number.miss { color:var(--text-2) }
+:is([data-theme=folio],[data-theme=pulse]) .pcard[data-action=impact] .card-face { filter:none; outline:2px solid var(--red); outline-offset:-2px }
+:is([data-theme=folio],[data-theme=pulse]) .pcard[data-action=recover] .card-face { filter:none; outline:2px solid var(--green); outline-offset:-2px }
+:is([data-theme=folio],[data-theme=pulse]) .pcard[data-action=fallen] .card-face { filter:saturate(.5) }
+:is([data-theme=folio],[data-theme=pulse]) .victorious .card-face::before { border-color:var(--team); filter:none; box-shadow:inset 0 0 0 1px var(--team) }
+:is([data-theme=folio],[data-theme=pulse]) .telemetry { background:var(--surface); border-color:var(--line); border-radius:var(--shape); box-shadow:none; padding:1.4rem 1.5rem }
+:is([data-theme=folio],[data-theme=pulse]) .log-head { color:var(--text) }
+:is([data-theme=folio],[data-theme=pulse]) .log-empty svg { stroke:var(--text-3) }
+:is([data-theme=folio],[data-theme=pulse]) .le { color:var(--text-2); border-color:var(--line) }
+:is([data-theme=folio],[data-theme=pulse]) .le.current { background:var(--surface-muted) }
+:is([data-theme=folio],[data-theme=pulse]) .le.crit .amt { color:var(--red) }
+:is([data-theme=folio],[data-theme=pulse]) .le.death { color:var(--red) }
+:is([data-theme=folio],[data-theme=pulse]) .summary-panel :is(th,td) { border-color:var(--line) }
+:is([data-theme=folio],[data-theme=pulse]) .summary-metrics strong { color:var(--text) }
+:is([data-theme=folio],[data-theme=pulse]) .result-panel { background:var(--surface); color:var(--text); border:1px solid var(--line); border-radius:var(--shape); box-shadow:var(--panel-shadow); --result-accent:var(--blue) }
+:is([data-theme=folio],[data-theme=pulse]) .result-panel.win1 { --result-accent:var(--red) }
+:is([data-theme=folio],[data-theme=pulse]) .result-panel.draw { --result-accent:var(--text-2) }
+:is([data-theme=folio],[data-theme=pulse]) .result-panel::before { background:none; border:0 }
+:is([data-theme=folio],[data-theme=pulse]) .result-verdict { font-family:var(--display); color:var(--result-accent); letter-spacing:0; font-size:2.25rem }
+:is([data-theme=folio],[data-theme=pulse]) .result-title { color:var(--result-accent) }
+:is([data-theme=folio],[data-theme=pulse]) .result-medal>span { display:grid; place-items:center; height:100%; font:2rem var(--display); border:1px solid var(--line) }
+:is([data-theme=folio],[data-theme=pulse]) .result-hp>span { display:block }
+:is([data-theme=folio],[data-theme=pulse]) .site-footer { color:var(--text-2) }
+
+/* Two independent constructions, beyond their shared component semantics. */
+[data-theme=folio] .card-face { background:linear-gradient(#faf6ebed,#faf6ebed),url('assets/folio-paper.webp') center/cover }
+[data-theme=folio] .card-face::before { inset:.55rem; border:1px solid #81917e }
+[data-theme=folio] .identity { text-align:left }
+[data-theme=folio] .name-row { justify-content:flex-start }
+[data-theme=folio] .cname { font-family:"Songti SC",SimSun,Georgia,serif; font-weight:700 }
+[data-theme=folio] .card-english { text-align:left }
+[data-theme=folio] .power-strip { border-top:2px solid var(--gold); border-bottom:1px solid var(--line) }
+[data-theme=folio] .round-center { border:0; background:transparent; box-shadow:none; border-radius:0 }
+[data-theme=folio] .round-center::before { inset:8% 0; border:0; border-top:3px double var(--gold); border-bottom:3px double var(--gold); border-radius:0 }
+[data-theme=folio] .round-value { font-style:italic; font-size:5rem; font-weight:400 }
+[data-theme=folio] .round-label { color:var(--text-2) }
+[data-theme=folio] .result-verdict { font-style:italic; border-bottom:1px solid var(--result-accent); padding-bottom:.3rem }
+[data-theme=folio] .result-panel { border-top:3px double var(--result-accent) }
+[data-theme=folio] .telemetry { border-top:3px double var(--gold) }
+[data-theme=folio] .log-head { font-family:var(--display); font-weight:600 }
+[data-theme=folio] .pcard[data-action=attack] .edition-emblem { animation:ink-strike 240ms ease-out }
+[data-theme=pulse] .site-header h1 { font-family:var(--display); font-weight:600; letter-spacing:.02em }
+[data-theme=pulse] .card-face { border-top:6px solid #59455d; border-bottom:6px solid #59455d }
+[data-theme=pulse] .card-rail { border-bottom:0; border-radius:3px; background:#15111b; padding:0 .5rem }
+[data-theme=pulse] .power-strip { background:#16111d; padding:1rem .7rem; border:1px solid #65516b; border-radius:5px }
+[data-theme=pulse] .bp-value { font-size:2.05rem; color:var(--gold) }
+[data-theme=pulse] .round-center { background:#100e17; border:6px solid #59455d; border-radius:22px }
+[data-theme=pulse] .round-center::before { border-color:#7d5c50; border-radius:12px; inset:6% }
+[data-theme=pulse] .round-center::after { content:''; position:absolute; bottom:17%; left:28%; right:28%; height:3px; background:var(--gold); opacity:.65 }
+[data-theme=pulse] .round-value { font-size:3.5rem }
+[data-theme=pulse] .hud-state { margin-top:.5rem }
+[data-theme=pulse] .card-config { border-style:dashed }
+[data-theme=pulse] .summary-metrics strong { font-family:var(--display); color:var(--gold) }
+[data-theme=pulse] .result-panel { background:#211928; border-top:6px solid #59455d }
+[data-theme=pulse] .result-verdict { font-size:1.9rem; letter-spacing:.04em }
+[data-theme=pulse] .pcard[data-action=attack] .signal-trace { animation:signal-fire 280ms steps(4,end) }
+@keyframes ink-strike { 0% { opacity:.5; transform:translateY(-3px) } 55% { opacity:1; transform:translateY(2px) } 100% { transform:translateY(0) } }
+@keyframes signal-fire { 0%,50% { stroke-width:4; opacity:.35 } 25%,75%,100% { stroke-width:1.5; opacity:1 } }
+@media(min-width:1001px) and (max-width:1200px) {
+  :is([data-theme=folio],[data-theme=pulse]) .card-face { padding:1.2rem }
+  :is([data-theme=folio],[data-theme=pulse]) .bp-value { font-size:1.65rem }
+}
+@media(max-width:1000px) {
+  html[data-theme] .theme-picker { width:min(100%,18rem); display:flex; align-items:center; gap:.65rem }
+  html[data-theme] .theme-picker label { flex-shrink:0; margin:0 }
+  html[data-theme] .theme-picker select { min-width:0; font-size:16px }
+  :is([data-theme=folio],[data-theme=pulse]) .app { padding-top:1.25rem }
+  :is([data-theme=folio],[data-theme=pulse]) .site-header h1 { font-size:1.05rem }
+  :is([data-theme=folio],[data-theme=pulse]) .card-face { padding:1.2rem 1.35rem }
+  :is([data-theme=folio],[data-theme=pulse]) .command-core { padding-top:0 }
+  :is([data-theme=folio],[data-theme=pulse]) .match-config { background:var(--surface); border-radius:var(--shape) }
+  :is([data-theme=folio],[data-theme=pulse]) :is(.ctrl-btns,.speed-seg) { background:var(--bg); border-color:var(--line); box-shadow:0 -4px 12px #0002 }
+  :is([data-theme=folio],[data-theme=pulse]) #startBtn { min-height:3.7rem; font-size:1rem }
+  :is([data-theme=folio],[data-theme=pulse]) .round-value { font-size:2.6rem }
+  :is([data-theme=folio],[data-theme=pulse]) .telemetry { padding:.75rem 1rem }
+  :is([data-theme=folio],[data-theme=pulse]) .app:not([data-phase=ready]) .card-face::before { inset:0; background:none; clip-path:none; border:1px solid var(--line); border-radius:var(--shape); box-shadow:none }
+  :is([data-theme=folio],[data-theme=pulse]) .app:not([data-phase=ready]) .rarity-art { margin:0 }
+  html[data-theme] .app:not([data-phase=ready]) :is(.rar-badge,.role-badge) { font-size:.6875rem }
+  :is([data-theme=folio],[data-theme=pulse]) .result-right { flex-wrap:wrap }
+  :is([data-theme=folio],[data-theme=pulse]) .result-actions { min-width:8rem }
+  [data-theme=pulse] .round-center { border-width:3px; border-radius:12px }
+  [data-theme=pulse] .round-center::before { border-radius:7px }
+  [data-theme=pulse] .round-center::after { bottom:12% }
+  [data-theme=folio] .round-center::before { inset:5% 0 }
+}
+@media(max-width:370px) {
+  :is([data-theme=folio],[data-theme=pulse]) .site-header h1 { font-size:.9rem }
+  :is([data-theme=folio],[data-theme=pulse]) .card-face { padding:1.1rem }
+  :is([data-theme=folio],[data-theme=pulse]) .bp-value { font-size:1.65rem }
+  html[data-theme] .summary-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem }
+  html[data-theme] .theme-picker { gap:.4rem }
+}
+@media(prefers-reduced-motion:reduce) {
+  :is([data-theme=folio],[data-theme=pulse]) .pcard[data-action=attack] :is(.edition-emblem,.signal-trace) { animation:none }
+}
+.page-hidden .pcard[data-action=attack] :is(.edition-emblem,.signal-trace),
+.pcard:not(.in-view)[data-action=attack] :is(.edition-emblem,.signal-trace) { animation-play-state:paused }
+
+/* A text-size-aware fallback: pixel breakpoints alone miss 200% text zoom. */
+.app { container:app-space / inline-size }
+@media(min-width:1001px) {
+  @container app-space (max-width:50rem) {
+    .setup { grid-template-columns:minmax(0,1fr); max-width:34rem; margin-inline:auto }
+    html[data-theme] .theme-picker { position:relative; margin:1rem auto 0 }
+    html[data-theme] .site-header h1 { overflow-wrap:anywhere }
+    .site-header h1::before,.site-header h1::after { display:none }
+    html[data-theme] .command-core { max-width:24rem; width:100%; justify-self:center; padding-top:0 }
+    .telemetry { grid-template-columns:minmax(0,1fr) }
+    .simulation-summary { border-left:0; padding-left:0 }
+    html[data-theme] .result-panel { flex-wrap:wrap }
+    .result-right { margin-left:0; flex-wrap:wrap; width:100%; justify-content:space-between }
+    .card-rail { flex-wrap:wrap }
+  }
+}
+@media(max-width:1000px) {
+  html[data-theme] .result-actions .btn.primary { font-size:.875rem; min-height:44px; padding:.65rem }
+  .result-panel { scroll-margin-bottom:6rem }
+}
+/* Collector V3 details and PULSE V1 signal traces share the existing lifecycle. */
+.collector-emblem .rank-core,.collector-emblem .rank-detail { transform-origin:120px 120px }
+.collector-emblem .rank-detail { opacity:.35 }
+.collector-emblem .rank-detail { animation:rank-metal 12s ease-in-out infinite }
+.pulse-emblem[data-tier="6"] .signal-trace,
+.pulse-emblem[data-tier="8"] .signal-trace { stroke-dasharray:60 15; animation:rank-signal 6s linear infinite }
+.pulse-emblem[data-tier="7"] .signal-trace { stroke-dasharray:20 8; animation:rank-signal 4s steps(8) infinite }
+.pulse-emblem[data-tier="11"] .signal-trace { stroke-dasharray:120 24; animation:rank-signal 8s linear infinite }
+.rank-label { paint-order:stroke fill; stroke-width:.3px }
+[data-theme=folio] .rank-label { font-family:Georgia,serif }
+[data-theme=pulse] .rank-glyph { font-family:Consolas,"Cascadia Mono",monospace }
+.pcard[data-action=impact] .collector-emblem .rank-core { opacity:.7 }
+.pcard[data-action=heal] .collector-emblem .rank-detail { stroke:var(--green); opacity:.85 }
+.pcard.victorious .collector-emblem .rank-detail { opacity:.8 }
+.pcard.fallen .collector-emblem .rank-detail { animation:none; opacity:.12 }
+.page-hidden .collector-emblem :is(.rank-detail,.rank-core),.page-hidden .signal-trace,
+.pcard:not(.in-view) .collector-emblem :is(.rank-detail,.rank-core),.pcard:not(.in-view) .signal-trace { animation-play-state:paused }
+@keyframes rank-metal { 0%,65%,100%{opacity:.18} 78%{opacity:.7} }
+@keyframes rank-signal { to{stroke-dashoffset:-150} }
+@media(prefers-reduced-motion:reduce) {
+  .collector-emblem :is(.rank-detail,.rank-core),.signal-trace { animation:none!important; transform:none!important }
+}
+/* The compact crest must fit inside identity, above the HP row, including long names. */
+@media(max-width:1000px) {
+  html[data-theme] .app:not([data-phase=ready]) .identity { height:auto; min-height:5.4rem; padding-right:5.4rem }
+  html[data-theme] .app:not([data-phase=ready]) .rarity-art { top:0; right:-.1rem; width:5.2rem; height:5.2rem }
+}
+
+/* V1 text stays crisp; the native rarity badge remains the accessible label. */
+.edition-glyph,.rank-certification { pointer-events:none }

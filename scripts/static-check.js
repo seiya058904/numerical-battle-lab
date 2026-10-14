@@ -38,6 +38,9 @@ const EXPECTED_FILES = [
   'assets/frame.webp',
   'assets/dial.webp',
   'assets/console.webp',
+  'assets/lumen-optics.webp',
+  'assets/folio-paper.webp',
+  'assets/pulse-surface.webp',
   'AGENTS.md',
   'README.md',
   'PRODUCT.md',
@@ -45,6 +48,7 @@ const EXPECTED_FILES = [
   'index.html',
   'package.json',
   'styles.css',
+  'themes.css',
   'src/cards.js',
   'src/power.js',
   'src/battle.js',
@@ -63,6 +67,7 @@ const EXPECTED_FILES = [
   'tests/bp-evaluation.test.js',
   'tests/bp-contract.test.js',
   'tests/presentation.test.js',
+  'tests/themes.test.js',
   'tests/serve.test.js'
 ].sort();
 

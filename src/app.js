@@ -122,42 +122,37 @@
     return { ...RARITY_FINISHES[tier], tier: String(tier + 1).padStart(2, '0') };
   }
 
-  function emblemMarkup(tier, side) {
-    const f = rarityFinish(tier), collector = tier === 9 || tier === 11, premium = tier >= 8;
+  // Collector silhouettes are presentation semantics, independent of battle rarity multipliers.
+  const RANK_FORMS = Object.freeze({
+    collector: Object.freeze([
+      'M73 48H167L192 73V167L167 192H73L48 167V73Z',
+      'M70 44H170L196 70V170L170 196H70L44 170V70Z M72 28H168V38H72Z M72 202H168V212H72Z',
+      'M120 38L184 76V151L120 203L56 151V76Z',
+      'M120 29L187 71V151L120 214L53 151V71Z M30 73L46 63V150L30 138Z M210 73L194 63V150L210 138Z',
+      'M120 24L151 66L203 120L151 174L120 216L89 174L37 120L89 66Z',
+      'M120 17L153 66L208 120L153 174L120 223L87 174L32 120L87 66Z M51 39L78 55L54 82L39 55Z M189 39L162 55L186 82L201 55Z',
+      'M120 14L169 43L182 98L170 165L120 222L70 165L58 98L71 43Z M95 21L103 9L120 20L137 9L145 21L120 38Z',
+      'M120 40L165 67L171 144L120 199L69 144L75 67Z M65 82L12 37L24 115L61 157L47 110Z M175 82L228 37L216 115L179 157L193 110Z',
+      'M120 6L143 62L198 28L178 85L234 120L178 146L198 212L143 179L120 234L97 179L42 212L62 146L6 120L62 85L42 28L97 62Z',
+      'M76 35H164L193 65V159L164 191H76L47 159V65Z M75 181L65 231L95 217L118 231L111 185Z M130 185L126 231L150 217L175 231L164 181Z M79 29L70 8L101 21L120 3L139 21L170 8L161 29Z',
+      'M120 4L148 76L218 120L148 164L120 236L92 164L22 120L92 76Z M27 41L59 27L78 56L53 87Z M213 41L181 27L162 56L187 87Z M27 199L59 213L78 184L53 153Z M213 199L181 213L162 184L187 153Z',
+      'M31 202V64L51 14L71 64V178L51 202Z M169 178V64L189 14L209 64V202L189 202Z M23 212H217V228H23Z M120 65L154 118L120 171L86 118Z M88 36L78 12L105 23L120 2L135 23L162 12L152 36Z'
+    ])
+  });
+  const LUMEN_RANKS = Object.freeze(['#486477','#3b6575','#286b63','#236a58','#235f9d','#3155a5','#635093','#824d78','#846020','#77551b','#235f88','#2349a1']);
+  const RANK_IDENTITIES = Object.freeze(['token','reinforced','shield','braced','facet','array','sanctum','duplex','radiant','archive','singularity','reliquary']);
+  function rankPath(d, attrs = '') { return `<path d="${d}" ${attrs}/>`; }
+  function rankSvg(tier, theme, content, style = '') {
     const glyph = RARITY_LIST[tier].replace(' Collector', '');
-    const metal = `url(#metal${side})`, enamel = `url(#face${side})`, bevel = `url(#bevel${side})`;
-    const point = (r, a) => [120 + r * Math.cos(a), 120 + r * Math.sin(a)];
-    const xy = p => p.map(v => v.toFixed(2)).join(' ');
-    const polygon = points => 'M' + points.map(xy).join('L') + 'Z';
-    const regular = (radius, count = 8, rotation = Math.PI / 8) => Array.from({ length: count }, (_, i) => point(radius, i * Math.PI * 2 / count + rotation));
-    const arc = (r, start, length) => `M${xy(point(r, start))}A${r} ${r} 0 ${length > Math.PI ? 1 : 0} 1 ${xy(point(r, start + length))}`;
-    // Each bevel is a real plane, with a stable upper-left light direction.
-    const cutBand = (outer, inner, count, rotation = Math.PI / 8) => {
-      const a = regular(outer, count, rotation), b = regular(inner, count, rotation);
-      return a.map((p, i) => {
-        const next = (i + 1) % count, angle = (i + .5) * Math.PI * 2 / count + rotation;
-        const light = Math.cos(angle + Math.PI * .7);
-        return `<path d="${polygon([p, a[next], b[next], b[i]])}" fill="${light > .25 ? f.light : light < -.3 ? f.dark : f.color}" stroke="#080e10" stroke-width=".45"/>`;
-      }).join('');
-    };
-    // Common reverse, milled rings and radial bridges anchor every silhouette.
-    const rays = Array.from({ length: f.spokes }, (_, i) => {
-      const angle = i * Math.PI * 2 / f.spokes - Math.PI / 2;
-      const reach = f.reach - (i % 2 ? tier >= 10 ? 24 : 13 : 0);
-      const a = point(79, angle - .115), tip = point(reach, angle), b = point(79, angle + .115), ridge = point(91, angle);
-      return `<g><path d="${polygon([a, tip, b, ridge])}" fill="${metal}" stroke="${f.dark}" stroke-width=".6"/><path d="${polygon([a, tip, ridge])}" fill="${f.light}" opacity=".83"/><path d="${polygon([ridge, tip, b])}" fill="${f.dark}"/><path d="M${xy(ridge)}L${xy(tip)}" stroke="${f.light}" stroke-width=".65"/></g>`;
-    }).join('');
-    const tickCount = 48 + tier * 4;
-    const ticks = Array.from({ length: tickCount }, (_, i) => `<path d="M120 16v${i % 4 ? 2.2 : 5}" transform="rotate(${i * 360 / tickCount} 120 120)"/>`).join('');
-    const bolts = Array.from({ length: tier >= 6 ? 8 : 4 }, (_, i) => `<g transform="rotate(${i * (tier >= 6 ? 45 : 90) + 22.5} 120 120)"><circle cx="120" cy="28" r="2.9" fill="${metal}" stroke="#05090c" stroke-width="1"/><path d="M118.5 28h3" stroke="${f.dark}" stroke-width=".7"/></g>`).join('');
-    const facets = premium ? `<g class="emblem-facets">${cutBand(106, 101, 12, 0)}<path d="${polygon(regular(109, 12, 0))}" stroke="${f.light}" stroke-width=".45" opacity=".55"/></g>` : '';
-    const wings = collector ? `<g class="emblem-wings">${[-1, 1].map(sign => Array.from({ length: 6 }, (_, i) => {
-      const angle = (sign < 0 ? Math.PI : 0) + sign * (.76 - i * .26);
-      const a = point(100, angle), b = point(128 - i * 1.4, angle - sign * .14), c = point(119, angle + sign * .14);
-      return `<path d="${polygon([a, b, c])}" fill="${metal}" stroke="${f.dark}" stroke-width=".6"/><path d="M${xy(a)}L${xy(b)}" stroke="${f.light}" stroke-width=".7"/>`;
-    }).join('')).join('')}</g>` : '';
-    const star = tier >= 10 ? `<g class="emblem-star">${Array.from({ length: 4 }, (_, i) => `<g transform="rotate(${i * 90} 120 120)"><path d="M120 -17 130 18 120 43 110 18Z" fill="${metal}" stroke="${f.dark}" stroke-width=".7"/><path d="M120 -17v60l-10-25Z" fill="${f.light}"/><path d="M120 -9v45" stroke="#fff9dc" stroke-width=".6"/></g>`).join('')}</g>` : '';
-    const crown = collector ? `<g class="emblem-crown"><path d="M95 70 99 85h42l4-15-14 7-11-18-11 18Z" fill="${metal}" stroke="${f.dark}"/><path d="m100 73 3 9h34l3-9-11 8-9-16-9 16Z" stroke="${f.light}" stroke-width=".7"/><path d="m120 68 3 6-3 5-3-5Z" fill="${f.light}"/></g>` : `<g class="emblem-insignia"><path d="m120 68 12 8-12 8-12-8Z" fill="${metal}"/><path d="m120 69 0 14-11-7Z" fill="${f.light}"/></g>`;
+    return `<svg class="${theme}-emblem${['folio','pulse'].includes(theme) ? ' edition-emblem' : ''}" data-sculpture="procedural" data-tier="${tier}" data-identity="${RANK_IDENTITIES[tier]}" data-mark="${glyph}" viewBox="-8 -8 256 256" fill="none" aria-hidden="true" ${style}>${content}</svg>`;
+  }
+  function rankCertification(tier, theme) {
+    if (tier !== 9 && tier !== 11) return '';
+    const dark = theme === 'collector' || theme === 'pulse';
+    return `<g class="rank-certification"><path d="M68 174H172V192H68Z" fill="${dark ? '#10131a' : '#fbf7e9'}" stroke="currentColor" stroke-width=".8"/><text x="120" y="186.5" text-anchor="middle" fill="currentColor" font-family="Segoe UI,sans-serif" font-size="10" font-weight="600" letter-spacing="1">COLLECTOR</text></g>`;
+  }
+  function collectorLetter(tier, side) {
+    const glyph = RARITY_LIST[tier].replace(' Collector', '');
     const letters = {
       C: 'M27 0H8L1 7v22l7 7h19v-8H12l-3-3V11l3-3h15Z',
       B: 'M1 0h18l9 8v7l-5 3 5 3v7l-9 8H1Zm8 8v6h9l2-2-2-4Zm0 14v6h9l2-4-2-2Z',
@@ -166,60 +161,92 @@
       X: 'M0 0h10l5 11L20 0h10L20 18l10 18H20l-5-11-5 11H0l10-18Z',
       '+': 'M3 14h8V6h7v8h8v7h-8v8h-7v-8H3Z'
     };
-    const scale = glyph.length > 2 ? 1.1 : glyph.length === 2 ? 1.4 : 1.55;
+    const scale = glyph.length > 2 ? 1.3 : 1.65;
     const width = (glyph.length * 34 - 4) * scale;
     const mark = [...glyph].map((letter, i) => `<path d="${letters[letter]}" transform="translate(${i * 34} 0)"/>`).join('');
-    const face = polygon(regular(76, 8));
-    // A fixed geometry field: at most five rings, three moving surfaces and two
-    // energy arcs. No random values, SVG filters or frame-by-frame path mutation.
-    const field = Array.from({ length: f.rings }, (_, i) => `<circle cx="120" cy="120" r="${112 + i * 7}" stroke="${f.color}" stroke-width="${i % 2 ? .35 : .65}" opacity="${.4 - i * .04}"${i % 2 ? ' stroke-dasharray="1 6"' : ''}/>`).join('');
-    const anchors = Array.from({ length: tier >= 8 ? 12 : 4 }, (_, i) => `<g transform="rotate(${i * 360 / (tier >= 8 ? 12 : 4)} 120 120)"><path d="m120 ${tier >= 8 ? -14 : 5}-2 4 2 4 2-4Z" fill="${f.light}"/><path d="M120 ${tier >= 8 ? -21 : -1}v4" stroke="${f.color}"/></g>`).join('');
-    const astrolabe = tier === 11 ? `<g class="emblem-astrolabe"><ellipse cx="120" cy="120" rx="143" ry="126" transform="rotate(-28 120 120)" stroke="${f.color}" stroke-width=".7"/><ellipse cx="120" cy="120" rx="143" ry="126" transform="rotate(28 120 120)" stroke="${f.color}" stroke-width=".4" opacity=".5"/></g>` : '';
-    const wave = tier >= 8 ? `<g class="field-energy"><path d="M5 93C-17 23 66-13 99-6C35 11 16 38 17 76"/><path d="M235 147c22 70-61 106-94 99c64-17 83-44 82-82"/></g>` : '';
-    return `<svg data-sculpture="procedural" data-tier="${tier}" viewBox="-30 -30 300 300" fill="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="metal${side}" x1=".1" y1="0" x2=".85" y2="1"><stop stop-color="${f.light}"/><stop offset=".16" stop-color="${f.color}"/><stop offset=".35" stop-color="${f.dark}"/><stop offset=".48" stop-color="${f.color}"/><stop offset=".51" stop-color="${f.light}"/><stop offset=".62" stop-color="${f.color}"/><stop offset=".84" stop-color="${f.dark}"/><stop offset="1" stop-color="${f.color}"/></linearGradient>
-        <linearGradient id="bevel${side}" x1="0" y1="0" x2="1" y2=".8"><stop stop-color="${f.light}"/><stop offset=".23" stop-color="${f.color}"/><stop offset=".47" stop-color="${f.dark}"/><stop offset=".5" stop-color="${f.light}"/><stop offset=".74" stop-color="${f.color}"/><stop offset="1" stop-color="${f.dark}"/></linearGradient>
-        <radialGradient id="face${side}" cx=".27" cy=".14" r=".94"><stop stop-color="${f.enamel}"/><stop offset=".5" stop-color="#101b20"/><stop offset="1" stop-color="#03090d"/></radialGradient>
-        <radialGradient id="field${side}"><stop offset=".36" stop-color="${f.color}" stop-opacity="0"/><stop offset=".64" stop-color="${f.color}" stop-opacity="${f.aura * .36}"/><stop offset="1" stop-color="${f.color}" stop-opacity="0"/></radialGradient>
-        <linearGradient id="crestFoil${side}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${f.light}" stop-opacity=".22"/><stop offset=".46" stop-color="${f.light}" stop-opacity=".03"/><stop offset=".5" stop-color="${f.light}" stop-opacity=".13"/><stop offset=".53" stop-color="${f.light}" stop-opacity="0"/></linearGradient>
-        <clipPath id="crestClip${side}"><path d="${face}"/></clipPath>
-      </defs>
-      <g class="emblem-field"><circle class="field-volume" cx="120" cy="120" r="150" fill="url(#field${side})"/>${field}${astrolabe}
-        <g class="field-orbit field-orbit-primary"><path d="${arc(112, -.9, 1.1)}" stroke="${f.light}" stroke-width="1.4"/><path d="${arc(112, 2.4, .4)}" stroke="${f.color}" stroke-width="1.6"/>${anchors}</g>
-        ${tier >= 4 ? `<g class="field-orbit field-orbit-secondary"><path d="${arc(126, 1, 1.8)}" stroke="${f.light}" stroke-width=".9"/><path d="${arc(126, 4.2, .65)}" stroke="${f.color}" stroke-width="1.2"/></g>` : ''}${wave}
-      </g>
-      <circle class="crest-activation" cx="120" cy="120" r="119" stroke="${f.light}" stroke-width="1.4" opacity="0"/>
-      <g class="emblem-chassis">
-        <circle cx="120" cy="124" r="101" fill="#020508" opacity=".85"/>
-        <circle class="emblem-base" cx="120" cy="120" r="103" fill="${enamel}" stroke="${bevel}" stroke-width="3"/>
-        <circle cx="120" cy="120" r="99" stroke="${f.dark}" stroke-width="1.3"/>
-        <g class="emblem-ticks" stroke="${f.color}" stroke-width=".7" opacity=".6">${ticks}</g>
-        <circle cx="120" cy="120" r="91" stroke="${metal}" stroke-width="4"/><circle cx="120" cy="120" r="86" stroke="${f.light}" stroke-width=".5" opacity=".55"/>
-        <g class="emblem-mounts">${bolts}</g>${facets}${wings}${star}
-        <g class="emblem-prism">${rays}</g>
-        <g class="emblem-face">
-          <path d="${face}" transform="translate(0 4)" fill="#010508" stroke="#010508" stroke-width="4"/>
-          ${cutBand(79, 73, 8)}<path d="${face}" transform="translate(120 120) scale(.93) translate(-120 -120)" fill="${enamel}" stroke="${f.dark}" stroke-width="1.3"/>
-          ${cutBand(71, 68.5, 8)}<path d="${polygon(regular(64, 8))}" stroke="${f.color}" opacity=".23" stroke-width=".5"/>
-          <g clip-path="url(#crestClip${side})"><path d="M36 48h126L51 170Z" fill="url(#crestFoil${side})"/><path class="emblem-polish" d="M22 0h26l180 240h-26Z" fill="url(#crestFoil${side})"/></g>
-          ${crown}
-          <g class="emblem-letter" data-mark="${glyph}" transform="translate(${120 - width / 2} ${137 - 36 * scale}) scale(${scale})" fill-rule="evenodd">
-            <g transform="translate(0 2.2)" fill="#02080b" stroke="#02080b" stroke-width="1.4">${mark}</g>
-            <g fill="${metal}" stroke="${f.light}" stroke-width=".25">${mark}</g>
-          </g>
-          <path d="M91 148h17l12 5 12-5h17M104 157h32" stroke="${f.color}" opacity=".62" stroke-width=".65"/>
-          <text class="emblem-number" x="120" y="172" text-anchor="middle" fill="${f.color}">${f.tier} / XII</text>
-        </g>
-      </g>
-      <g class="emblem-certification"><path d="M82 216h22m32 0h22" stroke="${f.color}" stroke-width=".5" opacity=".6"/><path d="m120 209 5 7-5 7-5-7Z" fill="${metal}"/><text class="emblem-edition" x="120" y="237" text-anchor="middle" fill="${f.color}">${collector ? 'COLLECTOR' : tier >= 10 ? 'SOVEREIGN' : premium ? 'PRESTIGE' : tier >= 6 ? 'IMPERIAL' : tier >= 4 ? 'ENAMEL' : tier >= 2 ? 'TITANIUM' : 'PLATINUM'}</text></g>
+    return `<g class="rank-label" fill-rule="evenodd"><g class="rank-glyph" transform="translate(${120 - width / 2} ${120 - 18 * scale}) scale(${scale})"><g transform="translate(1.2 2)" fill="#020609" stroke="#020609" stroke-width="1.3">${mark}</g><g fill="url(#crestLetter${side})" stroke="#e7edf0" stroke-width=".25">${mark}</g></g></g>`;
+  }
+  function emblemMarkup(tier, side) {
+    const f = rarityFinish(tier);
+    if (!/^[A-Za-z][A-Za-z0-9]*$/.test(side)) throw new RangeError('Invalid emblem namespace');
+    const form = RANK_FORMS.collector[tier], metal = `url(#metal${side})`;
+    const radius = tier < 2 ? 65 : tier < 6 ? 70 : 78;
+    const body = Array.from({length:8}, (_,i) => {const a=(i*45+22.5)*Math.PI/180;return [120+radius*Math.cos(a),120+radius*Math.sin(a)].join(' ')}).join('L');
+    const ticks = Array.from({length:tier < 6 ? 16 : 24},(_,i)=>`<path d="M120 ${120-radius+2}v4" transform="rotate(${i*360/(tier < 6 ? 16 : 24)} 120 120)" stroke="${f.light}" stroke-width=".7"/>`).join('');
+    const extra = tier === 7 ? `<path class="emblem-wings" d="M22 61L56 93M28 89L57 116M35 120L60 143M218 61L184 93M212 89L183 116M205 120L180 143" stroke="${f.light}" stroke-width="2"/>` : tier === 8 ? `<path class="emblem-facets" d="M120 12V37M12 120H37M120 203V228M203 120H228M44 44L60 60M180 180L196 196M44 196L60 180M180 60L196 44" stroke="${f.light}" stroke-width="2"/>` : tier === 10 ? `<path class="emblem-star" d="M120 10L125 38L120 54L115 38ZM10 120L38 115L54 120L38 125ZM120 230L115 202L120 186L125 202ZM230 120L202 125L186 120L202 115Z" fill="${f.light}"/>` : '';
+    const crown = tier === 9 || tier === 11 ? `<path class="emblem-crown" d="M86 32L80 13L103 24L120 5L137 24L160 13L154 32Z" fill="${metal}" stroke="${f.light}"/>` : '';
+    const orbits = tier === 11 ? `<g class="emblem-astrolabe" stroke="${f.color}" opacity=".7"><ellipse cx="120" cy="120" rx="106" ry="84"/><ellipse cx="120" cy="120" rx="86" ry="104"/></g>` : '';
+    return rankSvg(tier,'collector',`<defs><linearGradient id="metal${side}" x1=".1" y1="0" x2=".85" y2="1"><stop stop-color="${f.light}"/><stop offset=".2" stop-color="${f.color}"/><stop offset=".42" stop-color="${f.dark}"/><stop offset=".5" stop-color="${f.light}"/><stop offset=".7" stop-color="${f.color}"/><stop offset="1" stop-color="${f.dark}"/></linearGradient><linearGradient id="crestLetter${side}" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="#ffffff"/><stop offset=".4" stop-color="#dae7e9"/><stop offset=".48" stop-color="#6f8997"/><stop offset=".56" stop-color="#f6fbfa"/><stop offset="1" stop-color="#b5c9cf"/></linearGradient><radialGradient id="face${side}" cx=".25" cy=".12"><stop stop-color="${f.enamel}"/><stop offset="1" stop-color="#050b10"/></radialGradient></defs><g class="emblem-chassis">${rankPath(form,`transform="translate(0 3)" fill="#020609" stroke="#020609" stroke-width="3"`)}${rankPath(form,`fill="${metal}" stroke="${f.dark}" stroke-width="2"`)}${rankPath(form,`transform="translate(120 120) scale(.91) translate(-120 -120)" fill="url(#face${side})" stroke="${f.light}" stroke-width="1"`)}${extra}${crown}${orbits}<g class="rank-core"><circle cx="120" cy="120" r="${radius}" fill="${metal}" stroke="${f.light}" stroke-width="1"/><circle cx="120" cy="120" r="${radius-5}" fill="url(#face${side})" stroke="${f.dark}" stroke-width="2"/>${ticks}<path d="M${body}Z" transform="translate(120 120) scale(.84) translate(-120 -120)" fill="url(#face${side})" stroke="${metal}" stroke-width="4"/><path d="M77 153L94 161H146L163 153" stroke="${f.color}" stroke-width=".8" opacity=".6"/></g></g><g class="emblem-field rank-detail" stroke="${f.light}" stroke-width=".8"><circle cx="120" cy="120" r="${radius-2}"/></g>${collectorLetter(tier,side)}${rankCertification(tier,'collector')}`);
+  }
+  function lumenEmblemMarkup(tier, side) {
+    const finish = rarityFinish(tier);
+    if (!/^[A-Za-z][A-Za-z0-9]*$/.test(side)) throw new RangeError('Invalid emblem namespace');
+    const glyph = RARITY_LIST[tier].replace(' Collector', '');
+    const collector = tier === 9 || tier === 11;
+    const ticks = Array.from({ length: 60 }, (_, i) => `<path d="M120 19v${i % 5 ? 3 : 8}" transform="rotate(${i * 6} 120 120)"/>`).join('');
+    const scale = Array.from({ length: 12 }, (_, i) => `<path d="M120 30v7" transform="rotate(${i * 30} 120 120)" stroke="${i <= tier ? LUMEN_RANKS[tier] : '#d5dfe6'}" stroke-width="${i <= tier ? 4 : 2}"/>`).join('');
+    const rings = Array.from({ length: finish.rings }, (_, i) => `<circle cx="120" cy="120" r="${108 + i * 5}" opacity="${.4 - i * .05}"/>`).join('');
+    return `<svg class="lumen-emblem" data-tier="${tier}" data-mark="${glyph}" viewBox="-30 -30 300 300" fill="none" aria-hidden="true" style="color:${LUMEN_RANKS[tier]}">
+      <defs><radialGradient id="lens${side}" cx=".3" cy=".2" r=".9"><stop stop-color="#fff"/><stop offset=".65" stop-color="#f4f8fb"/><stop offset="1" stop-color="#cbdbe7"/></radialGradient></defs>
+      <g stroke="currentColor" stroke-width=".65">${rings}</g>
+      <circle cx="120" cy="120" r="103" fill="url(#lens${side})" stroke="#b2c4d2"/>
+      <g stroke="currentColor" stroke-width=".8" opacity=".6">${ticks}</g>${scale}
+      <circle cx="120" cy="120" r="74" fill="#ffffff" fill-opacity=".75" stroke="#bfced9"/>
+      <g class="field-orbit" stroke="currentColor" stroke-width="2"><path d="M45 120a75 75 0 0 1 75-75M195 120a75 75 0 0 1-75 75"/>${tier >= 6 ? '<path d="M120 40a80 80 0 0 1 80 80M120 200a80 80 0 0 1-80-80" stroke-width=".7"/>' : ''}</g>
+      ${collector ? '<path d="m120-10 7 12-7 12-7-12Z M120 226l7 12-7 12-7-12Z" fill="currentColor"/>' : ''}
+      <path d="M12 120h22m172 0h22M120 12v22m0 172v22" stroke="currentColor" stroke-width="1"/>
+      <text x="120" y="130" text-anchor="middle" fill="currentColor" font-family="Segoe UI, sans-serif" font-size="${glyph.length > 2 ? 50 : 64}" font-weight="300" letter-spacing="-2">${glyph}</text>
+      <path d="M97 150h46" stroke="currentColor" opacity=".4"/>
+      <text x="120" y="169" text-anchor="middle" fill="currentColor" font-family="Segoe UI, sans-serif" font-size="8" letter-spacing="2">${finish.tier} / 12</text>
+      <text x="120" y="264" text-anchor="middle" fill="currentColor" font-family="Segoe UI, sans-serif" font-size="8" letter-spacing="3">${collector ? 'COLLECTOR OPTICS' : 'SPECTRAL INDEX'}</text>
     </svg>`;
+  }
+  function editionEmblemMarkup(tier, theme) {
+    rarityFinish(tier);
+    if (!['folio', 'pulse'].includes(theme)) throw new RangeError('Invalid emblem edition');
+    const glyph = RARITY_LIST[tier].replace(' Collector', '');
+    const collector = tier === 9 || tier === 11;
+    const pips = Array.from({ length: 12 }, (_, i) => `<rect x="${38 + i * 14}" y="213" width="9" height="${i <= tier ? 12 : 3}" fill="currentColor" opacity="${i <= tier ? 1 : .25}"/>`).join('');
+    const frame = theme === 'folio'
+      ? `<path d="M35 32h170v158H35Z M42 39h156v144H42Z" stroke="currentColor" stroke-width="1.5"/><path d="m120 52 58 58-58 58-58-58Z" fill="currentColor" opacity=".08"/>
+        <path d="M25 47V22h25m140 0h25v25M25 175v25h25m140 0h25v-25" stroke="currentColor"/>
+        ${tier >= 6 ? '<path d="M51 50h138v124H51Z" stroke="currentColor" stroke-dasharray="2 4"/>' : ''}
+        ${collector ? '<path d="m120 12 7 10-7 10-7-10ZM120 188l7 10-7 10-7-10Z" fill="currentColor"/>' : ''}`
+      : `<rect x="25" y="32" width="190" height="158" rx="12" fill="#241b2c" stroke="currentColor" stroke-width="2"/><rect x="37" y="44" width="166" height="134" rx="5" fill="#100e17" stroke="currentColor" stroke-opacity=".35"/>
+        <path d="M10 62h15m-15 24h15m-15 24h15m-15 24h15m-15 24h15M215 62h15m-15 24h15m-15 24h15m-15 24h15m-15 24h15" stroke="currentColor" stroke-width="3"/>
+        <path class="signal-trace" d="M44 146h24l12-18 14 34 14-16h88" stroke="currentColor" stroke-width="1.5"/>
+        ${tier >= 6 ? '<path d="M48 56h144M48 168h144" stroke="currentColor" stroke-dasharray="3 5"/>' : ''}
+        ${collector ? '<path d="m93 20 8 6h38l8-6M93 202l8-6h38l8 6" stroke="currentColor" stroke-width="2"/>' : ''}`;
+    return `<svg class="${theme}-emblem edition-emblem" data-tier="${tier}" data-mark="${glyph}" viewBox="0 0 240 260" fill="none" aria-hidden="true">${frame}
+      <text class="edition-glyph" x="120" y="${theme === 'folio' ? 133 : 119}" text-anchor="middle" fill="currentColor" font-size="${glyph.length > 2 ? 54 : 72}" font-weight="${theme === 'folio' ? 400 : 700}">${glyph}</text>
+      ${pips}<text x="120" y="246" text-anchor="middle" fill="currentColor" font-family="Segoe UI,sans-serif" font-size="9" letter-spacing="2">${collector ? 'COLLECTOR · ' : ''}${String(tier + 1).padStart(2, '0')} / 12</text></svg>`;
+  }
+  function themedEmblemMarkup(tier, side) {
+    return emblemMarkup(tier, side) + lumenEmblemMarkup(tier, side)
+      + editionEmblemMarkup(tier, 'folio') + editionEmblemMarkup(tier, 'pulse');
+  }
+
+  function initTheme(doc, host) {
+    const control = doc.getElementById('themeSelect');
+    const api = host.NCB_THEME;
+    if (!control || !api || control.dataset.bound) return;
+    control.dataset.bound = 'true';
+    const sync = () => {
+      control.value = doc.documentElement.dataset.theme;
+    };
+    control.addEventListener('change', () => {
+      const theme = api.apply(control.value);
+      try { host.localStorage.setItem(api.key, theme.id); } catch (_) { /* Session still works. */ }
+      sync();
+    });
+    sync();
   }
 
   // ---- DOM 初始化（浏览器端） ----
   function initApp() {
     if (typeof document === 'undefined') return null;
     const el = (id) => document.getElementById(id);
+    initTheme(document, global);
 
     const selA = el('selA'), selB = el('selB');
     const lvlA = el('lvlA'), lvlB = el('lvlB');
@@ -248,6 +275,7 @@
     const counters = new Map();
     let counterFrame = 0;
     function animate(node, frames, options, playback = true) {
+      if (!node) return;
       const surface = node.closest('.pcard, .battle-hud');
       if (reduced.matches || document.hidden || (playback && state.delay === 0) || (surface && !surface.classList.contains('in-view'))) return;
       motions.get(node)?.cancel();
@@ -306,9 +334,12 @@
       const now = performance.now(), target = geometry[p.target];
       const source = p.drain ? geometry[p.target === 'A' ? 'B' : 'A'] : geometry[p.source] || target;
       const rarityColor = rarityFinish(currentCard(p.source || p.target).rarity).color;
-      const color = p.kind === 'heal' ? '#77e0b5' : rarityColor;
+      const theme = document.documentElement.dataset.theme;
+      const palette = getComputedStyle(document.documentElement);
+      const color = p.kind === 'heal' ? palette.getPropertyValue('--green').trim()
+        : theme === 'collector' ? rarityColor : palette.getPropertyValue(p.source === 'A' ? '--blue' : '--red').trim();
       const attack = p.kind === 'hit' || p.kind === 'crit' || p.kind === 'miss';
-      if (attack || p.drain) particles.push({ type: 'beam', source, target, color, start: now, life: p.drain ? 380 : 340, miss: p.kind === 'miss', critical: p.kind === 'crit' });
+      if (attack || p.drain) particles.push({ type: 'beam', source, target, color, theme, start: now, life: p.drain ? 380 : 340, miss: p.kind === 'miss', critical: p.kind === 'crit' });
       const count = p.kind === 'crit' ? 38 : p.kind === 'death' ? 42 : p.kind === 'miss' ? 7 : 18;
       for (let i = 0; i < count; i++) {
         const angle = (i * 2.39996 + state.eventCount * .7), force = 25 + (i * 37 % 115);
@@ -316,7 +347,7 @@
           vy: p.kind === 'heal' ? -30 - (i * 11 % 100) : Math.sin(angle) * force,
           color, start: now + (attack ? 100 : 0), life: 450 + i % 5 * 70, size: i % 4 === 0 ? 3 : 1.5 });
       }
-      if (p.kind === 'crit' || p.kind === 'death') particles.push({ type: 'ring', x: target[0], y: target[1], color, start: now + 90, life: 500 });
+      if (p.kind === 'crit' || p.kind === 'death') particles.push({ type: 'ring', theme, x: target[0], y: target[1], color, start: now + 90, life: 500 });
       particles = particles.slice(-180);
       if (!fxFrame) fxFrame = requestAnimationFrame(drawFx);
     }
@@ -330,11 +361,16 @@
           const f = Math.min(1, t * 2), tail = Math.max(0, f - .35);
           const dx = p.target[0] - p.source[0], dy = p.target[1] - p.source[1];
           ctx.lineWidth = p.miss ? 1 : p.critical ? 5 : 3;
-          ctx.shadowColor = p.color; ctx.shadowBlur = p.miss ? 0 : 12; ctx.beginPath();
+          ctx.shadowColor = p.color; ctx.shadowBlur = p.miss || p.theme === 'folio' ? 0 : p.theme === 'pulse' ? 4 : 12;
+          ctx.setLineDash(p.theme === 'folio' ? [5, 5] : p.theme === 'pulse' ? [12, 4] : []); ctx.beginPath();
           ctx.moveTo(p.source[0] + dx * tail, p.source[1] + dy * tail);
-          ctx.lineTo(p.source[0] + dx * f, p.source[1] + dy * f + (p.miss ? -24 : 0)); ctx.stroke(); ctx.shadowBlur = 0;
+          ctx.lineTo(p.source[0] + dx * f, p.source[1] + dy * f + (p.miss ? -24 : 0)); ctx.stroke(); ctx.shadowBlur = 0; ctx.setLineDash([]);
         } else if (p.type === 'ring') {
-          ctx.lineWidth = 2 * (1 - t); ctx.beginPath(); ctx.arc(p.x, p.y, 12 + t * 95, 0, Math.PI * 2); ctx.stroke();
+          ctx.lineWidth = 2 * (1 - t); ctx.beginPath();
+          const radius = 12 + t * 95;
+          if (p.theme === 'folio' || p.theme === 'pulse') ctx.rect(p.x - radius, p.y - radius, radius * 2, radius * 2);
+          else ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+          ctx.stroke();
         } else { ctx.fillRect(p.x + p.vx * t, p.y + p.vy * t + (t * t * 18), p.size * (1 - t), p.size); }
       }
       ctx.globalAlpha = 1;
@@ -407,25 +443,39 @@
     function activateCrest(side, kind = 'selection') {
       const panel = el('panel' + side), tier = currentCard(side).rarity;
       const playback = kind !== 'selection';
-      const release = panel.querySelector('.crest-activation');
-      animate(release, [
+      const theme = document.documentElement.dataset.theme || 'collector';
+      const crest = panel.querySelector('.' + theme + '-emblem');
+      if (!crest) return;
+      const release = crest.querySelector('.rank-detail, .field-orbit, .signal-trace');
+      if (release) animate(release, [
         { opacity: 0, transform: 'scale(.72)' },
         { opacity: .8, transform: 'scale(.92)', offset: .28 },
         { opacity: 0, transform: 'scale(1.14)' }
       ], { duration: kind === 'crit' ? 760 : 1060, delay: playback ? 0 : 140 }, playback);
       if (kind === 'selection') {
-        animate(panel.querySelector('.emblem-chassis'), [
+        const core = crest.querySelector('.rank-core');
+        const reveal = theme === 'folio' ? 'inset(0 0 100% 0)' : theme === 'pulse' ? 'inset(0 50% 0 50%)' : 'inset(8% 8% 8% 8%)';
+        if (core) animate(core, [{ clipPath: reveal, opacity: .4 }, { clipPath: 'inset(0)', opacity: 1 }], { duration: 320 + tier * 35 }, false);
+        const chassis = crest.querySelector('.emblem-chassis') || crest;
+        animate(chassis, [
           { transform: 'translateY(8px) scale(.94)', opacity: .5 },
           { transform: 'translateY(-1px) scale(1.006)', opacity: 1, offset: .72 },
           { transform: 'translateY(0) scale(1)', opacity: 1 }
-        ], { duration: 760 + tier * 24 }, false);
-        animate(panel.querySelector('.emblem-field'), [
+        ], { duration: 360 + tier * 32 }, false);
+        const field = crest.querySelector('.emblem-field, .field-orbit, .signal-trace');
+        if (field) animate(field, [
           { opacity: .15, transform: 'scale(.88) rotate(-9deg)' },
           { opacity: 1, transform: 'scale(1.025) rotate(1deg)', offset: .64 },
           { opacity: 1, transform: 'scale(1) rotate(0)' }
         ], { duration: 1080 + tier * 20, delay: 100 }, false);
       }
     }
+
+    el('themeSelect').addEventListener('change', () => {
+      for (const [node, motion] of motions) {
+        if (node.closest('.emblem')) { motion.cancel(); motions.delete(node); }
+      }
+    });
 
     function present(p) {
       ['A', 'B'].forEach(side => { el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
@@ -468,7 +518,7 @@
       }
       if (p.kind === 'miss') animate(fighter, [{ transform: 'translateX(0)' }, { transform: 'translateX(' + (p.target === 'A' ? '-12px' : '12px') + ')', opacity: .5 }, { transform: 'translateX(0)', opacity: 1 }]);
       else if (p.kind === 'crit' || p.heavy) animate(fighter, [{ transform: 'translateX(0)' }, { transform: 'translateX(-7px)', filter: 'brightness(1.6)', offset: .18 }, { transform: 'translateX(5px)', offset: .32 }, { transform: 'translateX(0)', filter: 'brightness(1)' }]);
-      else if (p.kind === 'heal') animate(fighter, [{ color: '#77e0b5', filter: 'brightness(1.25)' }, { filter: 'brightness(1)' }]);
+      else if (p.kind === 'heal') animate(fighter, [{ color: 'var(--green)', filter: 'brightness(1.25)' }, { filter: 'brightness(1)' }]);
       else if (p.kind === 'hit') animate(fighter, [{ filter: 'brightness(1.35)' }, { filter: 'brightness(1)' }]);
       if (p.kind === 'death') animate(el('panel' + p.target), [{ transform: 'translateY(0)' }, { transform: 'translateY(5px)' }], { duration: 650 });
     }
@@ -590,11 +640,12 @@
         for (const [node, motion] of motions) {
           if (el('emblem' + side).contains(node)) { motion.cancel(); motions.delete(node); }
         }
-        el('emblem' + side).innerHTML = emblemMarkup(card.rarity, side);
+        el('emblem' + side).innerHTML = themedEmblemMarkup(card.rarity, side);
         el('ambient' + side).innerHTML = Array.from({ length: finish.particles }, (_, i) =>
           `<i style="--x:${8 + i * 43 % 85}%;--y:${6 + i * 29 % 64}%;--drift:${(i % 3 - 1) * 14}px;--duration:${8 + i % 7}s;--delay:-${i * 1.7}s;--size:${i % 5 === 0 ? 3 : 1.5}px"></i>`).join('');
       }
       panel.dataset.rarity = card.rarity;
+      panel.style.setProperty('--lumen-rank', LUMEN_RANKS[card.rarity]);
       panel.style.setProperty('--foil', finish.color);
       panel.style.setProperty('--crest-light', finish.light);
       panel.style.setProperty('--crest-dark', finish.dark);
@@ -819,7 +870,7 @@
       const winner = r.winner;
       const winningCard = winner === -1 ? null : currentCard(winner === 0 ? 'A' : 'B');
       resultBox.style.setProperty('--foil', winningCard ? rarityFinish(winningCard.rarity).color : '#b9c6d5');
-      el('resultMedal').innerHTML = winningCard ? emblemMarkup(winningCard.rarity, 'Result') : '<span>VS</span>';
+      el('resultMedal').innerHTML = winningCard ? themedEmblemMarkup(winningCard.rarity, 'Result') : '<span>VS</span>';
       resultBox.style.display = 'flex';
       el('resultVerdict').textContent = winner === -1 ? 'DRAW' : 'VICTORY';
       if (winner === 0) {
@@ -973,7 +1024,7 @@
     return { state };
   }
 
-  const API = { createViewState, applyEventToState, parseEvent, describeEvent, summarizeEvents, eventDelay, parseSeed, rarityFinish, emblemMarkup, matchesCard, normalizeLevel, initApp };
+  const API = { createViewState, applyEventToState, parseEvent, describeEvent, summarizeEvents, eventDelay, parseSeed, rarityFinish, emblemMarkup, lumenEmblemMarkup, editionEmblemMarkup, initTheme, matchesCard, normalizeLevel, initApp };
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
   global.NCB = Object.assign(global.NCB || {}, API);
 })(typeof window !== 'undefined' ? window : globalThis);

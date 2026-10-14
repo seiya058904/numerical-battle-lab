@@ -28,7 +28,9 @@ test('rarity decoration has a bounded resource ladder and distinct premium mater
   assert.match(emblemMarkup(11, 'B'), /id="metalB"/);
   assert.match(emblemMarkup(11, 'A'), /emblem-astrolabe/);
   assert.doesNotMatch(emblemMarkup(10, 'A'), /emblem-astrolabe/);
-  assert.match(emblemMarkup(9, 'A'), /emblem-wings/);
+  // Winged duplex belongs to SS; SSS Collector now uses a crown and archival ribbons.
+  assert.match(emblemMarkup(7, 'A'), /emblem-wings/);
+  assert.match(emblemMarkup(9, 'A'), /data-identity="archive"/);
   assert.doesNotMatch(emblemMarkup(8, 'A'), /emblem-wings/);
   for (const finish of finishes) assert.match(finish.color, /^#[0-9a-f]{6}$/);
   // All three displayed medals must own unique paint-server IDs and include their labels.
