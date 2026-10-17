@@ -924,6 +924,9 @@
 
     async function runBattle(mode = 'start') {
       if (state.playing) return;
+      // Starting the battle disables the start button, which drops keyboard focus
+      // to BODY. Remember the intent so the result action can take focus back.
+      const focusWasOnStart = document.activeElement === startBtn;
       const input = el('seedInput');
       const seed = mode === 'replay' ? state.seed : mode === 'new' || !state.seedEdited ? null : parseSeed(input.value);
       if (seed === undefined) {
@@ -1001,6 +1004,7 @@
         state.playing = false; setControlsLocked(false); battleHud.classList.remove('live');
         ['A', 'B'].forEach(side => { el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
         document.querySelector('.app').classList.remove('is-playing');
+        if (focusWasOnStart && state.events.length) el('resultAgainBtn').focus({ preventScroll: true });
       }
     }
 
