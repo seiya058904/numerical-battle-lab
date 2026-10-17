@@ -22,6 +22,7 @@ function check(name, ok, detail) {
 }
 
 const EXPECTED_FILES = [
+  '.github/workflows/pages.yml',
   '.github/workflows/verify.yml',
   '.gitignore',
   '.nojekyll',
