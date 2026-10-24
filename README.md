@@ -35,7 +35,7 @@
 >
 > Numerical Battle Lab simulates the entire match first, then brings its events to life. Change the playback speed, and the presentation changes. The result does not.
 
-<a name="how-to-play"></a>
+<a id="how-to-play"></a>
 ## 🎮 How to Play
 
 No account, deck-building process, or character editor is required. Every contender comes from a fixed card collection.
@@ -71,7 +71,7 @@ No account, deck-building process, or character editor is required. Every conten
   </tr>
 </table>
 
-<a name="visual-editions"></a>
+<a id="visual-editions"></a>
 ### 🎨 Four Visual Editions
 
 Use the header **Visual Theme** selector to switch editions, even during playback. It supports keyboard arrows and touch.
@@ -88,7 +88,7 @@ LUMEN, FOLIO, and PULSE retain their restored **V1 overall forms**, original pro
 - **Your choice is remembered locally.** The first visit defaults to Collector. If browser storage is blocked, switching still works for the current session.
 - **Your duel stays intact.** Switching preserves cards, levels, Match Seed, HP, playback speed, log following, and statistics. Combat rules and replay behavior are unchanged.
 
-<a name="the-numbers"></a>
+<a id="the-numbers"></a>
 ## 💎 The Numbers Behind the Battle
 
 The outcome comes from **level, rarity, the card's fixed attributes, and seeded combat randomness**—not from a hidden score that decides who *should* win.
@@ -150,7 +150,7 @@ ATK² / (ATK + DEF × max(0.05, 1 − PEN))
 
 </details>
 
-<a name="run-locally"></a>
+<a id="run-locally"></a>
 ## 🚀 Run Locally
 
 This is a **static HTML/CSS/JavaScript project with no runtime packages or build step**. Clone or download the repository, then either open [`index.html`](index.html) directly or start its included local server.
