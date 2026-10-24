@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-const { initTheme, lumenEmblemMarkup, editionEmblemMarkup } = require('../src/app.js');
+const { initTheme, lumenEmblemMarkup, editionEmblemMarkup, naturalEmblemMarkup, themedEmblemMarkup, EMBLEM_RENDERERS, EMBLEM_CACHE_LIMIT } = require('../src/app.js');
 const { RARITY_LIST } = require('../src/cards.js');
 const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
 const bootstrap = html.match(/<script>([\s\S]*?)<\/script>/)[1];
@@ -48,12 +48,12 @@ test('theme selector binds once and directly selects every edition without game 
   const e = environment('collector');
   initTheme(e.document, e.host); initTheme(e.document, e.host);
   assert.equal(e.listeners.length, 1);
-  const ids = ['collector', 'lumen', 'folio', 'pulse'];
+  const ids = e.host.NCB_THEME.themes.map(theme => theme.id);
   for (let i = 0; i < 64; i++) {
-    e.nodes.themeSelect.value = ids[i % 4];
+    e.nodes.themeSelect.value = ids[i % ids.length];
     e.listeners[0]();
-    assert.equal(e.document.documentElement.dataset.theme, ids[i % 4]);
-    assert.equal(e.nodes.themeSelect.value, ids[i % 4]);
+    assert.equal(e.document.documentElement.dataset.theme, ids[i % ids.length]);
+    assert.equal(e.nodes.themeSelect.value, ids[i % ids.length]);
   }
   assert.equal(e.writes.length, 64);
   e.nodes.themeSelect.value = 'not-a-theme'; e.listeners[0]();
@@ -67,18 +67,45 @@ test('blocked storage cannot prevent an in-session switch', () => {
   assert.equal(e.nodes.themeSelect.value, 'lumen');
 });
 
-test('four unique theme entries restore browser surfaces and match native options', () => {
+test('eight stable theme entries match renderers, options and browser surfaces', () => {
   const e = environment(null);
-  assert.equal(e.host.NCB_THEME.themes.length, 4);
-  assert.equal(new Set(e.host.NCB_THEME.themes.map(t => t.id)).size, 4);
-  assert.equal(new Set(e.host.NCB_THEME.themes.map(t => t.name)).size, 4);
+  const ids = ['collector', 'lumen', 'folio', 'pulse', 'nocturne', 'sumi', 'arcade', 'verdant'];
+  assert.deepEqual(Array.from(e.host.NCB_THEME.themes, t => t.id), ids);
+  assert.deepEqual(Object.keys(EMBLEM_RENDERERS), ids);
+  assert.equal(new Set(e.host.NCB_THEME.themes.map(t => t.name)).size, 8);
   for (const t of e.host.NCB_THEME.themes) {
     const restored = environment(t.id);
     assert.equal(restored.document.documentElement.dataset.theme, t.id);
     assert.equal(restored.document.documentElement.style.colorScheme, t.scheme);
     assert.equal(restored.meta.content, t.color);
+    assert.equal(restored.document.documentElement.dataset.surface, t.surface);
+    assert.ok(t.description.length > 10 && t.reveal && t.impact);
     assert.ok(html.includes(`<option value="${t.id}">${t.name} / ${t.label}</option>`));
   }
+});
+
+test('expanded crest families are deterministic, safe, bounded and singly mounted', () => {
+  for (const theme of ['nocturne', 'sumi', 'arcade', 'verdant']) {
+    const variants = new Set();
+    for (let tier = 0; tier < 12; tier++) {
+      const svg = naturalEmblemMarkup(tier, theme); variants.add(svg);
+      assert.equal(svg, naturalEmblemMarkup(tier, theme));
+      assert.ok(Buffer.byteLength(svg) <= 12000);
+      assert.ok((svg.match(/<[a-z]/g) || []).length <= 110);
+      assert.doesNotMatch(svg, /\bid=|<(?:image|filter|script|foreignObject|animate)\b|NaN|undefined|href=/);
+      assert.equal(svg.includes('COLLECTOR'), tier === 9 || tier === 11);
+      for (const side of ['A', 'B', 'Result']) {
+        assert.equal(themedEmblemMarkup(tier, side, theme), svg);
+        assert.equal((themedEmblemMarkup(tier, side, theme).match(/<svg\b/g) || []).length, 1);
+      }
+    }
+    assert.equal(variants.size, 12);
+  }
+  assert.equal(EMBLEM_CACHE_LIMIT, 288);
+  assert.equal(themedEmblemMarkup(0, 'A', '__proto__'), themedEmblemMarkup(0, 'A', 'collector'));
+  assert.throws(() => themedEmblemMarkup(0, 'UnboundedNamespace', 'sumi'), RangeError);
+  assert.throws(() => naturalEmblemMarkup(12, 'sumi'), RangeError);
+  assert.throws(() => naturalEmblemMarkup(0, 'unknown'), RangeError);
 });
 
 test('print and signal rank geometry are distinct, deterministic, bounded and ID-free', () => {

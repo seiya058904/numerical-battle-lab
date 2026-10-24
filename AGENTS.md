@@ -18,6 +18,7 @@
 npm run serve     # http://127.0.0.1:8774
 npm test          # node:test 全量测试
 npm run verify    # 静态文件集合检查 + 测试 + 产品验收 + BP 审计
+npm run test:browser # 独立 Playwright 真浏览器回归；工具及外部证据路径见 README
 ```
 
 `.github/workflows/verify.yml` 在 main push / PR 上运行 `npm run verify`，使用 Node 22。Pages 从 main 根目录发布；保留 `index.html`、`.nojekyll`、`site.webmanifest`、图标和所有正式资源路径。UI 修改需实际浏览器检查主流程、移动布局、控制台和减弱动态；播放结果不能只凭构建或静态测试判断。
@@ -40,6 +41,8 @@ V2/V3 保留池已永久转为历史回归。V4 使用新的等级组合与 seed
 保留近/中/远 BP 分组、数量与类别覆盖、双方胜机、远 BP 总体得分和有序组合比例门槛。全共同对手是最终回归，不用于拟合：Lv25/55/100 rho≥0.90，每 seed 聚合 22 对手与双座位，以 512 个配对差计算 t 区间，显著差门槛为 1 个百分点。常数、Level×Rarity、反向负面对照应按预期原因失败；不得删历史池或降低门槛使失败转绿。
 
 ## 仓库卫生与修改范围
+
+主题元信息在 `index.html` 的 CSS 前同步注册表，八个稳定 ID 与选项、`src/app.js` renderer、测试一致。`data-surface` 仅选择共享展示规则；每个 A/B/Result 容器只挂当前主题 SVG，缓存最多 288 个字符串。切换不重建业务 DOM、不重跑模拟、不取消 HP 插值或回放等待。原四主题视觉结构保持既定版本；新增主题单徽章最多 110 元素 / 12 KB。浏览器回归独立于 Node 测试，所有截图和报告写仓库外。
 
 `scripts/static-check.js` 要求已跟踪文件集合与 `EXPECTED_FILES` 完全一致，并禁止旧系统路径。新增或删除正式文件需同时核查该清单和入口引用；不为整理任务重构源码或修改测试预期。
 

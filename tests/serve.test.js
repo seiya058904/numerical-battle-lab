@@ -6,6 +6,17 @@ const os = require('node:os');
 const path = require('node:path');
 const http = require('node:http');
 const { createServer, isWithin } = require('../scripts/serve.js');
+
+test('real WebP assets are served with their image media type and intact bytes', async () => {
+  const server = createServer();
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  try {
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/assets/lumen-optics.webp`);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('content-type'), 'image/webp');
+    assert.deepEqual(Buffer.from(await response.arrayBuffer()), await fs.readFile(path.join(__dirname, '../assets/lumen-optics.webp')));
+  } finally { await new Promise(resolve => server.close(resolve)); }
+});
 test('path boundaries use POSIX and Windows semantics', () => {
   for (const [p, root] of [[path.posix, '/tmp/site'], [path.win32, 'C:\\tmp\\site']]) {
     assert.equal(isWithin(root, p.join(root, 'index.html'), p), true);

@@ -221,10 +221,54 @@
       <text class="edition-glyph" x="120" y="${theme === 'folio' ? 133 : 119}" text-anchor="middle" fill="currentColor" font-size="${glyph.length > 2 ? 54 : 72}" font-weight="${theme === 'folio' ? 400 : 700}">${glyph}</text>
       ${pips}<text x="120" y="246" text-anchor="middle" fill="currentColor" font-family="Segoe UI,sans-serif" font-size="9" letter-spacing="2">${collector ? 'COLLECTOR · ' : ''}${String(tier + 1).padStart(2, '0')} / 12</text></svg>`;
   }
-  function themedEmblemMarkup(tier, side) {
-    return emblemMarkup(tier, side) + lumenEmblemMarkup(tier, side)
-      + editionEmblemMarkup(tier, 'folio') + editionEmblemMarkup(tier, 'pulse');
+  // Strings only: no detached DOM, listeners or animation objects in the cache.
+  const EMBLEM_CACHE_LIMIT = 8 * 12 * 3;
+  const emblemCache = new Map();
+  function themedEmblemMarkup(tier, side, theme = 'collector') {
+    rarityFinish(tier);
+    if (!['A', 'B', 'Result'].includes(side)) throw new RangeError('Invalid display namespace');
+    if (!Object.hasOwn(EMBLEM_RENDERERS, theme)) theme = 'collector';
+    const key = `${theme}:${tier}:${side}`;
+    if (!emblemCache.has(key)) {
+      if (emblemCache.size >= EMBLEM_CACHE_LIMIT) emblemCache.delete(emblemCache.keys().next().value);
+      emblemCache.set(key, EMBLEM_RENDERERS[theme](tier, side));
+    }
+    return emblemCache.get(key);
   }
+
+  // Four authored geometric families. Labels stay on a quiet central reading plane.
+  function naturalEmblemMarkup(tier, theme) {
+    rarityFinish(tier);
+    if (!['nocturne', 'sumi', 'arcade', 'verdant'].includes(theme)) throw new RangeError('Invalid emblem edition');
+    const mark = RARITY_LIST[tier].replace(' Collector', '');
+    const certified = tier === 9 || tier === 11;
+    const n = 4 + Math.floor(tier / 2), radius = 80 + tier * 1.6;
+    const points = Array.from({ length: n }, (_, i) => {
+      const a = (i / n * 360 - 90) * Math.PI / 180;
+      return [+(120 + Math.cos(a) * radius).toFixed(2), +(120 + Math.sin(a) * radius).toFixed(2)];
+    });
+    let frame;
+    if (theme === 'nocturne') {
+      const constellation = points.map(([x, y]) => `${x},${y}`).join(' ');
+      frame = `<g class="emblem-chassis" stroke="currentColor"><path d="M120 4v35M120 201v35M4 120h35M201 120h35" stroke-opacity=".45"/><polygon points="${constellation}" stroke-width="1.2" fill="var(--surface-muted)"/>${tier % 2 ? `<polygon points="${constellation}" transform="rotate(${180 / n} 120 120) scale(.88) translate(16.36 16.36)" stroke-opacity=".45"/>` : ''}${points.map(([x,y])=>`<path d="M120 120L${x} ${y}" stroke-opacity=".28"/><circle cx="${x}" cy="${y}" r="${tier > 7 ? 3.8 : 2.8}" fill="currentColor"/>`).join('')}${tier >= 6 ? '<path d="M19 62L32 39L56 27M184 213L208 201L221 178" stroke-width="2"/>' : ''}</g><path class="rank-detail" d="M25 120h22M193 120h22M120 25v22M120 193v22" stroke="currentColor" stroke-width="2"/><path class="rank-core" d="M59 83H181V151H59Z" fill="var(--surface)"/>`;
+    } else if (theme === 'sumi') {
+      const cuts = ['M48 35H180L201 55V185H64L39 161Z','M42 55L79 29H175L205 61V162L170 195H65L35 164Z','M120 19L201 60L214 141L163 204H75L29 143L41 62Z','M57 27H179L210 78L196 184L143 213L52 187L27 124Z','M120 16L180 39L212 101L192 176L120 210L47 179L25 107L59 40Z','M68 23H172L209 69V171L171 209H64L27 168V64Z'][Math.floor(tier/2)];
+      frame = `<g class="emblem-chassis" stroke="currentColor"><path d="${cuts}" fill="var(--surface)" stroke-width="${tier % 2 ? 4 : 2}" stroke-dasharray="${tier % 2 ? '130 6 40 3' : '210 9 45 5'}"/><path d="${cuts}" transform="translate(120 120) scale(.89) translate(-120 -120)" stroke-width=".8"/>${Array.from({length:tier+1},(_,i)=>`<path d="M${53+i*12} 218v${i%3===0?9:5}" stroke-width="2"/>`).join('')}<path d="M31 78l-5 62M207 97l4 41" stroke-width="3"/></g><path class="rank-detail" d="M61 160Q120 153 179 162" stroke="currentColor" stroke-width="3"/><path class="rank-core" d="M56 76H184V150H56Z" fill="var(--surface)"/>`;
+    } else if (theme === 'arcade') {
+      const inset = Math.max(8, 34 - Math.floor(tier / 2) * 4);
+      const shell = `M${inset+24} ${inset}H${216-inset}V${inset+12}H${240-inset}V${216-inset}H${228-inset}V${240-inset}H${inset+12}V${228-inset}H${inset}V${inset+24}H${inset+12}V${inset+12}H${inset+24}Z`;
+      frame = `<g class="emblem-chassis" stroke="currentColor" stroke-width="3"><path d="${shell}" fill="var(--surface-muted)"/><path d="M58 61H182V165H58Z" fill="var(--surface)" stroke-width="2"/>${Array.from({length:Math.floor(tier/2)+2},(_,i)=>`<path d="M${64+i*20} 34h10v10h-10Z" fill="currentColor" stroke="none"/>`).join('')}${tier%2?'<path d="M25 104h14v32H25ZM201 104h14v32h-14Z" fill="currentColor" stroke="none"/>':''}</g><g class="rank-detail" fill="currentColor">${Array.from({length:12},(_,i)=>`<path d="M${49+i*12} 183h8v${i<=tier?14:4}h-8Z" opacity="${i<=tier?1:.2}"/>`).join('')}</g>`;
+    } else {
+      frame = `<g class="emblem-chassis" stroke="currentColor" stroke-width="1.2">${Array.from({length:n},(_,i)=>`<path d="M120 93C${66-tier} 62 ${97-tier} ${12-tier*.4} 120 ${16-tier*.5}C${151+tier} 41 ${170+tier} 75 120 93Z" transform="rotate(${i*360/n} 120 120)" fill="var(--surface-muted)"/><path d="M120 25V92M120 53l-14-13M120 68l17-15" transform="rotate(${i*360/n} 120 120)" stroke-opacity=".65"/>`).join('')}${tier%2?'<path d="M45 184Q120 237 195 184" stroke-width="2"/>':''}</g><path class="rank-detail" d="M74 178Q120 203 166 178" stroke="currentColor" stroke-width="2"/><path class="rank-core" d="M58 89Q120 55 182 89V145Q120 184 58 145Z" fill="var(--surface)" stroke="currentColor"/>`;
+    }
+    return `<svg class="${theme}-emblem extension-emblem" data-tier="${tier}" data-mark="${mark}" viewBox="0 0 240 270" fill="none" aria-hidden="true">${frame}<text class="extension-glyph" x="120" y="137" text-anchor="middle" fill="currentColor" font-size="${mark.length > 2 ? 51 : 65}" font-weight="${theme==='arcade'?800:theme==='nocturne'?350:500}">${mark}</text>${certified ? '<path d="M62 232H178V253H62Z" fill="var(--surface)" stroke="currentColor"/>' : ''}<text x="120" y="246" text-anchor="middle" fill="currentColor" font-family="Segoe UI,sans-serif" font-size="${certified?10:11}" letter-spacing="1.5">${certified?'COLLECTOR · ':''}${String(tier+1).padStart(2,'0')}${certified?'':' / 12'}</text></svg>`;
+  }
+  const EMBLEM_RENDERERS = Object.freeze({
+    collector: emblemMarkup, lumen: lumenEmblemMarkup,
+    folio: tier => editionEmblemMarkup(tier, 'folio'), pulse: tier => editionEmblemMarkup(tier, 'pulse'),
+    nocturne: tier => naturalEmblemMarkup(tier, 'nocturne'), sumi: tier => naturalEmblemMarkup(tier, 'sumi'),
+    arcade: tier => naturalEmblemMarkup(tier, 'arcade'), verdant: tier => naturalEmblemMarkup(tier, 'verdant')
+  });
 
   function initTheme(doc, host) {
     const control = doc.getElementById('themeSelect');
@@ -233,12 +277,29 @@
     control.dataset.bound = 'true';
     const sync = () => {
       control.value = doc.documentElement.dataset.theme;
+      gallery?.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.themeId === control.value)));
     };
-    control.addEventListener('change', () => {
-      const theme = api.apply(control.value);
+    const choose = id => {
+      const theme = api.apply(id);
       try { host.localStorage.setItem(api.key, theme.id); } catch (_) { /* Session still works. */ }
       sync();
-    });
+      if (host.CustomEvent) doc.dispatchEvent(new host.CustomEvent('nbl:themechange'));
+    };
+    const gallery = doc.getElementById('themeGallery');
+    if (gallery) {
+      for (const theme of api.themes) {
+        const button = doc.createElement('button'); button.type = 'button'; button.dataset.themeId = theme.id;
+        const preview = doc.createElement('span'); preview.className = 'theme-preview'; preview.setAttribute('aria-hidden', 'true');
+        const name = doc.createElement('strong'); name.textContent = `${theme.name} / ${theme.label}`;
+        const description = doc.createElement('span'); description.textContent = theme.description;
+        button.append(preview, name, description); gallery.append(button);
+      }
+      gallery.addEventListener('click', event => {
+        const button = event.target.closest('button[data-theme-id]');
+        if (button && gallery.contains(button)) choose(button.dataset.themeId);
+      });
+    }
+    control.addEventListener('change', () => choose(control.value));
     sync();
   }
 
@@ -335,11 +396,12 @@
       const source = p.drain ? geometry[p.target === 'A' ? 'B' : 'A'] : geometry[p.source] || target;
       const rarityColor = rarityFinish(currentCard(p.source || p.target).rarity).color;
       const theme = document.documentElement.dataset.theme;
+      const feedback = global.NCB_THEME.resolve(theme);
       const palette = getComputedStyle(document.documentElement);
       const color = p.kind === 'heal' ? palette.getPropertyValue('--green').trim()
         : theme === 'collector' ? rarityColor : palette.getPropertyValue(p.source === 'A' ? '--blue' : '--red').trim();
       const attack = p.kind === 'hit' || p.kind === 'crit' || p.kind === 'miss';
-      if (attack || p.drain) particles.push({ type: 'beam', source, target, color, theme, start: now, life: p.drain ? 380 : 340, miss: p.kind === 'miss', critical: p.kind === 'crit' });
+      if (attack || p.drain) particles.push({ type: 'beam', source, target, color, feedback, start: now, life: p.drain ? 380 : 340, miss: p.kind === 'miss', critical: p.kind === 'crit' });
       const count = p.kind === 'crit' ? 38 : p.kind === 'death' ? 42 : p.kind === 'miss' ? 7 : 18;
       for (let i = 0; i < count; i++) {
         const angle = (i * 2.39996 + state.eventCount * .7), force = 25 + (i * 37 % 115);
@@ -347,7 +409,7 @@
           vy: p.kind === 'heal' ? -30 - (i * 11 % 100) : Math.sin(angle) * force,
           color, start: now + (attack ? 100 : 0), life: 450 + i % 5 * 70, size: i % 4 === 0 ? 3 : 1.5 });
       }
-      if (p.kind === 'crit' || p.kind === 'death') particles.push({ type: 'ring', theme, x: target[0], y: target[1], color, start: now + 90, life: 500 });
+      if (p.kind === 'crit' || p.kind === 'death') particles.push({ type: 'ring', feedback, x: target[0], y: target[1], color, start: now + 90, life: 500 });
       particles = particles.slice(-180);
       if (!fxFrame) fxFrame = requestAnimationFrame(drawFx);
     }
@@ -361,14 +423,16 @@
           const f = Math.min(1, t * 2), tail = Math.max(0, f - .35);
           const dx = p.target[0] - p.source[0], dy = p.target[1] - p.source[1];
           ctx.lineWidth = p.miss ? 1 : p.critical ? 5 : 3;
-          ctx.shadowColor = p.color; ctx.shadowBlur = p.miss || p.theme === 'folio' ? 0 : p.theme === 'pulse' ? 4 : 12;
-          ctx.setLineDash(p.theme === 'folio' ? [5, 5] : p.theme === 'pulse' ? [12, 4] : []); ctx.beginPath();
+          ctx.shadowColor = p.color; ctx.shadowBlur = p.miss ? 0 : p.feedback.glow;
+          ctx.setLineDash(p.feedback.trace); ctx.beginPath();
           ctx.moveTo(p.source[0] + dx * tail, p.source[1] + dy * tail);
           ctx.lineTo(p.source[0] + dx * f, p.source[1] + dy * f + (p.miss ? -24 : 0)); ctx.stroke(); ctx.shadowBlur = 0; ctx.setLineDash([]);
         } else if (p.type === 'ring') {
           ctx.lineWidth = 2 * (1 - t); ctx.beginPath();
           const radius = 12 + t * 95;
-          if (p.theme === 'folio' || p.theme === 'pulse') ctx.rect(p.x - radius, p.y - radius, radius * 2, radius * 2);
+          if (p.feedback.impact === 'square') ctx.rect(p.x - radius, p.y - radius, radius * 2, radius * 2);
+          else if (p.feedback.impact === 'diamond') { ctx.moveTo(p.x, p.y-radius); ctx.lineTo(p.x+radius,p.y); ctx.lineTo(p.x,p.y+radius); ctx.lineTo(p.x-radius,p.y); ctx.closePath(); }
+          else if (p.feedback.impact === 'leaf') ctx.ellipse(p.x,p.y,radius,radius*.5,-Math.PI/4,0,Math.PI*2);
           else ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
           ctx.stroke();
         } else { ctx.fillRect(p.x + p.vx * t, p.y + p.vy * t + (t * t * 18), p.size * (1 - t), p.size); }
@@ -454,7 +518,7 @@
       ], { duration: kind === 'crit' ? 760 : 1060, delay: playback ? 0 : 140 }, playback);
       if (kind === 'selection') {
         const core = crest.querySelector('.rank-core');
-        const reveal = theme === 'folio' ? 'inset(0 0 100% 0)' : theme === 'pulse' ? 'inset(0 50% 0 50%)' : 'inset(8% 8% 8% 8%)';
+        const reveal = global.NCB_THEME.resolve(theme).reveal;
         if (core) animate(core, [{ clipPath: reveal, opacity: .4 }, { clipPath: 'inset(0)', opacity: 1 }], { duration: 320 + tier * 35 }, false);
         const chassis = crest.querySelector('.emblem-chassis') || crest;
         animate(chassis, [
@@ -471,10 +535,22 @@
       }
     }
 
-    el('themeSelect').addEventListener('change', () => {
+    function mountEmblem(container, tier, side) {
       for (const [node, motion] of motions) {
-        if (node.closest('.emblem')) { motion.cancel(); motions.delete(node); }
+        if (container.contains(node)) { motion.cancel(); motions.delete(node); }
       }
+      container.getAnimations({ subtree: true }).forEach(animation => animation.cancel());
+      container.dataset.tier = tier === null ? '' : String(tier);
+      container.innerHTML = tier === null ? '<span class="draw-mark">VS</span>' : themedEmblemMarkup(tier, side, document.documentElement.dataset.theme);
+    }
+    document.addEventListener('nbl:themechange', () => {
+      for (const side of ['A', 'B']) mountEmblem(el('emblem' + side), currentCard(side).rarity, side);
+      const medal = el('resultMedal');
+      if (medal.dataset.tier !== undefined) mountEmblem(medal, medal.dataset.tier === '' ? null : Number(medal.dataset.tier), 'Result');
+      // Discard old material particles only; HP counters and playback waits continue.
+      particles = []; cancelAnimationFrame(fxFrame); fxFrame = 0;
+      if (ctx) ctx.clearRect(0, 0, geometry.width, geometry.height);
+      resizeFx();
     });
 
     function present(p) {
@@ -637,10 +713,7 @@
       countTo(el('bp' + side), power);
       const finish = rarityFinish(card.rarity);
       if (panel.dataset.rarity !== String(card.rarity)) {
-        for (const [node, motion] of motions) {
-          if (el('emblem' + side).contains(node)) { motion.cancel(); motions.delete(node); }
-        }
-        el('emblem' + side).innerHTML = themedEmblemMarkup(card.rarity, side);
+        mountEmblem(el('emblem' + side), card.rarity, side);
         el('ambient' + side).innerHTML = Array.from({ length: finish.particles }, (_, i) =>
           `<i style="--x:${8 + i * 43 % 85}%;--y:${6 + i * 29 % 64}%;--drift:${(i % 3 - 1) * 14}px;--duration:${8 + i % 7}s;--delay:-${i * 1.7}s;--size:${i % 5 === 0 ? 3 : 1.5}px"></i>`).join('');
       }
@@ -870,7 +943,7 @@
       const winner = r.winner;
       const winningCard = winner === -1 ? null : currentCard(winner === 0 ? 'A' : 'B');
       resultBox.style.setProperty('--foil', winningCard ? rarityFinish(winningCard.rarity).color : '#b9c6d5');
-      el('resultMedal').innerHTML = winningCard ? themedEmblemMarkup(winningCard.rarity, 'Result') : '<span>VS</span>';
+      mountEmblem(el('resultMedal'), winningCard ? winningCard.rarity : null, 'Result');
       resultBox.style.display = 'flex';
       el('resultVerdict').textContent = winner === -1 ? 'DRAW' : 'VICTORY';
       if (winner === 0) {
@@ -922,11 +995,11 @@
       el('sMetaB').textContent = `${RARITY_LIST[cardB.rarity]} · Lv.${lvlB.value}`;
     }
 
-    async function runBattle(mode = 'start') {
+    async function runBattle(mode = 'start', trigger = startBtn) {
       if (state.playing) return;
-      // Starting the battle disables the start button, which drops keyboard focus
-      // to BODY. Remember the intent so the result action can take focus back.
-      const focusWasOnStart = document.activeElement === startBtn;
+      const ownedFocus = document.activeElement === trigger;
+      let userMovedFocus = false, completed = false;
+      const trackFocus = event => { if (event.target !== trigger && event.target !== document.body) userMovedFocus = true; };
       const input = el('seedInput');
       const seed = mode === 'replay' ? state.seed : mode === 'new' || !state.seedEdited ? null : parseSeed(input.value);
       if (seed === undefined) {
@@ -936,6 +1009,7 @@
       state.seed = seed === null ? global.crypto.getRandomValues(new Uint32Array(1))[0] : seed;
       state.seedEdited = false;
       input.value = String(state.seed); el('seedHint').textContent = '开始战斗换新 Seed · 重播保留当前 Seed';
+      document.addEventListener('focusin', trackFocus);
       state.playing = true; resetPointer(); clearMotion(); setControlsLocked(true);
       app.dataset.phase = state.delay && !reduced.matches ? 'engage' : 'battle';
       document.querySelector('.app').classList.add('is-playing');
@@ -954,9 +1028,18 @@
         hudState.textContent = 'IN BATTLE'; battleHud.classList.remove('finished'); battleHud.classList.add('live');
         // Starting from controls below the fold must bring the actual fight into view.
         battleHud.scrollIntoView({ behavior: 'instant', block: 'start' });
+        if (!mobile.matches) {
+          const hp = [hud.hpA, hud.hpB].map(node => node.getBoundingClientRect());
+          const top = Math.min(document.querySelector('.round-center').getBoundingClientRect().top, ...hp.map(r => r.top));
+          const offset = Math.min(top - 24, Math.max(...hp.map(r => r.bottom)) - global.innerHeight + 24);
+          if (offset > 0) global.scrollBy({ top: offset, behavior: 'instant' });
+        }
         resizeFx(); announce('BATTLE START'); renderSummary([]);
         activateCrest('A', 'engage'); activateCrest('B', 'engage');
-        if (state.delay) await new Promise(resolve => setTimeout(resolve, reduced.matches ? 120 : 650));
+        if (state.delay) await new Promise(resolve => {
+          const timer = setTimeout(() => { state.finishWait = null; resolve(); }, reduced.matches ? 120 : 650);
+          state.finishWait = () => { clearTimeout(timer); state.finishWait = null; resolve(); };
+        });
         app.dataset.phase = 'battle';
         for (let i = 0; i < result.events.length; i++) {
           if (!state.delay) {
@@ -997,6 +1080,7 @@
         animate(resultBox, [{ clipPath: 'inset(0 50% 0 50%)', opacity: .6 }, { clipPath: 'inset(0 0 0 0)', opacity: 1 }], { duration: 800 });
         animate(el('resultMedal'), [{ transform: 'translateY(-12px) rotate(-12deg)', opacity: .1 }, { transform: 'translateY(0) rotate(0)', opacity: 1 }], { duration: 950, delay: 180 });
         animate(document.querySelector('.telemetry'), [{ opacity: .4, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 650, delay: 220 });
+        completed = true;
       } catch (error) {
         app.dataset.phase = 'ready';
         hudState.textContent = 'ERROR'; el('eventText').textContent = '播放失败，请重试。'; console.error(error);
@@ -1004,7 +1088,10 @@
         state.playing = false; setControlsLocked(false); battleHud.classList.remove('live');
         ['A', 'B'].forEach(side => { el('panel' + side).removeAttribute('data-action'); el('fighter' + side).removeAttribute('data-action'); });
         document.querySelector('.app').classList.remove('is-playing');
-        if (focusWasOnStart && state.events.length) el('resultAgainBtn').focus({ preventScroll: true });
+        document.removeEventListener('focusin', trackFocus);
+        const active = document.activeElement;
+        const lostFocus = !active || active === document.body || active.disabled || !active.getClientRects().length;
+        if (ownedFocus && !userMovedFocus && lostFocus) (completed ? resultAgainBtn : startBtn).focus({ preventScroll: true });
       }
     }
 
@@ -1012,23 +1099,23 @@
       state.seedEdited = true;
       el('seedHint').textContent = '下次战斗使用手动输入的 Seed';
     });
-    startBtn.addEventListener('click', () => runBattle());
-    againBtn.addEventListener('click', () => runBattle('new'));
-    resultAgainBtn.addEventListener('click', () => runBattle('new'));
+    startBtn.addEventListener('click', event => runBattle('start', event.currentTarget));
+    againBtn.addEventListener('click', event => runBattle('new', event.currentTarget));
+    resultAgainBtn.addEventListener('click', event => runBattle('new', event.currentTarget));
     el('resultEditBtn').addEventListener('click', () => {
       if (state.playing) return;
       clearMotion(); state.selectionKey = ''; refreshAll();
       searchA.focus({ preventScroll: true });
       el('panelA').scrollIntoView({ behavior: 'instant', block: 'start' });
     });
-    el('replayBtn').addEventListener('click', () => runBattle('replay'));
-    el('resultReplayBtn').addEventListener('click', () => runBattle('replay'));
+    el('replayBtn').addEventListener('click', event => runBattle('replay', event.currentTarget));
+    el('resultReplayBtn').addEventListener('click', event => runBattle('replay', event.currentTarget));
 
     refreshAll();
     return { state };
   }
 
-  const API = { createViewState, applyEventToState, parseEvent, describeEvent, summarizeEvents, eventDelay, parseSeed, rarityFinish, emblemMarkup, lumenEmblemMarkup, editionEmblemMarkup, initTheme, matchesCard, normalizeLevel, initApp };
+  const API = { createViewState, applyEventToState, parseEvent, describeEvent, summarizeEvents, eventDelay, parseSeed, rarityFinish, emblemMarkup, lumenEmblemMarkup, editionEmblemMarkup, naturalEmblemMarkup, themedEmblemMarkup, EMBLEM_RENDERERS, EMBLEM_CACHE_LIMIT, initTheme, matchesCard, normalizeLevel, initApp };
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
   global.NCB = Object.assign(global.NCB || {}, API);
 })(typeof window !== 'undefined' ? window : globalThis);

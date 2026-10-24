@@ -72,9 +72,11 @@ No account, deck-building process, or character editor is required. Every conten
 </table>
 
 <a id="visual-editions"></a>
-### 🎨 Four Visual Editions
+### 🎨 Eight Visual Editions
 
 Use the header **Visual Theme** selector to switch editions, even during playback. It supports keyboard arrows and touch.
+
+Open **Browse Eight Themes** beneath the header to compare compact material previews and descriptions. This optional catalogue starts collapsed; selecting a preview applies the same theme as the native selector and marks the current choice.
 
 | Edition | Visual character |
 | --- | --- |
@@ -82,11 +84,17 @@ Use the header **Visual Theme** selector to switch editions, even during playbac
 | **LUMEN** | A circular optical dial with fine measurement marks and a porcelain finish. |
 | **FOLIO** | A square print frame, central diamond, and warm paper materials. |
 | **PULSE** | A rounded oscilloscope cartridge, waveform, and dark signal surfaces. |
+| **NOCTURNE** | Deep-blue survey plates, silver constellation crests, a coordinate instrument, and brief star-trace feedback. |
+| **SUMI** | Cool-white paper, broken ink contours, open margins, a stamped controller, and short ink-cut feedback. |
+| **ARCADE** | Bright molded panels, original stepped pixel medals, tactile buttons, and discrete score-display feedback. |
+| **VERDANT** | Chalk and terracotta specimen boards, branching leaf crests, organic section shapes, and brief unfolding feedback. |
 
 LUMEN, FOLIO, and PULSE retain their restored **V1 overall forms**, original progression marks, and matching card/result medals, together with larger rarity marks and the current layout and interaction improvements. Each edition keeps its own materials and blue/red team colors.
 
 - **Your choice is remembered locally.** The first visit defaults to Collector. If browser storage is blocked, switching still works for the current session.
 - **Your duel stays intact.** Switching preserves cards, levels, Match Seed, HP, playback speed, log following, and statistics. Combat rules and replay behavior are unchanged.
+- **Only the active crest is mounted.** Cards and results share a bounded string cache, with separate paint namespaces. The catalogue uses small CSS previews, not hidden card trees. The four new editions use local CSS and original procedural SVG, with no extra image or font downloads.
+- **Keyboard playback remains usable.** Start, new-match, and replay entries restore lost focus after playback; a focus choice made during the battle takes priority. Invalid input and playback errors return to a visible control.
 
 <a id="the-numbers"></a>
 ## 💎 The Numbers Behind the Battle
@@ -171,6 +179,10 @@ npm test         # Node.js regression tests
 npm run verify   # Static checks, regression tests, acceptance, and BP audit
 ```
 
+The optional real-browser gate is separate: `npm run test:browser`. It uses Playwright (validated with **1.60.0**) and a locally available Chromium browser. Reuse an existing installation with `NBL_PLAYWRIGHT_MODULE` (absolute package directory) and, if needed, `NBL_BROWSER_PATH` (browser executable). Alternatively install that pinned development tool in a directory outside this repository and point the module variable there. No browser tooling is loaded by the game or required for the core Node gates.
+
+Set `NBL_EVIDENCE_DIR` to an external evidence directory; otherwise it creates one in the system temporary directory. The script starts and stops its own local server. `NBL_BASE_URL` can target a deployed copy. It exercises actual replay, keyboard focus, persistence failures, theme switching, reduced motion, and responsive states; it also writes screenshots and a JSON report. The explicitly labelled DRAW fixture and simulation instrumentation exist only in intercepted test responses. Browser downloads, reports and dependencies stay outside the Pages upload tree.
+
 | Path | Responsibility |
 | --- | --- |
 | [`index.html`](index.html) | Browser entry point |
@@ -178,7 +190,7 @@ npm run verify   # Static checks, regression tests, acceptance, and BP audit
 | [`src/power.js`](src/power.js) | Level scaling, final attributes, and Battle Power |
 | [`src/battle.js`](src/battle.js) | Seeded simulation and event generation |
 | [`src/app.js`](src/app.js) | Card selection, presentation, and replay |
-| [`styles.css`](styles.css) · [`themes.css`](themes.css) | Original Collector materials, four scoped editions and accessible controls |
+| [`styles.css`](styles.css) · [`themes.css`](themes.css) | Original Collector materials, eight scoped editions and accessible controls |
 | [`assets/`](assets/) | Preserved Collector/LUMEN art, FOLIO paper and PULSE polymer backgrounds |
 | [`tests/`](tests/) · [`scripts/`](scripts/) | Regression tests, acceptance checks, and local tooling |
 
@@ -190,7 +202,7 @@ The project supports keyboard interaction, responsive layouts, and `prefers-redu
 
 ## 📚 Design & Source Notes
 
-- **[Design system](DESIGN.md)** — four visual editions, shared architecture, material provenance, layout, motion and accessibility rules.
+- **[Design system](DESIGN.md)** — eight visual editions, shared architecture, material provenance, layout, motion and accessibility rules.
 - **[Product definition](PRODUCT.md)** — what the game does, and the boundaries it deliberately keeps.
 - **[Agent guidance](AGENTS.md)** — project-specific engineering and verification constraints.
 

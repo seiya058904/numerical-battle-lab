@@ -8,16 +8,21 @@
 // Resolve before CSS/first paint. Storage failure always leaves Collector usable.
 window.NCB_THEME = (() => {
   const themes = Object.freeze([
-    Object.freeze({ id: 'collector', name: '典藏', label: 'COLLECTOR', color: '#090e14', scheme: 'dark' }),
-    Object.freeze({ id: 'lumen', name: '光谱', label: 'LUMEN', color: '#edf2f5', scheme: 'light' }),
-    Object.freeze({ id: 'folio', name: '印记', label: 'FOLIO', color: '#eee8d9', scheme: 'light' }),
-    Object.freeze({ id: 'pulse', name: '脉冲', label: 'PULSE', color: '#18121d', scheme: 'dark' })
+    Object.freeze({ id: 'collector', name: '典藏', label: 'COLLECTOR', color: '#090e14', scheme: 'dark', surface: 'metal', description: '金属与珐琅，十二枚独立典藏徽章', impact: 'circle', trace: [], glow: 12, reveal: 'inset(8%)' }),
+    Object.freeze({ id: 'lumen', name: '光谱', label: 'LUMEN', color: '#edf2f5', scheme: 'light', surface: 'optics', description: '瓷白光学圆盘，刻度与光的轨道', impact: 'circle', trace: [], glow: 12, reveal: 'inset(8%)' }),
+    Object.freeze({ id: 'folio', name: '印记', label: 'FOLIO', color: '#eee8d9', scheme: 'light', surface: 'edition', description: '暖纸与绿墨，方形印框的收藏档案', impact: 'square', trace: [5, 5], glow: 0, reveal: 'inset(0 0 100% 0)' }),
+    Object.freeze({ id: 'pulse', name: '脉冲', label: 'PULSE', color: '#18121d', scheme: 'dark', surface: 'edition', description: '深色聚合物，示波卡匣与信号波形', impact: 'square', trace: [12, 4], glow: 4, reveal: 'inset(0 50%)' }),
+    Object.freeze({ id: 'nocturne', name: '星图', label: 'NOCTURNE', color: '#101e32', scheme: 'dark', surface: 'edition', description: '深蓝航图，银线连接几何星座', impact: 'diamond', trace: [2, 7], glow: 0, reveal: 'inset(50% 0)' }),
+    Object.freeze({ id: 'sumi', name: '墨境', label: 'SUMI', color: '#eeefed', scheme: 'light', surface: 'edition', description: '冷白宣纸，断续墨线与留白印面', impact: 'square', trace: [18, 3, 2, 3], glow: 0, reveal: 'inset(0 100% 0 0)' }),
+    Object.freeze({ id: 'arcade', name: '街机', label: 'ARCADE', color: '#ecebe5', scheme: 'light', surface: 'edition', description: '明亮塑料，阶梯奖章与实体按键', impact: 'square', trace: [8, 5], glow: 0, reveal: 'inset(100% 0 0)' }),
+    Object.freeze({ id: 'verdant', name: '生息', label: 'VERDANT', color: '#eeeee5', scheme: 'light', surface: 'edition', description: '石灰与陶土，叶脉分枝的标本板', impact: 'leaf', trace: [], glow: 0, reveal: 'inset(50% 30%)' })
   ]);
   const key = 'nbl.visual-theme';
   const resolve = id => themes.find(theme => theme.id === id) || themes[0];
   const apply = id => {
     const theme = resolve(id);
     document.documentElement.dataset.theme = theme.id;
+    document.documentElement.dataset.surface = theme.surface;
     document.documentElement.style.colorScheme = theme.scheme;
     document.querySelector('meta[name="theme-color"]').content = theme.color;
     return theme;
@@ -25,7 +30,7 @@ window.NCB_THEME = (() => {
   let saved;
   try { saved = localStorage.getItem(key); } catch (_) { /* Private/blocked storage. */ }
   apply(saved);
-  return Object.freeze({ themes, key, apply });
+  return Object.freeze({ themes, key, apply, resolve });
 })();
 </script>
 <title>数值卡牌 · 自动 PK</title>
@@ -42,7 +47,7 @@ window.NCB_THEME = (() => {
 <aside class="wall-copy wall-left" aria-hidden="true"><p>用 数 字<br>看 见<br>更 大 的 可 能</p><small>FOR A MORE<br>RATIONAL TOMORROW</small><div>COLLECT<br>ANALYZE<br>BATTLE<br>IMPROVE</div><p>NUMBERS<br>MAKE<br>BETTER<br>PLAYERS</p></aside>
 <aside class="wall-copy wall-right" aria-hidden="true"><small>A<br>SMALLER WORLD<br>OF<br>BIGGER NUMBERS</small><div>SAME RULES<br>DIFFERENT<br>OUTCOMES<br>INFINITE<br>POSSIBILITIES</div><p>A MORE<br>RATIONAL<br>PLAYGROUND</p></aside>
 <main class="app" data-phase="ready">
- <header class="site-header"><h1>NUMERICAL BATTLE LAB</h1><p>数值卡牌对战实验室</p><div class="brand-motto">NUMBERS REVEAL A DEEPER TRUTH<small>96 CARDS · 12 RARITIES · INFINITE POSSIBILITIES</small></div><div class="theme-picker"><label for="themeSelect"><span class="theme-swatch" aria-hidden="true"></span>视觉主题</label><select id="themeSelect" aria-label="视觉主题"><option value="collector">典藏 / COLLECTOR</option><option value="lumen">光谱 / LUMEN</option><option value="folio">印记 / FOLIO</option><option value="pulse">脉冲 / PULSE</option></select></div></header>
+ <header class="site-header"><h1>NUMERICAL BATTLE LAB</h1><p>数值卡牌对战实验室</p><div class="brand-motto">NUMBERS REVEAL A DEEPER TRUTH<small>96 CARDS · 12 RARITIES · INFINITE POSSIBILITIES</small></div><div class="theme-picker"><label for="themeSelect"><span class="theme-swatch" aria-hidden="true"></span>视觉主题</label><select id="themeSelect" aria-label="视觉主题"><option value="collector">典藏 / COLLECTOR</option><option value="lumen">光谱 / LUMEN</option><option value="folio">印记 / FOLIO</option><option value="pulse">脉冲 / PULSE</option><option value="nocturne">星图 / NOCTURNE</option><option value="sumi">墨境 / SUMI</option><option value="arcade">街机 / ARCADE</option><option value="verdant">生息 / VERDANT</option></select></div><details class="theme-browser"><summary>浏览八套主题</summary><div id="themeGallery" class="theme-gallery" aria-label="主题浏览"></div></details></header>
  <section class="battle-hud" id="battleHud" aria-label="战斗舞台">
   <div class="arena-ambient" aria-hidden="true"><i></i><i></i></div><canvas id="battleFx" aria-hidden="true"></canvas><div class="stage-announcement" id="stageAnnouncement" aria-hidden="true"></div>
   <div class="setup" id="setup"><section class="pcard blue" id="panelA"><div class="selection-bar"><div class="selection-heading"><label for="selA">蓝方 · 选择卡牌</label><span>96 张 / 12 阶</span></div><div class="pcard-top">

@@ -1,6 +1,6 @@
 ---
-name: Numerical Battle Lab — four visual editions
-description: One deterministic duel, four complete material systems.
+name: Numerical Battle Lab — eight visual editions
+description: One deterministic duel, eight complete material systems.
 colors:
   collector-bg: "#080c0d"
   collector-ink: "#e6e7df"
@@ -14,6 +14,18 @@ colors:
   pulse-bg: "#18121d"
   pulse-ink: "#f4e6d8"
   pulse-accent: "#ffc28b"
+  nocturne-bg: "#101e32"
+  nocturne-ink: "#e5edf4"
+  nocturne-accent: "#c4d9ee"
+  sumi-bg: "#eeefed"
+  sumi-ink: "#242e34"
+  sumi-accent: "#343e43"
+  arcade-bg: "#ecebe5"
+  arcade-ink: "#292e46"
+  arcade-accent: "#424b9b"
+  verdant-bg: "#eeeee5"
+  verdant-ink: "#384238"
+  verdant-accent: "#875340"
 typography:
   body:
     fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
@@ -25,11 +37,11 @@ rounded:
   pulse-card: "12px"
 ---
 
-# Four editions — Numerical Battle Lab
+# Eight editions — Numerical Battle Lab
 
 ## Overview
 
-The current product has exactly four peer editions: **典藏 / Collector**, **光谱 / LUMEN**, **印记 / FOLIO**, and **脉冲 / PULSE**. Preserve one DOM, one card pool, one simulation and one playback state. The material world changes; the match never does. First visits still use Collector. The original material sources below remain preserved history and the authority for Collector, not a requirement to make every edition metallic.
+The current product has exactly eight peer editions: **典藏 / Collector**, **光谱 / LUMEN**, **印记 / FOLIO**, **脉冲 / PULSE**, **星图 / NOCTURNE**, **墨境 / SUMI**, **街机 / ARCADE**, and **生息 / VERDANT**. Preserve one DOM, one card pool, one simulation and one playback state. The material world changes; the match never does. First visits still use Collector. The original material sources below remain preserved history and the authority for Collector, not a requirement to make every edition metallic.
 
 ## Colors
 
@@ -41,7 +53,7 @@ Collector keeps serif ceremonial lettering; LUMEN uses light optical sans numera
 
 ## Layout
 
-Two cards, the central controller and lower settlement/log/statistics retain their locations. At 1000px and below, retain the established stacked cards and compact battle identities. A named inline-size container on `.app` adds a 50rem space check above 1000px: enlarged text falls back to a centered single column, rather than squeezing cards around a fixed-width instrument. This is separate from browser zoom's normal viewport reflow. The native theme select is compact and in normal flow on small screens; it contains all four names and uses platform keyboard/touch behavior.
+Two cards, the central controller and lower settlement/log/statistics retain their locations. At 1000px and below, retain the established stacked cards and compact battle identities. A named inline-size container on `.app` adds a 50rem space check above 1000px: enlarged text falls back to a centered single column, rather than squeezing cards around a fixed-width instrument. This is separate from browser zoom's normal viewport reflow. The native theme select is compact and in normal flow on small screens; it contains all eight names and uses platform keyboard/touch behavior.
 
 ## Elevation & Depth
 
@@ -60,17 +72,36 @@ All 12 ranks retain their exact names and numbered progression. Collector has tw
 
 ## Components
 
-The frozen head registry resolves `collector`, `lumen`, `folio`, `pulse` before first paint. `initTheme()` binds one native select `change` listener and applies only visual root attributes plus best-effort persistence. It cannot access the game state, simulate, refresh cards, replace the log, or create a timer. Native options support direct selection, arrows, Enter/Space and platform dismissal/focus behavior. Storage read/write exceptions keep the session usable.
+The frozen head registry resolves all eight stable IDs before CSS. It owns names, short descriptions, browser colors, light/dark scheme, shared surface family, and bounded feedback capabilities. Static native options and renderer keys have explicit consistency tests. The original four module entry order stays unchanged; no shared module or dependency is needed. Best-effort storage uses the existing `nbl.visual-theme` key, defaults to Collector, and safely rejects unknown IDs.
 
-`themedEmblemMarkup()` mounts the four SVGs when rarity changes; CSS exposes exactly one. Collector retains twelve V3 silhouettes. LUMEN progresses through its dial and ring marks; FOLIO and PULSE retain their V1 forms and twelve pips. `editionEmblemMarkup()` stays below 40 nodes / 5KB, validates rank and edition, and never consumes randomness. Existing SVG namespace and Collector budgets stay enforced. The only canvas remains bounded to 180 particles / 3.5 million pixels. FOLIO/PULSE use the existing event lifecycle; no extra RAF loop is introduced. Hidden/offscreen/reduced-motion handling remains shared.
+`initTheme()` binds the native selector and one delegated catalogue listener. Both use one application path and emit a presentation notification. The default-collapsed native details catalogue contains only CSS material samples. Switching preserves business DOM, focus, selection, level drafts, Seed intent, expanded statistics, match events, HP interpolation, playback waits and log position.
+
+`themedEmblemMarkup()` mounts exactly one SVG per card/result container. A string-only cache has at most 288 keys (8 themes × 12 tiers × A/B/Result), with no detached nodes. Before replacing a crest, only its own CSS/Web Animations and tracked references are cancelled. Old material particles are discarded without clearing HP counters or replay waits. Neutral DRAW uses a separate mark, never a winner crest. Collector V3, LUMEN V1, FOLIO V1 and PULSE V1 geometry and lettering stay unchanged.
+
+Collector keeps the existing 400-element / 32 KB ceiling, LUMEN its 110-element / 12 KB ceiling, and FOLIO/PULSE their 40-element / 5 KB ceilings. Each new crest has a 110-element / 12 KB ceiling. The one shared canvas remains bounded to 180 particles / 3.5 million pixels. There are no new ambient animation loops, external SVG references, SVG scripts or filters, or raster assets.
 
 ## Do's and Don'ts
 
-- Extend the registry, scoped CSS, bounded rank generator, native options and tests together for a future fifth edition. Do not copy the page or initialize a second battle.
+- Keep the registry, scoped CSS, bounded rank generator, native options and tests consistent. Do not copy the page or initialize a second battle.
 - Keep real controls and values in DOM/SVG/Canvas. Images contain only material, light and peripheral space.
 - Preserve `src/cards.js`, `src/power.js`, `src/battle.js`, all original assets and the frozen 1,920-simulation digest.
 - Keep exact static file manifests in sync. Evidence and exploratory concepts stay outside the production root.
-- Distinguish a synthetic DRAW UI fixture from a natural simulated draw; neither the fixture nor instrumentation ships.
+- Distinguish a synthetic DRAW UI fixture from a natural simulated draw; neither the fixture nor instrumentation runs in the product entry point.
+
+## Current extension brief — 2026-10-24
+
+| Edition | Material and typography | Crest / controller | Event and result language |
+| --- | --- | --- | --- |
+| NOCTURNE | Matte navy survey plate, thin silver rules, clear light sans and tabular figures | Increasing axial constellation polygons, connected stars; open diamond coordinate instrument | Short dashed star traces and diamond expansion; observation-style confirmation panel |
+| SUMI | Cool white clean paper, dark ink, spacious Songti names with system UI labels | Six irregular seal families with paired broken-line treatments; offset ink seal controller | Brief ink cut, recovery line plus explicit REGEN/LIFE STEAL and amount; restrained signed verdict |
+| ARCADE | Pale molded plastic, indigo controls, warm display windows; bold sans names and monospaced BP | Twelve stepped medals with pixel progress, separate Collector label; inset tactile controller | Short stepped pop and square segments; score-display result, no scanlines or flashing background |
+| VERDANT | Chalk specimen plate, muted terracotta action accent, botanical linework; serif names and readable UI | Seed/leaf lobes and veins increase across ranks; organic section controller | Brief unfolding arc and leaf-shaped expansion; specimen result panel, explicit healing text distinct from decorative green |
+
+New theme assets are original deterministic SVG geometry and CSS authored in this repository. No generated bitmap, stock icon, remote font or third-party art is added. Every central rank plane remains quiet and large, including SSS and Collector labels. Teams retain blue/red labels and HP bars; recovery retains the green semantic palette and text/amount cues. Background colors remain usable without any asset requests.
+
+The shared `data-surface=edition` component baseline covers FOLIO/PULSE and the four additions; individual theme selectors own their geometry, borders, typography, controls and response. It does not change the established optical or metal styles. Browser surfaces (selection, caret, scrollbar, focus, invalid/disabled inputs) follow the same tokens. New motion uses the existing event lifecycle and is disabled with reduced motion or paused offscreen/hidden. Short desktop auto-positioning brings both HP rows and the round into view when they fit, without shrinking cards or altering READY composition.
+
+The historical sections below document earlier iterations. For the original four themes, **Final visual decision — 2026-10-14** remains the shape authority; the V2/V3 drafts for LUMEN/FOLIO/PULSE remain superseded. The current eight-theme architecture and catalogue above replace the old four-SVG mounting descriptions.
 
 ## Retained Collector provenance and construction
 

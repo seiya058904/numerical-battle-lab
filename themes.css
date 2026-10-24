@@ -239,107 +239,107 @@ html[data-theme=pulse] {
 }
 [data-theme=folio] .lab-backdrop { background:var(--bg) url('assets/folio-paper.webp') center top/cover no-repeat }
 [data-theme=pulse] .lab-backdrop { background:var(--bg) url('assets/pulse-surface.webp') center top/cover no-repeat }
-:is([data-theme=folio],[data-theme=pulse]) .lab-backdrop::after { background:linear-gradient(transparent,var(--bg)) }
-:is([data-theme=folio],[data-theme=pulse]) * { scrollbar-color:var(--line) var(--surface) }
-:is([data-theme=folio],[data-theme=pulse]) ::selection { background:var(--gold); color:var(--bg) }
-:is([data-theme=folio],[data-theme=pulse]) input { caret-color:var(--focus) }
-:is([data-theme=folio],[data-theme=pulse]) :is(button,input,select,[tabindex]):focus-visible { outline-color:var(--focus) }
-:is([data-theme=folio],[data-theme=pulse]) .app { padding-top:1.7rem }
-:is([data-theme=folio],[data-theme=pulse]) .site-header { margin-bottom:2rem }
-:is([data-theme=folio],[data-theme=pulse]) .site-header h1 { color:var(--text); font-size:1.7rem; letter-spacing:.08em }
-:is([data-theme=folio],[data-theme=pulse]) :is(.brand-motto,.site-header p,.core-caption,.core-note,.core-footnote) { color:var(--text-2) }
-:is([data-theme=folio],[data-theme=pulse]) .site-header h1::before,
-:is([data-theme=folio],[data-theme=pulse]) .site-header h1::after { background:var(--line); width:2rem }
-:is([data-theme=folio],[data-theme=pulse]) :is(.wall-copy,.simulation-number,.card-aside,.arena-ambient) { display:none }
-:is([data-theme=folio],[data-theme=pulse]) .selection-bar { margin:0 0 .8rem }
-:is([data-theme=folio],[data-theme=pulse]) .card-picker { border:1px solid var(--line); background:var(--line); border-radius:var(--shape); box-shadow:none; overflow:hidden }
-:is([data-theme=folio],[data-theme=pulse]) .card-picker :is(input,select) { background:var(--surface); color:var(--text); min-height:44px; border-radius:0 }
-:is([data-theme=folio],[data-theme=pulse]) input::placeholder { color:var(--text-3); opacity:1 }
-:is([data-theme=folio],[data-theme=pulse]) .card-picker:focus-within { border-color:var(--focus) }
-:is([data-theme=folio],[data-theme=pulse]) .card-face {
+[data-surface=edition] .lab-backdrop::after { background:linear-gradient(transparent,var(--bg)) }
+[data-surface=edition] * { scrollbar-color:var(--line) var(--surface) }
+[data-surface=edition] ::selection { background:var(--gold); color:var(--bg) }
+[data-surface=edition] input { caret-color:var(--focus) }
+[data-surface=edition] :is(button,input,select,[tabindex]):focus-visible { outline-color:var(--focus) }
+[data-surface=edition] .app { padding-top:1.7rem }
+[data-surface=edition] .site-header { margin-bottom:2rem }
+[data-surface=edition] .site-header h1 { color:var(--text); font-size:1.7rem; letter-spacing:.08em }
+[data-surface=edition] :is(.brand-motto,.site-header p,.core-caption,.core-note,.core-footnote) { color:var(--text-2) }
+[data-surface=edition] .site-header h1::before,
+[data-surface=edition] .site-header h1::after { background:var(--line); width:2rem }
+[data-surface=edition] :is(.wall-copy,.simulation-number,.card-aside,.arena-ambient) { display:none }
+[data-surface=edition] .selection-bar { margin:0 0 .8rem }
+[data-surface=edition] .card-picker { border:1px solid var(--line); background:var(--line); border-radius:var(--shape); box-shadow:none; overflow:hidden }
+[data-surface=edition] .card-picker :is(input,select) { background:var(--surface); color:var(--text); min-height:44px; border-radius:0 }
+[data-surface=edition] input::placeholder { color:var(--text-3); opacity:1 }
+[data-surface=edition] .card-picker:focus-within { border-color:var(--focus) }
+[data-surface=edition] .card-face {
   padding:1.3rem 1.8rem; border-radius:var(--shape); background:var(--surface);
   box-shadow:var(--panel-shadow); filter:none;
 }
-:is([data-theme=folio],[data-theme=pulse]) .card-face::before { inset:0; background:none; border:1px solid var(--line); border-radius:var(--shape); filter:none; clip-path:none; box-shadow:none }
-:is([data-theme=folio],[data-theme=pulse]) :is(.card-ornament,.ambient-particles,.card-frame,.card-edge-light) { display:none }
-:is([data-theme=folio],[data-theme=pulse]) .card-rail { color:var(--text-3); min-height:1.8rem; padding:0; border-bottom:1px solid var(--line) }
-:is([data-theme=folio],[data-theme=pulse]) .micro-brand { margin:0; letter-spacing:.07em }
-:is([data-theme=folio],[data-theme=pulse]) .card-serial::before { color:var(--text-3) }
-:is([data-theme=folio],[data-theme=pulse]) .rarity-letter { display:none }
-:is([data-theme=folio],[data-theme=pulse]) .rarity-art { max-width:17rem; margin:.8rem auto .2rem }
-:is([data-theme=folio],[data-theme=pulse]) .rarity-art::before { display:none }
-:is([data-theme=folio],[data-theme=pulse]) .emblem { filter:none; color:var(--edition) }
-:is([data-theme=folio],[data-theme=pulse]) .collector-emblem { display:none }
+[data-surface=edition] .card-face::before { inset:0; background:none; border:1px solid var(--line); border-radius:var(--shape); filter:none; clip-path:none; box-shadow:none }
+[data-surface=edition] :is(.card-ornament,.ambient-particles,.card-frame,.card-edge-light) { display:none }
+[data-surface=edition] .card-rail { color:var(--text-3); min-height:1.8rem; padding:0; border-bottom:1px solid var(--line) }
+[data-surface=edition] .micro-brand { margin:0; letter-spacing:.07em }
+[data-surface=edition] .card-serial::before { color:var(--text-3) }
+[data-surface=edition] .rarity-letter { display:none }
+[data-surface=edition] .rarity-art { max-width:17rem; margin:.8rem auto .2rem }
+[data-surface=edition] .rarity-art::before { display:none }
+[data-surface=edition] .emblem { filter:none; color:var(--edition) }
+[data-surface=edition] .collector-emblem { display:none }
 [data-theme=folio] :is(.emblem,.result-medal) .folio-emblem,
 [data-theme=pulse] :is(.emblem,.result-medal) .pulse-emblem { display:block; color:var(--edition) }
 [data-theme=folio] .edition-glyph { font-family:Georgia,"Times New Roman",serif }
 [data-theme=pulse] .edition-glyph { font-family:Consolas,"Cascadia Mono",monospace; letter-spacing:-.04em }
-:is([data-theme=folio],[data-theme=pulse]) .cname { color:var(--text); font-size:1.65rem; letter-spacing:.03em; font-weight:650 }
-:is([data-theme=folio],[data-theme=pulse]) .rar-badge { color:var(--edition); font-size:.75rem }
-:is([data-theme=folio],[data-theme=pulse]) .rar-badge::before { background:var(--edition); box-shadow:none; width:5px; height:5px }
-:is([data-theme=folio],[data-theme=pulse]) .card-english { color:var(--text-3); letter-spacing:.08em }
-:is([data-theme=folio],[data-theme=pulse]) .power-strip { background:none; border-color:var(--line); margin-top:1rem; padding:1rem 0 }
-:is([data-theme=folio],[data-theme=pulse]) .bp-value { font-family:var(--display); color:var(--text); font-size:2.3rem; letter-spacing:-.04em }
-:is([data-theme=folio],[data-theme=pulse]) .lvl-val input { color:var(--text); background:var(--surface); border-color:var(--line) }
-:is([data-theme=folio],[data-theme=pulse]) input[type=range]::-webkit-slider-runnable-track { background:var(--line); height:3px }
-:is([data-theme=folio],[data-theme=pulse]) input[type=range]::-webkit-slider-thumb { background:var(--gold); border:2px solid var(--surface); width:16px; height:20px; border-radius:2px; box-shadow:0 1px 3px #0003 }
-:is([data-theme=folio],[data-theme=pulse]) input[type=range]::-moz-range-track { background:var(--line) }
-:is([data-theme=folio],[data-theme=pulse]) input[type=range]::-moz-range-thumb { background:var(--gold); border-color:var(--surface); border-radius:2px }
-:is([data-theme=folio],[data-theme=pulse]) .core-stats { border-color:var(--line) }
-:is([data-theme=folio],[data-theme=pulse]) .stat-code { color:var(--text-3) }
-:is([data-theme=folio],[data-theme=pulse]) :is(.stat-tile .v,.stat-row .v) { color:var(--text) }
-:is([data-theme=folio],[data-theme=pulse]) .hpbar-wrap { background:var(--surface-muted); height:6px; box-shadow:none; border-radius:0 }
-:is([data-theme=folio],[data-theme=pulse]) .hpbar { background:var(--team) }
-:is([data-theme=folio],[data-theme=pulse]) .hp-trail { background:var(--text-3) }
-:is([data-theme=folio],[data-theme=pulse]) .card-signature { border-color:var(--line); color:var(--text-3) }
-:is([data-theme=folio],[data-theme=pulse]) .card-signature .card-material { font-size:0 }
-:is([data-theme=folio],[data-theme=pulse]) .card-material::after { font-size:.625rem; letter-spacing:.1em }
+[data-surface=edition] .cname { color:var(--text); font-size:1.65rem; letter-spacing:.03em; font-weight:650 }
+[data-surface=edition] .rar-badge { color:var(--edition); font-size:.75rem }
+[data-surface=edition] .rar-badge::before { background:var(--edition); box-shadow:none; width:5px; height:5px }
+[data-surface=edition] .card-english { color:var(--text-3); letter-spacing:.08em }
+[data-surface=edition] .power-strip { background:none; border-color:var(--line); margin-top:1rem; padding:1rem 0 }
+[data-surface=edition] .bp-value { font-family:var(--display); color:var(--text); font-size:2.3rem; letter-spacing:-.04em }
+[data-surface=edition] .lvl-val input { color:var(--text); background:var(--surface); border-color:var(--line) }
+[data-surface=edition] input[type=range]::-webkit-slider-runnable-track { background:var(--line); height:3px }
+[data-surface=edition] input[type=range]::-webkit-slider-thumb { background:var(--gold); border:2px solid var(--surface); width:16px; height:20px; border-radius:2px; box-shadow:0 1px 3px #0003 }
+[data-surface=edition] input[type=range]::-moz-range-track { background:var(--line) }
+[data-surface=edition] input[type=range]::-moz-range-thumb { background:var(--gold); border-color:var(--surface); border-radius:2px }
+[data-surface=edition] .core-stats { border-color:var(--line) }
+[data-surface=edition] .stat-code { color:var(--text-3) }
+[data-surface=edition] :is(.stat-tile .v,.stat-row .v) { color:var(--text) }
+[data-surface=edition] .hpbar-wrap { background:var(--surface-muted); height:6px; box-shadow:none; border-radius:0 }
+[data-surface=edition] .hpbar { background:var(--team) }
+[data-surface=edition] .hp-trail { background:var(--text-3) }
+[data-surface=edition] .card-signature { border-color:var(--line); color:var(--text-3) }
+[data-surface=edition] .card-signature .card-material { font-size:0 }
+[data-surface=edition] .card-material::after { font-size:.625rem; letter-spacing:.1em }
 [data-theme=folio] .card-material::after { content:'棉纸压印 / COTTON STOCK' }
 [data-theme=pulse] .card-material::after { content:'信号卡匣 / SIGNAL MODULE' }
-:is([data-theme=folio],[data-theme=pulse]) .card-config { margin:1rem 0 0; background:var(--surface); border-color:var(--line); border-radius:var(--shape); box-shadow:none }
-:is([data-theme=folio],[data-theme=pulse]) .archive-heading { color:var(--text) }
-:is([data-theme=folio],[data-theme=pulse]) .command-core { padding-top:4rem }
-:is([data-theme=folio],[data-theme=pulse]) .core-caption { margin-bottom:1.7rem; letter-spacing:.16em }
-:is([data-theme=folio],[data-theme=pulse]) .round-center { background:var(--surface); border:1px solid var(--line); border-radius:var(--shape); box-shadow:var(--panel-shadow) }
-:is([data-theme=folio],[data-theme=pulse]) .round-center::before { content:''; position:absolute; inset:7%; border:1px solid var(--line); border-radius:var(--shape) }
-:is([data-theme=folio],[data-theme=pulse]) .arena-dial { display:none }
-:is([data-theme=folio],[data-theme=pulse]) .round-value { color:var(--gold); font-family:var(--display); text-shadow:none; top:0 }
-:is([data-theme=folio],[data-theme=pulse]) .hud-state { top:0; margin-top:.35rem; color:var(--gold) }
-:is([data-theme=folio],[data-theme=pulse]) .core-footnote { margin-top:1.2rem }
-:is([data-theme=folio],[data-theme=pulse]) .btn.primary,
-:is([data-theme=folio],[data-theme=pulse]) #startBtn { color:var(--surface); background:var(--gold); border:1px solid var(--gold); border-radius:var(--shape); clip-path:none; box-shadow:0 5px 10px #0002; min-height:4rem; font-size:1.2rem; letter-spacing:.05em }
-:is([data-theme=folio],[data-theme=pulse]) #startBtn small { opacity:.85 }
-:is([data-theme=folio],[data-theme=pulse]) .spdbtn { background:var(--surface); color:var(--text-2); border-color:var(--line); border-radius:var(--shape) }
-:is([data-theme=folio],[data-theme=pulse]) .spdbtn.on { color:var(--text); background:var(--surface-muted); border-color:var(--gold); box-shadow:inset 0 -2px var(--gold) }
-:is([data-theme=folio],[data-theme=pulse]) .match-config input { background:var(--surface); color:var(--text); border-color:var(--line); border-radius:var(--shape) }
-:is([data-theme=folio],[data-theme=pulse]) .text-btn:hover { color:var(--text); text-decoration:underline; text-underline-offset:4px }
-:is([data-theme=folio],[data-theme=pulse]) .event-readout { background:var(--surface); border:1px solid var(--line); border-radius:var(--shape); padding:.7rem 1rem }
-:is([data-theme=folio],[data-theme=pulse]) .float-number { color:var(--blue); background:var(--surface); padding:0 .3rem; text-shadow:none }
-:is([data-theme=folio],[data-theme=pulse]) .float-number.crit { color:var(--red) }
-:is([data-theme=folio],[data-theme=pulse]) .float-number.heal { color:var(--green) }
-:is([data-theme=folio],[data-theme=pulse]) .float-number.miss { color:var(--text-2) }
-:is([data-theme=folio],[data-theme=pulse]) .pcard[data-action=impact] .card-face { filter:none; outline:2px solid var(--red); outline-offset:-2px }
-:is([data-theme=folio],[data-theme=pulse]) .pcard[data-action=recover] .card-face { filter:none; outline:2px solid var(--green); outline-offset:-2px }
-:is([data-theme=folio],[data-theme=pulse]) .pcard[data-action=fallen] .card-face { filter:saturate(.5) }
-:is([data-theme=folio],[data-theme=pulse]) .victorious .card-face::before { border-color:var(--team); filter:none; box-shadow:inset 0 0 0 1px var(--team) }
-:is([data-theme=folio],[data-theme=pulse]) .telemetry { background:var(--surface); border-color:var(--line); border-radius:var(--shape); box-shadow:none; padding:1.4rem 1.5rem }
-:is([data-theme=folio],[data-theme=pulse]) .log-head { color:var(--text) }
-:is([data-theme=folio],[data-theme=pulse]) .log-empty svg { stroke:var(--text-3) }
-:is([data-theme=folio],[data-theme=pulse]) .le { color:var(--text-2); border-color:var(--line) }
-:is([data-theme=folio],[data-theme=pulse]) .le.current { background:var(--surface-muted) }
-:is([data-theme=folio],[data-theme=pulse]) .le.crit .amt { color:var(--red) }
-:is([data-theme=folio],[data-theme=pulse]) .le.death { color:var(--red) }
-:is([data-theme=folio],[data-theme=pulse]) .summary-panel :is(th,td) { border-color:var(--line) }
-:is([data-theme=folio],[data-theme=pulse]) .summary-metrics strong { color:var(--text) }
-:is([data-theme=folio],[data-theme=pulse]) .result-panel { background:var(--surface); color:var(--text); border:1px solid var(--line); border-radius:var(--shape); box-shadow:var(--panel-shadow); --result-accent:var(--blue) }
-:is([data-theme=folio],[data-theme=pulse]) .result-panel.win1 { --result-accent:var(--red) }
-:is([data-theme=folio],[data-theme=pulse]) .result-panel.draw { --result-accent:var(--text-2) }
-:is([data-theme=folio],[data-theme=pulse]) .result-panel::before { background:none; border:0 }
-:is([data-theme=folio],[data-theme=pulse]) .result-verdict { font-family:var(--display); color:var(--result-accent); letter-spacing:0; font-size:2.25rem }
-:is([data-theme=folio],[data-theme=pulse]) .result-title { color:var(--result-accent) }
-:is([data-theme=folio],[data-theme=pulse]) .result-medal>span { display:grid; place-items:center; height:100%; font:2rem var(--display); border:1px solid var(--line) }
-:is([data-theme=folio],[data-theme=pulse]) .result-hp>span { display:block }
-:is([data-theme=folio],[data-theme=pulse]) .site-footer { color:var(--text-2) }
+[data-surface=edition] .card-config { margin:1rem 0 0; background:var(--surface); border-color:var(--line); border-radius:var(--shape); box-shadow:none }
+[data-surface=edition] .archive-heading { color:var(--text) }
+[data-surface=edition] .command-core { padding-top:4rem }
+[data-surface=edition] .core-caption { margin-bottom:1.7rem; letter-spacing:.16em }
+[data-surface=edition] .round-center { background:var(--surface); border:1px solid var(--line); border-radius:var(--shape); box-shadow:var(--panel-shadow) }
+[data-surface=edition] .round-center::before { content:''; position:absolute; inset:7%; border:1px solid var(--line); border-radius:var(--shape) }
+[data-surface=edition] .arena-dial { display:none }
+[data-surface=edition] .round-value { color:var(--gold); font-family:var(--display); text-shadow:none; top:0 }
+[data-surface=edition] .hud-state { top:0; margin-top:.35rem; color:var(--gold) }
+[data-surface=edition] .core-footnote { margin-top:1.2rem }
+[data-surface=edition] .btn.primary,
+[data-surface=edition] #startBtn { color:var(--surface); background:var(--gold); border:1px solid var(--gold); border-radius:var(--shape); clip-path:none; box-shadow:0 5px 10px #0002; min-height:4rem; font-size:1.2rem; letter-spacing:.05em }
+[data-surface=edition] #startBtn small { opacity:.85 }
+[data-surface=edition] .spdbtn { background:var(--surface); color:var(--text-2); border-color:var(--line); border-radius:var(--shape) }
+[data-surface=edition] .spdbtn.on { color:var(--text); background:var(--surface-muted); border-color:var(--gold); box-shadow:inset 0 -2px var(--gold) }
+[data-surface=edition] .match-config input { background:var(--surface); color:var(--text); border-color:var(--line); border-radius:var(--shape) }
+[data-surface=edition] .text-btn:hover { color:var(--text); text-decoration:underline; text-underline-offset:4px }
+[data-surface=edition] .event-readout { background:var(--surface); border:1px solid var(--line); border-radius:var(--shape); padding:.7rem 1rem }
+[data-surface=edition] .float-number { color:var(--blue); background:var(--surface); padding:0 .3rem; text-shadow:none }
+[data-surface=edition] .float-number.crit { color:var(--red) }
+[data-surface=edition] .float-number.heal { color:var(--green) }
+[data-surface=edition] .float-number.miss { color:var(--text-2) }
+[data-surface=edition] .pcard[data-action=impact] .card-face { filter:none; outline:2px solid var(--red); outline-offset:-2px }
+[data-surface=edition] .pcard[data-action=recover] .card-face { filter:none; outline:2px solid var(--green); outline-offset:-2px }
+[data-surface=edition] .pcard[data-action=fallen] .card-face { filter:saturate(.5) }
+[data-surface=edition] .victorious .card-face::before { border-color:var(--team); filter:none; box-shadow:inset 0 0 0 1px var(--team) }
+[data-surface=edition] .telemetry { background:var(--surface); border-color:var(--line); border-radius:var(--shape); box-shadow:none; padding:1.4rem 1.5rem }
+[data-surface=edition] .log-head { color:var(--text) }
+[data-surface=edition] .log-empty svg { stroke:var(--text-3) }
+[data-surface=edition] .le { color:var(--text-2); border-color:var(--line) }
+[data-surface=edition] .le.current { background:var(--surface-muted) }
+[data-surface=edition] .le.crit .amt { color:var(--red) }
+[data-surface=edition] .le.death { color:var(--red) }
+[data-surface=edition] .summary-panel :is(th,td) { border-color:var(--line) }
+[data-surface=edition] .summary-metrics strong { color:var(--text) }
+[data-surface=edition] .result-panel { background:var(--surface); color:var(--text); border:1px solid var(--line); border-radius:var(--shape); box-shadow:var(--panel-shadow); --result-accent:var(--blue) }
+[data-surface=edition] .result-panel.win1 { --result-accent:var(--red) }
+[data-surface=edition] .result-panel.draw { --result-accent:var(--text-2) }
+[data-surface=edition] .result-panel::before { background:none; border:0 }
+[data-surface=edition] .result-verdict { font-family:var(--display); color:var(--result-accent); letter-spacing:0; font-size:2.25rem }
+[data-surface=edition] .result-title { color:var(--result-accent) }
+[data-surface=edition] .result-medal>span { display:grid; place-items:center; height:100%; font:2rem var(--display); border:1px solid var(--line) }
+[data-surface=edition] .result-hp>span { display:block }
+[data-surface=edition] .site-footer { color:var(--text-2) }
 
 /* Two independent constructions, beyond their shared component semantics. */
 [data-theme=folio] .card-face { background:linear-gradient(#faf6ebed,#faf6ebed),url('assets/folio-paper.webp') center/cover }
@@ -376,41 +376,41 @@ html[data-theme=pulse] {
 @keyframes ink-strike { 0% { opacity:.5; transform:translateY(-3px) } 55% { opacity:1; transform:translateY(2px) } 100% { transform:translateY(0) } }
 @keyframes signal-fire { 0%,50% { stroke-width:4; opacity:.35 } 25%,75%,100% { stroke-width:1.5; opacity:1 } }
 @media(min-width:1001px) and (max-width:1200px) {
-  :is([data-theme=folio],[data-theme=pulse]) .card-face { padding:1.2rem }
-  :is([data-theme=folio],[data-theme=pulse]) .bp-value { font-size:1.65rem }
+  [data-surface=edition] .card-face { padding:1.2rem }
+  [data-surface=edition] .bp-value { font-size:1.65rem }
 }
 @media(max-width:1000px) {
   html[data-theme] .theme-picker { width:min(100%,18rem); display:flex; align-items:center; gap:.65rem }
   html[data-theme] .theme-picker label { flex-shrink:0; margin:0 }
   html[data-theme] .theme-picker select { min-width:0; font-size:16px }
-  :is([data-theme=folio],[data-theme=pulse]) .app { padding-top:1.25rem }
-  :is([data-theme=folio],[data-theme=pulse]) .site-header h1 { font-size:1.05rem }
-  :is([data-theme=folio],[data-theme=pulse]) .card-face { padding:1.2rem 1.35rem }
-  :is([data-theme=folio],[data-theme=pulse]) .command-core { padding-top:0 }
-  :is([data-theme=folio],[data-theme=pulse]) .match-config { background:var(--surface); border-radius:var(--shape) }
-  :is([data-theme=folio],[data-theme=pulse]) :is(.ctrl-btns,.speed-seg) { background:var(--bg); border-color:var(--line); box-shadow:0 -4px 12px #0002 }
-  :is([data-theme=folio],[data-theme=pulse]) #startBtn { min-height:3.7rem; font-size:1rem }
-  :is([data-theme=folio],[data-theme=pulse]) .round-value { font-size:2.6rem }
-  :is([data-theme=folio],[data-theme=pulse]) .telemetry { padding:.75rem 1rem }
-  :is([data-theme=folio],[data-theme=pulse]) .app:not([data-phase=ready]) .card-face::before { inset:0; background:none; clip-path:none; border:1px solid var(--line); border-radius:var(--shape); box-shadow:none }
-  :is([data-theme=folio],[data-theme=pulse]) .app:not([data-phase=ready]) .rarity-art { margin:0 }
+  [data-surface=edition] .app { padding-top:1.25rem }
+  [data-surface=edition] .site-header h1 { font-size:1.05rem }
+  [data-surface=edition] .card-face { padding:1.2rem 1.35rem }
+  [data-surface=edition] .command-core { padding-top:0 }
+  [data-surface=edition] .match-config { background:var(--surface); border-radius:var(--shape) }
+  [data-surface=edition] :is(.ctrl-btns,.speed-seg) { background:var(--bg); border-color:var(--line); box-shadow:0 -4px 12px #0002 }
+  [data-surface=edition] #startBtn { min-height:3.7rem; font-size:1rem }
+  [data-surface=edition] .round-value { font-size:2.6rem }
+  [data-surface=edition] .telemetry { padding:.75rem 1rem }
+  [data-surface=edition] .app:not([data-phase=ready]) .card-face::before { inset:0; background:none; clip-path:none; border:1px solid var(--line); border-radius:var(--shape); box-shadow:none }
+  [data-surface=edition] .app:not([data-phase=ready]) .rarity-art { margin:0 }
   html[data-theme] .app:not([data-phase=ready]) :is(.rar-badge,.role-badge) { font-size:.6875rem }
-  :is([data-theme=folio],[data-theme=pulse]) .result-right { flex-wrap:wrap }
-  :is([data-theme=folio],[data-theme=pulse]) .result-actions { min-width:8rem }
+  [data-surface=edition] .result-right { flex-wrap:wrap }
+  [data-surface=edition] .result-actions { min-width:8rem }
   [data-theme=pulse] .round-center { border-width:3px; border-radius:12px }
   [data-theme=pulse] .round-center::before { border-radius:7px }
   [data-theme=pulse] .round-center::after { bottom:12% }
   [data-theme=folio] .round-center::before { inset:5% 0 }
 }
 @media(max-width:370px) {
-  :is([data-theme=folio],[data-theme=pulse]) .site-header h1 { font-size:.9rem }
-  :is([data-theme=folio],[data-theme=pulse]) .card-face { padding:1.1rem }
-  :is([data-theme=folio],[data-theme=pulse]) .bp-value { font-size:1.65rem }
+  [data-surface=edition] .site-header h1 { font-size:.9rem }
+  [data-surface=edition] .card-face { padding:1.1rem }
+  [data-surface=edition] .bp-value { font-size:1.65rem }
   html[data-theme] .summary-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem }
   html[data-theme] .theme-picker { gap:.4rem }
 }
 @media(prefers-reduced-motion:reduce) {
-  :is([data-theme=folio],[data-theme=pulse]) .pcard[data-action=attack] :is(.edition-emblem,.signal-trace) { animation:none }
+  [data-surface=edition] .pcard[data-action=attack] :is(.edition-emblem,.signal-trace) { animation:none }
 }
 .page-hidden .pcard[data-action=attack] :is(.edition-emblem,.signal-trace),
 .pcard:not(.in-view)[data-action=attack] :is(.edition-emblem,.signal-trace) { animation-play-state:paused }
@@ -447,7 +447,7 @@ html[data-theme=pulse] {
 [data-theme=folio] .rank-label { font-family:Georgia,serif }
 [data-theme=pulse] .rank-glyph { font-family:Consolas,"Cascadia Mono",monospace }
 .pcard[data-action=impact] .collector-emblem .rank-core { opacity:.7 }
-.pcard[data-action=heal] .collector-emblem .rank-detail { stroke:var(--green); opacity:.85 }
+.pcard[data-action=recover] .collector-emblem .rank-detail { stroke:var(--green); opacity:.85 }
 .pcard.victorious .collector-emblem .rank-detail { opacity:.8 }
 .pcard.fallen .collector-emblem .rank-detail { animation:none; opacity:.12 }
 .page-hidden .collector-emblem :is(.rank-detail,.rank-core),.page-hidden .signal-trace,
@@ -465,3 +465,184 @@ html[data-theme=pulse] {
 
 /* V1 text stays crisp; the native rarity badge remains the accessible label. */
 .edition-glyph,.rank-certification { pointer-events:none }
+
+/* The catalogue carries no full crests or external images. It is idle when closed. */
+.theme-browser { margin:1rem auto 0; max-width:64rem; text-align:left }
+.theme-browser summary { width:fit-content; margin:auto; min-height:44px; padding:.6rem .9rem; cursor:pointer; color:var(--text-2); font-size:.8125rem }
+.theme-browser summary:hover { color:var(--gold) }
+.theme-browser summary:focus-visible { outline:2px solid var(--gold); outline-offset:2px }
+.theme-gallery { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.7rem; padding:1rem 0 }
+.theme-gallery button { display:grid; grid-template-columns:2.4rem minmax(0,1fr); grid-template-rows:auto auto; gap:.3rem .65rem; align-items:center; text-align:left; padding:.85rem; border:1px solid var(--line); border-radius:4px; background:var(--bg); color:var(--text) }
+.theme-gallery button>span:last-child { grid-column:2; font-size:.75rem; line-height:1.6; color:var(--text-2) }
+.theme-gallery strong { font-size:.8125rem; overflow-wrap:anywhere }
+.theme-gallery button[aria-pressed=true] { outline:2px solid var(--gold); outline-offset:2px }
+.theme-gallery button:hover { border-color:var(--gold) }
+.theme-preview { grid-row:1 / 3; width:2.4rem; height:2.7rem; background:#111b1d; border:3px double #d8bd88; clip-path:polygon(20% 0,80% 0,100% 20%,100% 80%,80% 100%,20% 100%,0 80%,0 20%) }
+[data-theme-id=lumen] .theme-preview { background:#f7fcff; border:5px double #809eaf; border-radius:50%; clip-path:none }
+[data-theme-id=folio] .theme-preview { background:#f7efd9; border:4px double #315540; clip-path:none }
+[data-theme-id=pulse] .theme-preview { background:#261b30; border:5px solid #7c5d59; border-radius:8px; clip-path:none }
+[data-theme-id=nocturne] .theme-preview { background:#162940; border:1px solid #b6cce1; clip-path:polygon(50% 0,100% 40%,83% 100%,17% 100%,0 40%) }
+[data-theme-id=sumi] .theme-preview { background:#f4f5f1; border:3px solid #2e3438; border-radius:38% 4% 30% 5%; clip-path:none; transform:rotate(-6deg) }
+[data-theme-id=arcade] .theme-preview { background:#f5bb42; border:4px solid #4550a1; clip-path:polygon(20% 0,80% 0,80% 20%,100% 20%,100% 80%,80% 80%,80% 100%,20% 100%,20% 80%,0 80%,0 20%,20% 20%) }
+[data-theme-id=verdant] .theme-preview { background:#e0e4cd; border:2px solid #65765b; border-radius:0 65% 0 65%; clip-path:none; transform:rotate(-15deg) }
+
+/* NOCTURNE — a quiet blue survey plate; axial stars, silver coordinates. */
+html[data-theme=nocturne] {
+  --bg:#101e32; --surface:#182b43; --surface-muted:#223d57;
+  --text:#e5edf4; --text-2:#bccddc; --text-3:#aec3d4; --line:#59738d;
+  --gold:#c4d9ee; --blue:#91d4ff; --red:#ffaaaa; --green:#98e2b8;
+  --focus:#e0f1ff; --edition:#c6dcf0; --display:"Segoe UI","Microsoft YaHei",sans-serif;
+  --shape:3px; --panel-shadow:0 12px 28px #040d1c44;
+}
+/* SUMI — cool white fibre, asymmetrical ink impressions, quiet open margins. */
+html[data-theme=sumi] {
+  --bg:#eeefed; --surface:#fafbf8; --surface-muted:#e0e3e0;
+  --text:#242e34; --text-2:#4e5a60; --text-3:#5b656a; --line:#a3aeae;
+  --gold:#343e43; --blue:#235f92; --red:#ab393c; --green:#216b4a;
+  --focus:#245981; --edition:#343e43; --display:"Songti SC",SimSun,Georgia,serif;
+  --shape:1px; --panel-shadow:0 6px 20px #313e4410;
+}
+/* ARCADE — warm plastic body, stepped dies, tactile indigo buttons. */
+html[data-theme=arcade] {
+  --bg:#ecebe5; --surface:#fffdf6; --surface-muted:#e2e3ed;
+  --text:#292e46; --text-2:#51566c; --text-3:#606477; --line:#969db5;
+  --gold:#424b9b; --blue:#255ca1; --red:#ac3549; --green:#26703e;
+  --focus:#343d8c; --edition:#424b9b; --display:"Segoe UI","Microsoft YaHei",sans-serif;
+  --shape:8px; --panel-shadow:0 9px 18px #40456820;
+}
+/* VERDANT — chalk, terracotta and botanical sections; organic, not green paper. */
+html[data-theme=verdant] {
+  --bg:#eeeee5; --surface:#fafaf1; --surface-muted:#e2e7d6;
+  --text:#384238; --text-2:#56614e; --text-3:#626a58; --line:#a5af97;
+  --gold:#875340; --blue:#2c6189; --red:#a33e43; --green:#206d48;
+  --focus:#73432f; --edition:#536b42; --display:Georgia,"Songti SC",SimSun,serif;
+  --shape:16px; --panel-shadow:0 9px 24px #5f67451c;
+}
+[data-surface=edition] .extension-emblem { display:block; color:var(--edition) }
+.extension-emblem .rank-detail,.extension-emblem .rank-core { transform-origin:120px 120px }
+[data-theme=nocturne] .lab-backdrop { background:radial-gradient(ellipse at 95% 0,#2c4260 0,transparent 43%),var(--bg) }
+[data-theme=sumi] .lab-backdrop { background:linear-gradient(112deg,#d8dedb 0,transparent 19%,transparent 85%,#dfe3e0),var(--bg) }
+[data-theme=arcade] .lab-backdrop { background:linear-gradient(135deg,#d8dbed 0,transparent 30%,transparent 75%,#e5d6ba),var(--bg) }
+[data-theme=verdant] .lab-backdrop { background:radial-gradient(ellipse at 0 0,#dce3ca 0,transparent 55%),linear-gradient(120deg,transparent 70%,#e8d9cc),var(--bg) }
+[data-surface=edition] .extension-glyph { font-family:var(--display); letter-spacing:-.03em }
+[data-surface=edition] .pcard[data-action=recover] .extension-emblem .rank-detail { stroke:var(--green); stroke-width:4 }
+[data-surface=edition] .pcard[data-action=evade] .extension-emblem { opacity:.6 }
+[data-surface=edition] .pcard[data-action=fallen] .extension-emblem { opacity:.4 }
+[data-surface=edition] .pcard[data-action=recover] .extension-emblem { color:var(--edition) }
+[data-surface=edition] .pcard[data-action=recover] .card-face { outline-color:var(--green) }
+
+[data-theme=nocturne] .site-header h1 { font:500 1.6rem/1.4 var(--font); letter-spacing:.16em }
+[data-theme=nocturne] .card-face { background:linear-gradient(115deg,#1f354e,var(--surface) 52%); border:1px solid var(--line); border-radius:3px 22px 3px 3px }
+[data-theme=nocturne] .card-face::before { inset:.6rem; border:0; border-top:1px solid #7892a966; border-bottom:1px solid #7892a966 }
+[data-theme=nocturne] .card-rail { border-bottom:0; font-family:Consolas,monospace }
+[data-theme=nocturne] .identity { position:relative }
+[data-theme=nocturne] .cname { font-weight:450; letter-spacing:.14em }
+[data-theme=nocturne] .card-material::after { content:'天文测绘 / CELESTIAL SURVEY' }
+[data-theme=nocturne] .power-strip { border-top:1px dashed var(--line); border-bottom:1px solid var(--line) }
+[data-theme=nocturne] .bp-value { font-weight:300 }
+[data-theme=nocturne] .card-config { border-left:0; border-right:0; background:#15263c }
+[data-theme=nocturne] .round-center { border:0; background:transparent; box-shadow:none }
+[data-theme=nocturne] .round-center::before { inset:8%; border:1px solid var(--line); border-radius:0; transform:rotate(45deg) }
+[data-theme=nocturne] .round-center::after { content:''; position:absolute; inset:0; background:linear-gradient(var(--line),var(--line)) center/1px 100% no-repeat,linear-gradient(90deg,var(--line),var(--line)) center/100% 1px no-repeat; opacity:.3; pointer-events:none }
+[data-theme=nocturne] .round-value { font-size:4rem; font-weight:250; z-index:1 }
+[data-theme=nocturne] .hud-state { background:var(--bg); z-index:1; padding:0 .6rem }
+[data-theme=nocturne] #startBtn { background:#c4d9ee; color:#172b42; border-radius:2px; box-shadow:0 4px 18px #06102144 }
+[data-theme=nocturne] .result-panel { border:1px solid var(--result-accent); background:#15283f; border-radius:0 24px 0 0 }
+[data-theme=nocturne] .result-verdict { font-size:1.7rem; font-weight:350; letter-spacing:.12em }
+[data-theme=nocturne] .result-medal .draw-mark { border-radius:0; transform:rotate(0); border-style:dashed }
+[data-theme=nocturne] .pcard[data-action=attack] .rank-detail { animation:star-fix 320ms ease-out }
+@keyframes star-fix { from { stroke-dasharray:2 12; opacity:.35 } to { stroke-dasharray:14 0; opacity:1 } }
+
+[data-theme=sumi] .site-header h1 { font-weight:400; letter-spacing:.14em }
+[data-theme=sumi] .site-header h1::before { width:1rem; height:3px; background:var(--text) }
+[data-theme=sumi] .site-header h1::after { display:none }
+[data-theme=sumi] .card-face { border-top:3px solid var(--text); background:linear-gradient(98deg,#e9edeb88,transparent 6%),var(--surface) }
+[data-theme=sumi] .card-face::before { inset:.7rem .65rem; border:0; border-right:1px solid #8f9d9a77; border-radius:0 }
+[data-theme=sumi] .card-rail { border-bottom:0 }
+[data-theme=sumi] .cname { font:500 1.9rem/1.5 var(--display); letter-spacing:.18em }
+[data-theme=sumi] .card-english { letter-spacing:.17em }
+[data-theme=sumi] .rar-badge::before { width:7px; height:7px; border-radius:0 }
+[data-theme=sumi] .power-strip { border:0; border-top:1px solid var(--text); padding-top:1.2rem }
+[data-theme=sumi] .card-material::after { content:'墨线印面 / INK IMPRESSION' }
+[data-theme=sumi] .card-config { border:0; border-top:1px solid var(--line); background:transparent }
+[data-theme=sumi] .round-center { width:11rem; height:12rem; margin:auto; border:0; background:transparent; box-shadow:none }
+[data-theme=sumi] .round-center::before { inset:12% 6%; border:3px solid var(--text); border-radius:41% 3% 33% 6%; transform:rotate(-8deg) }
+[data-theme=sumi] .round-center::after { content:''; position:absolute; right:5%; bottom:12%; width:1rem; height:1.7rem; border:2px solid #9c5147; background:var(--surface) }
+[data-theme=sumi] .round-value { font:400 4.8rem/1 var(--display) }
+[data-theme=sumi] #startBtn { border-radius:1px; letter-spacing:.18em; box-shadow:0 4px 12px #36404720 }
+[data-theme=sumi] .event-readout { border:0; border-block:1px solid var(--line); background:transparent }
+[data-theme=sumi] .telemetry { border:0; border-top:2px solid var(--text); background:var(--surface) }
+[data-theme=sumi] .result-panel { border:0; border-block:1px solid var(--text); padding-block:1.8rem; background:var(--surface) }
+[data-theme=sumi] .result-verdict { font-style:normal; font-weight:400; letter-spacing:.06em }
+[data-theme=sumi] .result-medal .draw-mark { border-radius:42% 5% 33% 6%; border:2px solid var(--text-2) }
+[data-theme=sumi] .pcard[data-action=attack] .rank-detail { animation:ink-cut 280ms ease-out }
+@keyframes ink-cut { from { stroke-dasharray:1 120; stroke-width:5 } to { stroke-dasharray:120 0; stroke-width:3 } }
+
+[data-theme=arcade] .site-header h1 { font-family:var(--font); font-weight:800; letter-spacing:.02em }
+[data-theme=arcade] .card-face { border:2px solid #979db3; border-radius:10px; box-shadow:inset 0 -7px 0 #d3d3cf,0 10px 20px #44496920 }
+[data-theme=arcade] .card-face::before { inset:8px; border:1px solid #d1d2da; border-radius:4px }
+[data-theme=arcade] .card-rail { border:0; background:#e4e4ee; border-radius:3px; padding:0 .4rem; color:#51566c }
+[data-theme=arcade] .cname { font-weight:800; letter-spacing:.02em }
+[data-theme=arcade] .rar-badge::before { border-radius:0; width:7px; height:7px }
+[data-theme=arcade] .power-strip { background:#f1eedf; border:1px solid #bbbdbd; padding:1rem .65rem; border-radius:3px }
+[data-theme=arcade] .bp-value { font-family:Consolas,"Cascadia Mono",monospace; font-weight:700; font-size:2.1rem }
+[data-theme=arcade] .card-material::after { content:'塑料机壳 / MOLDED SHELL' }
+[data-theme=arcade] .core-stats { border:0; gap:.35rem }
+[data-theme=arcade] .stat-tile { background:#f0efe9; padding:.5rem; border:0; border-radius:3px }
+[data-theme=arcade] .round-center { border:2px solid #989fba; border-bottom-width:8px; background:#e0e2ee; border-radius:18px }
+[data-theme=arcade] .round-center::before { inset:13%; background:#fff5cf; border:1px solid #a5a8b6; border-radius:5px }
+[data-theme=arcade] .round-value { z-index:1; font:800 3.8rem/1 Consolas,monospace }
+[data-theme=arcade] .hud-state { z-index:1; font-weight:750 }
+[data-theme=arcade] #startBtn { border-bottom:5px solid #293375; background:#4b56ae; border-radius:10px; color:#fff; box-shadow:0 5px 9px #404a7b22; font-weight:750 }
+[data-theme=arcade] #startBtn:active:not(:disabled) { transform:translateY(3px); border-bottom-width:2px }
+[data-theme=arcade] .spdbtn.on { background:#fce4a7; color:#363955; border-color:#8e7d51 }
+[data-theme=arcade] .result-panel { border:2px solid #989fb1; border-bottom-width:6px; border-radius:8px; background:#fffdf6 }
+[data-theme=arcade] .result-verdict { font:800 1.85rem/1.2 Consolas,monospace }
+[data-theme=arcade] .result-medal .draw-mark { background:var(--surface-muted); border:2px dashed var(--text-2) }
+[data-theme=arcade] .pcard[data-action=attack] .rank-detail { animation:pixel-pop 240ms steps(3,end) }
+@keyframes pixel-pop { from { transform:translateY(3px); opacity:.6 } to { transform:translateY(0); opacity:1 } }
+
+[data-theme=verdant] .site-header h1 { font-weight:400; letter-spacing:.06em }
+[data-theme=verdant] .card-face { border-radius:36px 12px 32px 12px; background:linear-gradient(120deg,#fffef8,var(--surface) 65%,#e9eddf); border:1px solid #b1b99f }
+[data-theme=verdant] .card-face::before { inset:.6rem; border:0; border-bottom:1px solid #b3ba9e; border-radius:24px 8px }
+[data-theme=verdant] .card-rail { border-bottom:0 }
+[data-theme=verdant] .cname { font-family:var(--display); font-weight:500; letter-spacing:.09em }
+[data-theme=verdant] .rar-badge::before { width:9px; height:6px; border-radius:0 80% }
+[data-theme=verdant] .power-strip { border:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:#eef0e433; border-radius:0 0 16px 0 }
+[data-theme=verdant] .card-material::after { content:'植物标本 / BOTANICAL STUDY' }
+[data-theme=verdant] .card-config { border-radius:12px 26px 12px 26px; border:1px solid #b6bca9; background:#f5f5e9 }
+[data-theme=verdant] .round-center { border-radius:45% 55% 48% 52%; border:1px solid #a4b18c; background:#e6eadb; box-shadow:0 8px 24px #5967421a }
+[data-theme=verdant] .round-center::before { inset:10%; border-radius:55% 42% 52% 46%; border-color:#acb798; transform:rotate(-18deg) }
+[data-theme=verdant] .round-center::after { content:''; position:absolute; inset:4% 45%; border:1px solid #a4b18c; border-radius:50%; transform:rotate(38deg); opacity:.5 }
+[data-theme=verdant] .round-value { z-index:1; font-weight:400; font-size:4.5rem }
+[data-theme=verdant] .hud-state { z-index:1; background:#e6eadb; padding:0 .4rem }
+[data-theme=verdant] #startBtn { border-radius:16px 6px; background:#875340; color:#fffdf5; box-shadow:0 5px 12px #6b4e3122 }
+[data-theme=verdant] .event-readout { border-radius:14px 4px; background:#f8f9ee }
+[data-theme=verdant] .result-panel { border:1px solid #a7af94; border-radius:26px 6px 26px 6px; background:#fafaf1 }
+[data-theme=verdant] .result-verdict { font-size:2rem; font-weight:400 }
+[data-theme=verdant] .result-medal .draw-mark { border-radius:50% 10%; border:1px solid var(--text-2) }
+[data-theme=verdant] .pcard[data-action=attack] .rank-detail { animation:leaf-release 300ms ease-out }
+@keyframes leaf-release { from { transform:scaleX(.65); opacity:.4 } to { transform:scaleX(1); opacity:1 } }
+
+@media(max-width:1200px) { .theme-gallery { grid-template-columns:repeat(2,minmax(0,1fr)) } }
+@media(max-width:1000px) {
+  .theme-browser { margin-top:.2rem }
+  .theme-browser summary { padding:.4rem .8rem }
+  html:is([data-theme=nocturne],[data-theme=sumi],[data-theme=arcade],[data-theme=verdant]) .site-header h1 { font-size:1.05rem; letter-spacing:.05em }
+  html:is([data-theme=nocturne],[data-theme=sumi],[data-theme=arcade],[data-theme=verdant]) .round-value { font-size:2.6rem }
+  [data-theme=sumi] .round-center { width:8rem; height:8rem }
+  [data-theme=sumi] .round-center::after { right:-.65rem; bottom:18%; width:.65rem; height:1.2rem }
+  [data-theme=arcade] .round-center { border-width:2px 2px 5px; border-radius:12px }
+  html:is([data-theme=nocturne],[data-theme=sumi],[data-theme=arcade],[data-theme=verdant]) .app:not([data-phase=ready]) .cname { letter-spacing:.03em }
+  [data-theme=sumi] .result-panel { padding-block:1rem }
+}
+@media(max-width:480px) {
+  .theme-gallery { grid-template-columns:minmax(0,1fr); gap:.5rem }
+  .theme-gallery button { padding:.6rem .75rem }
+  html[data-theme] .summary-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem }
+  .summary-metrics small { white-space:normal }
+}
+@media(prefers-reduced-motion:reduce) {
+  .extension-emblem .rank-detail { animation:none!important }
+}
+.page-hidden .extension-emblem .rank-detail,.pcard:not(.in-view) .extension-emblem .rank-detail { animation-play-state:paused }

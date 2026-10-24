@@ -69,7 +69,8 @@ const EXPECTED_FILES = [
   'tests/bp-contract.test.js',
   'tests/presentation.test.js',
   'tests/themes.test.js',
-  'tests/serve.test.js'
+  'tests/serve.test.js',
+  'tests/browser-regression.cjs'
 ].sort();
 
 let tracked;
