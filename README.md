@@ -14,6 +14,8 @@
   &nbsp;·&nbsp;
   <a href="#how-to-play">🎮 How to Play</a>
   &nbsp;·&nbsp;
+  <a href="#visual-editions">🎨 Visual Editions</a>
+  &nbsp;·&nbsp;
   <a href="#the-numbers">💎 The Numbers</a>
   &nbsp;·&nbsp;
   <a href="#run-locally">⚙️ Run Locally</a>
@@ -42,8 +44,6 @@ No account, deck-building process, or character editor is required. Every conten
 2. **Set their levels.** Adjust each card from **Lv. 1 to Lv. 100** and compare the resulting attributes and Battle Power (BP).
 3. **Start the duel.** Watch the simulated match at **Slow**, **Fast**, or **Instant** speed. Explore the round-by-round log and post-battle summary afterward.
 
-Use the header **Visual Theme** selector to choose **Collector**, **LUMEN**, **FOLIO**, or **PULSE** directly, including during playback. The native selector supports keyboard arrows and touch. Your choice is saved locally; the first visit defaults to Collector, and blocked storage still allows switching for the current session. Switching preserves cards, levels, Seed, HP, playback speed, log following and statistics. Collector keeps twelve V3 rank silhouettes. LUMEN restores its circular optical dial; FOLIO its square print frame and diamond; PULSE its rounded oscilloscope cartridge and waveform. All three preserve their V1 progression marks and matching card/result medals. The four editions keep their own materials and team colors.
-
 **[Play now →](https://seiya058904.github.io/numerical-battle-lab/)**
 
 ### ✨ Inside the Arena
@@ -70,6 +70,23 @@ Use the header **Visual Theme** selector to choose **Collector**, **LUMEN**, **F
     </td>
   </tr>
 </table>
+
+<a name="visual-editions"></a>
+### 🎨 Four Visual Editions
+
+Use the header **Visual Theme** selector to switch editions, even during playback. It supports keyboard arrows and touch.
+
+| Edition | Visual character |
+| --- | --- |
+| **Collector** | Beveled metal, enamel, and twelve distinct V3 rank silhouettes, with clear certification marks and long `SSS` labels. |
+| **LUMEN** | A circular optical dial with fine measurement marks and a porcelain finish. |
+| **FOLIO** | A square print frame, central diamond, and warm paper materials. |
+| **PULSE** | A rounded oscilloscope cartridge, waveform, and dark signal surfaces. |
+
+LUMEN, FOLIO, and PULSE retain their restored **V1 overall forms**, original progression marks, and matching card/result medals, together with larger rarity marks and the current layout and interaction improvements. Each edition keeps its own materials and blue/red team colors.
+
+- **Your choice is remembered locally.** The first visit defaults to Collector. If browser storage is blocked, switching still works for the current session.
+- **Your duel stays intact.** Switching preserves cards, levels, Match Seed, HP, playback speed, log following, and statistics. Combat rules and replay behavior are unchanged.
 
 <a name="the-numbers"></a>
 ## 💎 The Numbers Behind the Battle
@@ -187,5 +204,3 @@ The project supports keyboard interaction, responsive layouts, and `prefers-redu
   <sub>A small experiment in the relationship between numbers, presentation, and competition.</sub><br>
   <sub>No repository-wide open-source license has been declared.</sub>
 </p>
-
-The final visual selection keeps Collector V3 and restores the V1 overall forms for LUMEN, FOLIO, and PULSE, with larger rarity marks and the current layout and interaction improvements. Collector certification and long `SSS` marks remain legible. Card selection, Seed, combat rules and replay behavior are unchanged.
