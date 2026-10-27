@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" role="img" aria-labelledby="t d">
+  <title id="t">Numerical Battle Lab</title>
+  <desc id="d">Two collectible cards face each other across a ring: a gold card topped with a crown and a silver card, above a row of twelve rising rarity bars. An illustration of the card duel, not a screenshot.</desc>
+  <rect width="1200" height="320" fill="#0b0a09"/>
+  <path d="M0 304H1200" stroke="#2b2418" stroke-width="2"/>
+  <text x="56" y="124" font-family="Georgia, 'Times New Roman', serif" font-size="60" font-weight="700" letter-spacing="3" fill="#e6c878">NUMERICAL</text>
+  <text x="56" y="190" font-family="Georgia, 'Times New Roman', serif" font-size="60" font-weight="700" letter-spacing="3" fill="#e6c878">BATTLE LAB</text>
+  <text x="58" y="248" font-family="Georgia, 'Times New Roman', serif" font-size="36" fill="#c4c9d2">Same seed. Same battle.</text>
+  <rect x="58" y="268" width="150" height="5" fill="#d4af5a"/>
+
+  <!-- Gold card -->
+  <rect x="716" y="40" width="150" height="220" rx="12" fill="#14110c" stroke="#d4af5a" stroke-width="4"/>
+  <rect x="728" y="52" width="126" height="196" rx="8" fill="none" stroke="#6e5a2a" stroke-width="2"/>
+  <path d="M762 100l9-18 14 12 14-12 9 18z" fill="#d4af5a"/>
+  <polygon points="768,112 802,112 826,136 826,170 802,194 768,194 744,170 744,136" fill="none" stroke="#e6c878" stroke-width="5"/>
+  <polygon points="772,128 798,128 814,144 814,162 798,178 772,178 756,162 756,144" fill="#d4af5a"/>
+  <rect x="750" y="214" width="70" height="8" rx="4" fill="#d4af5a"/>
+  <!-- Silver card -->
+  <rect x="1034" y="40" width="150" height="220" rx="12" fill="#14110c" stroke="#c4c9d2" stroke-width="4"/>
+  <rect x="1046" y="52" width="126" height="196" rx="8" fill="none" stroke="#5a5f68" stroke-width="2"/>
+  <polygon points="1086,112 1120,112 1144,136 1144,170 1120,194 1086,194 1062,170 1062,136" fill="none" stroke="#c4c9d2" stroke-width="5"/>
+  <polygon points="1090,128 1116,128 1132,144 1132,162 1116,178 1090,178 1074,162 1074,144" fill="#c4c9d2"/>
+  <rect x="1068" y="214" width="70" height="8" rx="4" fill="#c4c9d2"/>
+  <!-- Duel ring -->
+  <circle cx="950" cy="150" r="46" fill="none" stroke="#d4af5a" stroke-width="4"/>
+  <circle cx="950" cy="150" r="32" fill="none" stroke="#6e5a2a" stroke-width="2"/>
+  <path d="M950 128l14 22-14 22-14-22z" fill="#d4af5a"/>
+  <path d="M890 150h14M996 150h14" stroke="#d4af5a" stroke-width="4" stroke-linecap="round"/>
+  <!-- Twelve rarity bars -->
+  <rect x="716" y="294" width="26" height="6" fill="#6e5a2a"/>
+  <rect x="756" y="291" width="26" height="9" fill="#6e5a2a"/>
+  <rect x="796" y="288" width="26" height="12" fill="#6e5a2a"/>
+  <rect x="836" y="285" width="26" height="15" fill="#6e5a2a"/>
+  <rect x="876" y="282" width="26" height="18" fill="#6e5a2a"/>
+  <rect x="916" y="279" width="26" height="21" fill="#6e5a2a"/>
+  <rect x="956" y="276" width="26" height="24" fill="#6e5a2a"/>
+  <rect x="996" y="273" width="26" height="27" fill="#6e5a2a"/>
+  <rect x="1036" y="270" width="26" height="30" fill="#6e5a2a"/>
+  <rect x="1076" y="267" width="26" height="33" fill="#d4af5a"/>
+  <rect x="1116" y="264" width="26" height="36" fill="#d4af5a"/>
+  <rect x="1156" y="261" width="26" height="39" fill="#d4af5a"/>
+</svg>
