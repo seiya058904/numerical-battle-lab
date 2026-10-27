@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="assets/readme-hero.svg" width="100%" alt="Numerical Battle Lab" />
-</p>
+<h1 align="center">⚔️ Numerical Battle Lab</h1>
 
 <p align="center">
   <strong>Choose the cards. Shape the power. Watch the numbers fight.</strong>
@@ -12,24 +10,24 @@
 </p>
 
 <p align="center">
-  <a href="https://seiya058904.github.io/numerical-battle-lab/"><strong>Enter the arena</strong></a>
+  <a href="https://seiya058904.github.io/numerical-battle-lab/"><strong>▶ Enter the Arena</strong></a>
   &nbsp;·&nbsp;
-  <a href="#how-to-play">How to play</a>
+  <a href="#how-to-play">🎮 How to Play</a>
   &nbsp;·&nbsp;
-  <a href="#visual-editions">Visual editions</a>
+  <a href="#visual-editions">🎨 Visual Editions</a>
   &nbsp;·&nbsp;
-  <a href="#the-numbers">The numbers</a>
+  <a href="#the-numbers">💎 The Numbers</a>
   &nbsp;·&nbsp;
-  <a href="#run-locally">Run locally</a>
+  <a href="#run-locally">⚙️ Run Locally</a>
 </p>
 
 <p align="center">
   <sub>96 FIXED CARDS &nbsp; · &nbsp; 12 RARITIES &nbsp; · &nbsp; 12 ATTRIBUTES &nbsp; · &nbsp; SEEDED 1v1 COMBAT</sub>
 </p>
 
-![A Numerical Battle Lab duel in progress: a gold XS Collector card against a silver C card, with Battle Power, level, attributes, and health bars](assets/readme-battle-1280.jpg)
-
-*A duel in progress in the live web build with the Collector edition, captured at 1280×720 from a fresh browser profile. The interface is in Chinese.*
+<p align="center">
+  <img width="780" alt="Numerical Battle Lab — original fantasy card artwork" src="https://github.com/user-attachments/assets/7ca1b5eb-2d0e-47a2-bd7f-1e668e39ee11" />
+</p>
 
 ---
 
@@ -38,7 +36,7 @@
 > Numerical Battle Lab simulates the entire match first, then brings its events to life. Change the playback speed, and the presentation changes. The result does not.
 
 <a id="how-to-play"></a>
-## How to Play
+## 🎮 How to Play
 
 No account, deck-building process, or character editor is required. Every contender comes from a fixed card collection.
 
@@ -48,33 +46,33 @@ No account, deck-building process, or character editor is required. Every conten
 
 **[Play now →](https://seiya058904.github.io/numerical-battle-lab/)**
 
-### Inside the Arena
+### ✨ Inside the Arena
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>The Collection</h3>
+      <h3>🃏 The Collection</h3>
       <p><strong>96 authored cards</strong> across twelve rarity tiers, each with its own role and fixed attributes. Search, compare, and experiment with matchups.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>The Collector Finish</h3>
+      <h3>💎 The Collector Finish</h3>
       <p>Machined frames, independent rank silhouettes, enamel, and restrained light effects give the collection a shared visual language—from C to XS Collector.</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>The Duel</h3>
+      <h3>⚡ The Duel</h3>
       <p>Turn order, hits, dodges, critical damage, penetration, lifesteal, and regeneration play out through an event-driven combat system.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>The Replay</h3>
+      <h3>🔁 The Replay</h3>
       <p>Enter a Match Seed to reproduce the same encounter. Change playback speed freely without changing the simulated events or winner.</p>
     </td>
   </tr>
 </table>
 
 <a id="visual-editions"></a>
-### Eight Visual Editions
+### 🎨 Eight Visual Editions
 
 Use the header **Visual Theme** selector to switch editions, even during playback. It supports keyboard arrows and touch.
 
@@ -99,7 +97,7 @@ LUMEN, FOLIO, and PULSE retain their restored **V1 overall forms**, original pro
 - **Keyboard playback remains usable.** Start, new-match, and replay entries restore lost focus after playback; a focus choice made during the battle takes priority. Invalid input and playback errors return to a visible control.
 
 <a id="the-numbers"></a>
-## The Numbers Behind the Battle
+## 💎 The Numbers Behind the Battle
 
 The outcome comes from **level, rarity, the card's fixed attributes, and seeded combat randomness**—not from a hidden score that decides who *should* win.
 
@@ -124,7 +122,7 @@ The outcome comes from **level, rarity, the card's fixed attributes, and seeded 
 
 For perspective: the **level × rarity** factor of a Lv. 55 XS Collector card is close to that of a Lv. 100 C card. Their actual matchup still depends on card attributes and combat events.
 
-### What Happens in a Turn?
+### ⚙️ What Happens in a Turn?
 
 ```text
 Regeneration → Hit / Dodge → Critical Check → Defense & Penetration
@@ -134,7 +132,7 @@ Regeneration → Hit / Dodge → Critical Check → Defense & Penetration
 Speed influences who acts first. The engine uses a seeded pseudorandom generator throughout the battle; matches are simulated before their event logs are replayed. If neither contender is defeated by the 120-round limit, the remaining HP proportions determine the result, with a possible draw.
 
 <details>
-<summary><strong>Expand the numerical model</strong></summary>
+<summary><strong>📐 Expand the numerical model</strong></summary>
 
 The four scaled core attributes use a level curve and an explicit rarity multiplier:
 
@@ -161,7 +159,7 @@ ATK² / (ATK + DEF × max(0.05, 1 − PEN))
 </details>
 
 <a id="run-locally"></a>
-## Run Locally
+## 🚀 Run Locally
 
 This is a **static HTML/CSS/JavaScript project with no runtime packages or build step**. Clone or download the repository, then either open [`index.html`](index.html) directly or start its included local server.
 
@@ -172,7 +170,7 @@ npm run serve
 Open **http://127.0.0.1:8774/**. The UI uses Chinese text; this English README documents the project without changing its interface language.
 
 <details>
-<summary><strong>Tests, verification, and project structure</strong></summary>
+<summary><strong>🛠️ Tests, verification, and project structure</strong></summary>
 
 From the repository root:
 
@@ -202,13 +200,7 @@ The project supports keyboard interaction, responsive layouts, and `prefers-redu
 
 </details>
 
-## Concept Art
-
-Concept art made for this project. It is an illustration, not a screenshot, and details may differ from the shipped interface.
-
-![A concept poster for Numerical Battle Lab](assets/concept-art.jpg)
-
-## Design & Source Notes
+## 📚 Design & Source Notes
 
 - **[Design system](DESIGN.md)** — eight visual editions, shared architecture, material provenance, layout, motion and accessibility rules.
 - **[Product definition](PRODUCT.md)** — what the game does, and the boundaries it deliberately keeps.
