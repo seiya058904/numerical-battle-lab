@@ -167,7 +167,7 @@ ATK² / (ATK + DEF × max(0.05, 1 − PEN))
 <a id="run-locally"></a>
 ## 🚀 Run Locally
 
-This is a **static HTML/CSS/JavaScript project with no runtime packages or build step**. Clone or download the repository, then either open [`index.html`](index.html) directly or start its included local server.
+This is a **static HTML/CSS/JavaScript project with no runtime packages or build step**. Clone or download the repository, then either open [`index.html`](index.html) directly or start its included local server. The server and verification commands require **Node.js and npm**; CI uses **Node.js 22**.
 
 ```bash
 npm run serve
