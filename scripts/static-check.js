@@ -44,6 +44,7 @@ const EXPECTED_FILES = [
   'assets/pulse-surface.webp',
   'AGENTS.md',
   'README.md',
+  'readme-cover.svg',
   'PRODUCT.md',
   'DESIGN.md',
   'index.html',

@@ -1,6 +1,12 @@
 <h1 align="center">⚔️ Numerical Battle Lab</h1>
 
 <p align="center">
+  <a href="https://seiya058904.github.io/numerical-battle-lab/">
+    <img src="readme-cover.svg" width="100%" alt="Original blue and red card-duel illustration for Numerical Battle Lab, with 96 fixed cards, 12 rarities and seeded battles." />
+  </a>
+</p>
+
+<p align="center">
   <strong>Choose the cards. Shape the power. Watch the numbers fight.</strong>
 </p>
 

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" role="img" aria-labelledby="title desc">
+  <title id="title">Numerical Battle Lab — blue and red card duel</title>
+  <desc id="desc">Original blue and red card-duel illustration for Numerical Battle Lab, with 96 fixed cards, 12 rarities and seeded battles.</desc>
+  <defs><linearGradient id="navy"><stop stop-color="#111c31"/><stop offset="1" stop-color="#1d2844"/></linearGradient><linearGradient id="blue" x2="0" y2="1"><stop stop-color="#466a9b"/><stop offset="1" stop-color="#203652"/></linearGradient><linearGradient id="red" x2="0" y2="1"><stop stop-color="#984f60"/><stop offset="1" stop-color="#482b42"/></linearGradient></defs>
+  <rect width="1200" height="400" rx="18" fill="url(#navy)"/>
+  <path d="M640 0h1v400M0 354h1200" stroke="#40506d"/>
+  <g stroke="#40506d" opacity=".4"><path d="M680 50h450M680 100h450M680 150h450M680 200h450M680 250h450M680 300h450"/><path d="M700 30v305M750 30v305M800 30v305M850 30v305M900 30v305M950 30v305M1000 30v305M1050 30v305M1100 30v305"/></g>
+  <text x="57" y="78" font-family="Arial, sans-serif" font-size="17" fill="#9fb4ce" letter-spacing="4">A REPRODUCIBLE CARD ARENA</text>
+  <g font-family="Arial, sans-serif" font-weight="700" fill="#f0e8d7" font-size="56" letter-spacing="1"><text x="53" y="153">NUMERICAL</text><text x="53" y="216">BATTLE LAB</text></g>
+  <text x="57" y="271" font-family="Georgia, serif" font-size="27" fill="#c0cadd">Watch the numbers fight.</text>
+  <path d="M57 304h500" stroke="#a58d62" stroke-width="2"/>
+  <text x="57" y="336" font-family="Arial, sans-serif" font-size="16" fill="#b7c5d8" letter-spacing="1.8">96 CARDS  /  12 RARITIES  /  SEEDED DUELS</text>
+  <g transform="translate(693 58) rotate(-8 100 139)"><rect width="199" height="279" rx="18" fill="url(#blue)" stroke="#bba775" stroke-width="3"/><rect x="13" y="13" width="173" height="253" rx="11" fill="none" stroke="#8ba6c4"/><path d="m100 53 46 27v57l-46 32-46-32V80z" fill="#24374f" stroke="#b9d4e8" stroke-width="3"/><path d="m100 71 20 61-20-11-20 11z" fill="#c0d7e8"/><path d="M38 205h123M38 225h92M38 245h111" stroke="#b3c7db" stroke-width="5" stroke-linecap="round"/></g>
+  <g transform="translate(926 58) rotate(8 100 139)"><rect width="199" height="279" rx="18" fill="url(#red)" stroke="#bba775" stroke-width="3"/><rect x="13" y="13" width="173" height="253" rx="11" fill="none" stroke="#c18f9c"/><path d="m100 53 46 27v57l-46 32-46-32V80z" fill="#4c293a" stroke="#e7bcc3" stroke-width="3"/><path d="m100 72 12 25 27 4-20 20 5 28-24-13-24 13 5-28-20-20 27-4z" fill="#f0c4bd"/><path d="M38 205h107M38 225h123M38 245h79" stroke="#dfb4bd" stroke-width="5" stroke-linecap="round"/></g>
+  <text x="877" y="226" font-family="Arial, sans-serif" font-weight="700" font-size="28" fill="#f5dfac">VS</text>
+  <text x="805" y="381" font-family="Arial, sans-serif" font-size="13" fill="#aebfd4" letter-spacing="2">SAME SEED. SAME BATTLE.</text>
+
+</svg>
