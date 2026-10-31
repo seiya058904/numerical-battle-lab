@@ -33,7 +33,6 @@ jobs:
 
       - name: Verify the static site
         run: |
-          npm test
           npm run verify
 
       - name: Prepare the published site

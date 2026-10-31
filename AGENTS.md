@@ -21,7 +21,7 @@ npm run verify    # 静态文件集合检查 + 测试 + 产品验收 + BP 审计
 npm run test:browser # 独立 Playwright 真浏览器回归；工具及外部证据路径见 README
 ```
 
-`.github/workflows/verify.yml` 在 main push / PR 上运行 `npm run verify`，使用 Node 22。Pages 从 main 根目录发布；保留 `index.html`、`.nojekyll`、`site.webmanifest`、图标和所有正式资源路径。UI 修改需实际浏览器检查主流程、移动布局、控制台和减弱动态；播放结果不能只凭构建或静态测试判断。
+`.github/workflows/verify.yml` 在 PR 上使用 Node 22 运行 `npm run verify`；main push 由 Pages 工作流使用 Node 24 运行同一验证后部署。Pages 从 main 根目录发布；保留 `index.html`、`.nojekyll`、`site.webmanifest`、图标和所有正式资源路径。UI 修改需实际浏览器检查主流程、移动布局、控制台和减弱动态；播放结果不能只凭构建或静态测试判断。
 
 ## 不变量
 
