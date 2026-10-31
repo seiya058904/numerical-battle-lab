@@ -1,6 +1,6 @@
 ---
-name: Numerical Battle Lab — eight visual editions
-description: One deterministic duel, eight complete material systems.
+name: Numerical Battle Lab — twelve visual editions
+description: One deterministic duel, twelve complete material systems.
 colors:
   collector-bg: "#080c0d"
   collector-ink: "#e6e7df"
@@ -26,6 +26,18 @@ colors:
   verdant-bg: "#eeeee5"
   verdant-ink: "#384238"
   verdant-accent: "#875340"
+  brutal-bg: "#e3e1dc"
+  brutal-ink: "#141414"
+  brutal-accent: "#ad3307"
+  lacquer-bg: "#170e0d"
+  lacquer-ink: "#f3e6d0"
+  lacquer-accent: "#d9b25f"
+  blueprint-bg: "#f1f4f7"
+  blueprint-ink: "#11335a"
+  blueprint-accent: "#173f6e"
+  aurora-bg: "#0e1219"
+  aurora-ink: "#e8f1f6"
+  aurora-accent: "#c9b8ff"
 typography:
   body:
     fontFamily: '"Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif'
@@ -37,11 +49,11 @@ rounded:
   pulse-card: "12px"
 ---
 
-# Eight editions — Numerical Battle Lab
+# Twelve editions — Numerical Battle Lab
 
 ## Overview
 
-The current product has exactly eight peer editions: **典藏 / Collector**, **光谱 / LUMEN**, **印记 / FOLIO**, **脉冲 / PULSE**, **星图 / NOCTURNE**, **墨境 / SUMI**, **街机 / ARCADE**, and **生息 / VERDANT**. Preserve one DOM, one card pool, one simulation and one playback state. The material world changes; the match never does. First visits still use Collector. The original material sources below remain preserved history and the authority for Collector, not a requirement to make every edition metallic.
+The current product has exactly twelve peer editions: **典藏 / Collector**, **光谱 / LUMEN**, **印记 / FOLIO**, **脉冲 / PULSE**, **星图 / NOCTURNE**, **墨境 / SUMI**, **街机 / ARCADE**, **生息 / VERDANT**, **混凝 / BRUTAL**, **漆金 / LACQUER**, **蓝图 / BLUEPRINT**, and **极光 / AURORA**. Preserve one DOM, one card pool, one simulation and one playback state. The material world changes; the match never does. First visits still use Collector. The original material sources below remain preserved history and the authority for Collector, not a requirement to make every edition metallic.
 
 ## Colors
 
@@ -72,11 +84,11 @@ All 12 ranks retain their exact names and numbered progression. Collector has tw
 
 ## Components
 
-The frozen head registry resolves all eight stable IDs before CSS. It owns names, short descriptions, browser colors, light/dark scheme, shared surface family, and bounded feedback capabilities. Static native options and renderer keys have explicit consistency tests. The original four module entry order stays unchanged; no shared module or dependency is needed. Best-effort storage uses the existing `nbl.visual-theme` key, defaults to Collector, and safely rejects unknown IDs.
+The frozen head registry resolves all twelve stable IDs before CSS. It owns names, short descriptions, browser colors, light/dark scheme, shared surface family, and bounded feedback capabilities. Static native options and renderer keys have explicit consistency tests. The original four module entry order stays unchanged; no shared module or dependency is needed. Best-effort storage uses the existing `nbl.visual-theme` key, defaults to Collector, and safely rejects unknown IDs.
 
 `initTheme()` binds the native selector and one delegated catalogue listener. Both use one application path and emit a presentation notification. The default-collapsed native details catalogue contains only CSS material samples. Switching preserves business DOM, focus, selection, level drafts, Seed intent, expanded statistics, match events, HP interpolation, playback waits and log position.
 
-`themedEmblemMarkup()` mounts exactly one SVG per card/result container. A string-only cache has at most 288 keys (8 themes × 12 tiers × A/B/Result), with no detached nodes. Before replacing a crest, only its own CSS/Web Animations and tracked references are cancelled. Old material particles are discarded without clearing HP counters or replay waits. Neutral DRAW uses a separate mark, never a winner crest. Collector V3, LUMEN V1, FOLIO V1 and PULSE V1 geometry and lettering stay unchanged.
+`themedEmblemMarkup()` mounts exactly one SVG per card/result container. A string-only cache has at most 432 keys (12 themes × 12 tiers × A/B/Result), with no detached nodes. Before replacing a crest, only its own CSS/Web Animations and tracked references are cancelled. Old material particles are discarded without clearing HP counters or replay waits. Neutral DRAW uses a separate mark, never a winner crest. Collector V3, LUMEN V1, FOLIO V1 and PULSE V1 geometry and lettering stay unchanged.
 
 Collector keeps the existing 400-element / 32 KB ceiling, LUMEN its 110-element / 12 KB ceiling, and FOLIO/PULSE their 40-element / 5 KB ceilings. Each new crest has a 110-element / 12 KB ceiling. The one shared canvas remains bounded to 180 particles / 3.5 million pixels. There are no new ambient animation loops, external SVG references, SVG scripts or filters, or raster assets.
 
@@ -88,7 +100,20 @@ Collector keeps the existing 400-element / 32 KB ceiling, LUMEN its 110-element 
 - Keep exact static file manifests in sync. Evidence and exploratory concepts stay outside the production root.
 - Distinguish a synthetic DRAW UI fixture from a natural simulated draw; neither the fixture nor instrumentation runs in the product entry point.
 
-## Current extension brief — 2026-10-24
+## Finishing pass and atelier editions — 2026-10-31
+
+All eight earlier editions received a CSS-only finishing pass: one shared interaction state language (hover, active, disabled, focus-visible) for the start key, speed keys, text buttons and inputs; themed native select arrows and range accent; float numbers drawn with a surface-coloured halo rather than a full-width band over the crest; log round dividers and a current-row marker; ledger striping in the summary table; and a clearer settlement hierarchy (verdict, then winner, then remaining HP) with a single reduced-motion-safe entrance. Static texture now comes from layered CSS gradients only: NOCTURNE star field and survey grid, SUMI paper fibre, ARCADE molded speckle and VERDANT chalk grain. FOLIO carries its cotton stock into archive and settlement; LUMEN uses two-layer porcelain light; PULSE adds recessed windows and one phosphor glow. Collector/LUMEN/FOLIO/PULSE crest geometry and layout are unchanged.
+
+| Edition | Material and typography | Crest / controller | Event and result language |
+| --- | --- | --- | --- |
+| BRUTAL | Board-marked concrete with tie holes, Arial Black display, square everything, hard offset shadows; red team shifted to crimson so it never reads as the orange accent | Chamfered block whose chamfer and stroke grow with rank, barcode ticks, corner bolts from S; black controller block with orange figures | Two-step slab drop; result panel casts the winner's colour as an offset shadow |
+| LACQUER | Black-red urushi, gold line, Songti names, Georgia figures; coral red team for contrast on red-black | Round lacquer box with one to six gilded rings and cloud strokes; lacquer-disc controller with dashed inner ring | Gold glint on the detail ring; double gilded settlement frame |
+| BLUEPRINT | White drafting grid, cobalt ink, Consolas figures, dashed rules and a tick ruler under BP | Machined plate with bolt circle (4–14 holes), centrelines and a dimension line; crosshair dial controller | Dash trace on the measurement ring; title-block result with team-coloured edge |
+| AURORA | Polar-night gradients under frosted panels (backdrop-filter is progressive; opaque fallback stays readable), light sans, lavender action light kept distinct from healing green | Hexagonal ice crystal; branch count and length grow with rank; glass orb controller | Crystal flare on the inner hexagon; wide-tracked light verdict |
+
+`atelierEmblemMarkup(tier, theme)` renders the four families with the same contract as `naturalEmblemMarkup`: ≤110 elements / 12 KB, no IDs, filters, images, scripts or animation elements, a central reading plane, `rank-detail`/`rank-core` hooks, and COLLECTOR labels on tiers 9 and 11. Impact shapes reuse the existing circle/square/diamond/leaf canvas paths. The catalogue shows twelve tiles, each with a four-colour palette strip.
+
+## Previous extension brief — 2026-10-24
 
 | Edition | Material and typography | Crest / controller | Event and result language |
 | --- | --- | --- | --- |

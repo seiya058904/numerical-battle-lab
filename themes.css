@@ -646,3 +646,361 @@ html[data-theme=verdant] {
   .extension-emblem .rank-detail { animation:none!important }
 }
 .page-hidden .extension-emblem .rank-detail,.pcard:not(.in-view) .extension-emblem .rank-detail { animation-play-state:paused }
+
+/* ==========================================================================
+   Finishing pass — 2026-10-31. Shared interaction states and reading rhythm,
+   material refinements per edition, then four atelier editions. Structure,
+   crest geometry and business DOM are untouched; motion stays event-driven.
+   ========================================================================== */
+
+/* Shared controls: one state language, each edition supplies the tokens. */
+html[data-theme] .theme-picker select,
+[data-surface=edition] .card-picker select {
+  appearance:none; -webkit-appearance:none; padding-right:2.1rem;
+  background-image:linear-gradient(45deg,transparent 50%,var(--text-2) 50%),linear-gradient(135deg,var(--text-2) 50%,transparent 50%);
+  background-position:calc(100% - 1.15rem) 52%,calc(100% - .8rem) 52%;
+  background-size:.35rem .35rem; background-repeat:no-repeat
+}
+html[data-theme] .theme-picker select:focus-visible { outline:2px solid var(--focus,var(--gold)); outline-offset:2px }
+[data-surface=edition] { accent-color:var(--gold) }
+[data-surface=edition] :is(.spdbtn,.text-btn,.stats-toggle,#startBtn,.btn,.theme-gallery button,.card-picker,.lvl-val input,.match-config input) {
+  transition:background-color 160ms,color 160ms,border-color 160ms,box-shadow 180ms,transform 180ms var(--ease),filter 160ms
+}
+[data-surface=edition] .spdbtn:hover:not(:disabled):not(.on) { color:var(--text); border-color:var(--text-3) }
+[data-surface=edition] #startBtn:hover:not(:disabled) { transform:translateY(-1px); filter:brightness(1.06) }
+[data-surface=edition] #startBtn:active:not(:disabled) { transform:translateY(1px); filter:brightness(.97) }
+[data-surface=edition] :is(button,input,select,summary,[tabindex]):focus-visible { outline:2px solid var(--focus); outline-offset:2px }
+[data-surface=edition] .card-picker:focus-within { box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 22%,transparent) }
+[data-surface=edition] :is(.lvl-val input,.match-config input):focus { border-color:var(--focus); box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 18%,transparent); outline:0 }
+[data-surface=edition] input[type=range] { cursor:pointer }
+[data-surface=edition] input[type=range]:focus-visible::-webkit-slider-thumb { box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 35%,transparent) }
+[data-surface=edition] .stats-toggle { color:var(--text-2) }
+[data-surface=edition] .stats-toggle:hover { color:var(--text) }
+
+/* Float numbers: a surface-coloured halo instead of a full-width band over the crest. */
+[data-surface=edition] .float-number { background:none; padding:0; text-shadow:0 0 2px var(--surface),0 0 6px var(--surface),0 0 12px var(--surface) }
+
+/* Log and summary: round dividers, a current-row marker, ledger rows. */
+html[data-theme] .log-round { font-size:.6875rem; letter-spacing:.14em; padding:.85rem 0 .35rem; border-bottom:1px solid var(--line); margin-bottom:.15rem }
+html[data-theme] .le { padding:.45rem .5rem; line-height:1.55 }
+html[data-theme] .le .amt { font-variant-numeric:tabular-nums }
+html[data-theme] .le.current { box-shadow:inset 2px 0 var(--gold) }
+html[data-theme] .le.crit .txt { font-weight:600 }
+[data-surface=edition] .le:hover { background:color-mix(in srgb,var(--surface-muted) 55%,transparent) }
+[data-surface=edition] .log-round { color:var(--gold) }
+[data-surface=edition] .summary-panel tbody tr:nth-child(even) { background:color-mix(in srgb,var(--surface-muted) 45%,transparent) }
+[data-surface=edition] .summary-panel thead th { font-size:.6875rem; letter-spacing:.12em; color:var(--text-2) }
+[data-surface=edition] .summary-metrics strong { font-family:var(--display); font-size:1.3rem; letter-spacing:-.01em }
+
+/* Settlement: verdict, then winner, then remaining HP; one entrance per result. */
+[data-surface=edition] .result-verdict { font-size:2.6rem; line-height:1.05 }
+[data-surface=edition] .result-name { font-size:1.4rem; letter-spacing:.03em }
+[data-surface=edition] .result-hp { font-family:var(--display); font-size:1.5rem; color:var(--text) }
+[data-surface=edition] .result-hp-label { letter-spacing:.08em }
+html[data-theme] .result-panel:is(.win0,.win1,.draw) { animation:result-arrive 460ms var(--ease) both }
+@keyframes result-arrive { from { opacity:0; transform:translateY(10px) } to { opacity:1; transform:none } }
+@media(prefers-reduced-motion:reduce) { html[data-theme] .result-panel:is(.win0,.win1,.draw) { animation:none } }
+
+/* Catalogue: twelve tiles, each with a four-colour palette strip. */
+.theme-gallery button { grid-template-rows:auto auto auto; position:relative }
+.theme-gallery button::after { content:''; grid-column:2; height:4px; border-radius:2px;
+  background:linear-gradient(90deg,var(--p1,#080c0d) 0 25%,var(--p2,#e6e7df) 25% 50%,var(--p3,#e8c98c) 50% 75%,var(--p4,#88cef1) 75%) }
+.theme-gallery button:hover:not([aria-pressed=true]) { transform:translateY(-1px) }
+.theme-preview { grid-row:1 / 4 }
+[data-theme-id=collector] { --p1:#080c0d; --p2:#e6e7df; --p3:#e8c98c; --p4:#88cef1 }
+[data-theme-id=lumen] { --p1:#edf2f5; --p2:#1c3547; --p3:#275eb0; --p4:#af3d4b }
+[data-theme-id=folio] { --p1:#eee8d9; --p2:#203c32; --p3:#26503c; --p4:#a13836 }
+[data-theme-id=pulse] { --p1:#18121d; --p2:#f4e6d8; --p3:#ffc28b; --p4:#97d5f4 }
+[data-theme-id=nocturne] { --p1:#101e32; --p2:#e5edf4; --p3:#c4d9ee; --p4:#91d4ff }
+[data-theme-id=sumi] { --p1:#eeefed; --p2:#242e34; --p3:#9c5147; --p4:#235f92 }
+[data-theme-id=arcade] { --p1:#ecebe5; --p2:#292e46; --p3:#424b9b; --p4:#fce4a7 }
+[data-theme-id=verdant] { --p1:#eeeee5; --p2:#384238; --p3:#875340; --p4:#536b42 }
+[data-theme-id=brutal] { --p1:#e3e1dc; --p2:#141414; --p3:#ad3307; --p4:#1f4fa0 }
+[data-theme-id=lacquer] { --p1:#170e0d; --p2:#f3e6d0; --p3:#d9b25f; --p4:#ff9c8a }
+[data-theme-id=blueprint] { --p1:#f1f4f7; --p2:#11335a; --p3:#173f6e; --p4:#1b6fc0 }
+[data-theme-id=aurora] { --p1:#0e1219; --p2:#e8f1f6; --p3:#c9b8ff; --p4:#7ff0cf }
+[data-theme-id=brutal] .theme-preview { background:#d6d3cc; border:4px solid #141414; border-radius:0; clip-path:none; box-shadow:4px 4px 0 #ad3307 }
+[data-theme-id=lacquer] .theme-preview { background:radial-gradient(circle at 40% 35%,#4a1d14,#1d0e0b 70%); border:2px solid #d9b25f; border-radius:50%; clip-path:none }
+[data-theme-id=blueprint] .theme-preview { background:linear-gradient(#1d5fae22 1px,transparent 1px) 0 0/6px 6px,linear-gradient(90deg,#1d5fae22 1px,transparent 1px) 0 0/6px 6px,#fbfcfd; border:1px solid #1a4f86; border-radius:2px; clip-path:none }
+[data-theme-id=aurora] .theme-preview { background:linear-gradient(140deg,#7ff0cf,#5b7bd6 55%,#c9b8ff); border:1px solid #ffffff55; clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%) }
+
+/* ---- Material refinements for the eight established editions ---- */
+/* Collector: quieter dark panels with a fine metal rule; geometry untouched. */
+[data-theme=collector] .le.current { background:#c3a66b14 }
+[data-theme=collector] .log-round { color:#d6bf8f; border-color:#b7a67b33 }
+[data-theme=collector] .result-panel { box-shadow:inset 0 0 0 1px #00000080,inset 0 0 0 4px #0b110f,inset 0 0 0 5px #b3a07755,0 .8rem 1.8rem #0009 }
+[data-theme=collector] .result-verdict { letter-spacing:.06em; text-shadow:0 1px 0 #000 }
+[data-theme=collector] .summary-panel tbody tr:nth-child(even) { background:#ffffff05 }
+
+/* LUMEN: ambient + directional light on porcelain; crisp glass rims. */
+[data-theme=lumen] .card-face { box-shadow:0 1px 2px #27435b14,0 22px 44px -16px #27435b40,inset 0 1px 0 #fff,inset 0 -1px 0 #bacbd666 }
+[data-theme=lumen] .round-center { box-shadow:0 1px 2px #27435b1a,0 18px 40px -14px #27435b40,inset 0 1px 0 #fff }
+[data-theme=lumen] #startBtn { box-shadow:0 1px 0 #ffffff55 inset,0 10px 22px -8px #275eb099 }
+[data-theme=lumen] .summary-panel tbody tr:nth-child(even) { background:#e7eff499 }
+
+/* FOLIO: the same cotton stock carries through settlement and archive. */
+[data-theme=folio] :is(.telemetry,.result-panel,.card-config) { background:linear-gradient(#faf6ebf0,#faf6ebf0),url('assets/folio-paper.webp') center/cover }
+[data-theme=folio] .le .rnd { font-family:Georgia,serif; font-style:italic }
+[data-theme=folio] .log-round { font-family:Georgia,serif; letter-spacing:.2em; border-bottom:3px double var(--line) }
+[data-theme=folio] .summary-metrics strong { font-weight:400 }
+
+/* PULSE: recessed signal windows and one restrained phosphor glow. */
+[data-theme=pulse] .card-face { box-shadow:var(--panel-shadow),inset 0 1px 0 #ffffff12 }
+[data-theme=pulse] .power-strip { box-shadow:inset 0 2px 8px #00000099 }
+[data-theme=pulse] :is(.bp-value,.round-value) { text-shadow:0 0 14px #ffc28b40 }
+[data-theme=pulse] .round-center { box-shadow:inset 0 3px 14px #000c,var(--panel-shadow) }
+[data-theme=pulse] .log-round { font-family:var(--display); letter-spacing:.06em }
+
+/* NOCTURNE: static star field and survey grid (no animation). */
+[data-theme=nocturne] .lab-backdrop { background:
+  radial-gradient(1px 1px at 23px 41px,#dbe9ff 50%,transparent 51%) 0 0/233px 211px,
+  radial-gradient(1px 1px at 151px 97px,#c4d9ee 50%,transparent 51%) 0 0/233px 211px,
+  radial-gradient(1.5px 1.5px at 97px 173px,#eef5ff 50%,transparent 51%) 0 0/317px 263px,
+  radial-gradient(1px 1px at 211px 29px,#9fb9d6 50%,transparent 51%) 0 0/317px 263px,
+  linear-gradient(#59738d14 1px,transparent 1px) 0 0/160px 160px,
+  linear-gradient(90deg,#59738d14 1px,transparent 1px) 0 0/160px 160px,
+  radial-gradient(ellipse at 95% 0,#2c4260 0,transparent 43%),var(--bg) }
+[data-theme=nocturne] .card-face { box-shadow:var(--panel-shadow),inset 0 1px 0 #c4d9ee1f }
+[data-theme=nocturne] .round-value { text-shadow:0 0 18px #91d4ff33 }
+
+/* SUMI: fine paper fibre and an ink-wash head on each sheet. */
+[data-theme=sumi] .lab-backdrop { background:
+  repeating-linear-gradient(83deg,transparent 0 7px,#5a666a08 7px 8px),
+  repeating-linear-gradient(171deg,transparent 0 13px,#5a666a06 13px 14px),
+  linear-gradient(112deg,#d8dedb 0,transparent 19%,transparent 85%,#dfe3e0),var(--bg) }
+[data-theme=sumi] .card-face { background:linear-gradient(180deg,#e3e8e566,transparent 9rem),linear-gradient(98deg,#e9edeb88,transparent 6%),var(--surface) }
+[data-theme=sumi] .log-round { font-family:var(--display); letter-spacing:.3em }
+[data-theme=sumi] .result-verdict { font-family:var(--display) }
+
+/* ARCADE: molded speckle, deeper key travel, warm display window. */
+[data-theme=arcade] .lab-backdrop { background:
+  radial-gradient(circle at 3px 3px,#4045680d 1px,transparent 1.5px) 0 0/11px 11px,
+  linear-gradient(135deg,#d8dbed 0,transparent 30%,transparent 75%,#e5d6ba),var(--bg) }
+[data-theme=arcade] #startBtn { box-shadow:inset 0 1px 0 #ffffff40,0 6px 12px #404a7b33 }
+[data-theme=arcade] #startBtn:hover:not(:disabled) { filter:brightness(1.08) }
+[data-theme=arcade] .round-center::before { box-shadow:inset 0 0 22px #ffd97a99,inset 0 2px 0 #fff }
+[data-theme=arcade] .spdbtn { border-bottom-width:3px }
+[data-theme=arcade] .spdbtn:active:not(:disabled) { transform:translateY(2px); border-bottom-width:1px }
+
+/* VERDANT: chalk grain and a pressed terracotta key. */
+[data-theme=verdant] .lab-backdrop { background:
+  radial-gradient(circle at 2px 2px,#5f674514 .8px,transparent 1.2px) 0 0/7px 7px,
+  radial-gradient(ellipse at 0 0,#dce3ca 0,transparent 55%),linear-gradient(120deg,transparent 70%,#e8d9cc),var(--bg) }
+[data-theme=verdant] #startBtn:active:not(:disabled) { transform:translateY(2px); box-shadow:0 2px 4px #6b4e3133 }
+[data-theme=verdant] .log-round { font-family:var(--display); letter-spacing:.12em }
+
+/* ---- BRUTAL — board-marked concrete, heavy black type, signal orange ---- */
+html[data-theme=brutal] {
+  --bg:#e3e1dc; --surface:#f1f0ec; --surface-muted:#d6d3cc;
+  --text:#141414; --text-2:#3a3a38; --text-3:#4f4e4b; --line:#8d8a83;
+  --gold:#ad3307; --blue:#1f4fa0; --red:#a8173a; --green:#1d6b3a;
+  --focus:#141414; --edition:#141414; --display:"Arial Black","Segoe UI Black","Microsoft YaHei",sans-serif;
+  --shape:0px; --panel-shadow:8px 8px 0 #14141422;
+}
+[data-theme=brutal] .lab-backdrop { background:
+  radial-gradient(circle at 36px 30px,#00000026 3px,transparent 4px) 0 0/360px 180px,
+  linear-gradient(90deg,#0000000d 1px,transparent 1px) 0 0/360px 180px,
+  linear-gradient(#00000012 1px,transparent 1px) 0 0/360px 180px,
+  radial-gradient(circle at 2px 2px,#00000010 .7px,transparent 1.1px) 0 0/5px 5px,
+  linear-gradient(170deg,#ebe9e4,#d9d6cf),var(--bg) }
+[data-theme=brutal] .site-header h1 { font:900 2.3rem/1.1 var(--display); letter-spacing:-.02em }
+[data-theme=brutal] .site-header h1::before,[data-theme=brutal] .site-header h1::after { display:none }
+[data-theme=brutal] .site-header p { font-weight:700; letter-spacing:.3em; color:var(--text) }
+[data-theme=brutal] .card-picker { border:2px solid var(--text); background:var(--text) }
+[data-theme=brutal] .card-face { border:3px solid var(--text); box-shadow:8px 8px 0 var(--text) }
+[data-theme=brutal] .card-face::before { display:none }
+[data-theme=brutal] .card-rail { background:var(--text); color:var(--surface); border:0; padding:0 .55rem; text-transform:uppercase; font-weight:700 }
+[data-theme=brutal] .card-serial::before { color:#bdbab3 }
+[data-theme=brutal] .cname { font:900 2rem/1.25 var(--display); letter-spacing:0 }
+[data-theme=brutal] .rar-badge::before { border-radius:0; width:8px; height:8px; background:var(--gold) }
+[data-theme=brutal] .card-english { font-weight:700; color:var(--text-2) }
+[data-theme=brutal] .power-strip { border-top:3px solid var(--text); border-bottom:3px solid var(--text) }
+[data-theme=brutal] .bp-value { font:900 2.5rem/1.1 var(--display); letter-spacing:-.04em }
+[data-theme=brutal] input[type=range]::-webkit-slider-thumb { border-radius:0; background:var(--text); border:0; width:14px; height:22px; box-shadow:3px 3px 0 var(--gold) }
+[data-theme=brutal] .hpbar-wrap { height:10px; border:2px solid var(--text); background:var(--surface) }
+[data-theme=brutal] .card-material::after { content:'清水混凝土 / RAW CONCRETE' }
+[data-theme=brutal] .card-config { border:2px solid var(--text); box-shadow:6px 6px 0 #14141422 }
+[data-theme=brutal] .archive-heading { font-weight:900; text-transform:uppercase }
+[data-theme=brutal] .round-center { background:var(--text); border:3px solid var(--text); box-shadow:8px 8px 0 var(--gold) }
+[data-theme=brutal] .round-center::before { inset:9%; border:2px solid #3b3b39 }
+[data-theme=brutal] .round-value { color:#ff6a2b; font:900 4.4rem/1 var(--display); letter-spacing:-.04em }
+[data-theme=brutal] .round-label { color:#bdbab3 }
+[data-theme=brutal] .hud-state { color:var(--surface); letter-spacing:.24em; font-weight:700 }
+[data-theme=brutal] #startBtn { background:var(--gold); color:#fff; border:3px solid var(--text); box-shadow:6px 6px 0 var(--text); font-weight:900 }
+[data-theme=brutal] #startBtn:hover:not(:disabled) { transform:translate(-2px,-2px); box-shadow:8px 8px 0 var(--text); filter:none }
+[data-theme=brutal] #startBtn:active:not(:disabled) { transform:translate(4px,4px); box-shadow:2px 2px 0 var(--text) }
+[data-theme=brutal] .spdbtn { border:2px solid var(--text); color:var(--text); font-weight:700 }
+[data-theme=brutal] .spdbtn.on { background:var(--text); color:var(--surface); box-shadow:none }
+[data-theme=brutal] :is(.match-config input,.lvl-val input) { border:2px solid var(--text) }
+[data-theme=brutal] .event-readout { border:2px solid var(--text) }
+[data-theme=brutal] .telemetry { border:3px solid var(--text); box-shadow:8px 8px 0 #14141422 }
+[data-theme=brutal] .log-head { font-weight:900; text-transform:uppercase }
+[data-theme=brutal] .log-round { font-weight:900; border-bottom:2px solid var(--text); color:var(--gold) }
+[data-theme=brutal] .le.current { box-shadow:inset 4px 0 var(--gold) }
+[data-theme=brutal] .summary-metrics strong { font-weight:900 }
+[data-theme=brutal] .result-panel { border:3px solid var(--text); box-shadow:10px 10px 0 var(--result-accent) }
+[data-theme=brutal] .result-verdict { font:900 3rem/1 var(--display); letter-spacing:-.03em; text-transform:uppercase }
+[data-theme=brutal] .result-medal .draw-mark { border:3px solid var(--text); border-radius:0 }
+[data-theme=brutal] .extension-glyph { letter-spacing:-.05em }
+[data-theme=brutal] .pcard[data-action=attack] .rank-detail { animation:slab-drop 220ms steps(2,end) }
+@keyframes slab-drop { from { transform:translateY(-6px); opacity:.4 } to { transform:none; opacity:1 } }
+
+/* ---- LACQUER — black-red urushi, gold line, Songti identity ---- */
+html[data-theme=lacquer] {
+  --bg:#170e0d; --surface:#24130f; --surface-muted:#351a13;
+  --text:#f3e6d0; --text-2:#d6c1a5; --text-3:#c0a98b; --line:#6e4b33;
+  --gold:#d9b25f; --blue:#8cc8f0; --red:#ff9c8a; --green:#9fd8a8;
+  --focus:#f2d48c; --edition:#d9b25f; --display:"Songti SC",SimSun,STSong,Georgia,serif;
+  --shape:6px; --panel-shadow:0 18px 40px #0a040399;
+}
+[data-theme=lacquer] .lab-backdrop { background:
+  radial-gradient(ellipse 70% 45% at 50% -8%,#4f1c13 0,transparent 70%),
+  radial-gradient(ellipse 45% 40% at 100% 100%,#3b130d,transparent 70%),
+  radial-gradient(ellipse 40% 35% at 0 70%,#2a0f0b,transparent 70%),var(--bg) }
+[data-theme=lacquer] .site-header h1 { font-family:var(--display); font-weight:400; letter-spacing:.22em; color:#f6e7c8 }
+[data-theme=lacquer] .site-header h1::before { background:linear-gradient(90deg,transparent,var(--gold)); height:1px }
+[data-theme=lacquer] .site-header h1::after { background:linear-gradient(90deg,var(--gold),transparent); height:1px }
+[data-theme=lacquer] .card-face { background:linear-gradient(160deg,#3d1b13 0,var(--surface) 38%,#1b0d0b); border:1px solid #8a6436;
+  box-shadow:var(--panel-shadow),inset 0 0 0 4px #24130f,inset 0 0 0 5px #d9b25f44,inset 0 1px 0 #ffffff12 }
+[data-theme=lacquer] .card-face::before { inset:.6rem; border:1px solid #d9b25f30; border-radius:3px }
+[data-theme=lacquer] .card-rail { border-bottom-color:#d9b25f33; color:#c9ab7d }
+[data-theme=lacquer] .cname { font:600 1.9rem/1.4 var(--display); letter-spacing:.16em; color:#f6e7c8 }
+[data-theme=lacquer] .card-english { font-family:Georgia,serif; letter-spacing:.12em }
+[data-theme=lacquer] .rar-badge::before { border-radius:50%; background:var(--gold) }
+[data-theme=lacquer] .power-strip { border-color:#d9b25f55 }
+[data-theme=lacquer] .bp-value { font-family:Georgia,var(--display); font-weight:400; color:var(--gold) }
+[data-theme=lacquer] .hpbar-wrap { background:#120807; box-shadow:inset 0 1px 2px #000 }
+[data-theme=lacquer] .card-material::after { content:'大漆描金 / GOLD LACQUER' }
+[data-theme=lacquer] .card-config { background:#1e100d; border-color:#5a3a26 }
+[data-theme=lacquer] .round-center { border-radius:50%; background:radial-gradient(circle at 50% 32%,#40190f,#1c0d0a 72%); border:1px solid #d9b25f88;
+  box-shadow:0 0 0 6px #1d0f0c,0 0 0 7px #d9b25f40,var(--panel-shadow) }
+[data-theme=lacquer] .round-center::before { inset:9%; border:1px dashed #d9b25f50; border-radius:50% }
+[data-theme=lacquer] .round-value { font:400 4.4rem/1 var(--display); color:var(--gold); text-shadow:0 2px 0 #0008 }
+[data-theme=lacquer] .hud-state { color:#e9cf96; letter-spacing:.3em }
+[data-theme=lacquer] #startBtn { background:linear-gradient(180deg,#ecca82,#c08f42) #d4a95e; color:#2a120c; border:1px solid #f2d48c; box-shadow:inset 0 1px 0 #fff7,0 10px 22px #000a; letter-spacing:.2em }
+[data-theme=lacquer] .spdbtn.on { background:#3a1c14; color:#f6e7c8 }
+[data-theme=lacquer] .event-readout { background:#1f100d; border-color:#5a3a26 }
+[data-theme=lacquer] .telemetry { background:#1e100d; border-color:#4f3322; box-shadow:inset 0 1px 0 #d9b25f22 }
+[data-theme=lacquer] .log-round { font-family:var(--display); letter-spacing:.24em; border-color:#d9b25f33 }
+[data-theme=lacquer] .summary-panel tbody tr:nth-child(even) { background:#ffffff06 }
+[data-theme=lacquer] .result-panel { background:linear-gradient(#2b1611,#1d0e0b); border-color:#d9b25f66;
+  box-shadow:inset 0 0 0 5px #1d0e0b,inset 0 0 0 6px #d9b25f30,var(--panel-shadow) }
+[data-theme=lacquer] .result-verdict { font-weight:400; letter-spacing:.18em }
+[data-theme=lacquer] .result-medal .draw-mark { border-radius:50%; border:1px solid var(--gold) }
+[data-theme=lacquer] .pcard[data-action=attack] .rank-detail { animation:gold-glint 300ms ease-out }
+@keyframes gold-glint { from { stroke-width:5; opacity:.35 } to { stroke-width:1.2; opacity:1 } }
+
+/* ---- BLUEPRINT — white drafting sheet, cobalt line, dimensioned parts ---- */
+html[data-theme=blueprint] {
+  --bg:#f1f4f7; --surface:#fbfcfd; --surface-muted:#e4ecf4;
+  --text:#11335a; --text-2:#33557b; --text-3:#4a6788; --line:#9fb5cc;
+  --gold:#173f6e; --blue:#1b6fc0; --red:#b3323f; --green:#1d6b49;
+  --focus:#0f4c99; --edition:#1a4f86; --display:Consolas,"Cascadia Mono","Microsoft YaHei",monospace;
+  --shape:2px; --panel-shadow:0 1px 0 #9fb5cc,0 12px 26px -10px #11335a26;
+}
+[data-theme=blueprint] .lab-backdrop { background:
+  linear-gradient(#1d5fae12 1px,transparent 1px) 0 0/24px 24px,
+  linear-gradient(90deg,#1d5fae12 1px,transparent 1px) 0 0/24px 24px,
+  linear-gradient(#1d5fae20 1px,transparent 1px) 0 0/120px 120px,
+  linear-gradient(90deg,#1d5fae20 1px,transparent 1px) 0 0/120px 120px,var(--bg) }
+[data-theme=blueprint] .site-header h1 { font:600 1.6rem/1.3 var(--display); letter-spacing:.14em }
+[data-theme=blueprint] .site-header h1::before,[data-theme=blueprint] .site-header h1::after { background:var(--edition); height:1px }
+[data-theme=blueprint] .card-face { border:1px solid var(--edition) }
+[data-theme=blueprint] .card-face::before { inset:.45rem; border:1px solid var(--line) }
+[data-theme=blueprint] .card-rail { font-family:var(--display); border-bottom:1px dashed var(--line) }
+[data-theme=blueprint] .cname { font-weight:650; letter-spacing:.08em }
+[data-theme=blueprint] .card-english { font-family:var(--display); letter-spacing:.1em }
+[data-theme=blueprint] .rar-badge::before { border-radius:0; transform:rotate(45deg) }
+[data-theme=blueprint] .power-strip { border-top:1px solid var(--edition); border-bottom:0;
+  background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 12px) left bottom/100% 6px no-repeat }
+[data-theme=blueprint] .bp-value { font:700 2.2rem/1.1 var(--display); letter-spacing:-.03em }
+[data-theme=blueprint] :is(.stat-tile .v,.summary-metrics strong,.hud-hp,.le .amt) { font-family:var(--display) }
+[data-theme=blueprint] .card-material::after { content:'工程图纸 / TECHNICAL DRAWING' }
+[data-theme=blueprint] .card-config { border-style:dashed }
+[data-theme=blueprint] .round-center { border-radius:50%; border:1px solid var(--edition); background:var(--surface) }
+[data-theme=blueprint] .round-center::before { inset:9%; border:1px dashed var(--line); border-radius:50% }
+[data-theme=blueprint] .round-center::after { content:''; position:absolute; inset:-6%; pointer-events:none; opacity:.55;
+  background:linear-gradient(var(--edition),var(--edition)) center/1px 100% no-repeat,linear-gradient(90deg,var(--edition),var(--edition)) center/100% 1px no-repeat }
+[data-theme=blueprint] .round-value { z-index:1; font:700 3.8rem/1 var(--display); background:var(--surface); padding:0 .4rem }
+[data-theme=blueprint] .hud-state { z-index:1; background:var(--surface); padding:0 .5rem; letter-spacing:.2em }
+[data-theme=blueprint] #startBtn { color:#fff; box-shadow:0 0 0 1px var(--gold),0 0 0 4px var(--bg),0 0 0 5px var(--line); letter-spacing:.12em }
+[data-theme=blueprint] .spdbtn.on { background:#e4ecf4; box-shadow:inset 0 -2px var(--gold) }
+[data-theme=blueprint] .event-readout { border-style:dashed }
+[data-theme=blueprint] .log-round { font-family:var(--display); border-bottom-style:dashed }
+[data-theme=blueprint] .result-panel { border:1px solid var(--edition); border-left:6px solid var(--result-accent) }
+[data-theme=blueprint] .result-verdict { font:700 2.3rem/1 var(--display); letter-spacing:.06em }
+[data-theme=blueprint] .result-medal .draw-mark { border:1px dashed var(--edition); border-radius:50% }
+[data-theme=blueprint] .pcard[data-action=attack] .rank-detail { animation:measure-trace 320ms ease-out }
+@keyframes measure-trace { from { stroke-dashoffset:60; opacity:.4 } to { stroke-dashoffset:0; opacity:1 } }
+
+/* ---- AURORA — frosted ice over a polar night, lavender action light ---- */
+html[data-theme=aurora] {
+  --bg:#0e1219; --surface:#171f2c; --surface-muted:#1f2a3a;
+  --text:#e8f1f6; --text-2:#bccbd8; --text-3:#a3b5c6; --line:#3f526a;
+  --gold:#c9b8ff; --blue:#8fc8ff; --red:#ff9fb5; --green:#a8f0b0;
+  --focus:#e5dcff; --edition:#d6e6f5; --display:"Segoe UI Light","Segoe UI","Microsoft YaHei",sans-serif;
+  --shape:18px; --panel-shadow:0 22px 50px #02050b8c;
+}
+[data-theme=aurora] .lab-backdrop { background:
+  radial-gradient(ellipse 55% 38% at 18% -4%,#2bd6a03d,transparent 70%),
+  radial-gradient(ellipse 48% 34% at 86% 6%,#8a6bff38,transparent 70%),
+  radial-gradient(ellipse 70% 40% at 50% 112%,#1d8fb026,transparent 70%),var(--bg) }
+[data-theme=aurora] .site-header h1 { font:300 1.8rem/1.3 var(--display); letter-spacing:.24em }
+[data-theme=aurora] .site-header h1::before,[data-theme=aurora] .site-header h1::after { background:linear-gradient(90deg,#7ff0cf,#c9b8ff); height:1px }
+[data-theme=aurora] :is(.card-face,.card-config,.telemetry,.result-panel,.event-readout) { border:1px solid #ffffff1c; box-shadow:var(--panel-shadow),inset 0 1px 0 #ffffff24 }
+/* Frost only where the fixed mobile transport cannot be covered by a new stacking context. */
+@media(min-width:1001px) {
+  @supports (backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px)) {
+    [data-theme=aurora] :is(.card-face,.card-config,.telemetry,.result-panel,.event-readout) { background:#18212fc4; -webkit-backdrop-filter:blur(18px) saturate(1.25); backdrop-filter:blur(18px) saturate(1.25) }
+  }
+}
+@media(max-width:1000px) {
+  [data-theme=aurora] :is(.card-face,.card-config,.telemetry,.result-panel,.event-readout) { background:linear-gradient(160deg,#1c2738,var(--surface) 60%) }
+}
+[data-theme=aurora] .card-face::before { inset:0; border:0; border-radius:var(--shape); pointer-events:none;
+  background:linear-gradient(115deg,transparent 28%,#9ef5d50c 44%,#b9a6ff12 56%,transparent 72%) }
+[data-theme=aurora] .card-rail { border-bottom-color:#ffffff14 }
+[data-theme=aurora] .cname { font:300 1.95rem/1.4 var(--display); letter-spacing:.14em }
+[data-theme=aurora] .rar-badge::before { border-radius:50%; background:linear-gradient(135deg,#7ff0cf,#c9b8ff) }
+[data-theme=aurora] .power-strip { border-color:#ffffff1a }
+[data-theme=aurora] .bp-value { font:200 2.6rem/1.1 var(--display); color:#fff; letter-spacing:-.02em }
+[data-theme=aurora] .hpbar-wrap { border-radius:3px; background:#0b1018 }
+[data-theme=aurora] .hpbar { border-radius:3px }
+[data-theme=aurora] .card-material::after { content:'冰晶磨砂 / FROSTED CRYSTAL' }
+[data-theme=aurora] .round-center { border-radius:50%; background:radial-gradient(circle at 50% 28%,#2a3a52,#111823 72%); border:1px solid #ffffff22;
+  box-shadow:0 0 44px #7ff0cf1c,0 0 90px #8a6bff1a,inset 0 1px 0 #ffffff33 }
+[data-theme=aurora] .round-center::before { inset:9%; border:1px solid #ffffff14; border-radius:50% }
+[data-theme=aurora] .round-value { font:200 4.4rem/1 var(--display); color:#f2f8ff; text-shadow:0 0 22px #9ef5d559 }
+[data-theme=aurora] .hud-state { color:#d9ccff; letter-spacing:.3em }
+[data-theme=aurora] #startBtn { background:linear-gradient(110deg,#8ff3d6,#c9b8ff) #acd6ea; color:#0e1219; border:0; box-shadow:0 12px 30px -8px #7ff0cf55; font-weight:600; letter-spacing:.14em }
+[data-theme=aurora] .spdbtn { border-radius:12px; background:#1a2230 }
+[data-theme=aurora] .spdbtn.on { background:#2a3448; color:#fff }
+[data-theme=aurora] :is(.match-config input,.lvl-val input,.card-picker :is(input,select)) { background-color:#121925 }
+[data-theme=aurora] .card-picker { border-color:#ffffff22; background:#ffffff22; border-radius:12px }
+[data-theme=aurora] .log-round { letter-spacing:.24em; border-color:#ffffff14 }
+[data-theme=aurora] .le { border-color:#ffffff0d }
+[data-theme=aurora] .summary-panel tbody tr:nth-child(even) { background:#ffffff06 }
+[data-theme=aurora] .result-verdict { font-weight:200; letter-spacing:.24em }
+[data-theme=aurora] .result-medal .draw-mark { border-radius:50%; border:1px solid #ffffff44 }
+[data-theme=aurora] .pcard[data-action=attack] .rank-detail { animation:crystal-flare 320ms ease-out }
+@keyframes crystal-flare { from { stroke-width:4; opacity:.3 } to { stroke-width:1.2; opacity:1 } }
+
+/* New editions on compact screens. */
+@media(max-width:1000px) {
+  html:is([data-theme=brutal],[data-theme=lacquer],[data-theme=blueprint],[data-theme=aurora]) .site-header h1 { font-size:1.1rem; letter-spacing:.05em }
+  html:is([data-theme=brutal],[data-theme=lacquer],[data-theme=blueprint],[data-theme=aurora]) .round-value { font-size:2.6rem }
+  html:is([data-theme=brutal],[data-theme=lacquer],[data-theme=blueprint],[data-theme=aurora]) .app:not([data-phase=ready]) .cname { letter-spacing:.03em }
+  [data-theme=brutal] .card-face { box-shadow:5px 5px 0 var(--text) }
+  [data-theme=brutal] .round-center { box-shadow:5px 5px 0 var(--gold) }
+  [data-theme=brutal] .cname { font-size:1.55rem }
+  [data-theme=brutal] .result-verdict { font-size:2.1rem }
+  [data-theme=brutal] :is(.result-panel,.telemetry) { box-shadow:5px 5px 0 var(--result-accent,#14141422) }
+  [data-theme=brutal] .card-config { box-shadow:4px 4px 0 #14141422 }
+  [data-theme=lacquer] .round-center { box-shadow:0 0 0 4px #1d0f0c,0 0 0 5px #d9b25f40 }
+  [data-theme=blueprint] .round-center::after { inset:0 }
+  [data-surface=edition] .result-verdict { font-size:2rem }
+  [data-surface=edition] .result-hp { font-size:1.25rem }
+}
+@media(prefers-reduced-motion:reduce) {
+  [data-surface=edition] :is(#startBtn,.spdbtn,.theme-gallery button) { transition:none; transform:none!important }
+}

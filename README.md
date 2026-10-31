@@ -78,11 +78,11 @@ No account, deck-building process, or character editor is required. Every conten
 </table>
 
 <a id="visual-editions"></a>
-### 🎨 Eight Visual Editions
+### 🎨 Twelve Visual Editions
 
 Use the header **Visual Theme** selector to switch editions, even during playback. It supports keyboard arrows and touch.
 
-Open **Browse Eight Themes** beneath the header to compare compact material previews and descriptions. This optional catalogue starts collapsed; selecting a preview applies the same theme as the native selector and marks the current choice.
+Open **Browse Twelve Themes** beneath the header to compare compact material previews and descriptions. This optional catalogue starts collapsed; selecting a preview applies the same theme as the native selector and marks the current choice.
 
 | Edition | Visual character |
 | --- | --- |
@@ -94,6 +94,10 @@ Open **Browse Eight Themes** beneath the header to compare compact material prev
 | **SUMI** | Cool-white paper, broken ink contours, open margins, a stamped controller, and short ink-cut feedback. |
 | **ARCADE** | Bright molded panels, original stepped pixel medals, tactile buttons, and discrete score-display feedback. |
 | **VERDANT** | Chalk and terracotta specimen boards, branching leaf crests, organic section shapes, and brief unfolding feedback. |
+| **BRUTAL** | Board-marked concrete, heavy black type, hard offset shadows, signal-orange controls, and chamfered block crests with barcode rank marks. |
+| **LACQUER** | Black-red lacquer, gold-line borders, Songti names, and round lacquer-box crests with gilded rings and cloud strokes. |
+| **BLUEPRINT** | White drafting grid, cobalt line work, monospaced figures, and machined-part crests with bolt circles and dimension lines. |
+| **AURORA** | Frosted panels over a polar night, lavender action light, and hexagonal ice-crystal crests whose branches grow with rank. |
 
 LUMEN, FOLIO, and PULSE retain their restored **V1 overall forms**, original progression marks, and matching card/result medals, together with larger rarity marks and the current layout and interaction improvements. Each edition keeps its own materials and blue/red team colors.
 
@@ -196,7 +200,7 @@ Set `NBL_EVIDENCE_DIR` to an external evidence directory; otherwise it creates o
 | [`src/power.js`](src/power.js) | Level scaling, final attributes, and Battle Power |
 | [`src/battle.js`](src/battle.js) | Seeded simulation and event generation |
 | [`src/app.js`](src/app.js) | Card selection, presentation, and replay |
-| [`styles.css`](styles.css) · [`themes.css`](themes.css) | Original Collector materials, eight scoped editions and accessible controls |
+| [`styles.css`](styles.css) · [`themes.css`](themes.css) | Original Collector materials, twelve scoped editions and accessible controls |
 | [`assets/`](assets/) | Preserved Collector/LUMEN art, FOLIO paper and PULSE polymer backgrounds |
 | [`tests/`](tests/) · [`scripts/`](scripts/) | Regression tests, acceptance checks, and local tooling |
 
@@ -208,7 +212,7 @@ The project supports keyboard interaction, responsive layouts, and `prefers-redu
 
 ## 📚 Design & Source Notes
 
-- **[Design system](DESIGN.md)** — eight visual editions, shared architecture, material provenance, layout, motion and accessibility rules.
+- **[Design system](DESIGN.md)** — twelve visual editions, shared architecture, material provenance, layout, motion and accessibility rules.
 - **[Product definition](PRODUCT.md)** — what the game does, and the boundaries it deliberately keeps.
 - **[Agent guidance](AGENTS.md)** — project-specific engineering and verification constraints.
 

@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-const { initTheme, lumenEmblemMarkup, editionEmblemMarkup, naturalEmblemMarkup, themedEmblemMarkup, EMBLEM_RENDERERS, EMBLEM_CACHE_LIMIT } = require('../src/app.js');
+const { initTheme, lumenEmblemMarkup, editionEmblemMarkup, naturalEmblemMarkup, atelierEmblemMarkup, themedEmblemMarkup, EMBLEM_RENDERERS, EMBLEM_CACHE_LIMIT } = require('../src/app.js');
 const { RARITY_LIST } = require('../src/cards.js');
 const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
 const bootstrap = html.match(/<script>([\s\S]*?)<\/script>/)[1];
@@ -67,12 +67,13 @@ test('blocked storage cannot prevent an in-session switch', () => {
   assert.equal(e.nodes.themeSelect.value, 'lumen');
 });
 
-test('eight stable theme entries match renderers, options and browser surfaces', () => {
+test('twelve stable theme entries match renderers, options and browser surfaces', () => {
   const e = environment(null);
-  const ids = ['collector', 'lumen', 'folio', 'pulse', 'nocturne', 'sumi', 'arcade', 'verdant'];
+  const ids = ['collector', 'lumen', 'folio', 'pulse', 'nocturne', 'sumi', 'arcade', 'verdant', 'brutal', 'lacquer', 'blueprint', 'aurora'];
   assert.deepEqual(Array.from(e.host.NCB_THEME.themes, t => t.id), ids);
   assert.deepEqual(Object.keys(EMBLEM_RENDERERS), ids);
-  assert.equal(new Set(e.host.NCB_THEME.themes.map(t => t.name)).size, 8);
+  assert.equal(new Set(e.host.NCB_THEME.themes.map(t => t.name)).size, 12);
+  assert.equal((html.match(/<option value=/g) || []).length, 12);
   for (const t of e.host.NCB_THEME.themes) {
     const restored = environment(t.id);
     assert.equal(restored.document.documentElement.dataset.theme, t.id);
@@ -101,11 +102,39 @@ test('expanded crest families are deterministic, safe, bounded and singly mounte
     }
     assert.equal(variants.size, 12);
   }
-  assert.equal(EMBLEM_CACHE_LIMIT, 288);
+  assert.equal(EMBLEM_CACHE_LIMIT, 432);
   assert.equal(themedEmblemMarkup(0, 'A', '__proto__'), themedEmblemMarkup(0, 'A', 'collector'));
   assert.throws(() => themedEmblemMarkup(0, 'UnboundedNamespace', 'sumi'), RangeError);
   assert.throws(() => naturalEmblemMarkup(12, 'sumi'), RangeError);
   assert.throws(() => naturalEmblemMarkup(0, 'unknown'), RangeError);
+});
+
+test('atelier crest families are deterministic, safe, bounded and singly mounted', () => {
+  const families = new Set();
+  for (const theme of ['brutal', 'lacquer', 'blueprint', 'aurora']) {
+    const variants = new Set();
+    for (let tier = 0; tier < 12; tier++) {
+      const svg = atelierEmblemMarkup(tier, theme); variants.add(svg);
+      assert.equal(svg, atelierEmblemMarkup(tier, theme));
+      assert.ok(svg.includes(`class="${theme}-emblem extension-emblem"`));
+      assert.ok(svg.includes(`data-mark="${RARITY_LIST[tier].replace(' Collector', '')}"`));
+      assert.ok(Buffer.byteLength(svg) <= 12000);
+      assert.ok((svg.match(/<[a-z]/g) || []).length <= 110);
+      assert.doesNotMatch(svg, /\bid=|<(?:image|filter|script|foreignObject|animate)\b|NaN|undefined|href=/);
+      assert.match(svg, /class="rank-detail"/);
+      assert.match(svg, /class="rank-core"/);
+      assert.equal(svg.includes('COLLECTOR'), tier === 9 || tier === 11);
+      for (const side of ['A', 'B', 'Result']) {
+        assert.equal(themedEmblemMarkup(tier, side, theme), svg);
+        assert.equal((svg.match(/<svg\b/g) || []).length, 1);
+      }
+    }
+    assert.equal(variants.size, 12);
+    families.add(atelierEmblemMarkup(0, theme));
+  }
+  assert.equal(families.size, 4);
+  assert.throws(() => atelierEmblemMarkup(12, 'brutal'), RangeError);
+  assert.throws(() => atelierEmblemMarkup(0, 'sumi'), RangeError);
 });
 
 test('print and signal rank geometry are distinct, deterministic, bounded and ID-free', () => {

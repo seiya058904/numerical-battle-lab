@@ -222,7 +222,7 @@
       ${pips}<text x="120" y="246" text-anchor="middle" fill="currentColor" font-family="Segoe UI,sans-serif" font-size="9" letter-spacing="2">${collector ? 'COLLECTOR · ' : ''}${String(tier + 1).padStart(2, '0')} / 12</text></svg>`;
   }
   // Strings only: no detached DOM, listeners or animation objects in the cache.
-  const EMBLEM_CACHE_LIMIT = 8 * 12 * 3;
+  const EMBLEM_CACHE_LIMIT = 12 * 12 * 3;
   const emblemCache = new Map();
   function themedEmblemMarkup(tier, side, theme = 'collector') {
     rarityFinish(tier);
@@ -263,11 +263,67 @@
     }
     return `<svg class="${theme}-emblem extension-emblem" data-tier="${tier}" data-mark="${mark}" viewBox="0 0 240 270" fill="none" aria-hidden="true">${frame}<text class="extension-glyph" x="120" y="137" text-anchor="middle" fill="currentColor" font-size="${mark.length > 2 ? 51 : 65}" font-weight="${theme==='arcade'?800:theme==='nocturne'?350:500}">${mark}</text>${certified ? '<path d="M62 232H178V253H62Z" fill="var(--surface)" stroke="currentColor"/>' : ''}<text x="120" y="246" text-anchor="middle" fill="currentColor" font-family="Segoe UI,sans-serif" font-size="${certified?10:11}" letter-spacing="1.5">${certified?'COLLECTOR · ':''}${String(tier+1).padStart(2,'0')}${certified?'':' / 12'}</text></svg>`;
   }
+  // Four atelier families: concrete block, lacquer box, machined part, ice crystal.
+  // Same reading plane and label contract as the natural families; no IDs or filters.
+  const ATELIER_THEMES = ['brutal', 'lacquer', 'blueprint', 'aurora'];
+  function atelierEmblemMarkup(tier, theme) {
+    rarityFinish(tier);
+    if (!ATELIER_THEMES.includes(theme)) throw new RangeError('Invalid emblem edition');
+    const mark = RARITY_LIST[tier].replace(' Collector', '');
+    const certified = tier === 9 || tier === 11;
+    const g = Math.floor(tier / 2), odd = tier % 2 === 1;
+    const f = n => +n.toFixed(2);
+    const polar = (r, deg) => { const a = (deg - 90) * Math.PI / 180; return [f(120 + Math.cos(a) * r), f(120 + Math.sin(a) * r)]; };
+    let frame, weight;
+    if (theme === 'brutal') {
+      const c = 4 + g * 7, L = 22, R = 218;
+      const block = `M${L + c} ${L}H${R - c}L${R} ${L + c}V${R - c}L${R - c} ${R}H${L + c}L${L} ${R - c}V${L + c}Z`;
+      const bars = Array.from({ length: tier + 3 }, (_, i) => `<path d="M${64 + i * 8} 8h${i % 3 === 0 ? 5 : 2.5}v10h-${i % 3 === 0 ? 5 : 2.5}Z"/>`).join('');
+      frame = `<g class="emblem-chassis" stroke="currentColor">${odd ? `<path d="${block}" transform="translate(9 9)" fill="currentColor" stroke="none" opacity=".18"/>` : ''}<path d="${block}" fill="var(--surface-muted)" stroke-width="${6 + g}"/><g fill="currentColor" stroke="none">${bars}</g>${tier >= 6 ? '<path d="M38 38h12v12H38ZM190 38h12v12h-12ZM38 190h12v12H38ZM190 190h12v12h-12Z" fill="currentColor" stroke="none"/>' : ''}${tier >= 4 ? `<path d="M${L} 120H40M200 120H${R}" stroke-width="4"/>` : ''}</g><path class="rank-core" d="M56 72H184V168H56Z" fill="var(--surface)" stroke="currentColor" stroke-width="3"/><path class="rank-detail" d="M70 156H170" stroke="currentColor" stroke-width="${5 + g}"/>`;
+      weight = 900;
+    } else if (theme === 'lacquer') {
+      const rings = Array.from({ length: g + 1 }, (_, i) => `<circle cx="120" cy="120" r="${101 - i * 6}" stroke-width="${i ? .8 : 1.6}"/>`).join('');
+      const clouds = Array.from({ length: 4 + g * 2 }, (_, i) => {
+        const deg = i * 360 / (4 + g * 2), [x, y] = polar(76, deg), [x2, y2] = polar(76, deg + 14);
+        return `<path d="M${x} ${y}Q${polar(86, deg + 7).join(' ')} ${x2} ${y2}" stroke-width="1.4"/>`;
+      }).join('');
+      frame = `<g class="emblem-chassis" stroke="currentColor"><circle cx="120" cy="120" r="108" fill="var(--surface-muted)" stroke-width="2.4"/>${rings}${odd ? '<circle cx="120" cy="120" r="88" stroke-dasharray="1 5" stroke-width="1.6"/>' : ''}${clouds}${tier >= 8 ? '<path d="M44 44l18 18M196 44l-18 18M44 196l18-18M196 196l-18-18" stroke-width="2"/>' : ''}</g><circle class="rank-detail" cx="120" cy="120" r="66" stroke="currentColor" stroke-width="1.2"/><circle class="rank-core" cx="120" cy="120" r="58" fill="var(--surface)" stroke="currentColor" stroke-width=".8"/>`;
+      weight = 500;
+    } else if (theme === 'blueprint') {
+      const holes = 2 * (g + 2);
+      const bolts = Array.from({ length: holes }, (_, i) => {
+        const [x, y] = polar(84, i * 360 / holes + (odd ? 180 / holes : 0));
+        return `<circle cx="${x}" cy="${y}" r="4.5"/><path d="M${f(x - 7)} ${y}h14M${x} ${f(y - 7)}v14" stroke-width=".6"/>`;
+      }).join('');
+      const corner = odd ? 'M40 58V40h18M182 40h18v18M200 182v18h-18M58 200H40v-18' : '';
+      frame = `<g class="emblem-chassis" stroke="currentColor"><rect x="30" y="30" width="180" height="180" rx="${10 + g * 6}" fill="var(--surface-muted)" stroke-width="1.6"/><path d="M120 18V222M18 120H222" stroke-width=".7" stroke-dasharray="14 3 2 3"/><path d="M30 12H210M30 7v10M210 7v10M36 9l-6 3 6 3M204 9l6 3-6 3" stroke-width=".8"/>${corner ? `<path d="${corner}" stroke-width="1.2"/>` : ''}${bolts}${tier >= 6 ? '<circle cx="120" cy="120" r="98" stroke-dasharray="4 4" stroke-width=".8"/>' : ''}</g><circle class="rank-detail" cx="120" cy="120" r="66" stroke="currentColor" stroke-width="1.4" stroke-dasharray="${8 + tier} 4"/><circle class="rank-core" cx="120" cy="120" r="57" fill="var(--surface)" stroke="currentColor" stroke-width="1.2"/>`;
+      weight = 400;
+    } else {
+      const arms = Array.from({ length: 6 }, (_, i) => {
+        const deg = i * 60;
+        let d = `M${polar(56, deg).join(' ')}L${polar(106, deg).join(' ')}`;
+        const branches = 1 + Math.ceil(g / 2);
+        for (let b = 0; b < branches; b++) {
+          const r = 68 + b * 11, len = 8 + g * 1.6 - b * 2.5;
+          const [x, y] = polar(r, deg), [lx, ly] = polar(r + len, deg - 28), [rx, ry] = polar(r + len, deg + 28);
+          d += `M${lx} ${ly}L${x} ${y}L${rx} ${ry}`;
+        }
+        return `<path d="${d}" stroke-width="1.6"/>`;
+      }).join('');
+      const minor = odd ? Array.from({ length: 6 }, (_, i) => `M${polar(58, i * 60 + 30).join(' ')}L${polar(80, i * 60 + 30).join(' ')}`).join('') : '';
+      const hex = r => Array.from({ length: 6 }, (_, i) => polar(r, i * 60 + 30).join(',')).join(' ');
+      frame = `<g class="emblem-chassis" stroke="currentColor" stroke-linecap="round"><polygon points="${hex(112)}" fill="var(--surface-muted)" stroke-width=".8" stroke-opacity=".5"/>${arms}${minor ? `<path d="${minor}" stroke-width="1.1" stroke-opacity=".7"/>` : ''}${tier >= 6 ? `<polygon points="${hex(96)}" stroke-width=".7" stroke-dasharray="2 5"/>` : ''}</g><polygon class="rank-detail" points="${hex(64)}" stroke="currentColor" stroke-width="1.2"/><polygon class="rank-core" points="${hex(57)}" fill="var(--surface)" stroke="currentColor" stroke-width=".8"/>`;
+      weight = 300;
+    }
+    return `<svg class="${theme}-emblem extension-emblem" data-tier="${tier}" data-mark="${mark}" viewBox="0 0 240 270" fill="none" aria-hidden="true">${frame}<text class="extension-glyph" x="120" y="${theme === 'brutal' ? 140 : 141}" text-anchor="middle" fill="currentColor" font-size="${mark.length > 2 ? 46 : 60}" font-weight="${weight}">${mark}</text>${certified ? '<path d="M62 232H178V253H62Z" fill="var(--surface)" stroke="currentColor"/>' : ''}<text x="120" y="246" text-anchor="middle" fill="currentColor" font-family="Segoe UI,sans-serif" font-size="${certified ? 10 : 11}" letter-spacing="1.5">${certified ? 'COLLECTOR · ' : ''}${String(tier + 1).padStart(2, '0')}${certified ? '' : ' / 12'}</text></svg>`;
+  }
   const EMBLEM_RENDERERS = Object.freeze({
     collector: emblemMarkup, lumen: lumenEmblemMarkup,
     folio: tier => editionEmblemMarkup(tier, 'folio'), pulse: tier => editionEmblemMarkup(tier, 'pulse'),
     nocturne: tier => naturalEmblemMarkup(tier, 'nocturne'), sumi: tier => naturalEmblemMarkup(tier, 'sumi'),
-    arcade: tier => naturalEmblemMarkup(tier, 'arcade'), verdant: tier => naturalEmblemMarkup(tier, 'verdant')
+    arcade: tier => naturalEmblemMarkup(tier, 'arcade'), verdant: tier => naturalEmblemMarkup(tier, 'verdant'),
+    brutal: tier => atelierEmblemMarkup(tier, 'brutal'), lacquer: tier => atelierEmblemMarkup(tier, 'lacquer'),
+    blueprint: tier => atelierEmblemMarkup(tier, 'blueprint'), aurora: tier => atelierEmblemMarkup(tier, 'aurora')
   });
 
   function initTheme(doc, host) {
@@ -1115,7 +1171,7 @@
     return { state };
   }
 
-  const API = { createViewState, applyEventToState, parseEvent, describeEvent, summarizeEvents, eventDelay, parseSeed, rarityFinish, emblemMarkup, lumenEmblemMarkup, editionEmblemMarkup, naturalEmblemMarkup, themedEmblemMarkup, EMBLEM_RENDERERS, EMBLEM_CACHE_LIMIT, initTheme, matchesCard, normalizeLevel, initApp };
+  const API = { createViewState, applyEventToState, parseEvent, describeEvent, summarizeEvents, eventDelay, parseSeed, rarityFinish, emblemMarkup, lumenEmblemMarkup, editionEmblemMarkup, naturalEmblemMarkup, atelierEmblemMarkup, themedEmblemMarkup, EMBLEM_RENDERERS, EMBLEM_CACHE_LIMIT, initTheme, matchesCard, normalizeLevel, initApp };
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
   global.NCB = Object.assign(global.NCB || {}, API);
 })(typeof window !== 'undefined' ? window : globalThis);

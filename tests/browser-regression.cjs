@@ -8,12 +8,12 @@ const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { createServer } = require('../scripts/serve.js');
 const { CARDS, RARITY_LIST } = require('../src/cards.js');
-const { naturalEmblemMarkup } = require('../src/app.js');
+const { EMBLEM_RENDERERS } = require('../src/app.js');
 const root = path.resolve(__dirname, '..');
 const out = path.resolve(process.env.NBL_EVIDENCE_DIR || path.join(require('node:os').tmpdir(), `nbl-browser-${Date.now()}`));
 assert.ok(!out.startsWith(root + path.sep), 'Evidence must remain outside the repository');
 fs.mkdirSync(out, { recursive: true });
-const ids = ['collector', 'lumen', 'folio', 'pulse', 'nocturne', 'sumi', 'arcade', 'verdant'];
+const ids = ['collector', 'lumen', 'folio', 'pulse', 'nocturne', 'sumi', 'arcade', 'verdant', 'brutal', 'lacquer', 'blueprint', 'aurora'];
 const report = { started: new Date().toISOString(), checks: [], screenshots: [], metrics: {}, errors: [], uncovered: ['Firefox', 'WebKit', 'physical mobile device', 'FPS and energy measurements'] };
 const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 let browser, server, base;
@@ -71,17 +71,17 @@ async function keyboardStart(page, id) { await page.locator('#'+id).focus(); awa
   report.environment = { base, browser: browser.version(), node: process.version, playwright: require((process.env.NBL_PLAYWRIGHT_MODULE || 'playwright') + '/package.json').version };
   let { context, page } = await fresh();
   assert.equal(await page.locator('html').getAttribute('data-theme'), 'collector');
-  assert.match(await page.title(), /数值卡牌/); assert.equal(await page.locator('#themeSelect option').count(), 8);
-  assert.equal(await page.locator('#themeGallery button').count(), 8);
+  assert.match(await page.title(), /数值卡牌/); assert.equal(await page.locator('#themeSelect option').count(), 12);
+  assert.equal(await page.locator('#themeGallery button').count(), 12);
   assert.equal(await page.locator('.theme-browser').getAttribute('open'), null);
-  record('clean first paint, identity, eight options and collapsed catalogue');
+  record('clean first paint, identity, twelve options and collapsed catalogue');
   for (const id of ids) {
     await page.selectOption('#themeSelect',id); await page.reload();
     assert.equal(await page.locator('#themeSelect').inputValue(),id);
     const surfaces = await page.evaluate(() => {const t=NCB_THEME.resolve(document.documentElement.dataset.theme);return [getComputedStyle(document.documentElement).colorScheme,document.querySelector('meta[name=theme-color]').content,t.scheme,t.color];});
     assert.equal(surfaces[0],surfaces[2]);assert.equal(surfaces[1],surfaces[3]);
   }
-  record('all eight persisted themes restore browser color surfaces');
+  record('all twelve persisted themes restore browser color surfaces');
   await page.locator('.theme-browser summary').click();
   await page.locator('[data-theme-id=sumi]').focus();await page.keyboard.press('Enter');
   assert.equal(await page.locator('#themeSelect').inputValue(),'sumi');
@@ -139,7 +139,7 @@ async function keyboardStart(page, id) { await page.locator('#'+id).focus(); awa
   await fixed(page);await page.locator('#seedInput').fill('424242');await page.locator('#startBtn').click();await result(page);
   const fixedEvents=(await snapshot(page)).events;
   for(const id of ids){await page.selectOption('#themeSelect',id);await page.locator('#resultReplayBtn').click();await result(page);assert.deepEqual((await snapshot(page)).events,fixedEvents);}
-  record('same-Seed full events match across all eight themes');
+  record('same-Seed full events match across all twelve themes');
   // Capture real stages in both primary viewports, including lifesteal and regeneration.
   for(const viewport of [{width:1536,height:960},{width:390,height:844}]){
     await page.setViewportSize(viewport);
@@ -163,10 +163,10 @@ async function keyboardStart(page, id) { await page.locator('#'+id).focus(); awa
       assert.deepEqual((await snapshot(page)).events,fixedEvents);
     }
   }
-  record('eight themes x desktop/mobile x READY/BATTLE/RESULT screenshots and fixed events');
+  record('twelve themes x desktop/mobile x READY/BATTLE/RESULT screenshots and fixed events');
   for(const viewport of [{width:320,height:720},{width:768,height:1024},{width:1180,height:757},{width:3840,height:2160}]){
     await page.setViewportSize(viewport);
-    for(const id of ['collector','nocturne','sumi','arcade','verdant']){
+    for(const id of ['collector','nocturne','sumi','arcade','verdant','brutal','lacquer','blueprint','aurora']){
       await fixed(page);await page.selectOption('#themeSelect',id);await page.evaluate(()=>scrollTo(0,0));await overflow(page);
       await shot(page,`${id}-${viewport.width}-edge-ready`,false);
       await page.locator('[data-speed=slow]').click();await page.locator('#startBtn').click();await phase(page,'battle');await page.waitForTimeout(100);await overflow(page);
@@ -251,8 +251,8 @@ async function keyboardStart(page, id) { await page.locator('#'+id).focus(); awa
   // Isolated, clearly labelled geometry fixture. Never loaded by the product.
   const board=await browser.newPage({viewport:{width:1536,height:1000}});
   await board.goto(base);
-  for(const id of ['nocturne','sumi','arcade','verdant']){
-    const marks=Array.from({length:12},(_,tier)=>`<figure>${naturalEmblemMarkup(tier,id)}<figcaption>${tier+1} · ${RARITY_LIST[tier]}</figcaption></figure>`).join('');
+  for(const id of ['nocturne','sumi','arcade','verdant','brutal','lacquer','blueprint','aurora']){
+    const marks=Array.from({length:12},(_,tier)=>`<figure>${EMBLEM_RENDERERS[id](tier)}<figcaption>${tier+1} · ${RARITY_LIST[tier]}</figcaption></figure>`).join('');
     await board.evaluate(({id,marks})=>{NCB_THEME.apply(id);document.body.innerHTML=`<main style="padding:32px"><h1>${id.toUpperCase()} · 12 RARITIES — TEST DISPLAY</h1><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:24px;margin-top:32px">${marks}</div></main>`;const style=document.createElement('style');style.textContent='figure{background:var(--surface);padding:10px;color:var(--edition)}figure svg{width:100%;height:320px}figcaption{text-align:center;font:16px Segoe UI}';document.head.append(style);},{id,marks});
     await board.screenshot({path:path.join(out,`${id}-12-ranks.png`),fullPage:true});
   }
