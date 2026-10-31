@@ -46,4 +46,9 @@ V2/V3 保留池已永久转为历史回归。V4 使用新的等级组合与 seed
 
 `scripts/static-check.js` 要求已跟踪文件集合与 `EXPECTED_FILES` 完全一致，并禁止旧系统路径。新增或删除正式文件需同时核查该清单和入口引用；不为整理任务重构源码或修改测试预期。
 
-`.playwright-cli/` 是可再生成浏览器产物；截图、trace、临时报告放仓库外。`.workbuddy/` 含本地历史记忆，`.codebase-memory/` 含本地索引，二者忽略不等于可以无条件删除。外层旧扩卡 ZIP 属历史交付，未经内容与唯一性核查不得删除。保持用户现有工作、正式资产与历史价值；只改授权范围，提交前检查 diff、状态及适用验证。
+`.playwright-cli/` 是可再生成浏览器产物；截图、trace、临时报告放仓库外。`.workbuddy/` 含本地历史记忆，忽略不等于可以无条件删除；其他本地索引及历史数据同样须先核查用途和唯一性。外层旧扩卡 ZIP 属历史交付，未经内容与唯一性核查不得删除。保持用户现有工作、正式资产与历史价值；只改授权范围，提交前检查 diff、状态及适用验证。
+
+## Browser tool selection
+
+- Prefer Ego Browser for exploratory navigation, visual review and interactive checks when available. Use Playwright for repeatable regression, CI, isolation, request interception or other automation requiring its APIs; combine tools when useful. If Ego is unavailable, use a suitable existing browser tool.
+- Keep this repository's required browser commands, versions, profiles and safety boundaries; an exploratory check does not replace required automated tests. Do not alter real user data or production state for testing. Report the tools, coverage and any untested paths.
