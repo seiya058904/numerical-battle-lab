@@ -226,3 +226,7 @@ The project supports keyboard interaction, responsive layouts, and `prefers-redu
   <sub>A small experiment in the relationship between numbers, presentation, and competition.</sub><br>
   <sub>No repository-wide open-source license has been declared.</sub>
 </p>
+
+## Website analytics
+
+The public website uses Cloudflare Web Analytics for aggregate page visits and performance. The beacon loads only on `seiya058904.github.io`; local previews and offline copies do not load it. No game saves, journal entries, map contents, or form values are passed to the analytics integration. Statistics start after deployment and do not recover earlier traffic. See [Cloudflare's privacy policy](https://www.cloudflare.com/privacypolicy/).
